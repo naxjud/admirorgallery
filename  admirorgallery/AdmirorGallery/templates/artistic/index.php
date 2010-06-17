@@ -27,7 +27,7 @@ if (!empty($images))
 	    // Calculate $listed_imageSize
 	    $agArtistic_imageInfo_array=imageInfo(JPATH_BASE .DS.$rootFolder.$imagesFolder_name.'/'.$imagesValue);
 	
-			$html .= '<span class="agArtistic_item"><a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" rel="lightbox[AdmirorGallery'.$galleryCount.']" title="';
+			$html .= '<span class="agArtistic_item"><a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" rel="lightbox[AdmirorGallery'.$galleryCount.']'.$articleID.'" title="';
 	$html .= $imagesDescritions[$imagesValue];
 			$html .= '" alt="';
 			$html .= $imagesDescritions[$imagesValue];

@@ -31,7 +31,7 @@ else
 
 // Form HTML code
 $html = '<!-- ======================= Admiror Gallery -->
-<div class="AdmirorGallery'.$galleryCount.'('.$_galleryStyle_.')">
+<div class="AdmirorGallery'.$galleryCount.'('.$_galleryStyle_.')'.$articleID.'">
 <style type="text/css">
     #myGallery'.$galleryCount.' {
         width: '.$_frame_width_.'px;

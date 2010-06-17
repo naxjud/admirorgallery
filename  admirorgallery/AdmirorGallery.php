@@ -4,7 +4,6 @@
  // Author: Igor Kekeljevic & Nikola Vasiljevski, 2009.
  */
 
-
 defined('_JEXEC') or die('Restricted access');
 
 // Import library dependencies
@@ -30,7 +29,6 @@ class plgContentAdmirorGallery extends JPlugin {
         
         // just startup
         global $mainframe;
-        
         // GD2 Library Check      
         if (!function_exists('gd_info')) {
             // ERROR - Invalid image
@@ -94,7 +92,7 @@ class plgContentAdmirorGallery extends JPlugin {
                     $doc->addCustomTag('<script type="text/javascript">jQuery.noConflict();</script>');
                 }
             $galleryCount = -1;
-			$row->text.=JRequest::getVar('id');
+			$articleID = $row->id;
             preg_match_all("#{AdmirorGallery (.*?)}#s", $row->text, $inlineParams, PREG_PATTERN_ORDER);
             foreach ($matches[0] as $match) {
                 $galleryCount++;

@@ -48,7 +48,7 @@ $html = '<!-- ======================= Admiror Gallery -->
 </style>
 
 
-<div class="AdmirorGallery'.$galleryCount.'">';
+<div class="AdmirorGallery'.$galleryCount.'-'.$articleID.'">';
 if (!empty($images)){
 	foreach ($images as $imagesKey => $imagesValue){
             $html.='<div id="main_image"></div>';

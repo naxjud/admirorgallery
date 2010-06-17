@@ -10,7 +10,7 @@ $html = '<!-- ======================= Admiror Gallery -->
 
 if (!empty($images)){
 	foreach ($images as $imagesKey => $imagesValue){
-		$html .= '<span class="ag_thumb"><a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" rel="lightbox-AdmirorGallery'.$galleryCount.'" title="';
+		$html .= '<span class="ag_thumb"><a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" rel="lightbox-AdmirorGallery'.$galleryCount.'-'.$articleID.'" title="';
     $html .= $imagesDescritions[$imagesValue];
 		$html .= '" alt="';
 		$html .= $imagesDescritions[$imagesValue];
