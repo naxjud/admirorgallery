@@ -55,7 +55,7 @@ jQuery(function($) {
 ';
 
 $html .= '<!-- ======================= Admiror Gallery -->
-<div class="AdmirorGallery'.$galleryCount.'('.$_galleryStyle_.')">
+<div class="AdmirorGallery'.$galleryCount.'('.$_galleryStyle_.')'.$articleID.'">
   <div class="AdmirorOverscrollGallery">
 ';
 

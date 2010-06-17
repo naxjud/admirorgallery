@@ -26,7 +26,7 @@ if (!empty($images))
 		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="ag_item">
     <tbody>
 		<tr><td class="ag_thumbTd">
-		<a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" rel="lightbox[AdmirorGallery'.$galleryCount.']" title="';
+		<a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" rel="lightbox[AdmirorGallery'.$galleryCount.']'.$articleID.'" title="';
 	  $html .= $imagesDescritions[$imagesValue];
 		$html .= '" alt="';
 		$html .= $imagesDescritions[$imagesValue];
