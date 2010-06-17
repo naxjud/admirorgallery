@@ -1,9 +1,0 @@
-Version 1.82
-- solved problem with upper case extensions
-- $joomla_server_path variable removed, now using global variable JPATH_SITE;
-- fixed bug with loading JPEG files. JPEG files did not load into images array
-- added prefix "ag_" to functions that gallery uses
-- all functions moved to functions.php
-- added http://www.no-margin-for-errors.com/projects/prettyphoto-jquery-lightbox-clone/ template
-- all the bugs in the prettyphoto fixed
-- added "defined('_JEXEC') or die('Restricted access');" to every *.PHP script.
