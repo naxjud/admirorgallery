@@ -119,7 +119,7 @@ class plgContentAdmirorGallery extends JPlugin {
                 }
                 //Create directory in thumbs for gallery
                 JFolder::create($thumbsFolder, 0755);
-                
+                ag_indexWrite($thumbsFolder.'/index.html');
                 // Check for Changes
 	            foreach ($images as $imagesKey=>$imagesValue) {
 	                $original_file = $imagesFolder.$imagesValue;

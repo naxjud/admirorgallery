@@ -180,5 +180,17 @@ function ag_cleanThumbsFolder($originalFolder,$thumbFolder)
 		}
 	}
 }
+// This script is part of ACMS, Admiror Content Management System.
+// Copyright Admiror Design Studio, 2009. All rights reserved.
+// Script by Igor Kekeljevic.
+// Edited by Nikola :)
+
+function ag_indexWrite($filename){
+
+  $handle = fopen($filename,"w") or die("");
+  $contents = fwrite($handle,'<html><body bgcolor="#FFFFFF"></body></html>');
+  fclose($handle);
+
+}
 
 ?>
