@@ -67,7 +67,7 @@ if (!empty($images)){
 
 $html .='</ul>';
 
-$html .='<p class="nav"><a onclick="jQuery.galleria.prev(); return false;" href="#">« previous</a> | <a onclick="jQuery.galleria.next(); return false;" href="#">next »</a></p>';
+$html .='<p class="galleria_nav"><a onclick="jQuery.galleria.prev(); return false;" href="#">« previous</a> | <a onclick="jQuery.galleria.next(); return false;" href="#">next »</a></p>';
 
 if($_showSignature_==1){
   $html .='<div class="AdmirorGallery_label">';

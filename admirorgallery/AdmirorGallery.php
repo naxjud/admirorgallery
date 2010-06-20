@@ -1,7 +1,8 @@
 <?php
 /*
  // Admiror Gallery, based on Simple Image Gallery
- // Author: Igor Kekeljevic & Nikola Vasiljevski, 2009.
+ // Author: Igor Kekeljevic & Nikola Vasiljevski, 2010.
+ // Version: 1.95
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -54,6 +55,7 @@ class plgContentAdmirorGallery extends JPlugin {
         $default_newImageTag_days_ = $pluginParams->get('newImageTag_days', '7');
         $default_sortImages = $pluginParams->get('sortImages', 'false');
         $default_showSignature_ = $pluginParams->get('showSignature', '1');
+		$default_overlayEngine_=$pluginParams->get('overlayEngine','slimbox');
         $ignoreError_ = $pluginParams->get('ignoreError', '1');
         $ignoreAllError_ = $pluginParams->get('ignoreAllError', '0');
         $loadjQuery_=$pluginParams->get('loadjQuery', '1');
@@ -78,7 +80,6 @@ class plgContentAdmirorGallery extends JPlugin {
         $thumbsFolder = JPATH_SITE.'/plugins/content/AdmirorGallery/thumbs/';
         
         ag_cleanThumbsFolder(JPATH_SITE.$rootFolder, $thumbsFolder);
-        
         //CreateGallerys
         if (preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER) > 0) {
             $doc = &JFactory::getDocument();
@@ -89,7 +90,7 @@ class plgContentAdmirorGallery extends JPlugin {
                 }
             if($jQueryNoConflict_)
                 {
-                    $doc->addCustomTag('<script type="text/javascript">jQuery.noConflict();</script>');
+                    $doc->addScriptDeclaration('jQuery.noConflict();');
                 }
             $galleryCount = -1;
 			$articleID = $row->id;
@@ -137,6 +138,7 @@ class plgContentAdmirorGallery extends JPlugin {
 	                }
 	            
 	            	}
+				include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/overlay_engine/'.$_overlayEngine_.'/index.php');
                 include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/templates/'.$_galleryStyle_.'/index.php');
                 ag_clearOldThumbs($thumbsFolder, $imagesFolder);
                 $row->text = preg_replace("#{AdmirorGallery[^}]*}".$imagesFolder_name."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);

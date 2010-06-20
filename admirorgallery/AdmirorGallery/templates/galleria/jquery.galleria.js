@@ -93,7 +93,7 @@
         var _div = jQuery(document.createElement('div')).addClass('galleria_wrapper');
 	
         // create a caption span
-        var _span = jQuery(document.createElement('span')).addClass('caption');
+        var _span = jQuery(document.createElement('span')).addClass('galleria_caption');
 	
         // inject the wrapper in in the insert selector
         _insert.addClass('galleria_container').append(_div).append(_span);
@@ -331,10 +331,10 @@
             _wrapper.empty().append(_img);
 
             // insert the caption
-            jQuery('.caption').text(_thumb.attr('title'));
+            jQuery('.galleria_caption').text(_thumb.attr('title'));
 		
             // fire the onImage function to customize the loaded image's features
-            jQuery.galleria.onImage(_img,jQuery('.caption'),_thumb);
+            jQuery.galleria.onImage(_img,jQuery('.galleria_caption'),_thumb);
 		
             // add clickable image helper
             if(jQuery.galleria.clickNext) {
