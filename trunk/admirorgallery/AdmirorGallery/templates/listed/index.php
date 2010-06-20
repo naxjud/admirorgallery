@@ -10,10 +10,10 @@ $doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/slimbox2.js')
 $doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/templates/listed/listed.css');
 // Form HTML code
 $html = '<!-- ======================= Admiror Gallery -->
-<div class="AdmirorGallery'.$galleryCount.'('.$_galleryStyle_.')">
+<div id="AdmirorGallery'.$galleryCount.'('.$_galleryStyle_.''.$articleID.')">
 <div class="AdmirorListedGallery">
 ';
-
+isset($customTag) ? $tempTag=$customTag : $tempTag='';
 if (!empty($images))
 {
 	foreach ($images as $imagesKey => $imagesValue)
@@ -26,7 +26,7 @@ if (!empty($images))
 		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="ag_item">
     <tbody>
 		<tr><td class="ag_thumbTd">
-		<a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" rel="lightbox[AdmirorGallery'.$galleryCount.']'.$articleID.'" title="';
+		<span class="ag_thumb'.$_galleryStyle_.'"><a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" class="'.$cssClass.'" rel="'.$rel.'" '.$tempTag.' title="';
 	  $html .= $imagesDescritions[$imagesValue];
 		$html .= '" alt="';
 		$html .= $imagesDescritions[$imagesValue];
@@ -40,7 +40,7 @@ if (!empty($images))
 		
 		$html .= '<img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/thumbs/'.$imagesFolder_name.'/'.$imagesValue.'" class="ag_thumbImg" />';
 			
-		$html .= '</span></a></td>';
+		$html .= '</span></a></span></td>';
 			
 		$html .='<td class="ag_info">
 		<table border="0" cellspacing="0" cellpadding="0">
@@ -68,4 +68,6 @@ $html .='
 </div>
 <!-- Admiror Gallery -->';
 $html .='</div>';
+if (isset($jsInclude)) 
+$html.=$jsInclude;	
 ?>

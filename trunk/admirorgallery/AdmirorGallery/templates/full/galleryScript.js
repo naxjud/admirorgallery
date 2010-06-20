@@ -13,7 +13,6 @@ jQuery(function(){
     });
     SI.Files.stylizeAll();
     slider.init();
-    //mc.init();
 
     jQuery('input.text-default').each(function(){
         jQuery(this).attr('default',jQuery(this).val());
@@ -51,17 +50,6 @@ jQuery(function(){
         jQuery(this).parent().find('img').removeClass('on');
         jQuery(this).addClass('on');
         return false;
-    });
-    jQuery(window).load(function(){
-        jQuery.each(css_ims,function(){
-            (new Image()).src=_siteRoot+'css/images/'+this;
-        });
-        jQuery.each(css_cims,function(){
-            var css_im=this;
-            jQuery.each(['blue','purple','pink','red','grey','green','yellow','orange'],function(){
-                (new Image()).src=_siteRoot+'css/'+this+'/'+css_im;
-            });
-        });
     });
     jQuery('div.sc-large div.img:has(div.tml)').each(function(){
         jQuery('div.tml',this).hide();

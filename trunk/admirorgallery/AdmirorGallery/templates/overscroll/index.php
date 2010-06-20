@@ -36,7 +36,6 @@ if(!function_exists("fileRoundSize")){
   include(JPATH_BASE.DS.'/plugins/content/AdmirorGallery/templates/overscroll/fileRoundSize.php');
 }
 
-$doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/slimbox2.js');
 $doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/templates/overscroll/listed.css');
 
 $html = '';
@@ -55,10 +54,10 @@ jQuery(function($) {
 ';
 
 $html .= '<!-- ======================= Admiror Gallery -->
-<div class="AdmirorGallery'.$galleryCount.'('.$_galleryStyle_.')'.$articleID.'">
+<div id="AdmirorGallery'.$galleryCount.'('.$_galleryStyle_.''.$articleID.')">
   <div class="AdmirorOverscrollGallery">
 ';
-
+isset($customTag) ? $tempTag=$customTag : $tempTag='';
 if (!empty($images))
 {
 	foreach ($images as $imagesKey => $imagesValue)
@@ -71,7 +70,8 @@ if (!empty($images))
 		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="ag_overscroll_item">
     <tbody>
 		<tr><td class="ag_overscroll_thumbTd">
-		<a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" rel="lightbox[AdmirorGallery'.$galleryCount.']" title="';
+		<span class="ag_thumb'.$_galleryStyle_.'">
+		<a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" class="'.$cssClass.'" rel="'.$rel.'" '.$tempTag.' title="';
 	  $html .= $imagesDescritions[$imagesValue];
 		$html .= '" alt="';
 		$html .= $imagesDescritions[$imagesValue];
@@ -79,7 +79,7 @@ if (!empty($images))
 			
 		$html .= '<img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/thumbs/'.$imagesFolder_name.'/'.$imagesValue.'" class="ag_overscroll_thumbImg" />';
 			
-		$html .= '</span></a></td>';
+		$html .= '</span></a></span></td>';
 			
 		$html .='<td class="ag_overscroll_info">
 		<table border="0" cellspacing="0" cellpadding="0">
@@ -112,6 +112,6 @@ $html .='
 <a href="http://www.admiror-design-studio.com" class="ag_overscroll_linkAdmiror"><span>Admiror</span></a><a href="http://www.vasiljevski.com" class="ag_overscroll_linkGallery"><span>Gallery</span></a>
 <!-- Admiror Gallery -->';
 $html .='</div>';
-
-
+if (isset($jsInclude)) 
+$html.=$jsInclude;	
 ?>

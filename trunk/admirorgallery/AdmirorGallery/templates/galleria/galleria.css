@@ -8,16 +8,15 @@
 .galleria li .caption{display:block;padding-top:.5em}
 * html .galleria li div span{width:400px} /* MSIE bug */
 
-.caption{font-style:italic;color:#887; margin:0 auto 10px auto;height:20px;width:700px;display: block;}
-.demo{position:relative;margin-top:2em;}
+.galleria_caption{font-style:italic;color:#887; margin:0 auto 10px auto;height:20px;width:700px;display: block;}
 .gallery_small{width:702px;margin:0 auto;}
 .gallery_small li{width:68px;height:50px;border:3px double #111;margin: 0 2px;background:#000;}
 .gallery_small li div{left:240px}
-.gallery_small li div .caption{font:italic 0.7em/1.4 georgia,serif;}
+.gallery_small li div .galleria_caption{font:italic 0.7em/1.4 georgia,serif;}
 
 #main_image{margin:0 auto 10px auto;background:black; overflow: hidden}
 #main_image img{margin-bottom:10px;}
-.nav{padding-top:15px;clear:both;font:80% 'helvetica neue',sans-serif;letter-spacing:3px;text-transform:uppercase; text-align: center;}
+.galleria_nav{padding-top:15px;clear:both;font:80% 'helvetica neue',sans-serif;letter-spacing:3px;text-transform:uppercase; text-align: center;}
 
 
 

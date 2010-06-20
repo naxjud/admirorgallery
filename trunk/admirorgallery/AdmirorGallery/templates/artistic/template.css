@@ -3,7 +3,7 @@
   padding:20px;
 }
 
-.agArtistic_item
+.ag_thumbartistic
 {
   margin:10px;
   
@@ -11,12 +11,12 @@
   float:left;
 }
 
-.agArtistic_item a img
+.ag_thumbartistic a img
 {
   padding-top:4px;
 }
 
-.agArtistic_item a:hover img
+.ag_thumbartistic a:hover img
 {
   padding-top:0;
   border-top: 4px solid #ffa500;  

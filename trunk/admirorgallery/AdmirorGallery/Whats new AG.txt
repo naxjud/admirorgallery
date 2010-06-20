@@ -1,3 +1,13 @@
+Version 1.95
+- added support for multiple popup engines. Now you can change the popup engine from Plugin settings screen or supplying 'overlayEngine' parametar inline
+- security fix, added joomla check to every script.
+- security fix, autocreating index.html in every thumbs folder
+- overscroll script updated to  v1.3.0
+- from now on, any new HTML template will have to support specific pattern so it couled support overlay_engine changing
+- added colorbox, fancy-zoom, fancybox, greybox, pirobox, prettyPhoto, sexylightbox, slimbox, topup overlay engines.
+- parametar reading simplyfied.
+- AdmirorGallery.xml now load all the files inside AdmirorGallery folder on instalation, no need to update script if new files are added.
+
 Version 1.82
 - solved problem with upper case extensions
 - $joomla_server_path variable removed, now using global variable JPATH_SITE;

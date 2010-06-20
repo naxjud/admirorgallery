@@ -4,7 +4,7 @@
   padding:20px;
 }
 
-.agArtistic_item
+.ag_thumbartistic
 {
   margin:10px;
   
@@ -12,12 +12,12 @@
   float:left;
 }
 
-.agArtistic_item a img
+.ag_thumbartistic a img
 {
   border-top:4px solid #333;
 }
 
-.agArtistic_item a:hover img
+.ag_thumbartistic a:hover img
 {
   border-top:4px solid #ffa500;
 }

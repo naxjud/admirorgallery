@@ -35,6 +35,16 @@ function ag_getAttribute($attrib, $tag)
         }
         return false;
 }
+//Gets the atributes value by name, else returns false
+function ag_getParams($attrib, $tag, $default)
+{
+        //get attribute from html tag
+        $re = '/' . preg_quote($attrib) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
+        if (preg_match($re, $tag, $match)) {
+        return urldecode($match[2]);
+        }
+        return $default;
+}
 
 //Creates thumbnail from original images, return $errorMessage;
 function ag_createThumb($original_file, $thumb_file, $new_h) {
