@@ -50,7 +50,7 @@ jQuery(function($) {
 
 </script>
 
-<div class="ag_overscroll_bodyHolder ag_overscroll_'.$_frame_color_.'" style="width:'.$_frame_width_.'px; height:'.$_frame_height_.'px">
+<div class="ag_overscroll_bodyHolder ag_overscroll" style="width:'.$_frame_width_.'px; height:'.$_frame_height_.'px">
 ';
 
 $html .= '<!-- ======================= Admiror Gallery -->
@@ -95,6 +95,14 @@ $html .='
   </div>
 </div>
 ';
+$html.='<style type="text/css">
+.ag_overscroll
+{
+  background-color:'.$_frame_color_.';
+  border-top:4px solid '.$_frame_color_.';
+  border-bottom:4px solid '.$_frame_color_.';
+}
+</style>';
 if (isset($jsInclude)) 
 $html.=$jsInclude;	
 ?>
