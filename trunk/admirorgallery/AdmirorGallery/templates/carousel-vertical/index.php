@@ -2,7 +2,7 @@
 
 // Load Functions
 if(!function_exists("imageInfo")){
-  include(JPATH_BASE .DS.'/plugins/content/AdmirorGallery/templates/listed/imageInfo.php');
+  include(JPATH_BASE .DS.'/plugins/content/AdmirorGallery/imageInfo.php');
 }
 
 $doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/templates/carousel-vertical/jquery.jcarousel.css');
@@ -49,7 +49,7 @@ foreach ($images as $imagesKey => $imagesValue)
 		$fileStat=stat($imagesFolder.$imagesValue);
 		$fileAge=time()-$fileStat['ctime']; 
 		if((int)$fileAge < (int)($_newImageTag_days_*24*60*60) && $_newImageTag_==1){
-			$html .= '<span class="ag_newTag"><img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/templates/'.$_galleryStyle_.'/newTag.gif" class="ag_newImageTag" /></span>';		
+			$html .= '<span class="ag_newTag"><img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/newTag.gif" class="ag_newImageTag" /></span>';		
 		}				
 		
 $html .= '<img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/thumbs/'.$imagesFolder_name.'/'.$imagesValue.'" class="ag_thumbImg" />';
@@ -57,7 +57,7 @@ $html .= '<img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/thumbs/
 $html .= '
 </span></a>
 </td><td class="ag_cv_description">
-'.$imagesDescritions[$imagesValue].'
+'.htmlspecialchars(strip_tags($imagesDescritions[$imagesValue])).'
 </td></tr></tbody></table>
 </li>
 ';

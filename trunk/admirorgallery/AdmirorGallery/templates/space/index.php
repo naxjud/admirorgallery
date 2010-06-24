@@ -48,25 +48,10 @@ $html = '<!-- ======================= Admiror Gallery -->
 
 if (!empty($images)){
 	foreach ($images as $imagesKey => $imagesValue){
-           // if ($_Space_useThumbs_)
-           // {
-           //     $html .='<img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/thumbs/'.$imagesFolder_name.'/'.$imagesValue.'" alt="'.$imagesDescritions[$imagesValue].'">';//
-           // }
-           // else
-            //{
-                $html .='<img src="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" alt="'.$imagesDescritions[$imagesValue].'" title="'.$imagesDescritions[$imagesValue].'">';//'<img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/thumbs/'.$imagesFolder_name.'/'.$imagesValue.'" alt="'.$imagesDescritions[$imagesValue].'">';//
-            //}
-	
+                $html .='<img src="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" alt="'.htmlspecialchars(strip_tags($imagesDescritions[$imagesValue])).'" title="'.htmlspecialchars(strip_tags($imagesDescritions[$imagesValue])).'">';	
 	}
 }
 
-$html .='</div>';
-if($_showSignature_==1){
-  $html .='<div class="AdmirorGallery_label">';
-}else{
-  $html .='<div style="display:none">';
-}
-$html .='<a href="http://www.admiror-design-studio.com" class="AdmirorGallery_linkAdmiror"><span>Admiror</span></a><a href="http://www.vasiljevski.com" class="AdmirorGallery_linkGallery"><span>Gallery</span></a>';
 $html .='</div>';
 $html .='<script type="text/javascript">
     

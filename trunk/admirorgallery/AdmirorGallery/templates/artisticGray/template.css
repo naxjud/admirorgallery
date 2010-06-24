@@ -4,7 +4,7 @@
   padding:20px;
 }
 
-.ag_thumbartistic
+.ag_thumbartisticGray
 {
   margin:10px;
   
@@ -12,14 +12,15 @@
   float:left;
 }
 
-.ag_thumbartistic a img
+.ag_thumbartisticGray a img
 {
-  border-top:4px solid #333;
+  padding-top:4px;
 }
 
-.ag_thumbartistic a:hover img
+.ag_thumbartisticGray a:hover img
 {
-  border-top:4px solid #ffa500;
+  padding-top:0;
+  border-top: 4px solid #ffa500;  
 }
 
 .agArtistic_description
@@ -46,7 +47,7 @@
 }
 
 /* ========================================= NEW IMAGE TAG */
-.agArtistic_newTag
+.agArtistic_galleryHolder_gray .ag_newTag
 {
   margin:0px;
   padding:0px;
@@ -61,7 +62,7 @@
   
 }
 
-.agArtistic_newImageTag
+.agArtistic_galleryHolder_gray .ag_newImageTag
 {
   margin: 0px;
   padding: 0px;
@@ -71,59 +72,4 @@
   background-color: transparent;
   border-width:0;
   
-}
-
-
-
-
-/* =================================== AdmirorGallery_label */
-.AdmirorGallery_label
-{
-  margin:0px;
-  margin-top:1px;
-  padding:0px;
-  padding-left:12px;
-  padding-bottom:10px;
-  text-align:left;
-  
-}
-
-.AdmirorGallery_linkAdmiror
-{
- margin:0px;
- padding:0px;
- background-color:#a00;
- 
- text-decoration:none;
-}
-
-.AdmirorGallery_linkGallery
-{
- margin:0px;
- padding:0px;
- background-color:#333;
- 
- text-decoration:none;
-}
-
-.AdmirorGallery_linkAdmiror span
-{
-  margin:0px;
-  padding:1px 3px;
- 
-  color:#eee;
-  font:bold 8px Arial, Sans;
-  text-transform:uppercase;
-  text-decoration:none;
-}
-
-.AdmirorGallery_linkGallery span
-{
-  margin:0px;
-  padding:1px 3px;
- 
-  color:#eee;
-  font:bold 8px Arial, Sans;
-  text-transform:uppercase;
-  text-decoration:none;
 }

@@ -30,10 +30,10 @@ $doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/templates/ove
 
 // Load Functions
 if(!function_exists("imageInfo")){
-  include(JPATH_BASE.DS.'/plugins/content/AdmirorGallery/templates/overscroll/imageInfo.php');
+  include(JPATH_BASE.DS.'/plugins/content/AdmirorGallery/imageInfo.php');
 }
 if(!function_exists("fileRoundSize")){
-  include(JPATH_BASE.DS.'/plugins/content/AdmirorGallery/templates/overscroll/fileRoundSize.php');
+  include(JPATH_BASE.DS.'/plugins/content/AdmirorGallery/fileRoundSize.php');
 }
 
 $doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/templates/overscroll/listed.css');
@@ -72,9 +72,9 @@ if (!empty($images))
 		<tr><td class="ag_overscroll_thumbTd">
 		<span class="ag_thumb'.$_galleryStyle_.'">
 		<a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" class="'.$cssClass.'" rel="'.$rel.'" '.$tempTag.' title="';
-	  $html .= $imagesDescritions[$imagesValue];
+	  $html .= htmlspecialchars(strip_tags($imagesDescritions[$imagesValue]));
 		$html .= '" alt="';
-		$html .= $imagesDescritions[$imagesValue];
+		$html .= htmlspecialchars(strip_tags($imagesDescritions[$imagesValue]));
 		$html .= '" target="_blank"><span class="ag_overscroll_thumbSpan">';
 			
 		$html .= '<img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/thumbs/'.$imagesFolder_name.'/'.$imagesValue.'" class="ag_overscroll_thumbImg" />';
@@ -85,7 +85,7 @@ if (!empty($images))
 		<table border="0" cellspacing="0" cellpadding="0">
     <tbody>
 		<tr><td class="ag_overscroll_description">
-		'.$imagesDescritions[$imagesValue].'
+		'.htmlspecialchars(strip_tags($imagesDescritions[$imagesValue])).'
 		<tr><td class="ag_overscroll_imageStat">
 		<span>W:'.$imageInfo_array["width"].'px</span>
 		<span>H:'.$imageInfo_array["height"].'px</span>
@@ -101,17 +101,6 @@ $html .='
   </div>
 </div>
 ';
-
-
-if($_showSignature_==1){
-  $html .='<div class="ag_overscroll_label">';
-}else{
-  $html .='<div style="display:none">';
-}
-$html .='
-<a href="http://www.admiror-design-studio.com" class="ag_overscroll_linkAdmiror"><span>Admiror</span></a><a href="http://www.vasiljevski.com" class="ag_overscroll_linkGallery"><span>Gallery</span></a>
-<!-- Admiror Gallery -->';
-$html .='</div>';
 if (isset($jsInclude)) 
 $html.=$jsInclude;	
 ?>

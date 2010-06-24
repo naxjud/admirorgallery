@@ -32,12 +32,7 @@
                 <param name="galleryStyle" type="folderlist" default="classic" label="Gallery Style" description="Select gallery style" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
 				<param name="overlayEngine" type="folderlist" default="slimbox" label="Gallery Overlay Engine" description="Select overlay engine" directory="plugins/content/AdmirorGallery/overlay_engine" exclude="" stripext="" hide_none="true" hide_default="true" />
 		
-		<param name="framecolor" type = "list" default="blue" label="Frame Color" description= "Changes color of frame">
-			<option value="blue"> Blue </option>
-			<option value="red"> Red </option>
-			<option value="green"> Green </option>
-			<option value="gray"> Gray </option>	
-		</param>
+		<param name="framecolor" type = "text" default="#fff" label="Frame Color" description= "Changes color of frame"></param>
 		
 		<param name="frame_width" type="text" default="500" size="5" label="Frame width" description="Adjust frame width in pixels." />
 		<param name="frame_height" type="text" default="300" size="5" label="Frame height" description="Adjust frame height in pixels." />
