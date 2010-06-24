@@ -57,7 +57,9 @@ $html .= '<!-- ======================= Admiror Gallery -->
 <div id="AdmirorGallery'.$galleryCount.'('.$_galleryStyle_.''.$articleID.')">
   <div class="AdmirorOverscrollGallery">
 ';
-isset($customTag) ? $tempTag=$customTag : $tempTag='';
+$imgWrapS = '<span class="ag_overscroll_thumbSpan">';
+$imgWrapE = '</span>';
+$_newImageTag_=0;
 if (!empty($images))
 {
 	foreach ($images as $imagesKey => $imagesValue)
@@ -70,18 +72,10 @@ if (!empty($images))
 		<table border="0" cellspacing="0" cellpadding="0" width="100%" class="ag_overscroll_item">
     <tbody>
 		<tr><td class="ag_overscroll_thumbTd">
-		<span class="ag_thumb'.$_galleryStyle_.'">
-		<a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" class="'.$cssClass.'" rel="'.$rel.'" '.$tempTag.' title="';
-	  $html .= htmlspecialchars(strip_tags($imagesDescritions[$imagesValue]));
-		$html .= '" alt="';
-		$html .= htmlspecialchars(strip_tags($imagesDescritions[$imagesValue]));
-		$html .= '" target="_blank"><span class="ag_overscroll_thumbSpan">';
+		<span class="ag_thumb'.$_galleryStyle_.'">';
+		include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/imageHTMLout.php');
 			
-		$html .= '<img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/thumbs/'.$imagesFolder_name.'/'.$imagesValue.'" class="ag_overscroll_thumbImg" />';
-			
-		$html .= '</span></a></span></td>';
-			
-		$html .='<td class="ag_overscroll_info">
+		$html .='</span></td><td class="ag_overscroll_info">
 		<table border="0" cellspacing="0" cellpadding="0">
     <tbody>
 		<tr><td class="ag_overscroll_description">
