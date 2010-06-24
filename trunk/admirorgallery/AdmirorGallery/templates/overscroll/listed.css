@@ -85,7 +85,7 @@ div.AdmirorOverscrollGallery
 
 }
 
-.AdmirorOverscrollGallery a .ag_overscroll_thumbImg
+.AdmirorOverscrollGallery a .ag_imageThumb
 {
   margin:0px;
   padding:10px;
@@ -132,7 +132,7 @@ div.AdmirorOverscrollGallery
 
 
 /* ========================================= NEW IMAGE TAG */
-.AdmirorOverscrollGallery .ag_overscroll_newTag
+.AdmirorOverscrollGallery .ag_newImageTag
 {
   margin:0px;
   padding:0px;
@@ -145,7 +145,7 @@ div.AdmirorOverscrollGallery
   
 }
 
-.AdmirorOverscrollGallery .ag_overscroll_newImageTag
+.AdmirorOverscrollGallery .ag_newImageTag
 {
   margin: 0px;
   padding: 0px;
@@ -155,53 +155,4 @@ div.AdmirorOverscrollGallery
   background-color: transparent;
   border-width:0;
   
-}
-
-
-
-/* ========================================= SIGNATURE */
-.ag_overscroll_label
-{
-  text-align:left;
-  padding-left:12px;
-}
-
-.ag_overscroll_linkAdmiror
-{
- margin:0px;
- padding:0px;
- background-color:#a00;
- 
- text-decoration:none;
-}
-
-.ag_overscroll_linkGallery
-{
- margin:0px;
- padding:0px;
- background-color:#333;
- 
- text-decoration:none;
-}
-
-.ag_overscroll_linkAdmiror span
-{
-  margin:0px;
-  padding:0px 3px;
- 
-  color:#eee;
-  font:bold 8px Verdana, Sans;
-  text-transform:uppercase;
-  text-decoration:none;
-}
-
-.ag_overscroll_linkGallery span
-{
-  margin:0px;
-  padding:0px 3px;
- 
-  color:#eee;
-  font:bold 8px Verdana, Sans;
-  text-transform:uppercase;
-  text-decoration:none;
 }

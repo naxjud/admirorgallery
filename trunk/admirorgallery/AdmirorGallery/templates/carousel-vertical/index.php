@@ -34,34 +34,18 @@ $html = '
 <div id="ag_wrap'.$galleryCount.''.$articleID.'" style="display:block;">
 <ul id="ag_carousel'.$galleryCount.''.$articleID.'" class="jcarousel-skin-tango">
 ';
-
+$cssClass.=' ag_thumbLink';
+$imgWrapS = '<span class="ag_thumbSpan">';
+$imgWrapE = '</span>';
 foreach ($images as $imagesKey => $imagesValue)
 {
-		$html .= '
-<li>
-<table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td>
-<a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" class="ag_thumbLink '.$cssClass.'" rel="'.$rel.'" '.$tempTag.' title="';
-	  $html .= htmlspecialchars(strip_tags($imagesDescritions[$imagesValue]));
-		$html .= '" alt="';
-		$html .= htmlspecialchars(strip_tags($imagesDescritions[$imagesValue]));
-		$html .= '" target="_blank"><span class="ag_thumbSpan">';
-			
-		$fileStat=stat($imagesFolder.$imagesValue);
-		$fileAge=time()-$fileStat['ctime']; 
-		if((int)$fileAge < (int)($_newImageTag_days_*24*60*60) && $_newImageTag_==1){
-			$html .= '<span class="ag_newTag"><img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/newTag.gif" class="ag_newImageTag" /></span>';		
-		}				
-		
-$html .= '<img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/thumbs/'.$imagesFolder_name.'/'.$imagesValue.'" class="ag_thumbImg" />';
-	
-$html .= '
-</span></a>
-</td><td class="ag_cv_description">
-'.htmlspecialchars(strip_tags($imagesDescritions[$imagesValue])).'
-</td></tr></tbody></table>
-</li>
-';
-
+		$html .= '<li>
+			<table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td>';
+			include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/imageHTMLout.php');	
+		$html .= '</td><td class="ag_cv_description">
+			'.htmlspecialchars(strip_tags($imagesDescritions[$imagesValue])).'
+			</td></tr></tbody></table>
+			</li>';
 }	
 	
 $html .= '
@@ -129,5 +113,6 @@ jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel
 </style>
 
 ';	
-
+if (isset($jsInclude)) 
+$html.=$jsInclude;	
 ?>

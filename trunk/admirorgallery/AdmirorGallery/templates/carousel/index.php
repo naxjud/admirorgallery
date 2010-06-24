@@ -12,34 +12,17 @@ $html = '
 <div id="ag_wrap'.$galleryCount.''.$articleID.'" style="display:block;">
 <ul id="ag_carousel'.$galleryCount.''.$articleID.'" class="jcarousel-skin-tango">
 ';
-isset($customTag) ? $tempTag=$customTag : $tempTag='';
+$cssClass.=' ag_thumbLink';
+$imgWrapS = '<span class="ag_thumbSpan">';
+$imgWrapE = '</span>';
 foreach ($images as $imagesKey => $imagesValue)
 {
-		$html .= '
-<li>
-<a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" class="ag_thumbLink '.$cssClass.'" rel="'.$rel.'" '.$tempTag.' title="';
-	  $html .= htmlspecialchars(strip_tags($imagesDescritions[$imagesValue]));
-		$html .= '" alt="';
-		$html .= htmlspecialchars(strip_tags($imagesDescritions[$imagesValue]));
-		$html .= '" target="_blank"><span class="ag_thumbSpan">';
-			
-		$fileStat=stat($imagesFolder.$imagesValue);
-		$fileAge=time()-$fileStat['ctime']; 
-		if((int)$fileAge < (int)($_newImageTag_days_*24*60*60) && $_newImageTag_==1){
-			$html .= '<span class="ag_newTag"><img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/newTag.gif" class="ag_newImageTag" /></span>';		
-		}				
-		
-$html .= '<img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/thumbs/'.$imagesFolder_name.'/'.$imagesValue.'" class="ag_thumbImg" />';
-	
-$html .= '
-</span></a>
-</li>
-';
-
+		$html .= '<li>';
+		include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/imageHTMLout.php');
+		$html .= '</li>';
 }	
 	
-$html .= '
-</ul>
+$html .= '</ul>
 </div>
 
 <script type="text/javascript">
