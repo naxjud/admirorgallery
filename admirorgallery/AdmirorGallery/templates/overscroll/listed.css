@@ -1,30 +1,3 @@
-.ag_overscroll_blue
-{
-  background-color:#73b0cd;
-  border-top:4px solid #4688a7;
-  border-bottom:4px solid #4688a7;
-}
-
-.ag_overscroll_gray
-{
-  background-color:#545454;
-  border-top:4px solid #222;
-  border-bottom:4px solid #222;
-}
-
-.ag_overscroll_green
-{
-  background-color:#a1ca2e;
-  border-top:4px solid #84ae12;
-  border-bottom:4px solid #84ae12;
-}
-
-.ag_overscroll_red
-{
-  background-color:#c40001;
-  border-top:4px solid #940000;
-  border-bottom:4px solid #940000;
-}
 
 div.AdmirorOverscrollGallery
 {
