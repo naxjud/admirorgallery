@@ -18,15 +18,15 @@ foreach ($images as $imagesKey => $imagesValue)
 		$html .= '
 <li>
 <a href="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" class="ag_thumbLink '.$cssClass.'" rel="'.$rel.'" '.$tempTag.' title="';
-	  $html .= $imagesDescritions[$imagesValue];
+	  $html .= htmlspecialchars(strip_tags($imagesDescritions[$imagesValue]));
 		$html .= '" alt="';
-		$html .= $imagesDescritions[$imagesValue];
+		$html .= htmlspecialchars(strip_tags($imagesDescritions[$imagesValue]));
 		$html .= '" target="_blank"><span class="ag_thumbSpan">';
 			
 		$fileStat=stat($imagesFolder.$imagesValue);
 		$fileAge=time()-$fileStat['ctime']; 
 		if((int)$fileAge < (int)($_newImageTag_days_*24*60*60) && $_newImageTag_==1){
-			$html .= '<span class="ag_newTag"><img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/templates/'.$_galleryStyle_.'/newTag.gif" class="ag_newImageTag" /></span>';		
+			$html .= '<span class="ag_newTag"><img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/newTag.gif" class="ag_newImageTag" /></span>';		
 		}				
 		
 $html .= '<img src="'.$joomla_site_path.'/plugins/content/AdmirorGallery/thumbs/'.$imagesFolder_name.'/'.$imagesValue.'" class="ag_thumbImg" />';

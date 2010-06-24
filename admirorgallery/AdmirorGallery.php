@@ -44,10 +44,6 @@ class plgContentAdmirorGallery extends JPlugin {
         $plugin = &JPluginHelper::getPlugin('content', 'AdmirorGallery');
         $pluginParams = new JParameter($plugin->params);
         
-        // Load functions
-        require_once (JPATH_BASE.DS.'plugins/content/AdmirorGallery/functions.php');
-
-        
         // Default parameters
         $default_height_ = $pluginParams->get('th_height', 200);
         $default_galleryStyle_ = $pluginParams->get('galleryStyle', 'classic');
@@ -78,7 +74,10 @@ class plgContentAdmirorGallery extends JPlugin {
             $joomla_site_path = substr($joomla_site_path, 0, -1);
         //$rootFolder = '/images/stories/';
         $thumbsFolder = JPATH_SITE.'/plugins/content/AdmirorGallery/thumbs/';
-        
+        		        
+        // Load functions
+        require_once (JPATH_BASE.DS.'plugins/content/AdmirorGallery/functions.php');
+		
         ag_cleanThumbsFolder(JPATH_SITE.$rootFolder, $thumbsFolder);
         //CreateGallerys
         if (preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER) > 0) {
@@ -97,14 +96,21 @@ class plgContentAdmirorGallery extends JPlugin {
             preg_match_all("#{AdmirorGallery (.*?)}#s", $row->text, $inlineParams, PREG_PATTERN_ORDER);
             foreach ($matches[0] as $match) {
                 $galleryCount++;
-                include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/getGalleryParams.php');
+                //setting parametars for current gallery, if there is no inline params default params are set
+				$_galleryStyle_= ag_getParams("template",$match,$default_galleryStyle_);
+				$_height_= ag_getParams("height",$match,$default_height_);
+				$_newImageTag_=ag_getParams("newImageTag",$match,$default_newImageTag_);
+				$_newImageTag_days_= ag_getParams("newImageDays",$match,$default_newImageTag_days_);
+				$_sortImages=ag_getParams("sortByDate",$match,$default_sortImages);
+				$_showSignature_=ag_getParams("showSignature",$match,$default_showSignature_);
+				$_overlayEngine_=ag_getParams("overlayEngine",$match,$default_overlayEngine_);
                 //get gallery path
                 $imagesFolder_name = preg_replace("/{.+?}/", "", $match);
                 $imagesFolder = JPATH_SITE.$rootFolder.$imagesFolder_name.'/';
                 
                 // ERROR - Cannot find folder with images
                 if (!file_exists($imagesFolder)) {
-                    $row->text .= '<div class="error">Cannot find folder "'.$imagesFolder_name.'" inside "images/stories/" folder.</div>';
+                    $row->text .= '<div class="error">Cannot find folder "'.$imagesFolder_name.'" inside "'.$imagesFolder.'" folder.</div>';
                 }
                  // Create Image description array $imagesDescritions. Localization supported
                 include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/descriptions.php');   
@@ -143,6 +149,18 @@ class plgContentAdmirorGallery extends JPlugin {
                 ag_clearOldThumbs($thumbsFolder, $imagesFolder);
                 $row->text = preg_replace("#{AdmirorGallery[^}]*}".$imagesFolder_name."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
             }// foreach($matches[0] as $match)
+			
+		/* ========================= SIGNATURE ====================== */
+		//
+			if($default_showSignature_=="1"){
+				$row->text .= '<div style="display:block; font-size:10px;">';
+			}else{
+				$row->text .= '<div style="display:block; font-size:10px; overflow:hidden; height:1px; padding-top:1px;">';
+			}
+		$row->text .= '<br /><a href="http://www.admiror-design-studio.com/admiror/en/design-resources/joomla-admiror-gallery" target="_blank">AdmirorGallery</a>, created by <a href="http://www.admiror-design-studio.com" target="_blank">Kekeljevic</a> & <a href="http://www.vasiljevski.com/" target="_blank">Vasiljevski</a>.<br />';
+		$row->text .= '</div>';
+		//
+		/* ------------------------ SIGNATURE ---------------------- */
         }//if (preg_match_all("#{AdmirorGallery}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER)>0)
     }//onPrepareContent(&$row, &$params, $limitstart)
 }//class plgContentadmirorGallery extends JPlugin
