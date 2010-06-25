@@ -25,8 +25,8 @@ else
 // Form HTML code
 $html = '
 <!-- ======================= Admiror Gallery -->
-<div id="ag_wrap'.$galleryCount.''.$articleID.'" class="ag_wrap">
-<ul id="ag_carousel'.$galleryCount.''.$articleID.'">
+<div id="ag_wrap'.$galleryCount.''.$articleID.'" class="ag_wrap" style="list-style:none;">
+<ul id="ag_carousel'.$galleryCount.''.$articleID.'" style="list-style:none;">
 ';
 
 foreach ($images as $imagesKey => $imagesValue)
@@ -113,6 +113,12 @@ jQuery(\'.jcarousel-control a[rel="1"]\').css({backgroundPosition:"left -20px", 
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-item
 {
 	height:'.$_frame_height_.'px;
+}
+#ag_wrap'.$galleryCount.''.$articleID.' ul,
+#ag_wrap'.$galleryCount.''.$articleID.' li
+{
+  background-image:none;
+  padding:0;
 }
 
 </style>
