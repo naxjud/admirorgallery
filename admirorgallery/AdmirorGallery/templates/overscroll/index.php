@@ -95,14 +95,6 @@ $html .='
   </div>
 </div>
 ';
-$html.='<style type="text/css">
-.ag_overscroll
-{
-  background-color:#73b0cd;
-  border-top:4px solid #4688a7;
-  border-bottom:4px solid #4688a7;
-}
-</style>';
 if (isset($jsInclude)) 
 $html.=$jsInclude;	
 ?>

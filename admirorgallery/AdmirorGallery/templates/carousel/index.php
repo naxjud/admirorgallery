@@ -92,6 +92,17 @@ jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel
 {
 	top:'.($default_height_/2+6).'px;
 }
+#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-list li,
+#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-item
+{
+	height:'.$default_height_.'px;
+}
+#ag_wrap'.$galleryCount.''.$articleID.' ul,
+#ag_wrap'.$galleryCount.''.$articleID.' li
+{
+  background-image:none;
+  padding:0;
+}
 
 </style>
 

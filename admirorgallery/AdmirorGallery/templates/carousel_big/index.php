@@ -25,8 +25,8 @@ else
 // Form HTML code
 $html = '
 <!-- ======================= Admiror Gallery -->
-<div id="ag_wrap'.$galleryCount.''.$articleID.'" class="ag_wrap" style="list-style:none;">
-<ul id="ag_carousel'.$galleryCount.''.$articleID.'" style="list-style:none;">
+<div id="ag_wrap'.$galleryCount.''.$articleID.'" class="ag_wrap">
+<ul id="ag_carousel'.$galleryCount.''.$articleID.'">
 ';
 
 foreach ($images as $imagesKey => $imagesValue)
