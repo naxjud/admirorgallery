@@ -98,9 +98,9 @@ $html .='
 $html.='<style type="text/css">
 .ag_overscroll
 {
-  background-color:'.$_frame_color_.';
-  border-top:4px solid '.$_frame_color_.';
-  border-bottom:4px solid '.$_frame_color_.';
+  background-color:#73b0cd;
+  border-top:4px solid #4688a7;
+  border-bottom:4px solid #4688a7;
 }
 </style>';
 if (isset($jsInclude)) 
