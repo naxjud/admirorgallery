@@ -1,3 +1,11 @@
+.ag_overscroll_bodyHolder
+{
+  background-color:#fff;
+  border-top:2px solid #ccc;
+  border-bottom:2px solid #ccc;
+  
+  
+}
 
 div.AdmirorOverscrollGallery
 {
@@ -90,7 +98,7 @@ div.AdmirorOverscrollGallery
   padding:0px;
   margin:0px;
 
-  color:#fff;
+  color:#333;
   font:bold 10px Verdana, Sans;
 }
 
@@ -99,7 +107,7 @@ div.AdmirorOverscrollGallery
   padding-right:4px;
   margin-top:7px;
   
-  color:#fff;
+  color:#666;
   font:normal 10px Verdana, Sans;
 }
 
