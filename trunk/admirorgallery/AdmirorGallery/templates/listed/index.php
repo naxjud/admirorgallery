@@ -34,7 +34,7 @@ if (!empty($images))
 		<table border="0" cellspacing="0" cellpadding="0">
     <tbody>
 		<tr><td class="ag_description">
-		'.htmlspecialchars(strip_tags($imagesDescritions[$imagesValue])).'
+		'.$imagesDescritions[$imagesValue].'
 		<tr><td class="ag_imageStat">
 		<span>W:'.$imageInfo_array["width"].'px</span>
 		<span>H:'.$imageInfo_array["height"].'px</span>

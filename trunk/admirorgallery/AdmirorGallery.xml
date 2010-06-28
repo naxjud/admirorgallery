@@ -10,11 +10,25 @@
 	<description>ADMIRORDESCRIPTION</description>
 	
 	<params>
+
+	<param type="spacer" default="&lt;b&gt;BASIC SETTINGS&lt;/b&gt;" />
+
 		<param name="rootFolder" type="text" default="/images/stories/" size="50" label="Images root folder" description="Set the path to the folder you keep your images, relative to your site root" />
 
-                <param name="th_height" type="text" default="120" size="5" label="Image thumbnail height" description="Adjust the maximum image thumbnail height in pixels." />
+                <param name="th_height" type="text" default="120" size="5" label="Image thumbnail height" description="Adjust the maximum image thumbnail height in pixels. Thumbnail width is proportional." />
+
+		<param name="galleryStyle" type="folderlist" default="classic" label="Gallery Style" description="Select gallery style" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
+
+		<param name="overlayEngine" type="folderlist" default="slimbox" label="Large Image Engine" description="Select overlay engine" directory="plugins/content/AdmirorGallery/overlay_engine" exclude="" stripext="" hide_none="true" hide_default="true" />
+
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param type="spacer" default="&lt;b&gt;GALLERY SIZE&lt;/b&gt;" />	
+	
+		<param name="frame_width" type="text" default="500" size="5" label="Frame width" description="Adjust frame width in pixels." />
+		<param name="frame_height" type="text" default="300" size="5" label="Frame height" description="Adjust frame height in pixels." />
 				
 		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param type="spacer" default="&lt;b&gt;NEW IMAGE TAG&lt;/b&gt;" />
 		
 		<param name="newImageTag" type="radio" default="1" label="Mark New Images" description="Adding small tag on image thumbnails for images old one week">
 			<option value="1">Yes</option>
@@ -26,24 +40,15 @@
 			<option value="0">No</option>
 			<option value="1">Yes</option>
 		</param>
-			
-		<param name="@spacer" type="spacer" default="" label="" description="" />	
-
-                <param name="galleryStyle" type="folderlist" default="classic" label="Gallery Style" description="Select gallery style" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
-				<param name="overlayEngine" type="folderlist" default="slimbox" label="Gallery Overlay Engine" description="Select overlay engine" directory="plugins/content/AdmirorGallery/overlay_engine" exclude="" stripext="" hide_none="true" hide_default="true" />
+				
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param type="spacer" default="&lt;b&gt;ADDITIONAL SETTINGS&lt;/b&gt;" />	
 		
-		<param name="framecolor" type = "text" default="#fff" label="Frame Color" description= "Changes color of frame"></param>
-		
-		<param name="frame_width" type="text" default="500" size="5" label="Frame width" description="Adjust frame width in pixels." />
-		<param name="frame_height" type="text" default="300" size="5" label="Frame height" description="Adjust frame height in pixels." />
-		
-		<param name="showSignature" type="list" default="1" label="Show Signature" description="Show Admiror Gallery label on bottom of the gallery" >
+		<param name="showSignature" type="radio" default="1" label="Show Signature" description="Show Admiror Gallery label on bottom of the gallery" >
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		
-				
-		<param name="@spacer" type="spacer" default="" label="" description="" />	
 		<param name="ignoreError" type="radio" default="1" label="Ignore invalid image" description="Ignores errors if image is corrupted" >
 			<option value="1">Yes</option>
 			<option value="0">No</option>

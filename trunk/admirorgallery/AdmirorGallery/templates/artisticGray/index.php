@@ -28,7 +28,7 @@ if (!empty($images))
 	
 			$html .= '<span class="ag_thumb'.$_galleryStyle_.'">';
 				include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/imageHTMLout.php');
-				$html .='<span class="agArtistic_description">'.htmlspecialchars(strip_tags($imagesDescritions[$imagesValue])).'</span>';	
+				$html .='<span class="agArtistic_description">'.$imagesDescritions[$imagesValue].'</span>';	
 				$html .='<span class="agArtistic_size">'.fileRoundSize($agArtistic_imageInfo_array['size']).'</span>';	
 				$html .='</span>';			
 	}			
