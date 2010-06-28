@@ -110,7 +110,8 @@ jQuery(\'.jcarousel-control a[rel="1"]\').css({backgroundPosition:"left -20px", 
 }
 
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-list li,
-#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-item
+#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-item,
+#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-clip
 {
 	height:'.$_frame_height_.'px;
 }

@@ -43,7 +43,7 @@ foreach ($images as $imagesKey => $imagesValue)
 			<table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td>';
 			include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/imageHTMLout.php');	
 		$html .= '</td><td class="ag_cv_description">
-			'.htmlspecialchars(strip_tags($imagesDescritions[$imagesValue])).'
+			'.$imagesDescritions[$imagesValue].'
 			</td></tr></tbody></table>
 			</li>';
 }	
