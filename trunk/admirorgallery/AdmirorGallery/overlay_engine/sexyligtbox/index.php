@@ -8,4 +8,5 @@ $cssClass= '';
 $doc->addScriptDeclaration('
        jQuery(document).ready(function(){
       SexyLightbox.initialize({color:\'white\',dir:\''.$joomla_site_path.'/plugins/content/AdmirorGallery/overlay_engine/'.$_overlayEngine_.'\'});});');
+$initCode='SexyLightbox.initialize({color:\'white\',dir:\''.$joomla_site_path.'/plugins/content/AdmirorGallery/overlay_engine/'.$_overlayEngine_.'\'});';	  
 ?>

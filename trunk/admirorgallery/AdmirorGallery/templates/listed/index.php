@@ -30,7 +30,8 @@ $html = '<!-- ======================= Admiror Gallery -->
 <div class="ag_hiddenresult" style="display:none;">
 
 ';
-isset($customTag) ? $tempTag=$customTag : $tempTag='';
+isset($initCode) ? true : $initCode='';
+isset($customTag) ? true : $customTag='';
 if (!empty($images))
 {
 
@@ -97,7 +98,8 @@ jQuery(document).ready(function() {
 	    for(var i=page_index*ag_num_of_items_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.';i<page_index*ag_num_of_items_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'+ag_num_of_items_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.';i++)
 	    {
 	      jQuery("#AdmirorGallery'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'").find(".ag_paginationResults").append(jQuery("#AdmirorGallery'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'").find(".ag_hiddenresult .ag_paginationItem:eq("+i+")").clone());
-	    }               
+	    }
+		'.$initCode.'            
 	    return false;
 	}
 
@@ -107,7 +109,6 @@ jQuery(document).ready(function() {
 	items_per_page:ag_num_of_items_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.',
 	callback: pageselectCallback_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'
 	});  
-
 });
 </script>
 

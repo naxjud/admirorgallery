@@ -8,5 +8,5 @@ $doc->addScriptDeclaration('Shadowbox.init({
     modal: true,
 	counterType: "default",
 	slideshowDelay : 0
-});')
+});');
 ?>
