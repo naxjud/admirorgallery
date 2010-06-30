@@ -8,5 +8,6 @@ $jsInclude='<script type="text/javascript" charset="utf-8">
         jQuery(document).ready(function(){
                 jQuery("a[rel^='.$rel.']").prettyPhoto();
         });
-</script>'
+</script>';
+$initCode='jQuery("a[rel^='.$rel.']").prettyPhoto();';
 ?>

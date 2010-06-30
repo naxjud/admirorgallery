@@ -4,4 +4,8 @@ $doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/overlay_engin
 $doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/overlay_engine/'.$_overlayEngine_.'/slimbox2.css');
 $rel = 'lightbox[AdmirorGallery'.$galleryCount.']'.$articleID;
 $cssClass= '';
+$initCode =' 
+jQuery("a[rel^=\'lightbox\']").slimbox({/* Put custom options here */}, null, function(el) {
+return (this == el) || ((this.rel.length > 8) && (this.rel == el.rel));
+		});';
 ?>
