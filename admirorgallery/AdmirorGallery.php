@@ -27,18 +27,19 @@ class plgContentAdmirorGallery extends JPlugin {
         $this->_params = new JParameter($this->_plugin->params);
     }
     function onPrepareContent(&$row, &$params, $limitstart) {
-        
+        $gd_exists=true;
         // just startup
         global $mainframe;
-        // GD2 Library Check      
-        if (!function_exists('gd_info')) {
-            // ERROR - Invalid image
-            $row->text .= _AD_NOGD;
-        }
         
         // checking
         if (!preg_match("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text)) {
             return;
+        }
+		        // GD2 Library Check      
+        if (!function_exists('gd_info')) {
+            // ERROR - Invalid image
+            $row->text .= _AD_NOGD;
+			$gd_exists=false;
         }
         
         $plugin = &JPluginHelper::getPlugin('content', 'AdmirorGallery');
@@ -119,31 +120,33 @@ class plgContentAdmirorGallery extends JPlugin {
                 unset($images);
                 
                 $images = ag_imageArrayFromFolder($imagesFolder, $_sortImages);
-                
-                if ($images == null) {
-                    ag_clearOldThumbs($thumbsFolder, $imagesFolder);
-                    return;
-                }
-                //Create directory in thumbs for gallery
-                JFolder::create($thumbsFolder, 0755);
-				//Add's index.html to thumbs folder
-				if (!file_exists($thumbsFolder.'/index.html'))
-				{ag_indexWrite($thumbsFolder.'/index.html');}
-                // Check for Changes
-	            foreach ($images as $imagesKey=>$imagesValue) {
-	                $original_file = $imagesFolder.$imagesValue;
-	                $thumb_file = $thumbsFolder.$imagesValue;
-	              	list($imagewidth, $imageheight) = getimagesize($original_file);
-	                if ((!file_exists($thumb_file)) OR ($imageheight != $_height_)) {
-	                    $row->text .= ag_createThumb($imagesFolder.$imagesValue, $thumb_file, $_height_);
-	                }
-	                
-	                // ERROR - Invalid image
-	                if (!file_exists($thumb_file)) {
-	                    $row->text .= '<div class="error">Cannot read thumbnail for image "'.$imagesValue.'".</div>';
-	                }
-	            
-	            	}
+				
+                if ($gd_exists){
+					if ($images == null) {
+						ag_clearOldThumbs($thumbsFolder, $imagesFolder);
+						return;
+					}
+					//Create directory in thumbs for gallery
+					JFolder::create($thumbsFolder, 0755);
+					//Add's index.html to thumbs folder
+					if (!file_exists($thumbsFolder.'/index.html'))
+					{ag_indexWrite($thumbsFolder.'/index.html');}
+					// Check for Changes
+					foreach ($images as $imagesKey=>$imagesValue) {
+						$original_file = $imagesFolder.$imagesValue;
+						$thumb_file = $thumbsFolder.$imagesValue;
+						list($imagewidth, $imageheight) = getimagesize($original_file);
+						if ((!file_exists($thumb_file)) OR ($imageheight != $_height_)) {
+							$row->text .= ag_createThumb($imagesFolder.$imagesValue, $thumb_file, $_height_);
+						}
+						
+						// ERROR - Invalid image
+						if (!file_exists($thumb_file)) {
+							$row->text .= '<div class="error">Cannot read thumbnail for image "'.$imagesValue.'".</div>';
+						}
+					
+						}
+				}
 				include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/overlay_engine/'.$_overlayEngine_.'/index.php');
                 include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/templates/'.$_galleryStyle_.'/index.php');
                 ag_clearOldThumbs($thumbsFolder, $imagesFolder);
