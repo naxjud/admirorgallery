@@ -479,7 +479,7 @@ TopUp = (function() {
       case "flash": case "flashvideo": case "quicktime": case "realplayer": case "windowsmedia":
         loadMovie(options.type, options.reference, options.width, options.height); break;
 			case "iframe":
-				options.content = jQuery('<iframe src="' + options.reference + '" frameborder="0" border="0"></iframe>'); break;
+				options.content = jQuery('<iframe src="../../overlay_engine/topup/' + options.reference + '" frameborder="0" border="0"></iframe>'); break;
 			case "html": case "dom":
 				var reference = jQuery(options.reference);
 				if (reference.context) {
@@ -755,8 +755,8 @@ TopUp = (function() {
     }
 
 		// added by Timo Besenreuther (2010-02-24)
-		// &nbsp; fixes issue in ie6 (current image disappearing while loading)
-	  jQuery("#tu_loader").html("&nbsp;").css(dimensions).show();
+		//   fixes issue in ie6 (current image disappearing while loading)
+	  jQuery("#tu_loader").html(" ").css(dimensions).show();
 	};
 	var hideLoader = function() {
     jQuery("#tu_loader").hide();
@@ -1335,7 +1335,7 @@ TopUp = (function() {
     TopUp.init();
   } else {
     var src = scriptElement.getAttribute("src").replace(/(development\/)?top_up(\-min)?\.js.*$/, "jquery/" + missing_libs.sort().join(".") + ".js");
-    document.write('<script src="' + src + '" type="text/javascript" ' + 
+    document.write('<script src="../../overlay_engine/topup/' + src + '" type="text/javascript" ' + 
                            'onload="TopUp.init()" onreadystatechange="TopUp.init()">' +
                    '</script>');
   }

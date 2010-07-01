@@ -214,7 +214,7 @@ jQuery.bind = function(object, method){
 
       this.lightbox = {};
 
-			$('body').append('<div id="'+name+'-Wrapper"><div id="'+name+'-Background"></div><div id="'+name+'-Contenedor"><div id="'+name+'-Top" style="background-image: url('+strBG+')"><a id="'+name+'-CloseButton" href="#">&nbsp;</a><div id="'+name+'-TopLeft" style="background-image: url('+strBG+')"></div></div><div id="'+name+'-Contenido"></div><div id="'+name+'-Bottom" style="background-image: url('+strBG+')"><div id="'+name+'-BottomRight" style="background-image: url('+strBG+')"><div id="'+name+'-Navegador"><strong id="'+name+'-Caption"></strong></div></div></div></div></div>');
+			$('body').append('<div id="'+name+'-Wrapper"><div id="'+name+'-Background"></div><div id="'+name+'-Contenedor"><div id="'+name+'-Top" style="background-image: url('../../overlay_engine/sexyligtbox/+strBG+')"><a id="'+name+'-CloseButton" href="#"> </a><div id="'+name+'-TopLeft" style="background-image: url('../../overlay_engine/sexyligtbox/+strBG+')"></div></div><div id="'+name+'-Contenido"></div><div id="'+name+'-Bottom" style="background-image: url('../../overlay_engine/sexyligtbox/+strBG+')"><div id="'+name+'-BottomRight" style="background-image: url('../../overlay_engine/sexyligtbox/+strBG+')"><div id="'+name+'-Navegador"><strong id="'+name+'-Caption"></strong></div></div></div></div></div>');
       
       this.Wrapper      = $('#'+name+'-Wrapper');
       this.Background   = $('#'+name+'-Background');
@@ -442,7 +442,7 @@ jQuery.bind = function(object, method){
     
     getInfo: function (image, id) {
       image=$(image);
-      IEuta = $('<a id="'+this.options.name+'-'+id+'" title="'+image.attr('title')+'" rel="'+image.attr('rel')+'">&nbsp;</a>');
+      IEuta = $('<a id="'+this.options.name+'-'+id+'" title="'+image.attr('title')+'" rel="'+image.attr('rel')+'"> </a>');
       IEuta.css({ 'background-image' : 'url('+this.options.dir+'/'+this.options.color+'/'+this.options.buttons+')' });
       IEuta.attr('href', image.attr('href')); //IE fix
       return IEuta;

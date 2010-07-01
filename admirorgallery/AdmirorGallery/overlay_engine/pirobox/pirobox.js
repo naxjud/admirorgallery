@@ -132,9 +132,9 @@
 						var descr = item.attr('title');	
 						var number = item.attr('rel');
 						if( descr == ""){
-						caption.html('<p>'+ this_url+'<em class="number">' + number + '</em><a href='+ this_url +' class="link_to" target="_blank" title="Open Image in a new window"></a></p>');
+						caption.html('<p>'+ this_url+'<em class="number">' + number + '</em><a href=\'../../popup_engine/pirobox/'+ this_url +' class="link_to" target="_blank" title="Open Image in a new window"></a></p>');
 						}else{
-						caption.html('<p>'+ descr+'<em class="number">' + number + '</em><a href='+ this_url +' class="link_to" target="_blank" title="Open Image in a new window"></a></p>');
+						caption.html('<p>'+ descr+'<em class="number">' + number + '</em><a href=\'../../popup_engine/pirobox/'+ this_url +' class="link_to" target="_blank" title="Open Image in a new window"></a></p>');
 						}
 						if(item.is('.last')){
 							$('.number').css('text-decoration','underline');
@@ -188,7 +188,7 @@
 				img.onerror = function (){
 					var main_cont_h = $(main_cont).height();
 					main_cont.css({marginTop : parseInt($(document).scrollTop())-(main_cont_h/1.9)});
-				  $('.c_c div').append('<p class="err_mess">There seems to be an Error:&nbsp;<a href="#close" class="close_pirobox">Close Pirobox</a></p>');
+				  $('.c_c div').append('<p class="err_mess">There seems to be an Error: <a href="#close" class="close_pirobox">Close Pirobox</a></p>');
 					$('.close_pirobox').bind('click',function(c) {
 						c.preventDefault();
 						piro_close.add(bg_overlay).add(main_cont).add(caption).add(piro_next).add(piro_prev).hide(0,function(){ img.src = '';});

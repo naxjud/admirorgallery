@@ -2,7 +2,7 @@
 /*::::: PIROBOX SHADOW RULES::::::::*/
 .piro_overlay { position: fixed; _position: absolute; top: 0; left: 0; width: 100%; height: 100%; background:white; display: none; z-index:99997; }
 
-.loading span{position:absolute;top:50%;left:50%;margin-top:-15px;margin-left:-15px;width:30px;height:30px;display:block;z-index:100008; background:url(bg_load.png) center no-repeat!important;background:url(bg_load.gif) center no-repeat }
+.loading span{position:absolute;top:50%;left:50%;margin-top:-15px;margin-left:-15px;width:30px;height:30px;display:block;z-index:100008; background:url(bg_load.png) center no-repeat!important;background:url(bg_load.gif) center no-repeat    }
 .loading span span{position:absolute; display:block; width:30px;height:30px; z-index:100009;background: url(ajax-loader_b.gif) center center no-repeat!important;background: url(ajax-loader_b.gif) center center no-repeat;}
 
 .caption{position:absolute;bottom:0;left:0;margin:0;display:block; padding:2px; cursor:text; background:#222;}
