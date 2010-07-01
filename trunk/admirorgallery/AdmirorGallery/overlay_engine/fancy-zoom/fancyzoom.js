@@ -2,7 +2,7 @@
 $.fn.fancyZoom = function(options){
 
   var options   = options || {};
-  var directory = options && options.directory ? options.directory : '/plugins/content/AdmirorGallery/overlay_engine/fancy-zoom/images';
+  var directory = options && options.directory ? options.directory : '/plugins/content/AdmirorGallery/popup_engine/fancy-zoom/images';
   var zooming   = false;
 
   if ($('#zoom').length == 0) {
@@ -119,7 +119,7 @@ $.fn.fancyZoom = function(options){
 			$('#zoom').click(hide);
 			}
 			if (options.scaleImg) {
-			zoom_content.html('<img src="'+zoom_image.src+'"/>');
+			zoom_content.html('<img src="../../popup_engine/fancy-zoom/'+zoom_image.src+'"/>');
 			$('#zoom_content img').css('width', '100%');
 			} else {
 			  zoom_content.html('');
@@ -133,7 +133,7 @@ $.fn.fancyZoom = function(options){
 			height  : height
 			}, 500, null, function() {
 			if (options.scaleImg != true) {
-				zoom_content.html('<img src="'+zoom_image.src+'"/>');
+				zoom_content.html('<img src="../../popup_engine/fancy-zoom/'+zoom_image.src+'"/>');
 			}
 				unfixBackgroundsForIE();
 				zoom_close.show();

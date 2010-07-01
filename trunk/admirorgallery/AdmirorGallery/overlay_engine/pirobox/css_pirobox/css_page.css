@@ -19,7 +19,7 @@ a.logo {
 	position:absolute;
 	left:0;
 	top:68px;
-	background: url(logo.jpg) center no-repeat;
+	background: url(../../../overlay_engine/pirobox/css_pirobox/logo.jpg) center no-repeat;
 	height:133px;
 	width:100%;
 	display:block;

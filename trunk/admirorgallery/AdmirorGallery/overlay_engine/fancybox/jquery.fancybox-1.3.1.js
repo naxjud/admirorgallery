@@ -647,7 +647,7 @@
 				break;
 
 				case 'swf':
-					str = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="' + selectedOpts.width + '" height="' + selectedOpts.height + '"><param name="movie" value="' + href + '"></param>';
+					str = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="' + selectedOpts.width + '" height="' + selectedOpts.height + '"><param name="movie" value="../../overlay_engine/fancybox/' + href + '"></param>';
 					emb = '';
 					
 					$.each(selectedOpts.swf, function(name, val) {
@@ -694,7 +694,7 @@
 				break;
 
 				case 'iframe' :
-					$('<iframe id="fancybox-frame" name="fancybox-frame' + new Date().getTime() + '" frameborder="0" hspace="0" scrolling="' + selectedOpts.scrolling + '" src="' + selectedOpts.href + '"></iframe>').appendTo(tmp);
+					$('<iframe id="fancybox-frame" name="fancybox-frame' + new Date().getTime() + '" frameborder="0" hspace="0" scrolling="' + selectedOpts.scrolling + '" src="../../overlay_engine/fancybox/' + selectedOpts.href + '"></iframe>').appendTo(tmp);
 					fancybox_show();
 				break;
 			}

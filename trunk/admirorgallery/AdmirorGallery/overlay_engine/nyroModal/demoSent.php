@@ -18,7 +18,7 @@ FILES Files: '.print_r($_FILES, 1).'<hr />';
 
 You can whatever you want in the ajax request.<br />
 You can create easyly :<br />
-<a href="demo.php" class="nyroModalClose">close link</a><br />
+<a href="../../overlay_engine/nyroModal/demo.php" class="nyroModalClose">close link</a><br />
 <button class="nyroModalClose">close button</button><br />
 <a href="demoSent.php" class="nyroModal">new modal</a><br />
 <form class="nyroModal" method="post" action="demoSent.php">

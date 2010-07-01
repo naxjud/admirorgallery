@@ -368,13 +368,13 @@ jQuery(function($) {
 		if (currentSettings.type == 'swf') {
 			// Swf is transforming as a raw content
 			setCurrentSettings({overflow: 'visible'}, 'cssOpt', 'content');
-			currentSettings.content = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="'+currentSettings.width+'" height="'+currentSettings.height+'"><param name="movie" value="'+url+'"></param>';
+			currentSettings.content = '<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="'+currentSettings.width+'" height="'+currentSettings.height+'"><param name="movie" value="../../../overlay_engine/nyroModal/js/'+url+'"></param>';
 			var tmp = '';
 			$.each(currentSettings.swf, function(name, val) {
 				currentSettings.content+= '<param name="'+name+'" value="'+val+'"></param>';
 				tmp+= ' '+name+'="'+val+'"';
 			});
-			currentSettings.content+= '<embed src="'+url+'" type="application/x-shockwave-flash" width="'+currentSettings.width+'" height="'+currentSettings.height+'"'+tmp+'></embed></object>';
+			currentSettings.content+= '<embed src="../../../overlay_engine/nyroModal/js/'+url+'" type="application/x-shockwave-flash" width="'+currentSettings.width+'" height="'+currentSettings.height+'"'+tmp+'></embed></object>';
 		}
 
 		if (from) {
