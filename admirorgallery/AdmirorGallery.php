@@ -52,7 +52,7 @@ class plgContentAdmirorGallery extends JPlugin {
         $default_newImageTag_days_ = $pluginParams->get('newImageTag_days', '7');
         $default_sortImages = $pluginParams->get('sortImages', 'false');
         $default_showSignature_ = $pluginParams->get('showSignature', '1');
-		$default_overlayEngine_=$pluginParams->get('overlayEngine','slimbox');
+		$default_popupEngine_=$pluginParams->get('popupEngine','slimbox');
         $ignoreError_ = $pluginParams->get('ignoreError', '1');
         $ignoreAllError_ = $pluginParams->get('ignoreAllError', '0');
         $loadjQuery_=$pluginParams->get('loadjQuery', '1');
@@ -104,7 +104,7 @@ class plgContentAdmirorGallery extends JPlugin {
 				$_newImageTag_days_= ag_getParams("newImageDays",$match,$default_newImageTag_days_);
 				$_sortImages=ag_getParams("sortByDate",$match,$default_sortImages);
 				$_showSignature_=ag_getParams("showSignature",$match,$default_showSignature_);
-				$_overlayEngine_=ag_getParams("overlayEngine",$match,$default_overlayEngine_);
+				$_popupEngine_=ag_getParams("popupEngine",$match,$default_popupEngine_);
                 //get gallery path
                 $imagesFolder_name = preg_replace("/{.+?}/", "", $match);
                 $imagesFolder = JPATH_SITE.$rootFolder.$imagesFolder_name.'/';
@@ -147,7 +147,7 @@ class plgContentAdmirorGallery extends JPlugin {
 					
 						}
 				}
-				include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/overlay_engine/'.$_overlayEngine_.'/index.php');
+				include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/index.php');
                 include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/templates/'.$_galleryStyle_.'/index.php');
                 ag_clearOldThumbs($thumbsFolder, $imagesFolder);
                 $row->text = preg_replace("#{AdmirorGallery[^}]*}".$imagesFolder_name."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
