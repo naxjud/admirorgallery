@@ -135,8 +135,8 @@ class plgContentAdmirorGallery extends JPlugin {
 					foreach ($images as $imagesKey=>$imagesValue) {
 						$original_file = $imagesFolder.$imagesValue;
 						$thumb_file = $thumbsFolder.$imagesValue;
-						list($imagewidth, $imageheight) = getimagesize($original_file);
-						if ((!file_exists($thumb_file)) OR ($imageheight != $_height_)) {
+						list($imagewidth, $imageheight) = getimagesize($thumb_file);
+						if ((!file_exists($thumb_file)) || ($imageheight != $_height_)) {
 							$row->text .= ag_createThumb($imagesFolder.$imagesValue, $thumb_file, $_height_);
 						}
 						
