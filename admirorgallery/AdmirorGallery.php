@@ -139,7 +139,6 @@ class plgContentAdmirorGallery extends JPlugin {
 						if ((!file_exists($thumb_file)) || ($imageheight != $_height_)) {
 							$row->text .= ag_createThumb($imagesFolder.$imagesValue, $thumb_file, $_height_);
 						}
-						
 						// ERROR - Invalid image
 						if (!file_exists($thumb_file)) {
 							$row->text .= '<div class="error">Cannot read thumbnail for image "'.$imagesValue.'".</div>';
