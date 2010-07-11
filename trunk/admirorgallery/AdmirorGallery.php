@@ -39,29 +39,8 @@ class plgContentAdmirorGallery extends JPlugin {
         if (!function_exists('gd_info')) {
             // ERROR - Invalid image
             $row->text .= _AD_NOGD;
-			$gd_exists=false;
+            $gd_exists=false;
         }
-        
-        $plugin = &JPluginHelper::getPlugin('content', 'AdmirorGallery');
-        $pluginParams = new JParameter($plugin->params);
-        
-        // Default parameters
-        $default_height_ = $pluginParams->get('th_height', 200);
-        $default_galleryStyle_ = $pluginParams->get('galleryStyle', 'classic');
-        $default_newImageTag_ = $pluginParams->get('newImageTag', '1');
-        $default_newImageTag_days_ = $pluginParams->get('newImageTag_days', '7');
-        $default_sortImages = $pluginParams->get('sortImages', 'false');
-        $default_showSignature_ = $pluginParams->get('showSignature', '1');
-		$default_popupEngine_=$pluginParams->get('popupEngine','slimbox');
-        $ignoreError_ = $pluginParams->get('ignoreError', '1');
-        $ignoreAllError_ = $pluginParams->get('ignoreAllError', '0');
-        $loadjQuery_=$pluginParams->get('loadjQuery', '1');
-        $jQueryNoConflict_=$pluginParams->get('jQueryNoConflict', '1');
-        $rootFolder=$pluginParams->get('rootFolder', '/images/stories/');
-        //if any image is corrupted supresses recoverable error
-        ini_set('gd.jpeg_ignore_warning', $ignoreError_);
-        if ($ignoreAllError_)
-            error_reporting('E_NOTICE');
         
         // Version check
         $version = new JVersion();
@@ -69,92 +48,69 @@ class plgContentAdmirorGallery extends JPlugin {
             echo '<div class="message">'._AD_JV_CHECK.'</div>';
         }
         
-        // Paths
-        $joomla_site_path = JURI::base();
-        if (substr($joomla_site_path, -1) == "/")
-            $joomla_site_path = substr($joomla_site_path, 0, -1);
-        //$rootFolder = '/images/stories/';
-        $thumbsFolder = JPATH_SITE.'/plugins/content/AdmirorGallery/thumbs/';
-        		        
         // Load functions
-        require_once (JPATH_BASE.DS.'plugins/content/AdmirorGallery/functions.php');
-		
-        ag_cleanThumbsFolder(JPATH_SITE.$rootFolder, $thumbsFolder);
+        require_once (JPATH_BASE.DS.'plugins/content/AdmirorGallery/classes/agGallery.php');
+        require_once (JPATH_BASE.DS.'plugins/content/AdmirorGallery/classes/agHelper.php');
+
         //CreateGallerys
         if (preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER) > 0) {
-            $doc = &JFactory::getDocument();
-            $doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/AdmirorGallery.css');
-            if($loadjQuery_)
+            $plugin = &JPluginHelper::getPlugin('content', 'AdmirorGallery');
+            $ag = new agGallery(new JParameter($plugin->params));
+            $ag->setSitePath(JURI::base());
+            $ag->setThumbPath(JPATH_SITE.'/plugins/content/AdmirorGallery/thumbs/');
+
+            agHelper::ag_cleanThumbsFolder(JPATH_SITE.$ag->params['rootFolder'], $ag->thumbsPath);
+
+            //if any image is corrupted supresses recoverable error
+            ini_set('gd.jpeg_ignore_warning', $ag->params['ignoreError']);
+            if ($ag->params['ignoreAllError'])
+                error_reporting('E_NOTICE');
+
+            $ag->doc = &JFactory::getDocument();
+            $ag->addCSS('/plugins/content/AdmirorGallery/AdmirorGallery.css');
+            if($ag->params['loadjQuery'])
                 {
-                    $doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/jquery.js');
+                    $ag->addJavaScript('/plugins/content/AdmirorGallery/jquery.js');
                 }
-            if($jQueryNoConflict_)
+            if($ag->params['jQueryNoConflict'])
                 {
-                    $doc->addScriptDeclaration('jQuery.noConflict();');
+                    $ag->addJavaScriptCode('jQuery.noConflict();');
                 }
             $galleryCount = -1;
-			$articleID = $row->id;
-            preg_match_all("#{AdmirorGallery (.*?)}#s", $row->text, $inlineParams, PREG_PATTERN_ORDER);
+            $articleID = $row->id;
+
+            //generate gallery html
             foreach ($matches[0] as $match) {
                 $galleryCount++;
-                //setting parametars for current gallery, if there is no inline params default params are set
-				$_galleryStyle_= ag_getParams("template",$match,$default_galleryStyle_);
-				$_height_= ag_getParams("height",$match,$default_height_);
-				$_newImageTag_=ag_getParams("newImageTag",$match,$default_newImageTag_);
-				$_newImageTag_days_= ag_getParams("newImageDays",$match,$default_newImageTag_days_);
-				$_sortImages=ag_getParams("sortByDate",$match,$default_sortImages);
-				$_showSignature_=ag_getParams("showSignature",$match,$default_showSignature_);
-				$_popupEngine_=ag_getParams("popupEngine",$match,$default_popupEngine_);
-                //get gallery path
-                $imagesFolder_name = preg_replace("/{.+?}/", "", $match);
-                $imagesFolder = JPATH_SITE.$rootFolder.$imagesFolder_name.'/';
+                $ag->readInlineParams($match);
+                //set gallery path
+                $ag->setImagesFolderName(preg_replace("/{.+?}/", "", $match));
+                $ag->setImagesFolderPath(JPATH_SITE.$ag->params['rootFolder'].$ag->imagesFolderName.'/');
                 
                 // ERROR - Cannot find folder with images
-                if (!file_exists($imagesFolder)) {
-                    $row->text .= '<div class="error">Cannot find folder "'.$imagesFolder_name.'" inside "'.$imagesFolder.'" folder.</div>';
+                if (!file_exists($ag->imagesFolderPath)) {
+                    $row->text .= '<div class="error">Cannot find folder "'.$ag->imagesFolderName.'" inside "'.$ag->imagesFolderPath.'" folder.</div>';
                 }
                  // Create Image description array $imagesDescritions. Localization supported
-                include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/descriptions.php');   
-				
-                $thumbsFolder = JPATH_SITE.'/plugins/content/AdmirorGallery/thumbs/'.$imagesFolder_name.'/';
-                unset($images);
-                
-                $images = ag_imageArrayFromFolder($imagesFolder, $_sortImages);
+                $ag->readDescriptionFiles();//include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/descriptions.php');		
+                $ag->setThumbPath(JPATH_SITE.'/plugins/content/AdmirorGallery/thumbs/'.$ag->imagesFolderName.'/');
+                $ag->loadImageFiles();
 				
                 if ($gd_exists){
-					if ($images == null) {
-						ag_clearOldThumbs($thumbsFolder, $imagesFolder);
-						return;
-					}
-					//Create directory in thumbs for gallery
-					JFolder::create($thumbsFolder, 0755);
-					//Add's index.html to thumbs folder
-					if (!file_exists($thumbsFolder.'/index.html'))
-					{ag_indexWrite($thumbsFolder.'/index.html');}
-					// Check for Changes
-					foreach ($images as $imagesKey=>$imagesValue) {
-						$original_file = $imagesFolder.$imagesValue;
-						$thumb_file = $thumbsFolder.$imagesValue;
-						list($imagewidth, $imageheight) = getimagesize($thumb_file);
-						if ((!file_exists($thumb_file)) || ($imageheight != $_height_)) {
-							$row->text .= ag_createThumb($imagesFolder.$imagesValue, $thumb_file, $_height_);
-						}
-						// ERROR - Invalid image
-						if (!file_exists($thumb_file)) {
-							$row->text .= '<div class="error">Cannot read thumbnail for image "'.$imagesValue.'".</div>';
-						}
-					
-						}
-				}
-				include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/index.php');
-                include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/templates/'.$_galleryStyle_.'/index.php');
-                ag_clearOldThumbs($thumbsFolder, $imagesFolder);
-                $row->text = preg_replace("#{AdmirorGallery[^}]*}".$imagesFolder_name."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
+//                      //Create directory in thumbs for gallery
+                        JFolder::create($ag->thumbsPath, 0755);
+                        $row->text.=$ag->generateThumbs();
+                }
+                $popup = new POPUP();
+		include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/index.php');
+                include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/index.php');
+                agHelper::ag_clearOldThumbs($ag->thumbsPath, $ag->imagesFolderPath);
+                $row->text = preg_replace("#{AdmirorGallery[^}]*}".$ag->imagesFolderName."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
             }// foreach($matches[0] as $match)
 			
 		/* ========================= SIGNATURE ====================== */
 		//
-			if($default_showSignature_=="1"){
+			if($ag->params['showSignature']=="1"){
 				$row->text .= '<div style="display:block; font-size:10px;">';
 			}else{
 				$row->text .= '<div style="display:block; font-size:10px; overflow:hidden; height:1px; padding-top:1px;">';

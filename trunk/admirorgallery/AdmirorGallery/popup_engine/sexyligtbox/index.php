@@ -1,12 +1,12 @@
 <?php
-		defined('_JEXEC') or die('Restricted access');
-$doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/jquery.easing-1.3.pack.js');
-$doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/sexylightbox.v2.3.jquery.js');
-$doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/sexylightbox.css');
-$rel = 'sexylightbox[AdmirorGallery'.$galleryCount.''.$articleID.']';
-$cssClass= '';
-$doc->addScriptDeclaration('
+defined('_JEXEC') or die('Restricted access');
+$ag->addJavaScript('/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/jquery.easing-1.3.pack.js');
+$ag->addJavaScript('/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/sexylightbox.v2.3.jquery.js');
+$ag->addCSS('/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/sexylightbox.css');
+$popup->rel = 'sexylightbox[AdmirorGallery'.$galleryCount.''.$articleID.']';
+$popup->cssClass= '';
+$ag->addJavaScriptCode('
        jQuery(document).ready(function(){
-      SexyLightbox.initialize({color:\'white\',dir:\''.$joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'\'});});');
-$initCode='SexyLightbox.initialize({color:\'white\',dir:\''.$joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'\'});';	  
+      SexyLightbox.initialize({color:\'white\',dir:\''.$ag->sitePath.'/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'\'});});');
+$popup->initCode='SexyLightbox.initialize({color:\'white\',dir:\''.$ag->sitePath.'/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'\'});';
 ?>

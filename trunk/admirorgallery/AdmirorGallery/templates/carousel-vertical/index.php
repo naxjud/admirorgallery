@@ -1,32 +1,8 @@
 <?php
 
-// Load Functions
-if(!function_exists("imageInfo")){
-  include(JPATH_BASE .DS.'/plugins/content/AdmirorGallery/imageInfo.php');
-}
-
-$doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/templates/carousel-vertical/jquery.jcarousel.css');
-$doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/templates/carousel-vertical/tango/skin.css');
-$doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/templates/carousel-vertical/jquery.jcarousel.js');
-
-
-//get parametars
-$default_frame_width_ = $pluginParams->get('frame_width','500');
-$default_frame_height_ = $pluginParams->get('frame_height','300');
-
-$inline_frame_width_ = ag_getAttribute("frameWidth",$match);
-$inline_frame_height_ = ag_getAttribute("frameHeight",$match);
-
-if ($inline_frame_width_)
-	$_frame_width_=$inline_frame_width_;
-else
-	$_frame_width_=$default_frame_width_;
-	
-if ($inline_frame_height_)
-	$_frame_height_=$inline_frame_height_;
-else
-	$_frame_height_=$default_frame_height_;
-
+$ag->addCSS('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/jquery.jcarousel.css');
+$ag->addCSS('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/tango/skin.css');
+$ag->addJavaScript('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/jquery.jcarousel.js');
 
 // Form HTML code
 $html = '
@@ -34,16 +10,16 @@ $html = '
 <div id="ag_wrap'.$galleryCount.''.$articleID.'" style="display:block;">
 <ul id="ag_carousel'.$galleryCount.''.$articleID.'" class="jcarousel-skin-tango">
 ';
-$cssClass.=' ag_thumbLink';
-$imgWrapS = '<span class="ag_thumbSpan">';
-$imgWrapE = '</span>';
-foreach ($images as $imagesKey => $imagesValue)
+$popup->cssClass.=' ag_thumbLink';
+$popup->imgWrapS = '<span class="ag_thumbSpan">';
+$popup->imgWrapE = '</span>';
+foreach ($ag->images as $imagesKey => $imageValue)
 {
 		$html .= '<li>
 			<table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td>';
-			include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/imageHTMLout.php');	
+			$html.= $ag->generatePopupHTML($popup,$imageValue);
 		$html .= '</td><td class="ag_cv_description">
-			'.$imagesDescritions[$imagesValue].'
+			'.$ag->getDescription($imageValue).'
 			</td></tr></tbody></table>
 			</li>';
 }	
@@ -102,17 +78,16 @@ jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-list li,
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-item
 {
-	height:'.$_height_.'px;
+	height:'.$ag->params['th_height'].'px;
 }
 
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel-clip-vertical
 {
-	height:'.($_height_*3+3).'px;
+	height:'.($ag->params['th_height']*3+3).'px;
 }
 
 </style>
 
 ';	
-if (isset($jsInclude)) 
-$html.=$jsInclude;	
+$html.=$popup->jsInclude;
 ?>

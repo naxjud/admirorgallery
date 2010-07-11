@@ -1,8 +1,8 @@
 <?php
-		defined('_JEXEC') or die('Restricted access');
-$doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/pirobox.js');
-$doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/css/style.css');
-$rel = 'pirobox[AdmirorGallery'.$galleryCount.''.$articleID.']';
-$cssClass= 'pirobox_AdmirorGallery'.$galleryCount.''.$articleID;
-include_once(JPATH_BASE.DS.'plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/include.php');
+defined('_JEXEC') or die('Restricted access');
+$ag->addJavaScript('/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/pirobox.js');
+$ag->addCSS('/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/css/style.css');
+$popup->rel = 'pirobox[AdmirorGallery'.$galleryCount.''.$articleID.']';
+$popup->cssClass= 'pirobox_AdmirorGallery'.$galleryCount.''.$articleID;
+include_once(JPATH_BASE.DS.'plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/include.php');
 ?>
