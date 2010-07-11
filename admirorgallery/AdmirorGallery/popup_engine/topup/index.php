@@ -1,12 +1,12 @@
 <?php
-		defined('_JEXEC') or die('Restricted access');
-$doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/*.js');
-$doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/top_up-min.js');
-$rel = 'top_up[AdmirorGallery'.$galleryCount.''.$articleID.']';
-$cssClass= 'top_up[AdmirorGallery'.$galleryCount.''.$articleID.']';
-$customTag='toptions="group = ag'.$galleryCount.''.$articleID.', effect = clip, title = Gallery {alt} ({current} of {total}) , shaded = 1"';
-$jsInclude='<script type="text/javascript">
-  TopUp.host = "'.$joomla_site_path.'/";
-  TopUp.images_path = "plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/images/top_up/";
+defined('_JEXEC') or die('Restricted access');
+$ag->addJavaScript('/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/*.js');
+$ag->addJavaScript('/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/top_up-min.js');
+$popup->rel = 'top_up[AdmirorGallery'.$galleryCount.''.$articleID.']';
+$popup->cssClass= 'top_up[AdmirorGallery'.$galleryCount.''.$articleID.']';
+$popup->customTag='toptions="group = ag'.$galleryCount.''.$articleID.', effect = clip, title = Gallery {alt} ({current} of {total}) , shaded = 1"';
+$popup->jsInclude='<script type="text/javascript">
+  TopUp.host = "'.$ag->sitePath.'/";
+  TopUp.images_path = "plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/images/top_up/";
 </script> ';
 ?>

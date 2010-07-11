@@ -177,9 +177,9 @@ wheel: function(event, delta) {
 if ( event.wheelDelta ) { delta = event.wheelDelta/12000; }
 if ( event.detail ) { delta = -event.detail/3; }
 
-event.data.thumbs.vertical.stop(true, true).fadeTo(0, o.constants.thumbOpacity);
+if (event.data.thumbs.vertical) event.data.thumbs.vertical.stop(true, true).fadeTo(0, o.constants.thumbOpacity);
 event.data.target.scrollTop(event.data.target.scrollTop() - (delta * o.constants.wheelDeltaMod));
-event.data.thumbs.vertical.stop(true, true).fadeTo("fast", 0);
+if (event.data.thumbs.vertical) event.data.thumbs.vertical.stop(true, true).fadeTo("fast", 0);
 
 return false;
 
@@ -361,7 +361,7 @@ height: size.height + "px",
 
 // jQuery adapted Penner animation
 // created by Jamie Lemon
-$.extend($.easing, {
+jQuery.extend(jQuery.easing, {
 
 cubicEaseOut: function(p, n, firstNum, diff) {
 var c = firstNum + diff;

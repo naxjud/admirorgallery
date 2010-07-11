@@ -1,26 +1,7 @@
 <?php
 
-
-$doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/templates/carousel_big/jquery.jcarousel.css');
-$doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/templates/carousel_big/jquery.jcarousel.js');
-
-//get parametars
-$default_frame_width_ = $pluginParams->get('frame_width','500');
-$default_frame_height_ = $pluginParams->get('frame_height','300');
-
-$inline_frame_width_ = ag_getAttribute("frameWidth",$match);
-$inline_frame_height_ = ag_getAttribute("frameHeight",$match);
-
-if ($inline_frame_width_)
-	$_frame_width_=$inline_frame_width_;
-else
-	$_frame_width_=$default_frame_width_;
-	
-if ($inline_frame_height_)
-	$_frame_height_=$inline_frame_height_;
-else
-	$_frame_height_=$default_frame_height_;
-
+$ag->addCSS('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/jquery.jcarousel.css');
+$ag->addJavaScript('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/jquery.jcarousel.js');
 
 // Form HTML code
 $html = '
@@ -29,11 +10,11 @@ $html = '
 <ul id="ag_carousel'.$galleryCount.''.$articleID.'">
 ';
 
-foreach ($images as $imagesKey => $imagesValue)
+foreach ($ag->images as $imagesKey => $imageValue)
 {
 		$html .= '
 <li>
-<img id="slide-img-'.($imagesKey+1).'" src="'.$joomla_site_path.$rootFolder.$imagesFolder_name.'/'.$imagesValue.'" class="slide" alt=""  style="width:'.$_frame_width_.'px; height:'.$_frame_height_.'px;"/>
+<img id="slide-img-'.($imagesKey+1).'" src="'.$ag->sitePath.$ag->params['rootFolder'].$ag->imagesFolderName.'/'.$imageValue.'" class="slide" alt=""  style="width:'.$ag->params['frame_width'].'px; height:'.$ag->params['frame_height'].'px;"/>
 </li>
 ';
 
@@ -47,7 +28,7 @@ $html .= '
     <div class="jcarousel-control">
 ';
 
-foreach ($images as $imagesKey => $imagesValue)
+foreach ($ag->images as $imagesKey => $imagesValue)
 {
   $html .= '
         <a href="#" rel="'.($imagesKey+1).'">&nbsp;</a>
@@ -90,9 +71,9 @@ jQuery(\'#ag_carousel'.$galleryCount.''.$articleID.'\').jcarousel({
 
 		});
 
-jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-container-horizontal").css({width:"'.$_frame_width_.'px"})
+jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-container-horizontal").css({width:"'.$ag->params['frame_width'].'px"})
 
-jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-clip-horizontal").css({width:"'.$_frame_width_.'px"})
+jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-clip-horizontal").css({width:"'.$ag->params['frame_width'].'px"})
 
 jQuery(\'.jcarousel-control a[rel="1"]\').css({backgroundPosition:"left -20px", cursor:"default"});
 
@@ -106,14 +87,14 @@ jQuery(\'.jcarousel-control a[rel="1"]\').css({backgroundPosition:"left -20px", 
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-item,
 #ag_wrap'.$galleryCount.''.$articleID.'
 {
-	width:'.$_frame_width_.'px;
+	width:'.$ag->params['frame_width'].'px;
 }
 
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-list li,
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-item,
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-clip
 {
-	height:'.$_frame_height_.'px;
+	height:'.$ag->params['frame_height'].'px;
 }
 #ag_wrap'.$galleryCount.''.$articleID.' ul,
 #ag_wrap'.$galleryCount.''.$articleID.' li

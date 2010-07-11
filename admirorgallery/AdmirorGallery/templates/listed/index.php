@@ -1,25 +1,16 @@
 <?php
-// Load Functions
-if(!function_exists("imageInfo")){
-  include(JPATH_BASE .DS.'/plugins/content/AdmirorGallery/imageInfo.php');
-}
-if(!function_exists("fileRoundSize")){
-  include(JPATH_BASE .DS.'/plugins/content/AdmirorGallery/fileRoundSize.php');
-}
 
-$doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/templates/listed/listed.css');
-$doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/templates/listed/pagination.css');
-$doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/templates/listed/jquery.pagination.js');
+$ag->addCSS('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/listed.css');
+$ag->addCSS('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/pagination.css');
+$ag->addJavaScript('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/jquery.pagination.js');
 
 // Vars
-$ag_paginationNumOfItems = 5;
-
-$ag_paginationNumOfItems = ag_getParams("numOfItems",$match,$ag_paginationNumOfItems);
+$ag_paginationNumOfItems = agGallery::ag_readInlineParam("numOfItems",$match,5);
 
 
 // Form HTML code
 $html = '<!-- ======================= Admiror Gallery -->
-<div id="AdmirorGallery'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'" class="AdmirorListedGallery">
+<div id="AdmirorGallery'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.'" class="AdmirorListedGallery">
 
 <div class="ag_paginationResults">
 	This content will be replaced when pagination inits.
@@ -30,18 +21,14 @@ $html = '<!-- ======================= Admiror Gallery -->
 <div class="ag_hiddenresult" style="display:none;">
 
 ';
-isset($initCode) ? true : $initCode='';
-isset($customTag) ? true : $customTag='';
-if (!empty($images))
-{
 
-if(count($images) < $ag_paginationNumOfItems){$ag_paginationNumOfItems = count($images);}
+if(count($ag->images) < $ag_paginationNumOfItems){$ag_paginationNumOfItems = count($ag->images);}
 
-	foreach ($images as $imagesKey => $imagesValue)
+	foreach ($ag->images as $imagesKey => $imageValue)
 	{
 	
 	// Calculate $listed_imageSize
-	$imageInfo_array=imageInfo(JPATH_BASE .DS.$rootFolder.$imagesFolder_name.'/'.$imagesValue);	
+	$imageInfo_array=agHelper::ag_imageInfo(JPATH_BASE .DS.$ag->params['rootFolder'].$ag->imagesFolderName.'/'.$imageValue);
 	
 		$html .= '<div class="ag_paginationItem">
 
@@ -49,10 +36,10 @@ if(count($images) < $ag_paginationNumOfItems){$ag_paginationNumOfItems = count($
 <tbody>
 <tr>
 <td class="ag_thumbTd">
-<span class="ag_thumb'.$_galleryStyle_.'">';
-$imgWrapS = '<span class="ag_thumbSpan">';
-$imgWrapE = '</span>';
-include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/imageHTMLout.php');			
+<span class="ag_thumb'.$ag->params['galleryStyle'].'">';
+$popup->imgWrapS = '<span class="ag_thumbSpan">';
+$popup->imgWrapE = '</span>';
+$html.= $ag->generatePopupHTML($popup,$imageValue);
 $html .='</span>
 </td>
 <td class="ag_info">
@@ -60,14 +47,14 @@ $html .='</span>
 		<tbody>
 		<tr>
 			<td class="ag_description">
-			'.$imagesDescritions[$imagesValue].'
+			'.$ag->getDescription($imageValue).'
 			</td>
 		</tr>
 		<tr>
 			<td class="ag_imageStat">
 			<span>W:'.$imageInfo_array["width"].'px</span>
 			<span>H:'.$imageInfo_array["height"].'px</span>
-			<span>S:'.fileRoundSize($imageInfo_array['size']).'</span>
+			<span>S:'.agHelper::ag_fileRoundSize($imageInfo_array['size']).'</span>
 			</td>
 		</tr>
 		</tbody>
@@ -78,8 +65,6 @@ $html .='</span>
 </table>
 
 </div>';
-
-	}
 }
 
 $html .='</div></div>';
@@ -88,35 +73,35 @@ $html .='
 <script type="text/javascript">        
 jQuery(document).ready(function() {  
 
-	var ag_num_of_items_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.' = '.$ag_paginationNumOfItems.'; // <================ SET NUMBER OF ITEMS PER PAGE
-	var ag_num_entries_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.' = jQuery("#AdmirorGallery'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'").find(".ag_paginationItem").length;
+	var ag_num_of_items_'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.' = '.$ag_paginationNumOfItems.'; // <================ SET NUMBER OF ITEMS PER PAGE
+	var ag_num_entries_'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.' = jQuery("#AdmirorGallery'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.'").find(".ag_paginationItem").length;
 
-	//alert('.$galleryCount.'+":"+ag_num_entries_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.');
+	//alert('.$galleryCount.'+":"+ag_num_entries_'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.');
 
-	function pageselectCallback_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'(page_index, jq){  
-	    jQuery("#AdmirorGallery'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'").find(".ag_paginationResults").empty();    
-	    for(var i=page_index*ag_num_of_items_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.';i<page_index*ag_num_of_items_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'+ag_num_of_items_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.';i++)
+	function pageselectCallback_'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.'(page_index, jq){
+	    jQuery("#AdmirorGallery'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.'").find(".ag_paginationResults").empty();
+	    for(var i=page_index*ag_num_of_items_'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.';i<page_index*ag_num_of_items_'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.'+ag_num_of_items_'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.';i++)
 	    {
-	      jQuery("#AdmirorGallery'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'").find(".ag_paginationResults").append(jQuery("#AdmirorGallery'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'").find(".ag_hiddenresult .ag_paginationItem:eq("+i+")").clone());
+	      jQuery("#AdmirorGallery'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.'").find(".ag_paginationResults").append(jQuery("#AdmirorGallery'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.'").find(".ag_hiddenresult .ag_paginationItem:eq("+i+")").clone());
 	    }
-		'.$initCode.'            
+		'.$popup->initCode.'
 	    return false;
 	}
 
-	jQuery("#AdmirorGallery'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'").find(".ag_pagination").pagination(ag_num_entries_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.', {
+	jQuery("#AdmirorGallery'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.'").find(".ag_pagination").pagination(ag_num_entries_'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.', {
 	num_edge_entries: 2,
 	num_display_entries: 8,
-	items_per_page:ag_num_of_items_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.',
-	callback: pageselectCallback_'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.'
+	items_per_page:ag_num_of_items_'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.',
+	callback: pageselectCallback_'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.'
 	});  
 });
 </script>
 
 <style type="text/css">
 
-div#AdmirorGallery'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.' .ag_paginationResults
+div#AdmirorGallery'.$galleryCount.'_'.$ag->params['galleryStyle'].'_'.$articleID.' .ag_paginationResults
 {
-	height:'.(($ag_paginationNumOfItems*($_height_+30))+20).'px;
+	height:'.(($ag_paginationNumOfItems*($ag->params['th_height']+30))+20).'px;
 	display:block;
 }
 
@@ -125,9 +110,8 @@ div#AdmirorGallery'.$galleryCount.'_'.$_galleryStyle_.'_'.$articleID.' .ag_pagin
 ';
 
 $html .='<!-- Admiror Gallery -->';
-
-if (isset($jsInclude)) 
-$html.=$jsInclude;	
+//if there is any extra script that needs to be put after gallery html.
+$html.=$popup->jsInclude;
 
 ?>
 

@@ -1,7 +1,7 @@
 <?php
 	defined('_JEXEC') or die('Restricted access');
 	global $mainframe;
-	$js_root = $joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/';
+	$js_root = $ag->sitePath.'/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/';
 	$headtag = array();
 	$headtag[] = '<script type="text/javascript">var GB_ROOT_DIR = "'. $js_root. '";</script>';
 	$headtag[] = '<script type="text/javascript" src="'. $js_root. 'AJS.js"></script>';

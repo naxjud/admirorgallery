@@ -1,10 +1,11 @@
 <?php
-		defined('_JEXEC') or die('Restricted access');
-$doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/jquery.colorbox-min.js');
-$doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/popup_engine/'.$_popupEngine_.'/colorbox.css');
-$rel = 'colorbox[AdmirorGallery'.$galleryCount.''.$articleID.']';
-$cssClass= '';
-$doc->addScriptDeclaration('			jQuery(document).ready(function(){
-				jQuery("a[rel='.$rel.']").colorbox({scalePhotos: true,maxWidth: 1000, maxHeight:600});
-			});')
+defined('_JEXEC') or die('Restricted access');
+$ag->addJavaScript('/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/jquery.colorbox-min.js');
+$ag->addCSS('/plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/colorbox.css');
+$popup->rel = 'colorbox[AdmirorGallery'.$galleryCount.''.$articleID.']';
+$popup->cssClass= '';
+$ag->addJavaScriptCode('
+    jQuery(document).ready(function(){
+	jQuery("a[rel='.$popup->rel.']").colorbox({scalePhotos: true,maxWidth: 1000, maxHeight:600});
+});')
 ?>

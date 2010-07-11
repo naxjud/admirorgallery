@@ -88,8 +88,8 @@ jQuery.bind = function(object, method){
 
         //if((Browser.Engine.trident4 || (Browser.Engine.gecko && !Browser.Engine.gecko19 && Browser.Platform.mac)))
         if($.browser.msie && $.browser.version=="6.0")
-        // No tengo tiempo para agregar la detección del OS que debería
-        // haber estado integrada en jQuery, pero que el estúpido de su creador no puso
+        // No tengo tiempo para agregar la detecciï¿½n del OS que deberï¿½a
+        // haber estado integrada en jQuery, pero que el estï¿½pido de su creador no puso
         // Me cago en John Resig
         {
           var zIndex = parseInt(this.element.css('zIndex'));
@@ -103,9 +103,9 @@ jQuery.bind = function(object, method){
             }
             this.element.css({'zIndex': zIndex});
           }
-          // Diossss por diosss, pongan funciones útiles en jQuery,
+          // Diossss por diosss, pongan funciones ï¿½tiles en jQuery,
           // no todo es Selectores! la puta madre, lo que hay que hacer
-          // para detectar si una variable está definida:
+          // para detectar si una variable estï¿½ definida:
           zIndex = (!!(this.options.zIndex || this.options.zIndex === 0) && zIndex > this.options.zIndex) ? this.options.zIndex : zIndex - 1;
           if (zIndex < 0)
           {
@@ -214,7 +214,7 @@ jQuery.bind = function(object, method){
 
       this.lightbox = {};
 
-			$('body').append('<div id="'+name+'-Wrapper"><div id="'+name+'-Background"></div><div id="'+name+'-Contenedor"><div id="'+name+'-Top" style="background-image: url('../../overlay_engine/sexyligtbox/+strBG+')"><a id="'+name+'-CloseButton" href="#"> </a><div id="'+name+'-TopLeft" style="background-image: url('../../overlay_engine/sexyligtbox/+strBG+')"></div></div><div id="'+name+'-Contenido"></div><div id="'+name+'-Bottom" style="background-image: url('../../overlay_engine/sexyligtbox/+strBG+')"><div id="'+name+'-BottomRight" style="background-image: url('../../overlay_engine/sexyligtbox/+strBG+')"><div id="'+name+'-Navegador"><strong id="'+name+'-Caption"></strong></div></div></div></div></div>');
+$('body').append('<div id="'+name+'-Wrapper"><div id="'+name+'-Background"></div><div id="'+name+'-Contenedor"><div id="'+name+'-Top" style="background-image: url('+strBG+')"><a id="'+name+'-CloseButton" href="#">&nbsp;</a><div id="'+name+'-TopLeft" style="background-image: url('+strBG+')"></div></div><div id="'+name+'-Contenido"></div><div id="'+name+'-Bottom" style="background-image: url('+strBG+')"><div id="'+name+'-BottomRight" style="background-image: url('+strBG+')"><div id="'+name+'-Navegador"><strong id="'+name+'-Caption"></strong></div></div></div></div></div>');
       
       this.Wrapper      = $('#'+name+'-Wrapper');
       this.Background   = $('#'+name+'-Background');
@@ -362,7 +362,7 @@ jQuery.bind = function(object, method){
     
     /*
     Function: replaceBox
-    @description  Cambiar de tamaño y posicionar el lightbox en el centro de la pantalla
+    @description  Cambiar de tamaï¿½o y posicionar el lightbox en el centro de la pantalla
     */
     replaceBox: function(data) {
       var size   = { x: $(window).width(), y: $(window).height() };
@@ -442,7 +442,7 @@ jQuery.bind = function(object, method){
     
     getInfo: function (image, id) {
       image=$(image);
-      IEuta = $('<a id="'+this.options.name+'-'+id+'" title="'+image.attr('title')+'" rel="'+image.attr('rel')+'"> </a>');
+      IEuta = $('<a id="'+this.options.name+'-'+id+'" title="'+image.attr('title')+'" rel="'+image.attr('rel')+'"></a>');
       IEuta.css({ 'background-image' : 'url('+this.options.dir+'/'+this.options.color+'/'+this.options.buttons+')' });
       IEuta.attr('href', image.attr('href')); //IE fix
       return IEuta;
@@ -711,7 +711,7 @@ jQuery.bind = function(object, method){
       });
 
       this.Contenedor.css({
-        'background' : 'url('+this.options.imagesdir+'/'+this.options.color+'/loading.gif) no-repeat 50% 50%'
+        'background' : 'url('+this.options.dir+'/'+this.options.color+'/loading.gif) no-repeat 50% 50%'
       });
 
       this.Contenido.empty().css({

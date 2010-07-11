@@ -1,10 +1,8 @@
 <?php
 
-
-$doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/templates/carousel/jquery.jcarousel.css');
-$doc->addStyleSheet($joomla_site_path.'/plugins/content/AdmirorGallery/templates/carousel/tango/skin.css');
-$doc->addScript($joomla_site_path.'/plugins/content/AdmirorGallery/templates/carousel/jquery.jcarousel.js');
-
+$ag->addCSS('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/jquery.jcarousel.css');
+$ag->addCSS('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/tango/skin.css');
+$ag->addJavaScript('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/jquery.jcarousel.js');
 
 // Form HTML code
 $html = '
@@ -12,13 +10,13 @@ $html = '
 <div id="ag_wrap'.$galleryCount.''.$articleID.'" style="display:block;">
 <ul id="ag_carousel'.$galleryCount.''.$articleID.'" class="jcarousel-skin-tango">
 ';
-$cssClass.=' ag_thumbLink';
-$imgWrapS = '<span class="ag_thumbSpan">';
-$imgWrapE = '</span>';
-foreach ($images as $imagesKey => $imagesValue)
+$popup->cssClass.=' ag_thumbLink';
+$popup->imgWrapS = '<span class="ag_thumbSpan">';
+$popup->imgWrapE = '</span>';
+foreach ($ag->images as $imagesKey => $imageValue)
 {
 		$html .= '<li>';
-		include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/imageHTMLout.php');
+		$html.= $ag->generatePopupHTML($popup,$imageValue);
 		$html .= '</li>';
 }	
 	
@@ -30,7 +28,7 @@ $html .= '</ul>
 jQuery(function(){
 
 var ac_carousel_width = jQuery("#ag_wrap'.$galleryCount.''.$articleID.'").width()-82;
-var ac_carousel_num = Math.floor(ac_carousel_width/'.$default_height_.');
+var ac_carousel_num = Math.floor(ac_carousel_width/'.$ag->params['th_height'].');
 
 function mycarousel_initCallback(carousel)
 		{
@@ -58,9 +56,9 @@ jQuery(\'#ag_carousel'.$galleryCount.''.$articleID.'\').jcarousel({
 
 		});
 
-jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel-container-horizontal").css({width:('.$default_height_.'*ac_carousel_num)+"px"})
+jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel-container-horizontal").css({width:('.$ag->params['th_height'].'*ac_carousel_num)+"px"})
 
-jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel-clip-horizontal").css({width:('.$default_height_.'*ac_carousel_num)+"px"})
+jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel-clip-horizontal").css({width:('.$ag->params['th_height'].'*ac_carousel_num)+"px"})
 
 });
 
@@ -74,7 +72,7 @@ jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .ag_thumbLink,
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .ag_thumbImg
 {
-	width:'.$default_height_.'px;
+	width:'.$ag->params['th_height'].'px;
 }
 
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-list li,
@@ -84,18 +82,18 @@ jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .ag_thumbLink,
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .ag_thumbImg
 {
-	height:'.$default_height_.'px;
+	height:'.$ag->params['th_height'].'px;
 }
 
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel-next-horizontal,
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel-prev-horizontal
 {
-	top:'.($default_height_/2+6).'px;
+	top:'.($ag->params['th_height']/2+6).'px;
 }
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-list li,
 #ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-item
 {
-	height:'.$default_height_.'px;
+	height:'.$ag->params['th_height'].'px;
 }
 #ag_wrap'.$galleryCount.''.$articleID.' ul,
 #ag_wrap'.$galleryCount.''.$articleID.' li
@@ -103,11 +101,8 @@ jQuery("#ag_wrap'.$galleryCount.''.$articleID.' .jcarousel-skin-tango .jcarousel
   background-image:none;
   padding:0;
 }
-
 </style>
-
 ';	
-if (isset($jsInclude)) 
-$html.=$jsInclude;		
+$html.=$popup->jsInclude;
 
 ?>
