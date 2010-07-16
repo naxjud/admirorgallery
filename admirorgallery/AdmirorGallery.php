@@ -2,7 +2,7 @@
 /*
  // Admiror Gallery, based on Simple Image Gallery
  // Author: Igor Kekeljevic & Nikola Vasiljevski, 2010.
- // Version: 1.95
+ // Version: 2.0 beta
  */
 
 defined('_JEXEC') or die('Restricted access');
