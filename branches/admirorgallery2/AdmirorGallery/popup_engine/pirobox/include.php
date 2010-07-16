@@ -1,6 +1,6 @@
 <?php
 	defined('_JEXEC') or die('Restricted access');
-	$ag->addJavaScriptCode('jQuery(document).ready(function(){
+	$AG->insertJSCode('jQuery(document).ready(function(){
 	jQuery().piroBox({
 		  my_speed: 400, //animation speed
 		  bg_alpha: 0.5, //background opacity

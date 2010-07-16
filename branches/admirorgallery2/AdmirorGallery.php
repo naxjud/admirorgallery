@@ -2,7 +2,7 @@
 /*
  // Admiror Gallery, based on Simple Image Gallery
  // Author: Igor Kekeljevic & Nikola Vasiljevski, 2010.
- // Version: 1.95
+ // Version: 2.0 beta
  */
 
 defined('_JEXEC') or die('Restricted access');
@@ -14,7 +14,7 @@ jimport('joomla.plugin.plugin');
 // Simple Language Defines for English
 // <--------------- English language Defines ------------------------------------->
 define('_AD_NOGD', '<div class="error">GD support is not enabled. Cannot create thumbnail images. Contact your System Administrator to enable GD support.</div>');
-define('_AD_JV_CHECK', '<b>Error</b>: Admiror Designe Studio "Admiror Gallery (1.6)" Plugin functions only under Joomla! 1.5');
+define('_AD_JV_CHECK', '<b>Error</b>: Admiror Designe Studio "Admiror Gallery" Plugin functions only under Joomla! 1.5');
 // <--------------- END --------------------------------------------------------->
 
 class plgContentAdmirorGallery extends JPlugin {
@@ -55,70 +55,68 @@ class plgContentAdmirorGallery extends JPlugin {
         //CreateGallerys
         if (preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER) > 0) {
             $plugin = &JPluginHelper::getPlugin('content', 'AdmirorGallery');
-            $ag = new agGallery(new JParameter($plugin->params));
-            $ag->setSitePath(JURI::base());
-            $ag->setThumbPath(JPATH_SITE.'/plugins/content/AdmirorGallery/thumbs/');
+            $AG = new agGallery(new JParameter($plugin->params));
+            $AG->setSitePath(JURI::base());
+            $AG->setThumbPath(JPATH_SITE.'/plugins/content/AdmirorGallery/thumbs/');
 
-            agHelper::ag_cleanThumbsFolder(JPATH_SITE.$ag->params['rootFolder'], $ag->thumbsPath);
+            agHelper::ag_cleanThumbsFolder(JPATH_SITE.$AG->params['rootFolder'], $AG->thumbsPath);
 
             //if any image is corrupted supresses recoverable error
-            ini_set('gd.jpeg_ignore_warning', $ag->params['ignoreError']);
-            if ($ag->params['ignoreAllError'])
+            ini_set('gd.jpeg_ignore_warning', $AG->params['ignoreError']);
+            if ($AG->params['ignoreAllError'])
                 error_reporting('E_NOTICE');
 
-            $ag->doc = &JFactory::getDocument();
-            $ag->addCSS('/plugins/content/AdmirorGallery/AdmirorGallery.css');
-            if($ag->params['loadjQuery'])
+            $AG->doc = &JFactory::getDocument();
+            $AG->loadCSS('AdmirorGallery.css');
+            if($AG->params['loadjQuery'])
                 {
-                    $ag->addJavaScript('/plugins/content/AdmirorGallery/jquery.js');
+                    $AG->loadJS('jquery.js');
                 }
-            if($ag->params['jQueryNoConflict'])
+            if($AG->params['jQueryNoConflict'])
                 {
-                    $ag->addJavaScriptCode('jQuery.noConflict();');
+                    $AG->insertJSCode('jQuery.noConflict();');
                 }
-            $galleryCount = -1;
-            $articleID = $row->id;
-
+            $AG->index  = -1;
+            $AG->articleID = $row->id;
             //generate gallery html
             foreach ($matches[0] as $match) {
-                $galleryCount++;
-                $ag->readInlineParams($match);
+                $AG->index++;
+                $AG->readInlineParams($match);
                 //set gallery path
-                $ag->setImagesFolderName(preg_replace("/{.+?}/", "", $match));
-                $ag->setImagesFolderPath(JPATH_SITE.$ag->params['rootFolder'].$ag->imagesFolderName.'/');
+                $AG->setImagesFolderName(preg_replace("/{.+?}/", "", $match));
+                $AG->setImagesFolderPath(JPATH_SITE.$AG->params['rootFolder'].$AG->imagesFolderName.'/');
                 
                 // ERROR - Cannot find folder with images
-                if (!file_exists($ag->imagesFolderPath)) {
-                    $row->text .= '<div class="error">Cannot find folder "'.$ag->imagesFolderName.'" inside "'.$ag->imagesFolderPath.'" folder.</div>';
+                if (!file_exists($AG->imagesFolderPath)) {
+                    $row->text .= '<div class="error">Cannot find folder "'.$AG->imagesFolderName.'" inside "'.$AG->imagesFolderPath.'" folder.</div>';
                 }
                  // Create Image description array $imagesDescritions. Localization supported
-                $ag->readDescriptionFiles();//include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/descriptions.php');		
-                $ag->setThumbPath(JPATH_SITE.'/plugins/content/AdmirorGallery/thumbs/'.$ag->imagesFolderName.'/');
-                $ag->loadImageFiles();
+                $AG->readDescriptionFiles();//include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/descriptions.php');
+                $AG->setThumbPath(JPATH_SITE.'/plugins/content/AdmirorGallery/thumbs/'.$AG->imagesFolderName.'/');
+                $AG->loadImageFiles();
 				
                 if ($gd_exists){
 //                      //Create directory in thumbs for gallery
-                        JFolder::create($ag->thumbsPath, 0755);
-                        $row->text.=$ag->generateThumbs();
+                        JFolder::create($AG->thumbsPath, 0755);
+                        $row->text.=$AG->generateThumbs();
                 }
-                $popup = new POPUP();
-		include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/popup_engine/'.$ag->params['popupEngine'].'/index.php');
-                include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/index.php');
-                agHelper::ag_clearOldThumbs($ag->thumbsPath, $ag->imagesFolderPath);
-                $row->text = preg_replace("#{AdmirorGallery[^}]*}".$ag->imagesFolderName."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
+		include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/popup_engine/'.$AG->params['popupEngine'].'/index.php');
+                include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/templates/'.$AG->params['galleryStyle'].'/index.php');
+                agHelper::ag_clearOldThumbs($AG->thumbsPath, $AG->imagesFolderPath);
+                $row->text = preg_replace("#{AdmirorGallery[^}]*}".$AG->imagesFolderName."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
             }// foreach($matches[0] as $match)
 			
-		/* ========================= SIGNATURE ====================== */
-		//
-			if($ag->params['showSignature']=="1"){
-				$row->text .= '<div style="display:block; font-size:10px;">';
-			}else{
-				$row->text .= '<div style="display:block; font-size:10px; overflow:hidden; height:1px; padding-top:1px;">';
-			}
-		$row->text .= '<br /><a href="http://www.admiror-design-studio.com/admiror/en/design-resources/joomla-admiror-gallery" target="_blank">AdmirorGallery</a>, created by <a href="http://www.admiror-design-studio.com" target="_blank">Kekeljevic</a> & <a href="http://www.vasiljevski.com/" target="_blank">Vasiljevski</a>.<br />';
-		$row->text .= '</div>';
-		//
-		/* ------------------------ SIGNATURE ---------------------- */
+            /* ========================= SIGNATURE ====================== */
+            //
+            if($AG->params['showSignature']){
+                    $row->text .= '<div style="display:block; font-size:10px;">';
+            }else{
+                    $row->text .= '<div style="display:block; font-size:10px; overflow:hidden; height:1px; padding-top:1px;">';
+            }
+            $row->text .= '<br /><a href="http://www.admiror-design-studio.com/admiror/en/design-resources/joomla-admiror-gallery" target="_blank">AdmirorGallery</a>, created by <a href="http://www.admiror-design-studio.com" target="_blank">Kekeljevic</a> & <a href="http://www.vasiljevski.com/" target="_blank">Vasiljevski</a>.<br />';
+            $row->text .= '</div>';
+            //
+            /* ------------------------ SIGNATURE ---------------------- */
         }//if (preg_match_all("#{AdmirorGallery}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER)>0)
     }//onPrepareContent(&$row, &$params, $limitstart)
 }//class plgContentadmirorGallery extends JPlugin

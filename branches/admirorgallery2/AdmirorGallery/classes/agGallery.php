@@ -20,6 +20,9 @@ class agGallery {
     var $params =  array();
     var $staticParams = array();
     var $doc = null;
+    var $index = -1;
+    var $articleID = 0;
+    var $popupEngine;
 
     /**
      *
@@ -29,6 +32,13 @@ class agGallery {
         if (substr($path, -1) == "/")
             $path = substr($path, 0, -1);
         $this->sitePath = $path;
+    }
+    /**
+     *
+     */
+    function getGalleryID()
+    {
+        return $this->index.$this->articleID;
     }
     /**
      *
@@ -70,6 +80,7 @@ class agGallery {
         $this->staticParams['loadjQuery']= $globalParams->get('loadjQuery', true);
         $this->staticParams['jQueryNoConflict']= $globalParams->get('jQueryNoConflict', true);
         $this->staticParams['rootFolder']= $globalParams->get('rootFolder','/images/stories/');
+        $this->popupEngine = new POPUP();
         $this->params = $this->staticParams;
     }
     /**
@@ -196,8 +207,11 @@ class agGallery {
         foreach ($this->images as $imagesKey=>$imagesValue) {
                 $original_file = $this->imagesFolderPath.$imagesValue;
                 $thumb_file = $this->thumbsPath.$imagesValue;
+                if (!file_exists($thumb_file)) {
+                        $ERROR= $this->ag_createThumb($this->imagesFolderPath.$imagesValue, $thumb_file, $this->params['th_height']);
+                }
                 list($imagewidth, $imageheight) = getimagesize($thumb_file);
-                if ((!file_exists($thumb_file)) || ($imageheight != $this->params['th_height'])) {
+                if ($imageheight != $this->params['th_height']) {
                         $ERROR= $this->ag_createThumb($this->imagesFolderPath.$imagesValue, $thumb_file, $this->params['th_height']);
                 }
                 // ERROR - Invalid image
@@ -260,51 +274,51 @@ class agGallery {
     }
     /**
      *
-     * @param <popup.base> $popupSettings
+     * @param <popupEngine.base> $popupEngine
      */
-    function generatePopupHTML($popupSettings,$image){
+    function writePopupThumb($image){
         $html='';
-        $html.='<a href="'.$this->sitePath.$this->params['rootFolder'].$this->imagesFolderName.'/'.$image.'" title="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="'.$popupSettings->cssClass.'" rel="'.$popupSettings->rel.'" '.$popupSettings->customTag.' target="_blank">'.$popupSettings->imgWrapS;
+        $html.='<a href="'.$this->sitePath.$this->params['rootFolder'].$this->imagesFolderName.'/'.$image.'" title="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="'.$this->popupEngine->cssClass.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customTag.' target="_blank">'.$this->popupEngine->imgWrapS;
         $fileStat=stat($this->imagesFolderPath.$image);
         $fileAge=time()-$fileStat['ctime'];
         if((int)$fileAge < (int)($this->params['newImageTag_days']*24*60*60) && $this->params['newImageTag']==1){
         $html .= '<span class="ag_newTag"><img src="'.$this->sitePath.'/plugins/content/AdmirorGallery/newTag.gif" class="ag_newImageTag" /></span>';
         }
         $html.='<img src="'.$this->sitePath.'/plugins/content/AdmirorGallery/thumbs/'.$this->imagesFolderName.'/'.$image.'
-            " alt="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="ag_imageThumb">'.$popupSettings->imgWrapE.'</a>';
+            " alt="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="ag_imageThumb">'.$this->popupEngine->imgWrapE.'</a>';
         return $html;
     }
-    function generateImagesHTML($popupSettings){
+    function generateImagesHTML(){
         $html='';
         if (!empty($this->images)){
             foreach ($this->images as $imagesKey => $imagesValue){
-                    $html.='<a href="'.$this->sitePath.$this->params['rootFolder'].$this->imagesFolderName.'/'.$imagesValue.'" title="'.htmlspecialchars(strip_tags($this->descArray[$imagesValue])).'" class="'.$popupSettings->cssClass.'" rel="'.$popupSettings->rel.'" '.$popupSettings->customTag.' target="_blank">'.$popupSettings->imgWrapS;
+                    $html.='<a href="'.$this->sitePath.$this->params['rootFolder'].$this->imagesFolderName.'/'.$imagesValue.'" title="'.htmlspecialchars(strip_tags($this->descArray[$imagesValue])).'" class="'.$this->popupEngine->cssClass.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customTag.' target="_blank">'.$this->popupEngine->imgWrapS;
                     $fileStat=stat($this->imagesFolderPath.$imagesValue);
                     $fileAge=time()-$fileStat['ctime'];
                     if((int)$fileAge < (int)($this->params['newImageTag_days']*24*60*60) && $this->params['newImageTag']==1){
                     $html .= '<span class="ag_newTag"><img src="'.$this->sitePath.'/plugins/content/AdmirorGallery/newTag.gif" class="ag_newImageTag" /></span>';
                     }
                     $html.='<img src="'.$this->sitePath.'/plugins/content/AdmirorGallery/thumbs/'.$this->imagesFolderName.'/'.$imagesValue.'
-                        " alt="'.htmlspecialchars(strip_tags($this->descArray[$imagesValue])).'" class="ag_imageThumb">'.$popupSettings->imgWrapE.'</a>';
+                        " alt="'.htmlspecialchars(strip_tags($this->descArray[$imagesValue])).'" class="ag_imageThumb">'.$this->popupEngine->imgWrapE.'</a>';
             }
         }
         return $html;
     }
-    function ThumbHTML($image,$cssClass=''){
-        return '<img src="'.$this->sitePath.'/plugins/content/AdmirorGallery/thumbs/'.$this->imagesFolderName.'/'.$image.'"
-                alt="'.htmlspecialchars(strip_tags($this->descArray[$image])).'"
+    function writeThumb($imageName,$cssClass=''){
+        return '<img src="'.$this->sitePath.'/plugins/content/AdmirorGallery/thumbs/'.$this->imagesFolderName.'/'.$imageName.'"
+                alt="'.htmlspecialchars(strip_tags($this->descArray[$imageName])).'"
                 class="'.$cssClass.'">';
     }
-    function getDescription($image){
-        return $this->descArray[$image];
+    function writeDescription($imageName){
+        return $this->descArray[$imageName];
     }
-    function addCSS($path){
-        $this->doc->addStyleSheet($this->sitePath.$path);
+    function loadCSS($path){
+        $this->doc->addStyleSheet($this->sitePath.'/plugins/content/AdmirorGallery/'.$path);
     }
-    function addJavaScript($path){
-        $this->doc->addScript($this->sitePath.$path);
+    function loadJS($path){
+        $this->doc->addScript($this->sitePath.'/plugins/content/AdmirorGallery/'.$path);
     }
-    function addJavaScriptCode($script){
+    function insertJSCode($script){
         $this->doc->addScriptDeclaration($script);
     }
 

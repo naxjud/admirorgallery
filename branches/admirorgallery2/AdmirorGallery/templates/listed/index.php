@@ -1,31 +1,30 @@
 <?php
 
-$ag->addCSS('/plugins/content/AdmirorGallery/templates/'.$ag->params['galleryStyle'].'/listed.css');
+$AG->loadCSS('templates/'.$AG->params['galleryStyle'].'/listed.css');
 // Form HTML code
 $html = '<!-- ======================= Admiror Gallery -->
-<div id="AdmirorGallery'.$galleryCount.'('.$ag->params['galleryStyle'].''.$articleID.')">
-<div class="AdmirorListedGallery">
+<div id="AdmirorGallery_'.$AG->params['galleryStyle'].'_'.$AG->getGalleryID().')" class="AdmirorListedGallery">
 ';
-foreach ($ag->images as $imagesKey => $imageValue)
+foreach ($AG->images as $imageKey => $imageName)
 {
 
 // Calculate $listed_imageSize
-$imageInfo_array=agHelper::ag_imageInfo(JPATH_BASE .DS.$ag->params['rootFolder'].$ag->imagesFolderName.'/'.$imageValue);
+$imageInfo_array=agHelper::ag_imageInfo(JPATH_BASE .DS.$AG->params['rootFolder'].$AG->imagesFolderName.'/'.$imageName);
 
 $html .= '
     <table border="0" cellspacing="0" cellpadding="0" width="100%" class="ag_item">
     <tbody>
     <tr><td class="ag_thumbTd">
-    <span class="ag_thumb'.$ag->params['galleryStyle'].'">';
-    $popup->imgWrapS = '<span class="ag_thumbSpan">';
-    $popup->imgWrapE = '</span>';
-    $html.= $ag->generatePopupHTML($popup,$imageValue);
+    <span class="ag_thumb'.$AG->params['galleryStyle'].'">';
+    $AG->popupEngine->imgWrapS = '<span class="ag_thumbSpan">';
+    $AG->popupEngine->imgWrapE = '</span>';
+    $html.= $AG->writePopupThumb($imageName);
     $html .='</span></td>
     <td class="ag_info">
     <table border="0" cellspacing="0" cellpadding="0">
     <tbody>
     <tr><td class="ag_description">
-    '.$ag->getDescription($imageValue).'
+    '.$AG->writeDescription($imageName).'
     <tr><td class="ag_imageStat">
     <span>W:'.$imageInfo_array["width"].'px</span>
     <span>H:'.$imageInfo_array["height"].'px</span>
@@ -34,11 +33,7 @@ $html .= '
     </td></tr></tbody></table>
     </td></tr></tbody></table>';
 }
-$html .='
-</div>
-<!-- Admiror Gallery -->';
-$html .='</div>';
-$html.=$popup->jsInclude;
-
+$html .='<!-- Admiror Gallery --></div>';
+$html.=$AG->popupEngine->jsInclude;
 ?>
 
