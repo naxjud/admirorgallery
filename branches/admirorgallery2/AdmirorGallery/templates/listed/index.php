@@ -7,9 +7,8 @@ $html = '<!-- ======================= Admiror Gallery -->
 ';
 foreach ($AG->images as $imageKey => $imageName)
 {
-
-// Calculate $listed_imageSize
-$imageInfo_array=agHelper::ag_imageInfo(JPATH_BASE .DS.$AG->params['rootFolder'].$AG->imagesFolderName.'/'.$imageName);
+// Load values into $AG->imageInfo for target image
+$AG->getImageInfo($imageName);
 
 $html .= '
     <table border="0" cellspacing="0" cellpadding="0" width="100%" class="ag_item">
@@ -26,9 +25,9 @@ $html .= '
     <tr><td class="ag_description">
     '.$AG->writeDescription($imageName).'
     <tr><td class="ag_imageStat">
-    <span>W:'.$imageInfo_array["width"].'px</span>
-    <span>H:'.$imageInfo_array["height"].'px</span>
-    <span>S:'.agHelper::ag_fileRoundSize($imageInfo_array['size']).'</span>
+    <span>W:'.$AG->imageInfo["width"].'px</span>
+    <span>H:'.$AG->imageInfo["height"].'px</span>
+    <span>S:'.$AG->imageInfo["size"].'</span>
     </td></tr>
     </td></tr></tbody></table>
     </td></tr></tbody></table>';

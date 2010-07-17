@@ -24,7 +24,7 @@ class agHelper{
     //                                                                          //
     //////////////////////////////////////////////////////////////////////////////
 
-    function ag_imageInfo($imageURL){
+    protected function ag_imageInfo($imageURL){
 
       list($width, $height, $type, $attr) = getimagesize($imageURL);
 
@@ -59,7 +59,7 @@ class agHelper{
       }
 
     }
-    function ag_fileRoundSize($size) {
+    protected function ag_fileRoundSize($size) {
         $bytes = array('B','KB','MB','GB','TB');
         foreach($bytes as $val) {
             if($size > 1024){
@@ -71,7 +71,7 @@ class agHelper{
         return round($size, 2)." ".$val;
     }
     //Read's all floders in folder.
-    function ag_foldersArrayFromFolder($targetFolder){
+    protected function ag_foldersArrayFromFolder($targetFolder){
 
             unset($folders);
 
@@ -94,8 +94,7 @@ class agHelper{
 
              closedir($dh);
     }
-    function ag_cleanThumbsFolder($originalFolder,$thumbFolder)
-    {
+    protected function ag_cleanThumbsFolder($originalFolder,$thumbFolder){
             $origin= agHelper::ag_foldersArrayFromFolder($originalFolder);
             $thumbs= agHelper::ag_foldersArrayFromFolder($thumbFolder);
             $diffArray= array_diff($thumbs,$origin);
@@ -106,7 +105,7 @@ class agHelper{
                     }
             }
     }
-    function ag_clearOldThumbs($thumbsFolder, $imagesFolder){
+    protected function ag_clearOldThumbs($imagesFolder,$thumbsFolder){
 
       // Generate array of thumbs
       $targetFolder=$thumbsFolder;
@@ -136,13 +135,12 @@ class agHelper{
      * @param string $pathname The directory path.
      * @return boolean returns TRUE if exists or made or FALSE on failure.
      */
-    function ag_mkdir_recursive($pathname, $mode)
-    {
+    protected function ag_mkdir_recursive($pathname, $mode){
         is_dir(dirname($pathname)) || agHelper::ag_mkdir_recursive(dirname($pathname), $mode);
         return is_dir($pathname) || @mkdir($pathname, $mode);
     }
 
-    function ag_sureRemoveDir($dir, $DeleteMe) {
+    protected function ag_sureRemoveDir($dir, $DeleteMe) {
         if(!$dh = @opendir($dir)) return;
         while (false !== ($obj = readdir($dh))) {
             if($obj=='.' || $obj=='..') continue;
@@ -155,7 +153,7 @@ class agHelper{
         }
     }
     //Read's all images from folder.
-    function ag_imageArrayFromFolder($targetFolder,$sort){
+    protected function ag_imageArrayFromFolder($targetFolder,$sort){
         if (!file_exists($targetFolder))
         {
                 return null;
@@ -193,15 +191,64 @@ class agHelper{
          closedir($dh);
         }
     }
-    //Gets the atributes value by name, else returns false
-    function ag_getAttribute($attrib, $tag)
-    {
+        //Gets the atributes value by name, else returns false
+    protected function ag_getParams($attrib, $tag, $default){
             //get attribute from html tag
             $re = '/' . preg_quote($attrib) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
             if (preg_match($re, $tag, $match)) {
             return urldecode($match[2]);
             }
-            return false;
+            return $default;
+    }
+    //Creates thumbnail from original images, return $errorMessage;
+    protected function ag_createThumb($original_file, $thumb_file, $new_h) {
+
+        $errorMessage = '';
+
+        if (preg_match("/jpg|jpeg/i", $original_file)) {
+            @$src_img = imagecreatefromjpeg($original_file);
+        } else if (preg_match("/png/i", $original_file)) {
+            @$src_img = imagecreatefrompng($original_file);
+        } else if (preg_match("/gif/i", $original_file)) {
+            @$src_img = imagecreatefromgif($original_file);
+        } else {
+            return '<div class="error">Unsupported image type for image "'.$original_file.'". </div>';
+        }
+        @$old_x = imageSX($src_img);
+        @$old_y = imageSY($src_img);
+
+        @$thumb_w = $old_x * ($new_h / $old_y);
+        @$thumb_h = $new_h;
+
+        if($thumb_w==0 || $thumb_h==0){
+            return '<div class="error">Image "'.$original_file.'" is missing or not valid. Cannot read this image.</div>';
+        }
+
+        @$dst_img = imagecreatetruecolor($thumb_w, $thumb_h);
+
+        @imagecopyresampled($dst_img, $src_img, 0, 0, 0, 0, $thumb_w, $thumb_h, $old_x, $old_y);
+
+        if (preg_match("/jpg|jpeg/i", $original_file)) {
+            @imagejpeg($dst_img, $thumb_file);
+        } else if (preg_match("/png/i", $original_file)) {
+            @imagepng($dst_img, $thumb_file);
+        } else if (preg_match("/gif/i", $original_file)) {
+            @imagegif($dst_img, $thumb_file);
+        } else {
+            return '<div class="error">Could not create thumbnail file for image "'.$original_file.'"! </div>';
+        }
+        @imagedestroy($dst_img);
+        @imagedestroy($src_img);
+        return $errorMessage;
+    }
+    /**
+     *
+     * @param <string> $filename
+     */
+    protected function ag_indexWrite($filename){
+      $handle = fopen($filename,"w") or die("");
+      $contents = fwrite($handle,'<html><body bgcolor="#FFFFFF"></body></html>');
+      fclose($handle);
     }
 }
 ?>
