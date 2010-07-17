@@ -1,7 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
-$this->loadJS('popup_engine/'.$this->params['popupEngine'].'/slimbox2.js');
-$this->loadCSS('popup_engine/'.$this->params['popupEngine'].'/slimbox2.css');
+$this->loadJS('popup_engine/'.$this->params['popupEngine'].'/js/slimbox2.js');
+$this->loadCSS('popup_engine/'.$this->params['popupEngine'].'/css/slimbox2.css');
 $this->popupEngine->rel = 'lightbox[AdmirorGallery'.$this->getGalleryID().']';
 $this->popupEngine->cssClass= '';
 $this->popupEngine->initCode ='

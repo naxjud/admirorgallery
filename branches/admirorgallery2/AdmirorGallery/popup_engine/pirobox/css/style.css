@@ -36,19 +36,6 @@ a:hover.piro_prev{background:url(prev_h.png) center left no-repeat;}
 .b_l{background:url(b_l.png) no-repeat; width:20px; height:20px;}
 .b_r{background:url(b_r.png) no-repeat; width:20px; height:20px;}
 
-/*.t_l{background:#000; width:10px; height:10px;}
-.t_r{background:#000; width:10px; height:10px;}
-.t_c{height:10px; background:#000;}
-
-.c_l{width:10px; background:#000;}
-.c_c{background:#000; margin:0; padding:0;}
-.c_c div{width:380px; height:180px; margin:0; padding:0;}
-.c_r{width:10px; background: #000;}
-
-.b_c{height:10px; background:#000;}
-.b_l{background:#000; width:10px; height:10px;}
-.b_r{background:#000; width:10px; height:10px;}
-*/
 .box_img{ position:absolute; z-index:99995; background: url(img_bg.png);width: 100%; top:30px; left:30px; height: 100%; padding:0;}
 .err_mess{ position:absolute;bottom:20px; color:white; padding:0; margin:0 0 0 20px; display:block;}
 .err_mess a{color:red; font-weight:700;}
