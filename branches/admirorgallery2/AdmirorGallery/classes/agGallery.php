@@ -152,6 +152,9 @@ class agGallery extends agHelper {
     function writeDescription($imageName){
         return $this->descArray[$imageName];
     }
+    function initPopup(){
+        require ('plugins/content/AdmirorGallery/popup_engine/'.$this->params['popupEngine'].'/index.php');
+    }
     //**************************************************************************
     // END Template API functions                                             //
     //**************************************************************************
@@ -316,7 +319,8 @@ class agGallery extends agHelper {
     }
      /**
      * Gallery constructor
-     * @param <JParameter> $globalParams */
+     * @param <JParameter> $globalParams
+     */
     function  __construct($globalParams) {
         $this->staticParams['th_height']= $globalParams->get('th_height', 200);
         $this->staticParams['galleryStyle']= $globalParams->get('galleryStyle', 'classic');

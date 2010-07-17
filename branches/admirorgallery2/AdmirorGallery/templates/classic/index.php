@@ -1,5 +1,6 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
+$AG->initPopup();
 $AG->loadCSS('templates/'.$AG->params['galleryStyle'].'/template.css');
 // Form HTML code
 $html = '<!-- ======================= Admiror Gallery -->

@@ -14,12 +14,12 @@ foreach ($AG->images as $imageKey => $imageName)
 {
 $html .= '
 <li>
-    <img id="slide-img-'.($imageKey+1).'" src="'.$this->imagesFolderPath.$imageName.'" class="slide" alt=""  style="width:'.$AG->params['frame_width'].'px; height:'.$AG->params['frame_height'].'px;"/>
+    <img id="slide-img-'.($imageKey+1).'" src="'.$AG->imagesFolderPath.$imageName.'" class="slide" alt=""  style="width:'.$AG->params['frame_width'].'px; height:'.$AG->params['frame_height'].'px;"/>
 </li>
 ';
 }
 $html .= '</ul>';
-$html .= '<div class="jcarousel-control">';
+$html .= '<div class="jcarousel-control" style="text-align: center;">';
 foreach ($AG->images as $imageKey => $imageName)
 {
   $html .= '<a href="#" rel="'.($imageKey+1).'">&nbsp;</a>';

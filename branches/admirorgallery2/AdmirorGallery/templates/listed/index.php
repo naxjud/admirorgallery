@@ -1,5 +1,5 @@
 <?php
-
+$AG->initPopup();
 $AG->loadCSS('templates/'.$AG->params['galleryStyle'].'/listed.css');
 // Form HTML code
 $html = '<!-- ======================= Admiror Gallery -->
