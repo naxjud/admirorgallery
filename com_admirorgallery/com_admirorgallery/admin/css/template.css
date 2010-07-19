@@ -1,0 +1,216 @@
+#ag_nav
+{
+     vertical-align:top;
+     border-right:1px solid #ccc;
+     padding:10px;
+}
+
+.ag_guickIcon
+{
+     float:left;
+     margin-bottom:5px;
+     margin-right:5px;
+     text-align:center;
+}
+
+.ag_guickIcon a {
+     border:1px solid #F0F0F0;     
+     display:block;
+     float:left;
+     height:97px;
+     text-decoration:none;
+     vertical-align:middle;
+     width:108px;
+}
+
+.ag_guickIcon a span {
+     color:#666666;
+}
+
+.ag_guickIcon a:hover {
+     background:#F9F9F9 none repeat scroll 0 0;
+     border-color:#EEEEEE #CCCCCC #CCCCCC #EEEEEE;
+     border-style:solid;
+     border-width:1px;
+     text-decoration:none;
+}
+
+.ag_guickIcon a:hover span {
+     color:#0B55C4;
+}
+
+.ag_guickIcon img {
+     margin:0 auto;
+     padding:10px 0;
+}
+
+.ag_guickIcon span {
+     display:block;
+     text-align:center;
+}
+
+#ag_params
+{
+     vertical-align:top;
+     padding:10px 30px;
+}
+
+#ag_descData
+{
+     display:block;
+     padding-top:20px;
+}
+
+#ag_controlPanel_wrapper
+{
+     padding:20px 10px 20px 350px;
+     background-image: url('../images/ag_poster.jpg');
+     background-repeat: no-repeat;
+     
+}
+
+
+
+
+/* ================================================== GRID */
+
+.ag_grid_installed
+{
+	display:block;
+	width:16px;
+	height:16px;
+	background-image:url('../images/installed.png');
+}
+
+.ag_grid_uninstalled
+{
+	display:block;
+	width:16px;
+	height:16px;
+	background-image:url('../images/uninstalled.png');
+}
+
+/* --- GRID */
+
+
+
+/* ================================================== IMAGE DESCRIPTION */
+
+#ag_preview
+{
+	padding-bottom:20px;
+}
+
+#ag_preview img
+{
+     width:150px;
+     height:150px;
+     border:1px solid #ccc;
+}
+
+
+#ag_imgDesc_wrap
+{
+     padding-left:20px;
+     vertical-align:top;
+}
+
+#ag_imgDesc_info
+{
+	padding-bottom:20px;
+}
+
+
+
+/* --- IMAGE DESCRIPTION */
+
+
+
+.ag_label_wrap
+{
+	margin:0 10px 3px 0;
+	display:block;
+}
+
+.ag_label
+{
+	font-weight: bold;
+	font-size:1.2em;	
+}
+
+.ag_inputText
+{
+     width:500px;
+     height:50px;
+     border:1px solid #ccc;
+     margin-bottom:20px;
+}
+
+#ag_message
+{
+     padding-bottom:10px;
+     color: #33f;
+     font-weight:bold;
+     font-size:14px;
+     display:none;
+}
+
+#ag_message .ag_errorMessage
+{
+	color: #a00;
+	border:2px solid #a00;
+	padding:5px;
+	background-color:#f2ce2d;
+}
+
+/* ===================================== TOOLBAR */
+
+.icon-48-default{
+        background-image: url(../images/toolbar/icon-48-default.png); 
+}
+
+.icon-48-galleryThemes{
+        background-image: url(../images/toolbar/icon-48-galleryThemes.png); 
+}
+
+.icon-48-popupsThemes{
+        background-image: url(../images/toolbar/icon-48-popupsThemes.png); 
+}
+
+.icon-48-descriptions{
+        background-image: url(../images/toolbar/icon-48-descriptions.png); 
+}
+
+.icon-32-update    { 
+        background-image: url(../images/toolbar/icon-32-update.png); 
+}
+
+.icon-32-install    { 
+        background-image: url(../images/toolbar/icon-32-install.png); 
+}
+
+.icon-32-remove    { 
+        background-image: url(../images/toolbar/icon-32-remove.png); 
+}
+
+.icon-32-manual    { 
+        background-image: url(../images/toolbar/icon-32-manual.png); 
+}
+
+.icon-32-description    { 
+        background-image: url(../images/toolbar/icon-32-description.png); 
+	background-position: left top;
+}
+
+.ag_toolbar_off    { 
+	background-position: left -32px;	
+}
+
+
+
+
+
+
+
+
+

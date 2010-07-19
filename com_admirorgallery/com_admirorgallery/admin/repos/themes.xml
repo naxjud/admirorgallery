@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<themes title="Official Repos" date="2010/07/14" url="http://localhost/ag-official-repos">
+	<theme>
+		<id>artistic</id>
+		<title>Artistic</title>
+		<description>White background, simple looking, with descriptions</description>	
+		<version>0.1</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>
+	</theme>
+	<theme>
+		<id>test1</id>
+		<title>Test 1</title>	
+		<description>Empty archive for testing</description>
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>
+	</theme>
+	<theme>
+		<id>carousel</id>
+		<title>Carousel</title>	
+		<description>Standard horizontal carousel without description.</description>
+		<version>0.2</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>
+	</theme>
+	<theme>
+		<id>theme004</id>
+		<title>Some title4</title>
+		<description>Some description4</description>	
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>	
+	</theme>
+	<theme>
+		<id>theme005</id>
+		<title>Some title5</title>	
+		<description>Some descriptio5</description>	
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>	
+	</theme>
+	<theme>
+		<id>theme006</id>
+		<title>Some title6</title>	
+		<description>Some description6</description>	
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>	
+	</theme>
+	<theme>
+		<id>theme007</id>
+		<title>Some title7</title>
+		<description>Some description7</description>	
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>	
+	</theme>
+	<theme>
+		<id>theme008</id>
+		<title>Some title8</title>
+		<description>Some description8</description>
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>	
+	</theme>
+</themes>
