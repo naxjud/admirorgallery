@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<themes>
+	<theme>
+		<id>theme001</id>
+		<title>Some title</title>
+		<description>Some description</description>	
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>		
+		<url>some url</url>
+	</theme>
+	<theme>
+		<id>theme002</id>
+		<title>Some title22</title>	
+		<description>Some description22</description>
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>			
+		<url>some url22</url>
+	</theme>
+	<theme>
+		<id>theme003</id>
+		<title>Some title33</title>	
+		<description>Some description33</description>
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>			
+		<url>some url33</url>
+	</theme>
+	<theme>
+		<id>theme004</id>
+		<title>Some title4</title>
+		<description>Some description4</description>	
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>	
+		<url>some url4</url>
+	</theme>
+	<theme>
+		<id>theme005</id>
+		<title>Some title5</title>	
+		<description>Some descriptio5</description>	
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>	
+		<url>some url22</url>
+	</theme>
+	<theme>
+		<id>theme006</id>
+		<title>Some title6</title>	
+		<description>Some description6</description>	
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>		
+		<url>some url6</url>
+	</theme>
+	<theme>
+		<id>theme007</id>
+		<title>Some title7</title>
+		<description>Some description7</description>	
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>		
+		<url>some url7</url>
+	</theme>
+	<theme>
+		<id>theme008</id>
+		<title>Some title8</title>
+		<description>Some description8</description>
+		<version>2.5</version>	
+		<date>2010/07/11</date>
+		<author>Petar Petrovic</author>		
+		<image>http://localhost/joomlaTest/administrator/components/com_admirorgallery/assets/test_thumbnail.png</image>			
+		<url>some url8</url>
+	</theme>
+</themes>
