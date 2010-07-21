@@ -29,7 +29,7 @@ $ag_matchCheck = Array();
 $ag_lang_tag="default";
 $ag_lang_name="default";
 $ag_lang_extract=ag_desc_lineRender($ag_lang_tag,$ag_lang_name,$ag_content);
-
+$ag_matchCheck[]=$ag_lang_name;
 
 // Create site langTag fields
 for($a = 0; $a < count($ag_lang_availableArray) ; $a+=2) {// List descriptions for installed languages

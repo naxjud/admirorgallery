@@ -10,12 +10,8 @@ class TOOLBAR_admirorgallery{
 	function _VIEW($view)
 	{
 		switch ($view) {
-			 case 'configuration':
-				JToolBarHelper::title( JText::_( 'Configuration' ), 'generic' );
-				JToolBarHelper :: custom( 'manual', 'manual','manual', JText::_( 'Help' ), false, false );
-			 break;
-			 case 'themes':
-				JToolBarHelper::title( JText::_( 'Gallery Themes' ), 'galleryThemes' );
+			 case 'templates':
+				JToolBarHelper::title( JText::_( 'Templates' ), 'templates' );
 				JToolBarHelper :: custom( 'install', 'install','install', JText::_( 'Install' ), false, false );
 				JToolBarHelper :: custom( 'remove', 'remove','remove', JText::_( 'Remove' ), false, false );
 				JToolBarHelper :: custom( 'manual', 'manual','manual', JText::_( 'Help' ), false, false );
