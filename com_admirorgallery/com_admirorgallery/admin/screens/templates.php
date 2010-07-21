@@ -17,7 +17,7 @@ echo '<div id="ag_messageWrap"></div>';
 // PHP capture for form submition
 if(isset($_POST['pressbutton'])){
 	if($_POST['pressbutton']=="install" || $_POST['pressbutton']=="remove"){// JPagination patch
-		require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/themes-'.$_POST['pressbutton'].'.php');
+		require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/templates-'.$_POST['pressbutton'].'.php');
 	}
 }
 
@@ -100,7 +100,7 @@ sort($ag_galleryThemes_installed);
 echo '<script type="text/javascript">jQuery("#ag_screenWrapper").remove();</script>
 <div id="ag_screenWrapper">
 <form action="index.php?option=com_admirorgallery&task=themes" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
-'.JText::_('Select template to install:').' <input type="file" name="file_upload" size="50" />
+'.JText::_('Select template to install').': <input type="file" name="file_upload" size="50" />
 <br /><br />
 ';
 
@@ -211,7 +211,7 @@ echo '
 
 
 echo '   
-	<input type="hidden" name="task" value="themes" />      
+	<input type="hidden" name="task" value="templates" />      
 	<input type="hidden" name="option" value="com_admirorgallery" />
 	<input type="hidden" name="pressbutton" value="" id="pressbutton" />  
 </form>

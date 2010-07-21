@@ -58,8 +58,6 @@ function ag_imageInfo($imageURL, $imageURLPHP){
 
 $ag_imageInfoArray = ag_imageInfo($ag_url_img, $ag_url_img_php);
 
-foreach($ag_imageInfoArray as $ag_imageInfoArrayKey => $ag_imageInfoArrayValue){
-	echo '<span class="ag_label_wrap">'.$ag_imageInfoArrayKey.':<span class="ag_label">'.$ag_imageInfoArrayValue.'</span></span>';
-}
+echo implode(",", $ag_imageInfoArray);
 
 ?>

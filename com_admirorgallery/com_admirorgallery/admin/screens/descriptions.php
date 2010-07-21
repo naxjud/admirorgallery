@@ -35,7 +35,7 @@ function submitbutton(pressbutton) {
      {
      case "description":
           if(jQuery(".icon-32-description").attr("class") == "icon-32-description ag_toolbar_off"){
-               ag_showMessage("'.JText::_( "Cannot create Description file if no image selected." ).'");
+               ag_showMessage("<span class=\"ag_errorMessage\">'.JText::_( "Cannot create Description file if no image selected." ).'</span>");
                return;
           }else{
                var ag_desc_contentArray=new Array();
@@ -59,7 +59,7 @@ function submitbutton(pressbutton) {
 							jQuery("a[alt="+jQuery("#ag_form_url_desc").val()+"]").attr("rel","descTrue");
 						}
 					}else{
-						ag_showMessage("'.JText::_( "Error occurred. Image Description not created.").'");
+						ag_showMessage("<span class=\"ag_errorMessage\">'.JText::_( "Error occurred. Image Description not created.").'</span>");
 					}
 				
 
@@ -157,7 +157,11 @@ $doc->addScriptDeclaration('
 				data: "ag_url_img="+ag_url_img+"&ag_url_html='.urlencode(JURI::root()).'&ag_url_php='.urlencode(JPATH_SITE).'",
 				async: true,
 				success: function(msg){
-				    jQuery("#ag_imgDesc_info").append(msg);
+					var msgArray=msg.split(",");					
+					jQuery("#ag_imgDesc_info").append("'.JText::_( "Width").': "+msgArray[0]+"<br />");
+					jQuery("#ag_imgDesc_info").append("'.JText::_( "Height").': "+msgArray[1]+"<br />");
+					jQuery("#ag_imgDesc_info").append("'.JText::_( "Type").': "+msgArray[2]+"<br />");
+					jQuery("#ag_imgDesc_info").append("'.JText::_( "Size").': "+msgArray[3]+"<br />");
 				}
 			});
 
@@ -172,7 +176,14 @@ $doc->addScriptDeclaration('
 					timeout: 3000,
 					async: false,
 					success: function(msg){
-					    jQuery("#ag_descData").html(msg);
+						jQuery("#ag_descData").html("");// Delete previous data
+						var msgArray=msg.split("[split]");
+						var msgArrayLength=msgArray.length-1;
+						for(i=0;i<msgArrayLength;i+=3){
+							jQuery("#ag_descData").append("<span class=\"ag_label_wrap\">'.JText::_( "Name").': <span class=\"ag_label\">"+msgArray[i]+"</span>");
+							jQuery("#ag_descData").append("<span class=\"ag_label_wrap\">'.JText::_( "Tag").': <span class=\"ag_label\">"+msgArray[i+1]+"</span>");
+							jQuery("#ag_descData").append("<textarea class=\"ag_inputText\" id=\"ag_"+msgArray[i+1]+"\">"+msgArray[i+2]+"</textarea>");
+						}					    
 					}
 				});
 			}else{
