@@ -14,13 +14,14 @@ require_once ($ag_url_php.'/administrator/components/com_admirorgallery/scripts/
 
 $ag_content='';
 
-$file=fopen($ag_url_desc,"r");
-while (!feof($file)) 
-  { 
-  $ag_content.=fgetc($file);
-  }
-fclose($file);
-
+if(file_exists($ag_url_desc)){
+  $file=fopen($ag_url_desc,"r");
+  while (!feof($file)) 
+    { 
+    $ag_content.=fgetc($file);
+    }
+  fclose($file);
+}
 
 
 $ag_matchCheck = Array();
