@@ -1,7 +1,7 @@
 <?php
 
-$AG->loadCSS('templates/'.$AG->params['galleryStyle'].'/jquery.jcarousel.css');
-$AG->loadJS('templates/'.$AG->params['galleryStyle'].'/jquery.jcarousel.js');
+$AG->loadCSS('templates/'.$AG->params['template'].'/jquery.jcarousel.css');
+$AG->loadJS('templates/'.$AG->params['template'].'/jquery.jcarousel.js');
 
 // Form HTML code
 $html = '

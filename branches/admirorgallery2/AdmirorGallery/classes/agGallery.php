@@ -307,7 +307,7 @@ class agGallery extends agHelper {
      // Reads inline parametar if any or sets default values
     function readInlineParams(){
         ////setting parametars for current gallery, if there is no inline params default params are set
-        $this->params['galleryStyle']= $this->ag_getParams("template",$this->match,$this->staticParams['galleryStyle']);
+        $this->params['template']= $this->ag_getParams("template",$this->match,$this->staticParams['template']);
         $this->params['th_height'] = $this->ag_getParams("height",$this->match,$this->staticParams['th_height']);
         $this->params['newImageTag']=$this->ag_getParams("newImageTag",$this->match,$this->staticParams['newImageTag']);
         $this->params['newImageTag_days']= $this->ag_getParams("newImageDays",$this->match,$this->staticParams['newImageTag_days']);
@@ -323,7 +323,7 @@ class agGallery extends agHelper {
      */
     function  __construct($globalParams) {
         $this->staticParams['th_height']= $globalParams->get('th_height', 200);
-        $this->staticParams['galleryStyle']= $globalParams->get('galleryStyle', 'classic');
+        $this->staticParams['template']= $globalParams->get('template', 'classic');
         $this->staticParams['newImageTag']= $globalParams->get('newImageTag', true);
         $this->staticParams['newImageTag_days']= $globalParams->get('newImageTag_days', '7');
         $this->staticParams['sortImages']= $globalParams->get('sortImages', false);

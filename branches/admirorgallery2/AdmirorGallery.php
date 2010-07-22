@@ -74,7 +74,7 @@ class plgContentAdmirorGallery extends JPlugin {
                         JFolder::create($AG->thumbsFolderPhysicalPath, 0755);
                         $row->text.=$AG->generateThumbs();
                 }
-                include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/templates/'.$AG->params['galleryStyle'].'/index.php');
+                include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/templates/'.$AG->params['template'].'/index.php');
                 $AG->clearOldThumbs();
                 $row->text = preg_replace("#{AdmirorGallery[^}]*}".$AG->imagesFolderName."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
             }// foreach($matches[0] as $match)		
