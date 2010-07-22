@@ -135,7 +135,7 @@ $doc->addScriptDeclaration('
 			return temp.pop();
 		}
 
-		function ag_imgSelected(ag_url_img,ag_url_desc,ag_descStatus){
+		function ag_imgSelected(ag_url_img,ag_url_desc){
 		var ag_lang_available=new Array();
 ');
 
@@ -169,30 +169,30 @@ $doc->addScriptDeclaration('
                
                jQuery("#ag_form_url_desc").val(ag_url_desc);
 
-			jQuery.ajax({
-				type: "POST",
-				url: "components/com_admirorgallery/scripts/descriptions-read.php",
-				data: "ag_url_desc="+ag_url_desc+"&ag_lang_available="+ag_lang_available+"&ag_url_php='.urlencode(JPATH_SITE).'",
-				timeout: 3000,
-				async: false,
-				success: function(msg){
-					jQuery("#ag_descData").html("");// Delete previous data
-					var msgArray=msg.split("[split]");
-					var msgArrayLength=msgArray.length-1;
-					for(i=0;i<msgArrayLength;i+=3){
-						jQuery("#ag_descData").append("<span class=\"ag_label_wrap\">'.JText::_( "Name").': <span class=\"ag_label\">"+msgArray[i]+"</span>");
-						jQuery("#ag_descData").append("<span class=\"ag_label_wrap\">'.JText::_( "Tag").': <span class=\"ag_label\">"+msgArray[i+1]+"</span>");
-						jQuery("#ag_descData").append("<textarea class=\"ag_inputText\" id=\"ag_"+msgArray[i+1]+"\">"+msgArray[i+2]+"</textarea>");
-					}					    
-				}
-			});
+	       jQuery.ajax({
+		    type: "POST",
+		    url: "components/com_admirorgallery/scripts/descriptions-read.php",
+		    data: "ag_url_desc="+ag_url_desc+"&ag_lang_available="+ag_lang_available+"&ag_url_php='.urlencode(JPATH_SITE).'",
+		    timeout: 3000,
+		    async: false,
+		    success: function(msg){
+			      jQuery("#ag_descData").html("");// Delete previous data
+			      var msgArray=msg.split("[split]");
+			      var msgArrayLength=msgArray.length-1;
+			      for(i=0;i<msgArrayLength;i+=3){
+				   jQuery("#ag_descData").append("<span class=\"ag_label_wrap\">'.JText::_( "Name").': <span class=\"ag_label\">"+msgArray[i]+"</span>");
+				   jQuery("#ag_descData").append("<span class=\"ag_label_wrap\">'.JText::_( "Tag").': <span class=\"ag_label\">"+msgArray[i+1]+"</span>");
+				   jQuery("#ag_descData").append("<textarea class=\"ag_inputText\" id=\"ag_"+msgArray[i+1]+"\">"+msgArray[i+2]+"</textarea>");
+			      }					    
+		    }
+	       });
 			
 
-		}//function ag_imgSelected(ag_url_img,ag_url_desc,ag_descStatus)
+		}//function ag_imgSelected(ag_url_img,ag_url_desc)
 
 		jQuery(".ag_files").click(function(e) {
 			e.preventDefault();        
-			ag_imgSelected(jQuery(this).attr("href"),jQuery(this).attr("alt"),jQuery(this).attr("rel"));
+			ag_imgSelected(jQuery(this).attr("href"),jQuery(this).attr("alt"));
 		});
 
 	});//jQuery(function()

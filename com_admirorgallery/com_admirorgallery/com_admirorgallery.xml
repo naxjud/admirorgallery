@@ -69,13 +69,8 @@
 		<!-- Note the folder attribute: This attribute describes the folder
 			to copy FROM in the package to install therefore files copied
 			in this section are copied from /admin/ in the package -->
-		<files folder="admin">
-		 <filename>index.html</filename>
-		 <filename>admin.admirorgallery.php</filename>
-		 <filename>admin.admirorgallery.html.php</filename>		
-     <filename>assets/index.html</filename>	
-     <filename>images/index.html</filename>	
-     <filename>images/ag-icon.png</filename>
+		<files>
+                    <folder>admin</folder>
 		</files>
 		
 		<!-- Administration Language File Copy Section -->
