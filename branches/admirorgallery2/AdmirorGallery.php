@@ -42,7 +42,7 @@ class plgContentAdmirorGallery extends JPlugin {
             echo '<div class="message">'._AD_JV_CHECK.'</div>';
         }
         // Load gallery class php script
-        require_once (JPATH_BASE.DS.'plugins/content/AdmirorGallery/classes/agGallery.php');
+        require_once (dirname(__FILE__).'/AdmirorGallery/classes/agGallery.php');
         //CreateGallerys
         if (preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER) > 0) {
             $plugin = &JPluginHelper::getPlugin('content', 'AdmirorGallery');
@@ -74,7 +74,7 @@ class plgContentAdmirorGallery extends JPlugin {
                         JFolder::create($AG->thumbsFolderPhysicalPath, 0755);
                         $row->text.=$AG->generateThumbs();
                 }
-                include (JPATH_BASE.DS.'plugins/content/AdmirorGallery/templates/'.$AG->params['template'].'/index.php');
+                include (dirname(__FILE__).'/AdmirorGallery/templates/'.$AG->params['template'].'/index.php');
                 $AG->clearOldThumbs();
                 $row->text = preg_replace("#{AdmirorGallery[^}]*}".$AG->imagesFolderName."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
             }// foreach($matches[0] as $match)		
