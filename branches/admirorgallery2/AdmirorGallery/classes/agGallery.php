@@ -7,8 +7,8 @@
  */
 define('PLUGIN_BASE_PATH', '/plugins/content/AdmirorGallery/');
 
-require_once ('plugins/content/AdmirorGallery/classes/agHelper.php');
-require_once ('plugins/content/AdmirorGallery/classes/agPopup.php');
+require_once (dirname(__FILE__).'/AdmirorGallery/classes/agHelper.php');
+require_once (dirname(__FILE__).'/AdmirorGallery/classes/agPopup.php');
 
 class agGallery extends agHelper {
     var $sitePath='';
