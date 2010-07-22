@@ -17,7 +17,7 @@
 
                 <param name="th_height" type="text" default="120" size="5" label="Image thumbnail height" description="Adjust the maximum image thumbnail height in pixels. Thumbnail width is proportional." />
 
-		<param name="template" type="folderlist" default="classic" label="Gallery Style" description="Select gallery style" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
+		<param name="template" type="folderlist" default="classic" label="Gallery Template" description="Select gallery template" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
 
 		<param name="popupEngine" type="folderlist" default="slimbox" label="Popup Engine" description="Select popup engine" directory="plugins/content/AdmirorGallery/popup_engine" exclude="" stripext="" hide_none="true" hide_default="true" />
 
