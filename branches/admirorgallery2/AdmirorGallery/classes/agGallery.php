@@ -30,6 +30,7 @@ class agGallery extends agHelper {
     var $index = -1;
     var $articleID = 0;
     var $popupEngine;
+    private $errors = array();
     private $doc = null;
     private $descArray = array ();
     private $match = '';
@@ -152,6 +153,9 @@ class agGallery extends agHelper {
     function writeDescription($imageName){
         return $this->descArray[$imageName];
     }
+    /*
+     * Initialises Popup engine. Loads popupEngine settings and scripts
+     */
     function initPopup(){
         require ('plugins/content/AdmirorGallery/popup_engine/'.$this->params['popupEngine'].'/index.php');
         foreach ($this->popupEngine->js as $jsKey => $jsValue){
@@ -162,9 +166,17 @@ class agGallery extends agHelper {
             $this->loadCSS($cssValue);
         }
     }
-
+    /*
+     * Includes JavaScript code ad the end of the gallery html
+     */
     function endPopup(){
         return  $this->popupEngine->jsInclude;
+    }
+    /*
+     * adds new error value to the error array
+     */
+    function addError($value){
+        if($value!=''){$this->errors[]=$value;}
     }
     //**************************************************************************
     // END Template API functions                                             //
@@ -276,24 +288,34 @@ class agGallery extends agHelper {
         if (!file_exists($this->thumbsFolderPhysicalPath.'/index.html'))
         {$this->ag_indexWrite($this->thumbsFolderPhysicalPath.'/index.html');}
         // Check for Changes
-        $ERROR = '';
         foreach ($this->images as $imagesKey=>$imagesValue) {
                 $original_file = $this->imagesFolderPhysicalPath.$imagesValue;
                 $thumb_file = $this->thumbsFolderPhysicalPath.$imagesValue;
                 if (!file_exists($thumb_file)) {
-                        $ERROR= agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height']);
-                }
+                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height']));
+                }else{
                 list($imagewidth, $imageheight) = getimagesize($thumb_file);
                 if ($imageheight != $this->params['th_height']) {
-                        $ERROR= agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height']);
+                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height']));
+                    }
                 }
-                // ERROR - Invalid image
+                                // ERROR - Invalid image
                 if (!file_exists($thumb_file)) {
-                        $ERROR.= '<div class="error">Cannot read thumbnail for image "'.$imagesValue.'".</div>';
+                        //$this->addError("Cannot read thumbnail");
+                            $this->addError(JText::_("Cannot read thumbnail"));
                 }
-
         }
-        return $ERROR;
+    }
+    /*
+     * Returns error html
+     */
+    function writeErrors(){
+	  $errors="";
+	  foreach($this->errors as $key => $value){
+               $errors.='<div class="error">'.$value.'</div>'."\n";
+	  }
+          unset($this->errors);
+	  return $errors;
     }
      /**
      * Sets path values
@@ -350,6 +372,7 @@ class agGallery extends agHelper {
         $this->staticParams['rootFolder']= $globalParams->get('rootFolder','/images/stories/');
         $this->popupEngine = new agPopup();
         $this->params = $this->staticParams;
+        //$this->errors = new agErrors();
     }
 
     //**************************************************************************

@@ -200,11 +200,14 @@ class agHelper{
             }
             return $default;
     }
+
     //Creates thumbnail from original images, return $errorMessage;
     protected function ag_createThumb($original_file, $thumb_file, $new_h) {
-
-        $errorMessage = '';
-
+        //GD check
+        if (!function_exists('gd_info')) {
+            // ERROR - Invalid image
+            return JText::_('GD support is not enabled');
+        }
         if (preg_match("/jpg|jpeg/i", $original_file)) {
             @$src_img = imagecreatefromjpeg($original_file);
         } else if (preg_match("/png/i", $original_file)) {
@@ -212,7 +215,7 @@ class agHelper{
         } else if (preg_match("/gif/i", $original_file)) {
             @$src_img = imagecreatefromgif($original_file);
         } else {
-            return '<div class="error">Unsupported image type for image "'.$original_file.'". </div>';
+            return JText::sprintf('Unsupported image type for image',$original_file);
         }
         @$old_x = imageSX($src_img);
         @$old_y = imageSY($src_img);
@@ -221,7 +224,7 @@ class agHelper{
         @$thumb_h = $new_h;
 
         if($thumb_w==0 || $thumb_h==0){
-            return '<div class="error">Image "'.$original_file.'" is missing or not valid. Cannot read this image.</div>';
+            return JText::sprintf('Image is missing or not valid. Cannot read this image',$original_file);
         }
 
         @$dst_img = imagecreatetruecolor($thumb_w, $thumb_h);
@@ -235,11 +238,10 @@ class agHelper{
         } else if (preg_match("/gif/i", $original_file)) {
             @imagegif($dst_img, $thumb_file);
         } else {
-            return '<div class="error">Could not create thumbnail file for image "'.$original_file.'"! </div>';
+            return JText::sprintf('Could not create thumbnail file for image',$original_file);
         }
         @imagedestroy($dst_img);
         @imagedestroy($src_img);
-        return $errorMessage;
     }
     /**
      *

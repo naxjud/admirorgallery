@@ -8,11 +8,6 @@ defined('_JEXEC') or die('Restricted access');
 // Import library dependencies
 jimport('joomla.event.plugin');
 jimport('joomla.plugin.plugin');
-// Language Defines for English
-// <--------------- English language Defines ------------------------------------->
-define('_AD_NOGD', '<div class="error">GD support is not enabled. Cannot create thumbnail images. Contact your System Administrator to enable GD support.</div>');
-define('_AD_JV_CHECK', '<b>Error</b>: Admiror Designe Studio "Admiror Gallery" Plugin functions only under Joomla! 1.5');
-// <--------------- END --------------------------------------------------------->
 
 class plgContentAdmirorGallery extends JPlugin {
     //Constructor
@@ -26,20 +21,10 @@ class plgContentAdmirorGallery extends JPlugin {
         $gd_exists=true;
         // just startup
         global $mainframe;
-        // checking
+        //Load current language
+        JPlugin::loadLanguage( 'plg_content_AdmirorGallery' ,JPATH_ADMINISTRATOR);
         if (!preg_match("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text)) {
             return;
-        }
-	// GD2 Library Check      
-        if (!function_exists('gd_info')) {
-            // ERROR - Invalid image
-            $row->text .= _AD_NOGD;
-            $gd_exists=false;
-        }
-        // Version check
-        $version = new JVersion();
-        if ($version->PRODUCT == "Joomla!" && $version->RELEASE != "1.5") {
-            echo '<div class="message">'._AD_JV_CHECK.'</div>';
         }
         // Load gallery class php script
         require_once (dirname(__FILE__).'/AdmirorGallery/classes/agGallery.php');
@@ -49,6 +34,13 @@ class plgContentAdmirorGallery extends JPlugin {
             $AG = new agGallery(new JParameter($plugin->params));
             $AG->setSitePaths(JURI::base(),JPATH_SITE);
             $AG->cleanThumbsFolder();
+            // GD2 Library Check
+            
+            // Version check
+            $version = new JVersion();
+            if ($version->PRODUCT == "Joomla!" && $version->RELEASE != "1.5") {
+                $AG->addError(JText::_('Admiror Designe Studio "Admiror Gallery" Plugin functions only under Joomla! 1.5'));
+            }
             //if any image is corrupted supresses recoverable error
             ini_set('gd.jpeg_ignore_warning', $AG->params['ignoreError']);
             if ($AG->params['ignoreAllError'])
@@ -67,16 +59,14 @@ class plgContentAdmirorGallery extends JPlugin {
                 $AG->initGallery($match);// match = ;
                 // ERROR - Cannot find folder with images
                 if (!file_exists($AG->imagesFolderPhysicalPath)) {
-                    $row->text .= '<div class="error">Cannot find folder "'.$AG->imagesFolderName.'" inside "'.$AG->imagesFolderPhysicalPath.'" folder.</div>';
-                }			
-                if ($gd_exists){
-//                      //Create directory in thumbs for gallery
-                        JFolder::create($AG->thumbsFolderPhysicalPath, 0755);
-                        $row->text.=$AG->generateThumbs();
+                    $AG->addError(JText::sprintf('Cannot find folder inside folder',$AG->imagesFolderName,$AG->imagesFolderPhysicalPath));
                 }
+                //Create directory in thumbs for gallery
+                JFolder::create($AG->thumbsFolderPhysicalPath, 0755);
+                $AG->generateThumbs(); 
                 include (dirname(__FILE__).'/AdmirorGallery/templates/'.$AG->params['template'].'/index.php');
                 $AG->clearOldThumbs();
-                $row->text = preg_replace("#{AdmirorGallery[^}]*}".$AG->imagesFolderName."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
+                $row->text = $AG->writeErrors().preg_replace("#{AdmirorGallery[^}]*}".$AG->imagesFolderName."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
             }// foreach($matches[0] as $match)		
             /* ========================= SIGNATURE ====================== */
             if($AG->params['showSignature']){
