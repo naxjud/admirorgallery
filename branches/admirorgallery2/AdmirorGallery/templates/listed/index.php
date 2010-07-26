@@ -31,6 +31,6 @@ $html .= '
     </td></tr></tbody></table>';
 }
 $html .='<!-- Admiror Gallery --></div>';
-$html.=$AG->popupEngine->jsInclude;
+$html.=$AG->endPopup();
 ?>
 

@@ -11,5 +11,7 @@ class agPopup {
         var $cssClass='';
         var $jsInclude = '';
         var $initCode='';
+        var $css = array();
+        var $js = array();
 }
 ?>

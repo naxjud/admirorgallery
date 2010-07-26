@@ -154,6 +154,13 @@ class agGallery extends agHelper {
     }
     function initPopup(){
         require ('plugins/content/AdmirorGallery/popup_engine/'.$this->params['popupEngine'].'/index.php');
+        foreach ($this->popupEngine->js as $jsKey => $jsValue){
+            $this->loadJS($jsValue);
+        }
+
+        foreach ($this->popupEngine->css as $cssKey => $cssValue){
+            $this->loadCSS($cssValue);
+        }
     }
 
     function endPopup(){
