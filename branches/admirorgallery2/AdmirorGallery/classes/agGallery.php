@@ -311,10 +311,12 @@ class agGallery extends agHelper {
      */
     function writeErrors(){
 	  $errors="";
+          if (isset($this->errors)){
 	  foreach($this->errors as $key => $value){
                $errors.='<div class="error">'.$value.'</div>'."\n";
 	  }
           unset($this->errors);
+          }
 	  return $errors;
     }
      /**
