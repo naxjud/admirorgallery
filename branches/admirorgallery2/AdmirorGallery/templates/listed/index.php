@@ -15,8 +15,6 @@ $html .= '
     <tbody>
     <tr><td class="ag_thumbTd">
     <span class="ag_thumb'.$AG->params['template'].'">';
-    $AG->popupEngine->imgWrapS = '<span class="ag_thumbSpan">';
-    $AG->popupEngine->imgWrapE = '</span>';
     $html.= $AG->writePopupThumb($imageName);
     $html .='</span></td>
     <td class="ag_info">

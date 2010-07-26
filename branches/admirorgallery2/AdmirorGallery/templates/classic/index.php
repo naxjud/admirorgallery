@@ -21,5 +21,5 @@ $html .='
 </table>
 </div>
 ';
-$html.=$AG->popupEngine->jsInclude;
+$html.=$AG->endPopup();
 ?>

@@ -114,14 +114,14 @@ class agGallery extends agHelper {
      */
     function writePopupThumb($image){
         $html='';
-        $html.='<a href="'.$this->imagesFolderPath.$image.'" title="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="'.$this->popupEngine->cssClass.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customTag.' target="_blank">'.$this->popupEngine->imgWrapS;
+        $html.='<a href="'.$this->imagesFolderPath.$image.'" title="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="'.$this->popupEngine->cssClass.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customTag.' target="_blank">';
         $fileStat=stat($this->imagesFolderPhysicalPath.$image);
         $fileAge=time()-$fileStat['ctime'];
         if((int)$fileAge < (int)($this->params['newImageTag_days']*24*60*60) && $this->params['newImageTag']==1){
         $html .= '<span class="ag_newTag"><img src="'.$this->sitePath.PLUGIN_BASE_PATH.'newTag.gif" class="ag_newImageTag" /></span>';
         }
         $html.='<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$image.'
-            " alt="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="ag_imageThumb">'.$this->popupEngine->imgWrapE.'</a>';
+            " alt="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="ag_imageThumb"></a>';
         return $html;
     }
     /**
@@ -132,14 +132,14 @@ class agGallery extends agHelper {
         $html='';
         if (!empty($this->images)){
             foreach ($this->images as $imagesKey => $imagesValue){
-                    $html.='<a href="'.$this->imagesFolderPath.$imagesValue.'" title="'.htmlspecialchars(strip_tags($this->descArray[$imagesValue])).'" class="'.$this->popupEngine->cssClass.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customTag.' target="_blank">'.$this->popupEngine->imgWrapS;
+                    $html.='<a href="'.$this->imagesFolderPath.$imagesValue.'" title="'.htmlspecialchars(strip_tags($this->descArray[$imagesValue])).'" class="'.$this->popupEngine->cssClass.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customTag.' target="_blank">';
                     $fileStat=stat($this->imagesFolderPhysicalPath.$imagesValue);
                     $fileAge=time()-$fileStat['ctime'];
                     if((int)$fileAge < (int)($this->params['newImageTag_days']*24*60*60) && $this->params['newImageTag']==1){
                     $html .= '<span class="ag_newTag"><img src="'.$this->sitePath.PLUGIN_BASE_PATH.'newTag.gif" class="ag_newImageTag" /></span>';
                     }
                     $html.='<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$imagesValue.'
-                        " alt="'.htmlspecialchars(strip_tags($this->descArray[$imagesValue])).'" class="ag_imageThumb">'.$this->popupEngine->imgWrapE.'</a>';
+                        " alt="'.htmlspecialchars(strip_tags($this->descArray[$imagesValue])).'" class="ag_imageThumb"></a>';
             }
         }
         return $html;
@@ -154,6 +154,10 @@ class agGallery extends agHelper {
     }
     function initPopup(){
         require ('plugins/content/AdmirorGallery/popup_engine/'.$this->params['popupEngine'].'/index.php');
+    }
+
+    function endPopup(){
+        return  $this->popupEngine->jsInclude;
     }
     //**************************************************************************
     // END Template API functions                                             //
