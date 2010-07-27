@@ -23,20 +23,13 @@ padding:10px;
 text-decoration:none;
 outline:none;
 border-width:0;
-}
-
-.AG_listed a .ag_thumbSpan {
 display:block;
-text-decoration:none;
-background-image:none;
-border-width:0;
-margin:2px 0 0 2px;
-padding:0 3px 3px 0;
+margin-bottom:2px;
 }
 
-.AG_listed a:hover .ag_thumbSpan {
-background:url(shadow.png) no-repeat bottom right;
-margin:0 2px 2px 0;
+.AG_listed .ag_thumbTd a:hover {
+border-bottom:2px solid #ffaa00;
+margin-bottom:0;
 }
 
 .AG_listed a .ag_imageThumb {
@@ -69,18 +62,3 @@ color:#333;
 font:normal 10px Verdana, Sans;
 }
 
-.AG_listed .ag_newTag {
-background-color:transparent;
-position:absolute;
-z-index:100;
-margin:0;
-padding:0;
-}
-
-.AG_listed .ag_newImageTag {
-z-index:100;
-background-color:transparent;
-border-width:0;
-margin:0;
-padding:0;
-}

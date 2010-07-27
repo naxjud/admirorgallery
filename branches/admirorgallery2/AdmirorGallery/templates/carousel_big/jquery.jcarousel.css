@@ -46,6 +46,7 @@ text-decoration:none;
 text-align:center;
 margin:5px 1px;
 padding:0;
+outline:none;
 }
 
 .jcarousel-control a:hover {

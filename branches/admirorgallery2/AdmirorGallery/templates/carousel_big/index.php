@@ -28,7 +28,7 @@ $html .= '</div></div>';
 $AG->insertJSCode('
 jQuery(function(){
 function mycarousel_initCallback(carousel){
-      jQuery(\'#ag_wrap'.$AG->getGalleryID().' .jcarousel-control a\').bind(\'click\', function() {
+      jQuery(\'#AG_'.$AG->getGalleryID().' .jcarousel-control a\').bind(\'click\', function() {
         carousel.stopAuto();
         carousel.scroll(jQuery.jcarousel.intval(jQuery(this).attr("rel")));
         carousel.startAuto();
@@ -47,13 +47,13 @@ jQuery(\'#ag_carousel'.$AG->getGalleryID().'\').jcarousel({
 			wrap: \'last\',
 			initCallback: mycarousel_initCallback
 		});
-jQuery("#ag_wrap'.$AG->getGalleryID().' .jcarousel-container-horizontal").css({width:"'.$AG->params['frame_width'].'px"})
-jQuery("#ag_wrap'.$AG->getGalleryID().' .jcarousel-clip-horizontal").css({width:"'.$AG->params['frame_width'].'px"})
+jQuery("#AG_'.$AG->getGalleryID().' .jcarousel-container-horizontal").css({width:"'.$AG->params['frame_width'].'px"})
+jQuery("#AG_'.$AG->getGalleryID().' .jcarousel-clip-horizontal").css({width:"'.$AG->params['frame_width'].'px"})
 jQuery(\'.jcarousel-control a[rel="1"]\').css({backgroundPosition:"left -20px", cursor:"default"});
 });');
 $html .= '<style type="text/css">
-#ag_wrap'.$AG->getGalleryID().' .jcarousel-list li,#ag_wrap'.$AG->getGalleryID().' .jcarousel-item,#ag_wrap'.$AG->getGalleryID().'{width:'.$AG->params['frame_width'].'px;}
-#ag_wrap'.$AG->getGalleryID().' .jcarousel-list li,#ag_wrap'.$AG->getGalleryID().' .jcarousel-item,#ag_wrap'.$AG->getGalleryID().' .jcarousel-clip{height:'.$AG->params['frame_height'].'px;}
-#ag_wrap'.$AG->getGalleryID().' ul,#ag_wrap'.$AG->getGalleryID().' li{background-image:none;padding:0;}
+#AG_'.$AG->getGalleryID().' .jcarousel-list li,#AG_'.$AG->getGalleryID().' .jcarousel-item,#AG_'.$AG->getGalleryID().'{width:'.$AG->params['frame_width'].'px;}
+#AG_'.$AG->getGalleryID().' .jcarousel-list li,#AG_'.$AG->getGalleryID().' .jcarousel-item,#AG_'.$AG->getGalleryID().' .jcarousel-clip{height:'.$AG->params['frame_height'].'px;}
+#AG_'.$AG->getGalleryID().' ul,#AG_'.$AG->getGalleryID().' li{background-image:none;padding:0;}
 </style>';
 ?>
