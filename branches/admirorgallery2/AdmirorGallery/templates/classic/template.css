@@ -1,4 +1,4 @@
-.AdmirorGallery .ag_thumbclassic {
+.AG_classic .ag_thumbclassic {
 float:left;
 background-color:transparent;
 background-image:url(shadow.png);
@@ -8,7 +8,7 @@ margin:0 10px 10px;
 padding:0 4px 4px 0;
 }
 
-.AdmirorGallery .ag_imageThumb {
+.AG_classic .ag_imageThumb {
 display:block;
 position:relative;
 background:#FFF;
@@ -17,7 +17,7 @@ margin:0;
 padding:4px;
 }
 
-.AdmirorGallery .ag_newTag {
+.AG_classic .ag_newTag {
 background-color:transparent;
 position:absolute;
 z-index:100;
@@ -25,7 +25,7 @@ margin:0;
 padding:0;
 }
 
-.AdmirorGallery .ag_newImageTag {
+.AG_classic .ag_newImageTag {
 z-index:100;
 background-color:transparent;
 border-width:0;

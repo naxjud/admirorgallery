@@ -1,17 +1,17 @@
-div.AdmirorListedGallery {
+div.AG_listed {
 display:block;
 }
 
-.AdmirorListedGallery .ag_item {
+.AG_listed .ag_item {
 margin:0;
 padding:0;
 }
 
-.AdmirorListedGallery td {
+.AG_listed td {
 height:1%;
 }
 
-.AdmirorListedGallery .ag_thumbTd {
+.AG_listed .ag_thumbTd {
 width:1%;
 text-align:left;
 vertical-align:middle;
@@ -19,13 +19,13 @@ margin:0;
 padding:10px;
 }
 
-.AdmirorListedGallery .ag_thumbTd a {
+.AG_listed .ag_thumbTd a {
 text-decoration:none;
 outline:none;
 border-width:0;
 }
 
-.AdmirorListedGallery a .ag_thumbSpan {
+.AG_listed a .ag_thumbSpan {
 display:block;
 text-decoration:none;
 background-image:none;
@@ -34,12 +34,12 @@ margin:2px 0 0 2px;
 padding:0 3px 3px 0;
 }
 
-.AdmirorListedGallery a:hover .ag_thumbSpan {
+.AG_listed a:hover .ag_thumbSpan {
 background:url(shadow.png) no-repeat bottom right;
 margin:0 2px 2px 0;
 }
 
-.AdmirorListedGallery a .ag_imageThumb {
+.AG_listed a .ag_imageThumb {
 background-image:url(thumbBackground.jpg);
 background-repeat:repeat-x;
 background-color:#a6a6a6;
@@ -48,28 +48,28 @@ margin:0;
 padding:10px;
 }
 
-.AdmirorListedGallery .ag_info {
+.AG_listed .ag_info {
 text-align:left;
 vertical-align:middle;
 margin:0;
 padding:10px 10px 10px 0;
 }
 
-.AdmirorListedGallery .ag_description {
+.AG_listed .ag_description {
 color:#333;
 font:bold 10px Verdana, Sans;
 margin:0;
 padding:0;
 }
 
-.AdmirorListedGallery .ag_imageStat span {
+.AG_listed .ag_imageStat span {
 padding-right:4px;
 margin-top:7px;
 color:#333;
 font:normal 10px Verdana, Sans;
 }
 
-.AdmirorListedGallery .ag_newTag {
+.AG_listed .ag_newTag {
 background-color:transparent;
 position:absolute;
 z-index:100;
@@ -77,7 +77,7 @@ margin:0;
 padding:0;
 }
 
-.AdmirorListedGallery .ag_newImageTag {
+.AG_listed .ag_newImageTag {
 z-index:100;
 background-color:transparent;
 border-width:0;
