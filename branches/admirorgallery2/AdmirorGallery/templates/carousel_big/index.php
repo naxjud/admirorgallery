@@ -6,7 +6,7 @@ $AG->loadJS('templates/'.$AG->params['template'].'/jquery.jcarousel.js');
 // Form HTML code
 $html = '
 <!-- ======================= Admiror Gallery -->
-<div id="ag_wrap'.$AG->getGalleryID().'" class="ag_wrap">
+<div id="AG_'.$AG->getGalleryID().'" class="AG_'.$AG->params['template'].'">
 <ul id="ag_carousel'.$AG->getGalleryID().'">
 ';
 
