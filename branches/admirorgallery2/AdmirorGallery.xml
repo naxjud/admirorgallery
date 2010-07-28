@@ -11,60 +11,60 @@
 	
 	<params>
 
-	<param type="spacer" default="&lt;b&gt;BASIC SETTINGS&lt;/b&gt;" />
+	<param type="spacer" default="BASIC SETTINGS" />
 
-		<param name="rootFolder" type="text" default="/images/stories/" size="50" label="Images root folder" description="Set the path to the folder you keep your images, relative to your site root" />
+		<param name="rootFolder" type="text" default="/images/stories/" size="50" label="IMAGES ROOT FOLDER" description="IMAGES ROOT FOLDER DESC" />
 
-                <param name="th_height" type="text" default="120" size="5" label="Image thumbnail height" description="Adjust the maximum image thumbnail height in pixels. Thumbnail width is proportional." />
+                <param name="th_height" type="text" default="120" size="5" label="IMAGE THUMBNAIL HEIGHT" description="IMAGE THUMBNAIL HEIGHT DESC" />
 
-		<param name="template" type="folderlist" default="classic" label="Gallery Template" description="Select gallery template" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
+		<param name="template" type="folderlist" default="classic" label="GALLERY TEMPLATE" description="GALLERY TEMPLATE DESC" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
 
-		<param name="popupEngine" type="folderlist" default="slimbox" label="Popup Engine" description="Select popup engine" directory="plugins/content/AdmirorGallery/popup_engine" exclude="" stripext="" hide_none="true" hide_default="true" />
+		<param name="popupEngine" type="folderlist" default="slimbox" label="POPUP ENGINE" description="POPUP ENGINE DESC" directory="plugins/content/AdmirorGallery/popup_engine" exclude="" stripext="" hide_none="true" hide_default="true" />
 
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param type="spacer" default="&lt;b&gt;GALLERY SIZE&lt;/b&gt;" />	
+		<param type="spacer" default="GALLERY FRAME SIZE" />	
 	
-		<param name="frame_width" type="text" default="500" size="5" label="Frame width" description="Adjust frame width in pixels." />
-		<param name="frame_height" type="text" default="300" size="5" label="Frame height" description="Adjust frame height in pixels." />
+		<param name="frame_width" type="text" default="500" size="5" label="GALLERY FRAME WIDTH" description="GALLERY FRAME WIDTH DESC" />
+		<param name="frame_height" type="text" default="300" size="5" label="GALLERY FRAME HEIGHT" description="GALLERY FRAME HEIGHT DESC" />
 				
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param type="spacer" default="&lt;b&gt;NEW IMAGE TAG&lt;/b&gt;" />
+		<param type="spacer" default="NEW IMAGES SETTINGS" />
 		
-		<param name="newImageTag" type="radio" default="1" label="Mark New Images" description="Adding small tag on image thumbnails for images old one week">
+		<param name="newImageTag" type="radio" default="1" label="MARK NEW IMAGES" description="MARK NEW IMAGES DESC">
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>		
 		
-		<param name="newImageTag_days" type="text" default="7" size="5" label="New Image Days Limit" description="Set number of days for which image is consider as new." />
-		<param name="sortImages" type="list" default="1" label="New Images First" description="Sorts the images, so that newly added images go first" >
-			<option value="0">No</option>
+		<param name="newImageTag_days" type="text" default="7" size="5" label="NEW IMAGE DAYS LIMIT" description="NEW IMAGE DAYS LIMIT DESC" />
+		<param name="sortImages" type="radio" default="1" label="NEW IMAGES FIRST" description="NEW IMAGES FIRST DESC" >		
 			<option value="1">Yes</option>
+			<option value="0">No</option>
 		</param>
 				
 		<param name="@spacer" type="spacer" default="" label="" description="" />
-		<param type="spacer" default="&lt;b&gt;ADDITIONAL SETTINGS&lt;/b&gt;" />	
+		<param type="spacer" default="ADDITIONAL SETTINGS" />	
 		
-		<param name="showSignature" type="radio" default="1" label="Show Signature" description="Show Admiror Gallery label on bottom of the gallery" >
+		<param name="showSignature" type="radio" default="1" label="SHOW SIGNATURE" description="SHOW SIGNATURE DESC" >
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		
-		<param name="ignoreError" type="radio" default="1" label="Ignore invalid image" description="Ignores errors if image is corrupted" >
+		<param name="ignoreError" type="radio" default="1" label="IGNORE INVALID IMAGE" description="IGNORE INVALID IMAGE DESC" >
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 
-                <param name="ignoreAllError" type="radio" default="0" label="Ignore notice of recoverable errors" description="If you get Notice: imagecreatefromjpeg() [function.imagecreatefromjpeg] you can stop this notice fro appering on your page" >
+                <param name="ignoreAllError" type="radio" default="0" label="IGNORE NOTICE OF RECOVERABLE ERRORS" description="IGNORE NOTICE OF RECOVERABLE ERRORS DESC" >
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 		
-		<param name="loadjQuery" type="radio" default="1" label="Load jQuery" description="jQuery is required by this plugin. The only reason not to load it is if it has already been loaded manually or by another module or plugin." >
+		<param name="loadjQuery" type="radio" default="1" label="LOAD JQUERY" description="LOAD JQUERY DESC" >
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>
 
-                <param name="jQueryNoConflict" type="radio" default="1" label="Use No Conflict Mode" description="jQuery is known to conflict with other javascript libraries like mootools. No conflict mode helps to resolve these issues and is recommended." >
+                <param name="jQueryNoConflict" type="radio" default="1" label="USE NO CONFLICT MODE" description="USE NO CONFLICT MODE DESC" >
 			<option value="1">Yes</option>
 			<option value="0">No</option>
 		</param>

@@ -18,3 +18,20 @@ div.error a {
 div.error a:hover{
   text-decoration: none;
 }
+
+
+.ag_newTag {
+  background-color:transparent;
+  position:absolute;
+  z-index:100;
+  margin:0;
+  padding:0;
+}
+
+.ag_newImageTag {
+  z-index:100;
+  background-color:transparent;
+  border-width:0;
+  margin:0;
+  padding:0;
+}
