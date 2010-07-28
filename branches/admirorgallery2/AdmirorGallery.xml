@@ -81,6 +81,6 @@
 		<folder>AdmirorGallery</folder>							
 	</files>
     <languages>
-    <language tag="en-GB">en-GB.plg_content_AdmirorGallery.ini</language>
-  </languages>
+            <language tag="en-GB">en-GB.plg_content_AdmirorGallery.ini</language>
+    </languages>
 </install>
