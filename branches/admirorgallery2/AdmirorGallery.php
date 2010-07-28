@@ -21,8 +21,6 @@ class plgContentAdmirorGallery extends JPlugin {
         $gd_exists=true;
         // just startup
         global $mainframe;
-        //Load current language
-        JPlugin::loadLanguage( 'plg_content_AdmirorGallery' ,JPATH_ADMINISTRATOR);
         if (!preg_match("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text)) {
             return;
         }
@@ -34,8 +32,8 @@ class plgContentAdmirorGallery extends JPlugin {
             $AG = new agGallery(new JParameter($plugin->params));
             $AG->setSitePaths(JURI::base(),JPATH_SITE);
             $AG->cleanThumbsFolder();
-            // GD2 Library Check
-            
+            //Load current language
+            JPlugin::loadLanguage( 'plg_content_AdmirorGallery' ,JPATH_ADMINISTRATOR);
             // Version check
             $version = new JVersion();
             if ($version->PRODUCT == "Joomla!" && $version->RELEASE != "1.5") {
