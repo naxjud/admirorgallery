@@ -19,7 +19,7 @@
 
 		<param name="template" type="folderlist" default="classic" label="GALLERY TEMPLATE" description="GALLERY TEMPLATE DESC" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
 
-		<param name="popupEngine" type="folderlist" default="slimbox" label="POPUP ENGINE" description="POPUP ENGINE DESC" directory="plugins/content/AdmirorGallery/popup_engine" exclude="" stripext="" hide_none="true" hide_default="true" />
+		<param name="popupEngine" type="folderlist" default="slimbox" label="POPUP ENGINE" description="POPUP ENGINE DESC" directory="plugins/content/AdmirorGallery/popups" exclude="" stripext="" hide_none="true" hide_default="true" />
 
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param type="spacer" default="GALLERY FRAME SIZE" />	

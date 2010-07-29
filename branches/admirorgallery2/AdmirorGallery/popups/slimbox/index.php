@@ -1,7 +1,8 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
-$this->popupEngine->js[] = 'popup_engine/'.$this->params['popupEngine'].'/js/slimbox2.js';
-$this->popupEngine->css[] = 'popup_engine/'.$this->params['popupEngine'].'/css/slimbox2.css';
+
+$this->loadJS('popups/'.$this->params['popupEngine'].'/js/slimbox2.js');
+$this->loadCSS('popups/'.$this->params['popupEngine'].'/css/slimbox2.css');
 $this->popupEngine->rel = 'lightbox[AdmirorGallery'.$this->getGalleryID().']';
 $this->popupEngine->initCode ='
 jQuery("a[rel^=\'lightbox\']").slimbox({/* Put custom options here */}, null, function(el) {

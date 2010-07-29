@@ -109,20 +109,39 @@ class agGallery extends agHelper {
                 class="'.$cssClass.'">';
     }
     /**
+     * Generates HTML with new image tag
+     * @param <string> $image
+     * @return <html>
+     */
+    function writeNewImageTag($image){
+	$fileStat=stat($this->imagesFolderPhysicalPath.$image);
+	$fileAge=time()-$fileStat['ctime'];
+	if((int)$fileAge < (int)($this->params['newImageTag_days']*24*60*60) && $this->params['newImageTag']==1){
+	  return '<span class="ag_newTag"><img src="'.$this->sitePath.PLUGIN_BASE_PATH.'newTag.gif" class="ag_newImageTag" /></span>';
+	}
+    }
+    /**
      * Generates HTML with Popup engine integration
      * @param <string> $image
      * @return <html>
      */
     function writePopupThumb($image){
         $html='';
-        $html.='<a href="'.$this->imagesFolderPath.$image.'" title="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="'.$this->popupEngine->cssClass.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customTag.' target="_blank">';
-        $fileStat=stat($this->imagesFolderPhysicalPath.$image);
-        $fileAge=time()-$fileStat['ctime'];
-        if((int)$fileAge < (int)($this->params['newImageTag_days']*24*60*60) && $this->params['newImageTag']==1){
-        $html .= '<span class="ag_newTag"><img src="'.$this->sitePath.PLUGIN_BASE_PATH.'newTag.gif" class="ag_newImageTag" /></span>';
-        }
-        $html.='<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$image.'
-            " alt="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="ag_imageThumb"></a>';
+	if($this->popupEngine->customPopupThumb){
+	    $html=$this->popupEngine->customPopupThumb;
+	    $html=str_replace("{imagePath}",$this->imagesFolderPath.$image,$html);
+	    $html=str_replace("{imageDescription}",htmlspecialchars(strip_tags($this->descArray[$image])),$html);
+	    $html=str_replace("{cssClass}",$this->popupEngine->cssClass,$html);
+	    $html=str_replace("{rel}",$this->popupEngine->rel,$html);
+	    $html=str_replace("{customAttr}",$this->popupEngine->customTag,$html);
+	    $html=str_replace("{newImageTag}",$this->writeNewImageTag($image),$html);
+	    $html=str_replace("{thumbImagePath}",$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$image,$html);
+	}else{
+	    $html.='<a href="'.$this->imagesFolderPath.$image.'" title="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="'.$this->popupEngine->cssClass.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customAttr.' target="_blank">';
+	    $html.=$this->writeNewImageTag($image);
+	    $html.='<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$image.'
+		" alt="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="ag_imageThumb"></a>';
+	}
         return $html;
     }
     /**
@@ -134,11 +153,7 @@ class agGallery extends agHelper {
         if (!empty($this->images)){
             foreach ($this->images as $imagesKey => $imagesValue){
                     $html.='<a href="'.$this->imagesFolderPath.$imagesValue.'" title="'.htmlspecialchars(strip_tags($this->descArray[$imagesValue])).'" class="'.$this->popupEngine->cssClass.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customTag.' target="_blank">';
-                    $fileStat=stat($this->imagesFolderPhysicalPath.$imagesValue);
-                    $fileAge=time()-$fileStat['ctime'];
-                    if((int)$fileAge < (int)($this->params['newImageTag_days']*24*60*60) && $this->params['newImageTag']==1){
-                    $html .= '<span class="ag_newTag"><img src="'.$this->sitePath.PLUGIN_BASE_PATH.'newTag.gif" class="ag_newImageTag" /></span>';
-                    }
+                    $html.=$this->writeNewImageTag($imagesValue);
                     $html.='<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$imagesValue.'
                         " alt="'.htmlspecialchars(strip_tags($this->descArray[$imagesValue])).'" class="ag_imageThumb"></a>';
             }
@@ -157,14 +172,7 @@ class agGallery extends agHelper {
      * Initialises Popup engine. Loads popupEngine settings and scripts
      */
     function initPopup(){
-        require ('plugins/content/AdmirorGallery/popup_engine/'.$this->params['popupEngine'].'/index.php');
-        foreach ($this->popupEngine->js as $jsKey => $jsValue){
-            $this->loadJS($jsValue);
-        }
-
-        foreach ($this->popupEngine->css as $cssKey => $cssValue){
-            $this->loadCSS($cssValue);
-        }
+        require ('plugins/content/AdmirorGallery/popups/'.$this->params['popupEngine'].'/index.php');
     }
     /*
      * Includes JavaScript code ad the end of the gallery html

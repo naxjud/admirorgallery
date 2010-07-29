@@ -6,12 +6,12 @@
  */
 class agPopup {
 
-        var $customTag='';
+        var $customAttr='';
         var $rel='';
         var $cssClass='';
         var $jsInclude = '';
         var $initCode='';
-        var $css = array();
-        var $js = array();
+	var $customPopupThumb='';
+
 }
 ?>
