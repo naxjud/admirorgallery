@@ -10,8 +10,6 @@ class agPopup {
         var $rel='';
         var $cssClass='';
         var $jsInclude = '';
-        var $initCode='';
 	var $customPopupThumb='';
-
 }
 ?>
