@@ -76,6 +76,7 @@ function loaded() {
         setupOuterGB();
     }
 }
+
 </script>
 <script>
 var loading = AJS.$('loading');
@@ -83,15 +84,10 @@ var gb_type = GB.type;
 var gb_url = GB.url;
 
 //Start loading in the iframe
-if(gb_type == "page") {
-  document.write('<iframe id="GB_frame" src="' + gb_url + '" frameborder="0"></iframe>');
-}
-else {
-  var img_holder = new Image();
-   img_holder.onload=loaded;
-  img_holder.src = gb_url;
-  document.write('<img id="GB_frame" src="' + gb_url + '">');
-}
+var img_holder = new Image();
+img_holder.onload=loaded;
+img_holder.src = gb_url;
+document.write('<img id="GB_frame" src="' + gb_url + '">');
 var frame = AJS.$('GB_frame');
 </script>
 
