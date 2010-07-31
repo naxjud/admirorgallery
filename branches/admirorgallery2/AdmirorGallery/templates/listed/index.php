@@ -1,8 +1,8 @@
 <?php
-$AG->initPopup();
-$AG->loadCSS('templates/'.$AG->params['template'].'/listed.css');
+$html=$AG->initPopup();
+$AG->loadCSS($AG->currTemplateRoot.'listed.css');
 // Form HTML code
-$html = '<!-- ======================= Admiror Gallery -->
+$html.='<!-- ======================= Admiror Gallery -->
 <div id="AG_'.$AG->getGalleryID().'" class="AG_'.$AG->params['template'].'">
 ';
 foreach ($AG->images as $imageKey => $imageName)

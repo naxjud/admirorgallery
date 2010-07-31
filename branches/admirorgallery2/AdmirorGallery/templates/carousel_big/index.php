@@ -1,7 +1,7 @@
 <?php
 
-$AG->loadCSS('templates/'.$AG->params['template'].'/jquery.jcarousel.css');
-$AG->loadJS('templates/'.$AG->params['template'].'/jquery.jcarousel.js');
+$AG->loadCSS($AG->currTemplateRoot.'jquery.jcarousel.css');
+$AG->loadJS($AG->currTemplateRoot.'jquery.jcarousel.js');
 
 // Form HTML code
 $html = '

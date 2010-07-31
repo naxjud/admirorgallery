@@ -8,8 +8,11 @@ class agPopup {
 
         var $customAttr='';
         var $rel='';
-        var $cssClass='';
+        var $className='';
         var $jsInclude = '';
+        var $initCode='';
 	var $customPopupThumb='';
+	var $endCode='';
+
 }
 ?>
