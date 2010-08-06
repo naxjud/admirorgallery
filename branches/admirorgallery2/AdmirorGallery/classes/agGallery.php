@@ -32,6 +32,8 @@ class agGallery extends agHelper {
     var $popupEngine;
     var $currPopupRoot='';
     var $currTemplateRoot='';
+    // Virtual path. Example: "http://www.mysite.com/plugins/content/AdmirorGallery/"
+    var $pluginPath = '';
     private $errors = array();
     private $doc = null;
     private $descArray = array ();
@@ -211,6 +213,7 @@ class agGallery extends agHelper {
         $this->loadImageFiles();
         $this->currPopupRoot = 'popups/'.$this->params['popupEngine'].'/';
         $this->currTemplateRoot = 'templates/'.$this->params['template'].'/';
+        $this->pluginPath = $this->sitePath.PLUGIN_BASE_PATH;
     }
     // Clears obsolete thumbnail folders
     function cleanThumbsFolder(){

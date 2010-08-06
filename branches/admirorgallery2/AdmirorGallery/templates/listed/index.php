@@ -1,13 +1,22 @@
 <?php
+
+// Joomla security code
+defined('_JEXEC') or die('Restricted access');
+
+// Reset $html variable from previous entery and load it with scripts needed for Popups
 $html=$AG->initPopup();
+
+// Load CSS from current template folder
 $AG->loadCSS($AG->currTemplateRoot.'listed.css');
-// Form HTML code
+
+// Form HTML code, with unique ID and Class Name
 $html.='<!-- ======================= Admiror Gallery -->
 <div id="AG_'.$AG->getGalleryID().'" class="AG_'.$AG->params['template'].'">
 ';
 foreach ($AG->images as $imageKey => $imageName)
 {
-// Load values into $AG->imageInfo for target image
+
+// Loads values into $AG->imageInfo array for target image
 $AG->getImageInfo($imageName);
 
 $html .= '
@@ -29,8 +38,13 @@ $html .= '
     </td></tr>
     </td></tr></tbody></table>
     </td></tr></tbody></table>';
+
 }
+
 $html .='<!-- Admiror Gallery --></div>';
+
+// Loads scripts needed for Popups, after gallery is created
 $html.=$AG->endPopup();
+
 ?>
 
