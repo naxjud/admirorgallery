@@ -61,7 +61,7 @@
 			<!-- Note that all & must be escaped to &amp; for the file to be valid XML and be parsed by the installer -->
 			<menu link="option=com_admirorgallery&amp;task=default">Control Panel</menu>
 			<menu link="option=com_admirorgallery&amp;task=templates">Templates</menu>
-			<menu link="option=com_admirorgallery&amp;task=popups">Popup Engines</menu>
+			<menu link="option=com_admirorgallery&amp;task=popups">Popups</menu>
 			<menu link="option=com_admirorgallery&amp;task=descriptions">Descriptions</menu>
 		</submenu>
 		

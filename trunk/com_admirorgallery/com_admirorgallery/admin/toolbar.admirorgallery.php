@@ -18,6 +18,8 @@ class TOOLBAR_admirorgallery{
 			 break;
 			 case 'popups':
 				JToolBarHelper::title( JText::_( 'Popups' ), 'popupsThemes' );
+				JToolBarHelper :: custom( 'install', 'install','install', JText::_( 'Install' ), false, false );
+				JToolBarHelper :: custom( 'remove', 'remove','remove', JText::_( 'Remove' ), false, false );
 				JToolBarHelper :: custom( 'manual', 'manual','manual', JText::_( 'Help' ), false, false );
 			 break;
 			 case 'descriptions':

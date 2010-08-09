@@ -37,7 +37,7 @@ $link = 'index.php?option=com_admirorgallery&task=templates';
 quickiconButton( $link, 'icon-48-templates.png', JText::_('Templates') );
 
 $link = 'index.php?option=com_admirorgallery&task=popups';
-quickiconButton( $link, 'icon-48-popupsThemes.png', JText::_('Popups Engines') );
+quickiconButton( $link, 'icon-48-popupsThemes.png', JText::_('Popups') );
 
 $link = 'index.php?option=com_admirorgallery&task=descriptions';
 quickiconButton( $link, 'icon-48-descriptions.png', JText::_('Descriptions') );

@@ -19,8 +19,8 @@ $bytes = array('B','KB','MB','GB','TB');
 }
 
 function ag_imageInfo($imageURL, $imageURLPHP){
-
-  list($width, $height, $type, $attr) = getimagesize($imageURL);
+    
+  list($width, $height, $type, $attr) = getimagesize(str_replace(' ','%20',$imageURL));
 
   $types = Array(
           1 => 'GIF',

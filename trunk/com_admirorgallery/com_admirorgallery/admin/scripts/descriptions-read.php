@@ -8,7 +8,7 @@
 $ag_url_php = urldecode($_POST['ag_url_php']);
 $ag_url_desc = $_POST['ag_url_desc'];
 $ag_lang_available = $_POST['ag_lang_available'];
-$ag_lang_availableArray = split(",",$ag_lang_available);
+$ag_lang_availableArray = explode(",",$ag_lang_available);
 
 require_once ($ag_url_php.'/administrator/components/com_admirorgallery/scripts/descriptions-lineRender.php');
 
