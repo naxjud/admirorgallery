@@ -3,7 +3,7 @@
 $ag_desc_content=$_POST["ag_desc_contentArray"];
 $ag_url_desc=$_POST["ag_url_desc"];
 
-$ag_desc_contentArray = split(",",$ag_desc_content);
+$ag_desc_contentArray = explode(",",$ag_desc_content);
 
 $ag_content = "";
 

@@ -148,7 +148,18 @@ foreach($ag_lang_available as $ag_lang_availableKey => $ag_lang_availableValue){
 }
 
 $doc->addScriptDeclaration('  
-			jQuery("#ag_preview img").attr("src",ag_url_img);
+jQuery.ajax({
+  type: "POST",
+  url: "components/com_admirorgallery/scripts/descriptions-getThumb.php",
+  data: "ag_url_img="+ag_url_img+"&ag_url_html='.urlencode(JURI::root()).'&ag_url_php='.urlencode(JPATH_SITE).'",
+  async: true,
+  success: function(msg){
+	   jQuery("#ag_preview img").attr("src",msg);
+//alert(msg);
+  }
+});
+
+			//jQuery("#ag_preview img").attr("src",ag_url_img);
 			jQuery("#ag_imgDesc_info").html("<h2>"+ag_extractFilename(ag_url_img)+"</h2>");
 
 			jQuery.ajax({
