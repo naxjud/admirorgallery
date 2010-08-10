@@ -60,6 +60,10 @@ if(count($ag_matchCheck)>0){
 
 }
 
+// Add check results for existing description
+if(file_exists($ag_url_desc)){
+  echo "descTrue";
+}
 
 
 

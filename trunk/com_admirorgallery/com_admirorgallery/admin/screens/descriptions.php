@@ -67,6 +67,35 @@ function submitbutton(pressbutton) {
 			});
           }
      break;
+      case "removeDesc":
+	  jQuery.ajax({
+		type: "POST",
+		url: "'.JURI::root().'administrator/components/com_admirorgallery/scripts/descriptions-remove.php",
+		data: "ag_url_desc="+jQuery("#ag_form_url_desc").val(),
+		timeout: 3000,
+		async: false,
+		success: function(msg){
+			switch(msg){
+			      case "removed":
+				  ag_showMessage("'.JText::_( "Image Description removed.").'");
+				  jQuery("a[alt="+jQuery("#ag_form_url_desc").val()+"]").parent().find("img").remove();
+				  jQuery("a[alt="+jQuery("#ag_form_url_desc").val()+"]").attr("rel","descFalse");
+				  jQuery(".ag_inputText").each(function(index) {
+				    jQuery(this).val("");
+				  });
+				  jQuery(".icon-32-removeDesc").attr("class","icon-32-removeDesc ag_toolbar_off");
+			      break;
+			      case "noDesc":
+				  //ag_showMessage("<span class=\"ag_errorMessage\">'.JText::_( "Image Description not found.").'</span>");
+			      break;      
+			      defaut:
+				  ag_showMessage("<span class=\"ag_errorMessage\">'.JText::_( "Error occurred. Image Description not removed.").'</span>");
+			      }
+
+		}
+	});
+
+      break;
      }
      
 }
@@ -122,7 +151,7 @@ $doc->addScriptDeclaration('
 	jQuery(function(){
 
 		jQuery(".icon-32-description").attr("class","icon-32-description ag_toolbar_off");
-
+		jQuery(".icon-32-removeDesc").attr("class","icon-32-removeDesc ag_toolbar_off");
 
 		jQuery("#ag_nav > ul").treeview({
 			animated: "slow",
@@ -148,18 +177,17 @@ foreach($ag_lang_available as $ag_lang_availableKey => $ag_lang_availableValue){
 }
 
 $doc->addScriptDeclaration('  
-jQuery.ajax({
-  type: "POST",
-  url: "components/com_admirorgallery/scripts/descriptions-getThumb.php",
-  data: "ag_url_img="+ag_url_img+"&ag_url_html='.urlencode(JURI::root()).'&ag_url_php='.urlencode(JPATH_SITE).'",
-  async: true,
-  success: function(msg){
-	   jQuery("#ag_preview img").attr("src",msg);
-//alert(msg);
-  }
-});
 
-			//jQuery("#ag_preview img").attr("src",ag_url_img);
+			jQuery.ajax({
+			  type: "POST",
+			  url: "components/com_admirorgallery/scripts/descriptions-getThumb.php",
+			  data: "ag_url_img="+ag_url_img+"&ag_url_html='.urlencode(JURI::root()).'&ag_url_php='.urlencode(JPATH_SITE).'",
+			  async: true,
+			  success: function(msg){
+			    jQuery("#ag_preview img").attr("src",msg);
+			  }
+			});
+			
 			jQuery("#ag_imgDesc_info").html("<h2>"+ag_extractFilename(ag_url_img)+"</h2>");
 
 			jQuery.ajax({
@@ -191,10 +219,20 @@ jQuery.ajax({
 			      var msgArray=msg.split("[split]");
 			      var msgArrayLength=msgArray.length-1;
 			      for(i=0;i<msgArrayLength;i+=3){
-				   jQuery("#ag_descData").append("<span class=\"ag_label_wrap\">'.JText::_( "Name").': <span class=\"ag_label\">"+msgArray[i]+"</span>");
-				   jQuery("#ag_descData").append("<span class=\"ag_label_wrap\">'.JText::_( "Tag").': <span class=\"ag_label\">"+msgArray[i+1]+"</span>");
-				   jQuery("#ag_descData").append("<textarea class=\"ag_inputText\" id=\"ag_"+msgArray[i+1]+"\">"+msgArray[i+2]+"</textarea>");
-			      }					    
+				    jQuery("#ag_descData").append("<div class=\"t\"><div class=\"t\"><div class=\"t\"></div></div></div>");
+				    jQuery("#ag_descData").append("<div class=\"m mID"+i+"\"></div>");
+				   jQuery("#ag_descData .mID"+i+"").append("<span class=\"ag_nameLabel\">"+msgArray[i]+"</span>");
+				   jQuery("#ag_descData .mID"+i+"").append("<span class=\"ag_tagLabel\">"+msgArray[i+1]+"</span>");
+				   jQuery("#ag_descData .mID"+i+"").append("<textarea class=\"ag_inputText\" id=\"ag_"+msgArray[i+1]+"\">"+msgArray[i+2]+"</textarea>");
+				    jQuery("#ag_descData").append("<div class=\"b\"><div class=\"b\"><div class=\"b\"></div></div></div><p></p>");
+			      }	
+
+			      if(msgArray[msgArrayLength] == "descTrue"){
+				      jQuery(".icon-32-removeDesc").attr("class","icon-32-removeDesc");
+			      }else{
+				      jQuery(".icon-32-removeDesc").attr("class","icon-32-removeDesc ag_toolbar_off");
+			      }	
+			    
 		    }
 	       });
 			
@@ -211,7 +249,7 @@ jQuery.ajax({
 	jQuery.noConflict();
 ');
 
-echo '<table border="0" cellspacing="0" cellpadding="0"><tbody><tr><td id="ag_nav"><h3>'.JText::_( "Folder").': images /</h3>'."\n";
+echo '<table border="0" cellspacing="0" cellpadding="0" width="100%"><tbody><tr><td id="ag_nav"><h3>'.JText::_( "Folder").': images /</h3>'."\n";
 
 ag_renderFiles(JPATH_SITE.'/images',JURI::root().'images');
 
