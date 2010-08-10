@@ -155,12 +155,12 @@ foreach ($ag_resourceManager_installed as $ag_resourceManager_Key => $ag_resourc
 		<td align="center">
 		';
 
-		if ($row->checked_out && $row->checked_out != $user->id) {
-		echo '&nbsp;';
-		} else {
+		//if ($row->checked_out && $row->checked_out != $user->id) {
+		//echo '&nbsp;';
+		//} else {
 		echo '
 		<input type="checkbox" id="cb'.$ag_resourceManager_Key.'" name="cid[]" value="'.$ag_resourceManager_id.'" />';
-		}
+		//}
 
 		echo '
 		</td>
