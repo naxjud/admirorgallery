@@ -137,9 +137,9 @@ foreach ($ag_resourceManager_installed as $ag_resourceManager_Key => $ag_resourc
 		$ag_resourceManager_author = JText::_( "Unknown author");
 		$ag_resourceManager_version = JText::_( "Unknown version");
 		$ag_resourceManager_description = JText::_( "No descrition");
-		if(JFIle::exists(JPATH_SITE.'/plugins/content/AdmirorGallery/'.$ag_resourceManager_screen.'/'.$ag_resourceManager_id.'/templateDetails.xml')){// N U
+		if(JFIle::exists(JPATH_SITE.'/plugins/content/AdmirorGallery/'.$ag_resourceManager_screen.'/'.$ag_resourceManager_id.'/details.xml')){// N U
 			$ag_resourceManager_xml =& JFactory::getXMLParser( 'simple' );
-			$ag_resourceManager_xml->loadFile( JPATH_SITE.'/plugins/content/AdmirorGallery/'.$ag_resourceManager_screen.'/'.$ag_resourceManager_id.'/templateDetails.xml' );// N U
+			$ag_resourceManager_xml->loadFile( JPATH_SITE.'/plugins/content/AdmirorGallery/'.$ag_resourceManager_screen.'/'.$ag_resourceManager_id.'/details.xml' );// N U
 			$ag_resourceManager_name = $ag_resourceManager_xml->document->name[0]->data();
 			$ag_resourceManager_creationDate = $ag_resourceManager_xml->document->creationDate[0]->data();
 			$ag_resourceManager_author = $ag_resourceManager_xml->document->author[0]->data();
@@ -164,7 +164,7 @@ foreach ($ag_resourceManager_installed as $ag_resourceManager_Key => $ag_resourc
 
 		echo '
 		</td>
-		<td>
+		<td style="white-space:nowrap;">
 
 		<span class="editlinktip hasTip" title="'.$ag_resourceManager_id.'::<img border=&quot;1&quot; src=&quot;'.JURI::root().'plugins/content/AdmirorGallery/templates/'.$ag_resourceManager_id.'/preview.jpg'.'&quot; name=&quot;imagelib&quot; alt=&quot;&quot; width=&quot;206&quot; height=&quot;145&quot; />">
 		<a href="#" class="ag_title_link">
@@ -173,16 +173,16 @@ foreach ($ag_resourceManager_installed as $ag_resourceManager_Key => $ag_resourc
 		</span>
 	
 		</td>     
-		<td>
+		<td style="white-space:nowrap;">
 			'.$ag_resourceManager_id.'
 		</td>  
 		<td>
 			'.$ag_resourceManager_description.'
 		</td> 
-		<td align="center">
+		<td align="center" style="white-space:nowrap;">
 			'.$ag_resourceManager_version.'
 		</td>    
-		<td>
+		<td style="white-space:nowrap;">
 			'.$ag_resourceManager_creationDate.'
 		</td>  
 		<td>
