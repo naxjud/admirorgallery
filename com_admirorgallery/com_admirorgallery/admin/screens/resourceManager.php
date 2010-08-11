@@ -94,8 +94,9 @@ jQuery.noConflict();
 
 // Read folder with gallery templates
 $ag_resourceManager_installed = JFolder::folders(JPATH_SITE.'/plugins/content/AdmirorGallery/'.$ag_resourceManager_screen);// N U
-sort($ag_resourceManager_installed);
-
+if($ag_resourceManager_installed){
+    sort($ag_resourceManager_installed);
+}
 // Rendering the form and table grid
 echo '<script type="text/javascript">jQuery("#ag_screenWrapper").remove();</script>
 <div id="ag_screenWrapper">
