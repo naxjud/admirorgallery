@@ -170,7 +170,7 @@ class agGallery extends agHelper {
      * @return <string> 
      */
     function writeDescription($imageName){
-        return $this->descArray[$imageName];
+        return htmlspecialchars(strip_tags($this->descArray[$imageName]));
     }
     /*
      * Initialises Popup engine. Loads popupEngine settings and scripts
