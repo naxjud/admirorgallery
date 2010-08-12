@@ -10,7 +10,7 @@ jimport('joomla.language.language');
 $doc = &JFactory::getDocument();
 $doc->addStyleSheet(JURI::base().'components/com_admirorgallery/css/template.css');
 $doc->addScript(JURI::base().'components/com_admirorgallery/scripts/jquery.js');
-$doc->addScript(JURI::base().'components/com_admirorgallery/jquery-treeview/jquery.treeview.js');
+$doc->addScript(JURI::base().'components/com_admirorgallery/jquery-treeview/jquery.treeview.pack.js');
 $doc->addScript(JURI::base().'components/com_admirorgallery/jquery-treeview/lib/jquery.cookie.js');
 $doc->addStyleSheet(JURI::base().'components/com_admirorgallery/jquery-treeview/jquery.treeview.css');
 
