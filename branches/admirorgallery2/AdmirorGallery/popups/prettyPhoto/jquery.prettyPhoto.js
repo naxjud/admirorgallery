@@ -96,7 +96,7 @@
 		windowHeight = jQuery(window).height(), windowWidth = jQuery(window).width();
 
 		//Gallery specific
-		//setPosition = 0,
+		//setPosition = 0;
                  _blockClose= false;
                  _blockEvent= false;
 
@@ -123,6 +123,7 @@
 					jQuery.prettyPhoto.close();
 					break;
 			};
+                        _blockEvent=false;
                         }
                 });
 	
@@ -165,7 +166,6 @@
 		* @param description {String,Array} The description to be displayed with the picture, can also be an array containing all the descriptions.
 		*/
 		jQuery.prettyPhoto.open = function(gallery_images,gallery_titles,gallery_descriptions) {
-                        _blockClose = true;
                         // To fix the bug with IE select boxes
 			if(jQuery.browser.msie && jQuery.browser.version == 6){
 				jQuery('select').css('visibility','hidden');
@@ -251,61 +251,6 @@
 					
 						imgPreloader.src = images[setPosition];
 					break;
-				
-					case 'youtube':
-						correctSizes = _fitToViewport(movie_width,movie_height); // Fit item to viewport
-
-						movie = 'http://www.youtube.com/v/'+grab_param('v',images[setPosition]);
-						if(settings.autoplay) movie += "&autoplay=1";
-					
-						toInject = settings.flash_markup.replace(/{width}/g,correctSizes['width']).replace(/{height}/g,correctSizes['height']).replace(/{wmode}/g,settings.wmode).replace(/{path}/g,movie);
-					break;
-				
-					case 'vimeo':
-						correctSizes = _fitToViewport(movie_width,movie_height); // Fit item to viewport
-					
-						movie_id = images[setPosition];
-						movie = 'http://vimeo.com/moogaloop.swf?clip_id='+ movie_id.replace('http://vimeo.com/','');
-						if(settings.autoplay) movie += "&autoplay=1";
-				
-						toInject = settings.flash_markup.replace(/{width}/g,correctSizes['width']).replace(/{height}/g,correctSizes['height']).replace(/{wmode}/g,settings.wmode).replace(/{path}/g,movie);
-					break;
-				
-					case 'quicktime':
-						correctSizes = _fitToViewport(movie_width,movie_height); // Fit item to viewport
-						correctSizes['height']+=15;correctSizes['contentHeight']+=15;correctSizes['containerHeight']+=15; // Add space for the control bar
-				
-						toInject = settings.quicktime_markup.replace(/{width}/g,correctSizes['width']).replace(/{height}/g,correctSizes['height']).replace(/{wmode}/g,settings.wmode).replace(/{path}/g,images[setPosition]).replace(/{autoplay}/g,settings.autoplay);
-					break;
-				
-					case 'flash':
-						correctSizes = _fitToViewport(movie_width,movie_height); // Fit item to viewport
-					
-						flash_vars = images[setPosition];
-						flash_vars = flash_vars.substring(images[setPosition].indexOf('flashvars') + 10,images[setPosition].length);
-
-						filename = images[setPosition];
-						filename = filename.substring(0,filename.indexOf('?'));
-					
-						toInject =  settings.flash_markup.replace(/{width}/g,correctSizes['width']).replace(/{height}/g,correctSizes['height']).replace(/{wmode}/g,settings.wmode).replace(/{path}/g,filename+'?'+flash_vars);
-					break;
-				
-					case 'iframe':
-						correctSizes = _fitToViewport(movie_width,movie_height); // Fit item to viewport
-				
-						frame_url = images[setPosition];
-						frame_url = frame_url.substr(0,frame_url.indexOf('iframe')-1);
-				
-						toInject = settings.iframe_markup.replace(/{width}/g,correctSizes['width']).replace(/{height}/g,correctSizes['height']).replace(/{path}/g,frame_url);
-					break;
-				
-					case 'inline':
-						// to get the item height clone it, apply default width, wrap it in the prettyPhoto containers , then delete
-						myClone = $(images[setPosition]).clone().css({'width':settings.default_width}).wrapInner('<div id="pp_full_res"><div class="pp_inline clearfix"></div></div>').appendTo($('body'));
-						correctSizes = _fitToViewport($(myClone).width(),$(myClone).height());
-						$(myClone).remove();
-						toInject = settings.inline_markup.replace(/{content}/g,$(images[setPosition]).html());
-					break;
 				};
 
 				if(!imgPreloader){
@@ -315,7 +260,6 @@
 					_showContent();
 				};
 			});
-                        _blockEvent=false;
 		};
 		
 		/**
@@ -335,10 +279,10 @@
 			};
 
 			// Allow the resizing of the images
-			if(!doresize) doresize = true;
+			//if(!doresize) doresize = true;
 
 			_hideContent(function(){jQuery.prettyPhoto.open(images,titles,descriptions)});
-			$('a.pp_expand,a.pp_contract').fadeOut(settings.animationSpeed);
+			//$('a.pp_expand,a.pp_contract').fadeOut(settings.animationSpeed);
 
 		};
 		
@@ -411,7 +355,7 @@
 				};
 			
 				// Fade the resizing link if the image is resized
-				if(correctSizes['resized']) $('a.pp_expand,a.pp_contract').fadeIn(settings.animationSpeed);
+				//if(correctSizes['resized']) $('a.pp_expand,a.pp_contract').fadeIn(settings.animationSpeed);
 				_blockClose = false;
 				// Callback!
 				settings.changepicturecallback();
