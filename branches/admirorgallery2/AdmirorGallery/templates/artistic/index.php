@@ -18,7 +18,7 @@ $html.='<!-- ======================= Admiror Gallery -->
 // Loops over the array of images inside target gallery folder, adding wrapper with SPAN tag and write Popup thumbs inside this wrapper
 foreach ($AG->images as $imageKey => $imageName)
 {
-	// Loads values into $AG->imageInfo array for target image
+    // Loads values into $AG->imageInfo array for target image
     $AG->getImageInfo($imageName);
     $html .= '<span class="ag_thumb">';
     $html .= $AG->writePopupThumb($imageName);
