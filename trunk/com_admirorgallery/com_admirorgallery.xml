@@ -43,6 +43,7 @@
 		<folder>jquery-treeview</folder>
 		<folder>screens</folder>
 		<folder>scripts</folder>
+		<folder>assets</folder>
 	    </files>
 	    
 	    <!-- Administration Language File Copy Section -->
