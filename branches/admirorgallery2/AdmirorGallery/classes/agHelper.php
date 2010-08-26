@@ -228,6 +228,13 @@ class agHelper{
         }
 
         @$dst_img = imagecreatetruecolor($thumb_w, $thumb_h);
+		
+		// PNG THUMBS WITH ALPHA PATCH
+        if (preg_match("/png/i", $original_file)) {
+        // Turn off alpha blending and set alpha flag
+            imagealphablending($dst_img, false);
+            imagesavealpha($dst_img, true);
+        }
 
         @imagecopyresampled($dst_img, $src_img, 0, 0, 0, 0, $thumb_w, $thumb_h, $old_x, $old_y);
 
