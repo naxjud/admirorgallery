@@ -126,6 +126,11 @@
     padding:10px;
 }
 
+#ag_preview .filePreview
+{
+    width:200px;
+}
+
 #ag_imgDesc_wrap
 {
      padding-left:20px;
@@ -250,6 +255,25 @@ div.ag_preview_imgWrap img
 
 .icon-32-removeDesc    { 
         background-image: url(../images/toolbar/icon-32-removeDesc.png); 
+}
+
+.icon-32-bookmarkAdd    { 
+        background-image: url(../images/toolbar/icon-32-bookmarkAdd.png); 
+	background-position: left top;
+}
+
+.icon-32-bookmarkRemove    { 
+        background-image: url(../images/toolbar/icon-32-bookmarkRemove.png); 
+}
+
+.icon-32-folderNew    { 
+        background-image: url(../images/toolbar/icon-32-folderNew.png); 
+	background-position: left top;
+}
+
+.icon-32-rename    { 
+        background-image: url(../images/toolbar/icon-32-rename.png); 
+	background-position: left top;
 }
 
 .ag_toolbar_off    { 

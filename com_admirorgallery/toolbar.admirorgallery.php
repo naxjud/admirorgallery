@@ -22,8 +22,16 @@ class TOOLBAR_admirorgallery{
 			 break;
 			 case 'descriptions':
 				JToolBarHelper::title( JText::_( 'Descriptions' ), 'descriptions.png' );
-				JToolBarHelper :: custom( 'description', 'description','description', JText::_( 'Create' ), false, false );
-				JToolBarHelper :: custom( 'removeDesc', 'removeDesc','removeDesc', JText::_( 'Remove' ), false, false );
+				JToolBarHelper :: custom( 'bookmarkAdd', 'bookmarkAdd','bookmarkAdd', JText::_( 'Add Gallery' ), false, false );
+				JToolBarHelper :: custom( 'bookmarkRemove', 'bookmarkRemove','bookmarkRemove', JText::_( 'Remove Gallery' ), false, false );
+				JToolBarHelper :: divider();
+				JToolBarHelper :: custom( 'folderNew', 'folderNew','folderNew', JText::_( 'New Folder' ), false, false );
+				JToolBarHelper :: custom( 'upload', 'upload','upload', JText::_( 'Upload' ), false, false );
+				JToolBarHelper :: custom( 'rename', 'rename','rename', JText::_( 'Rename' ), false, false );
+				JToolBarHelper :: custom( 'remove', 'remove','remove', JText::_( 'Delete' ), false, false );
+				JToolBarHelper :: divider();
+				JToolBarHelper :: custom( 'description', 'description','description', JText::_( 'Save Desc' ), false, false );
+				JToolBarHelper :: custom( 'removeDesc', 'removeDesc','removeDesc', JText::_( 'Remove Desc' ), false, false );
 			 break;
 			default:
 				JToolBarHelper::title( JText::_( 'Control Panel' ), 'default.png' );

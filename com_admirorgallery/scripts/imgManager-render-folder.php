@@ -1,9 +1,10 @@
 <?php
 
 // GET POST VALUES
-$ag_phpPath = $_POST["ag_phpPath"];
+$ag_phpPath = urldecode($_POST["ag_phpPath"]);
 $ag_htmlPath = $_POST["ag_htmlPath"];
-
+$ag_phpRoot = $_POST["ag_phpRoot"];
+$ag_siteRoot = $_POST["ag_siteRoot"];
 // SET VALID IMAGE EXTENSION
 $ag_ext_valid = array ("jpg","jpeg","gif","png");
 
@@ -36,7 +37,7 @@ foreach($imagesFolder_folders as $key => $value){
 	</a>
 
 	<div class="ag_preview_controlsWrap">
-		<input type="checkbox" value="stories" name="ag_preview_CBOX[]">'.$value.'
+		<input type="checkbox" value="stories" name="ag_preview_CBOX">'.$value.'
 	</div>
 
     </div>
@@ -49,7 +50,8 @@ foreach($imagesFolder_files as $key => $value){
      // GET EXTENSION
      $filename = strtolower(basename($value)) ; 
      $ag_file_ext = explode(".", $filename) ;
-     $n = count($ag_file_ext)-1; 
+     $n = count($ag_file_ext)-1;
+     $descName = $ag_file_ext[0].'.desc';
      $ag_file_ext = $ag_file_ext[$n];  
 
      // FILTER IMAGES
@@ -58,9 +60,18 @@ foreach($imagesFolder_files as $key => $value){
 	  echo '
 	  <div class="ag_preview_itemWrap">
 
-	      <a rel="'.$ag_phpPath.'/'.$value.'" href="'.$ag_htmlPath.'/'.$value.'" class="ag_preview_itemLink ag_preview_fileLink">
+	      <a rel="'.$ag_phpPath.'/'.$value.'" href="'.$ag_htmlPath.'/'.$value.'" alt="'.$ag_phpPath.'/'.$descName.'"  class="ag_preview_itemLink ag_preview_fileLink">
 		  <div align="center" class="ag_preview_imgWrap">
-		      <img src="'.$ag_htmlPath.'/'.$value.'" />
+		    ';
+
+	  // USE THUMB IF EXISTS ELSE USE REAL IMAGE
+	  if(file_exists($ag_phpRoot.'plugins/content/AdmirorGallery/thumbs/'.basename($ag_phpPath).'/'.$value)){
+	       echo '<img src="'.$ag_siteRoot.'plugins/content/AdmirorGallery/thumbs/'.basename($ag_phpPath).'/'.$value.'" />';
+	  }else{
+	       echo '<img src="'.$ag_htmlPath.'/'.$value.'" />';
+	  }
+
+	  echo '
 		  </div>
 	      </a>
 
