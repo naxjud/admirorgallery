@@ -128,7 +128,7 @@ function ag_folderSelected(item,itemType)
 	  type: "POST",
 	  url: "components/com_admirorgallery/scripts/imgManager-render-folder.php",
 	  data: "ag_phpPath="+jQuery(item).attr("rel")+"&ag_htmlPath="+jQuery(item).attr("href")+"&ag_phpRoot='.JPATH_SITE.'/&ag_siteRoot='.JURI::root().'",
-	  async: true,
+	  async: false,
 	  success: function(msg){
 	       jQuery("#ag_preview").append(
 		    msg
@@ -164,7 +164,6 @@ jQuery(function(){
 	e.preventDefault();        
 	ag_itemSelected(jQuery(this),"file",jQuery(this).attr("alt"));
     });
-
 });//jQuery(function()
 
 jQuery.noConflict();
@@ -206,6 +205,7 @@ function ag_renderFiles($imagesFolder_phpPath,$imagesFolder_htmlPath){
 // RENDER SCREEN STRUCTURE
 echo '
 <script language="javascript" type="text/javascript">
+jQuery.expr[\':\'].icontains = function(obj, index, meta, stack){ return (obj.textContent || obj.innerText || jQuery(obj).text() || \'\').toLowerCase().indexOf(meta[3].toLowerCase()) >= 0; };
 function submitbutton(pressbutton) {
 
      switch(pressbutton)
@@ -401,6 +401,7 @@ function submitbutton(pressbutton) {
 			 default:
 			      ag_showMessage("'.JText::_("Selected item renamed.").'","notice");
 			      // REFRESHING TREE VIEW AND PREVIEW. PATCH FOR TREE VIEW NOT GOOD
+                              //jQuery(".ag_preview_controlsWrap:icontains(\'bun.jpg\')").html(\'<input type="checkbox" name="ag_preview_CBOX[]" value="stories">\'+jQuery("#setChangeNameTo").val());
 			      ag_folderSelected(jQuery("#ag_treeView a[href$="+jQuery("#ag_item_html").val()+"]"),"folder");
 			 }
 		    }
@@ -435,6 +436,7 @@ function submitbutton(pressbutton) {
 			 default:
 			      ag_showMessage("'.JText::_("Selected items deleted.").'","notice");
 			      // REFRESHING TREE VIEW AND PREVIEW. PATCH FOR TREE VIEW NOT GOOD
+jQuery("#ag_treeView").treeview();
 			      ag_folderSelected(jQuery("#ag_treeView a[href$="+jQuery("#ag_item_html").val()+"]"),"folder");
 			 }
 		    }
