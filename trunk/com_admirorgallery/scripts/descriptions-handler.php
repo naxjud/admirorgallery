@@ -258,7 +258,7 @@ switch ($case){
 	       if(!empty($ag_preview_checked_array)){
 		    foreach($ag_preview_checked_array as $key => $value){
 			 // DELETE
-			 ag_sureRemoveDir($value, true);
+			// ag_sureRemoveDir($value, true);
 		    }
 	       }
 
