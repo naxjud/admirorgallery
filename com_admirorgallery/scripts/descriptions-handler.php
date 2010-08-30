@@ -15,6 +15,8 @@ if(!is_dir($dir)){unlink($dir); return;}
 }
 
 $case = $_POST["ag_desc_action"];
+$webSafe=Array("/"," ",":",".","+");
+
 switch ($case){
     case "description":{
         $ag_desc_content=stripslashes(htmlspecialchars($_POST["ag_desc_content"]));
@@ -188,7 +190,6 @@ switch ($case){
 	       }
 
 	       // CREATE WEBSAFE TITLES
-	       $webSafe=Array("/"," ",":",".","+");
 	       foreach($webSafe as $key => $value){
 		    $setChangeNameTo = str_replace($value,"-",$setChangeNameTo);
 	       }	
@@ -210,7 +211,39 @@ switch ($case){
         break;
     }
     case "rename" :{
-	  echo 'Rename';
+	  $ag_preview_checked = $_POST['ag_preview_checked'];
+	  $setChangeNameTo=$_POST["setChangeNameTo"];
+
+	  if(!empty($ag_preview_checked)){
+	       if(!empty($setChangeNameTo)){
+
+		    // PARSE CHECKED TO ARRAY
+		    $ag_preview_checked_array = explode("[split]",$ag_preview_checked);
+	
+		    // CREATE WEBSAFE TITLES
+		    foreach($webSafe as $key => $value){
+			 $setChangeNameTo = str_replace($value,"-",$setChangeNameTo);
+		    }	
+		    $setChangeNameTo = htmlspecialchars(strip_tags($setChangeNameTo));
+
+		    $itemExt="";
+		    if(!is_dir($ag_preview_checked_array[0])){
+			 $fileName = basename($ag_preview_checked_array[0]);
+			 $itemExt.=".".substr($fileName, strrpos($fileName, '.') + 1);
+		    }
+
+		    if(rename($ag_preview_checked_array[0],dirname($ag_preview_checked_array[0]).'/'.$setChangeNameTo.$itemExt)){
+			 echo "itemRenamed";
+		    }else{
+			 echo "renameError";
+		    }
+
+	       }else{
+		    echo "nameNotSet";
+	       }
+	  }else{
+	       echo "noItemSelected";
+	  }
         break;
     }
     case "remove" :{

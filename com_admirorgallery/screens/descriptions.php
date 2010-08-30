@@ -128,7 +128,7 @@ function ag_folderSelected(item,itemType)
 	  type: "POST",
 	  url: "components/com_admirorgallery/scripts/imgManager-render-folder.php",
 	  data: "ag_phpPath="+jQuery(item).attr("rel")+"&ag_htmlPath="+jQuery(item).attr("href")+"&ag_phpRoot='.JPATH_SITE.'/&ag_siteRoot='.JURI::root().'",
-	  async: false,
+	  async: true,
 	  success: function(msg){
 	       jQuery("#ag_preview").append(
 		    msg
@@ -368,14 +368,41 @@ function submitbutton(pressbutton) {
 	  });
      break;
      case "rename":
+
+	  var ag_preview_checked = "";
+	  jQuery(\'#ag_preview\').find(\'input:checkbox\').each(function(index) {
+	       if(jQuery(this).attr(\'checked\') == true){
+		    ag_preview_checked+=(jQuery(this).parent().parent().find(\'a\').attr(\'rel\')+\'[split]\');
+	       }
+	  });
+	  if(ag_preview_checked.length>0){
+	       // REMOVE LAST [split]
+	       ag_preview_checked = ag_preview_checked.substr(0,ag_preview_checked.length-7);
+	  }
+
 	  jQuery.ajax({
 		    type: "POST",
 		    url: "'.$ag_script_path.'",
-		    data: "ag_desc_action=rename",
+		    data: "ag_desc_action=rename&ag_preview_checked="+ag_preview_checked+"&setChangeNameTo="+jQuery("#setChangeNameTo").val(),
 		    timeout: 3000,
 		    async: false,
 		    success: function(msg){
-			 ag_showMessage(msg,"notice");
+			 switch(msg)
+			 {
+			 case "noItemSelected":
+			      ag_showMessage("'.JText::_("No item selected.").'","error");
+			 break;
+			 case "nameNotSet":
+			      ag_showMessage("'.JText::_("New name not set.").'","error");
+			 break;
+			 case "renameError":
+			      ag_showMessage("'.JText::_("Rename Error").'","error");
+			 break;
+			 default:
+			      ag_showMessage("'.JText::_("Selected item renamed.").'","notice");
+			      // REFRESHING TREE VIEW AND PREVIEW. PATCH FOR TREE VIEW NOT GOOD
+			      ag_folderSelected(jQuery("#ag_treeView a[href$="+jQuery("#ag_item_html").val()+"]"),"folder");
+			 }
 		    }
 	  });
      break;
