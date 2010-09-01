@@ -38,8 +38,8 @@ quickiconButton( $link, 'icon-48-templates.png', JText::_('Templates') );
 $link = 'index.php?option=com_admirorgallery&task=popups';
 quickiconButton( $link, 'icon-48-popupsThemes.png', JText::_('Popups') );
 
-$link = 'index.php?option=com_admirorgallery&task=descriptions';
-quickiconButton( $link, 'icon-48-descriptions.png', JText::_('Descriptions') );
+$link = 'index.php?option=com_admirorgallery&task=image-manager';
+quickiconButton( $link, 'icon-48-image-manager.png', JText::_('Image manager') );
 
 
 echo JText::_('ADMIRORGALLERYADMINISTRATIONSYSTEM');

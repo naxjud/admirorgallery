@@ -20,8 +20,8 @@ class TOOLBAR_admirorgallery{
 				JToolBarHelper :: custom( 'install', 'install','install', JText::_( 'Install' ), false, false );
 				JToolBarHelper :: custom( 'remove', 'remove','remove', JText::_( 'Remove' ), false, false );
 			 break;
-			 case 'descriptions':
-				JToolBarHelper::title( JText::_( 'Descriptions' ), 'descriptions.png' );
+			 case 'image-manager':
+				JToolBarHelper::title( JText::_( 'Image manager' ), 'image-manager.png' );
 				JToolBarHelper :: custom( 'bookmarkAdd', 'bookmarkAdd','bookmarkAdd', JText::_( 'Add Gallery' ), false, false );
 				JToolBarHelper :: custom( 'bookmarkRemove', 'bookmarkRemove','bookmarkRemove', JText::_( 'Remove Gallery' ), false, false );
 				JToolBarHelper :: divider();
