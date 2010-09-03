@@ -1,105 +1,66 @@
 <?php
 
 // GET POST VALUES
-$ag_phpPath = urldecode($_POST["ag_phpPath"]);
-$ag_htmlPath = $_POST["ag_htmlPath"];
-$ag_phpRoot = $_POST["ag_phpRoot"];
-$ag_siteRoot = $_POST["ag_siteRoot"];
+$ag_itemURL = $_POST["ag_itemURL"];
+$ag_phpRoot = urldecode($_POST["ag_phpRoot"]);
+$ag_htmlRoot = urldecode($_POST["ag_htmlRoot"]);
+
 // SET VALID IMAGE EXTENSION
 $ag_ext_valid = array ("jpg","jpeg","gif","png");
 
-$imagesFolder_files = Array ();
 $imagesFolder_folders = Array ();
+$imagesFolder_files = Array ();
 
 // GET ALL FOLDERS AND FILES
-if ($handle = opendir($ag_phpPath)) {
-     while (false !== ($file = readdir($handle))) {
-	  if ($file != "." && $file != "..") {
-	       if(is_dir($ag_phpPath.'/'.$file)){
-		    $imagesFolder_folders[] = $file;
-	       }else{
-		    $imagesFolder_files[] = $file;
-	       }            
+if(is_dir($ag_phpRoot.$ag_itemURL)){
+     if ($handle = opendir($ag_phpRoot.$ag_itemURL)) {
+	  while (false !== ($file = readdir($handle))) {
+	       if ($file != "." && $file != "..") {
+		    if(is_dir($ag_phpRoot.$ag_itemURL.'/'.$file)){
+			 $imagesFolder_folders[] = $file;
+		    }else{
+			 $imagesFolder_files[] = $file;
+		    }            
+	       }
 	  }
+	  closedir($handle);
      }
-     closedir($handle);
 }
+$returnArray[0]= $ag_itemURL;
 
 // RENDER ALL CONTAINING FOLDERS
+$output = "";
 foreach($imagesFolder_folders as $key => $value){
-     echo '
-    <div class="ag_preview_itemWrap">
-
-	<a rel="'.$ag_phpPath.'/'.$value.'" href="'.$ag_htmlPath.'/'.$value.'" class="ag_preview_itemLink ag_preview_folderLink">
-	    <div align="center" class="ag_preview_imgWrap">
-		<img src="components/com_media/images/folder.png" />		
-	    </div>
-	</a>
-
-	<div class="ag_preview_controlsWrap">
-		<input type="checkbox" value="stories" name="ag_preview_CBOX">'.$value.'
-	</div>
-
-    </div>
-     ';
+     $output.=$ag_itemURL.$value.'/'.'[split]'.$value.'[split]';
 }
+$returnArray[1] = $output;
+
 
 // RENDER ALL CONTAINING IMAGES
+$output = "";
 foreach($imagesFolder_files as $key => $value){
 
-     // GET EXTENSION
-     $filename = strtolower(basename($value)) ; 
-     $ag_file_ext = explode(".", $filename) ;
-     $n = count($ag_file_ext)-1;
-     $descName = $ag_file_ext[0].'.desc';
-     $ag_file_ext = $ag_file_ext[$n];  
+     // GET EXTENSION 
+     $ag_file_ext = substr(strrchr(basename($value),'.'),1);
+
 
      // FILTER IMAGES
      $ag_ext_check = array_search($ag_file_ext,$ag_ext_valid);
      if(is_numeric($ag_ext_check)){
-	  echo '
-	  <div class="ag_preview_itemWrap">
+	  $output.=$ag_itemURL.$value.'[split]'.$value.'[split]';
 
-	      <a rel="'.$ag_phpPath.'/'.$value.'" href="'.$ag_htmlPath.'/'.$value.'" alt="'.$ag_phpPath.'/'.$descName.'"  class="ag_preview_itemLink ag_preview_fileLink">
-		  <div align="center" class="ag_preview_imgWrap">
-		    ';
-
-	  // USE THUMB IF EXISTS ELSE USE REAL IMAGE
-	  if(file_exists($ag_phpRoot.'plugins/content/AdmirorGallery/thumbs/'.basename($ag_phpPath).'/'.$value)){
-	       echo '<img src="'.$ag_siteRoot.'plugins/content/AdmirorGallery/thumbs/'.basename($ag_phpPath).'/'.$value.'" />';
+	  $ag_url_desc = $value;
+	  $ag_url_desc = substr($ag_url_desc,0,strlen($ag_url_desc)-strlen($ag_file_ext));
+	  $ag_url_desc = $ag_phpRoot.$ag_itemURL.$ag_url_desc.'desc';
+	  if(file_exists($ag_url_desc)){
+	       $output.='hasDesc[split]';
 	  }else{
-	       echo '<img src="'.$ag_htmlPath.'/'.$value.'" />';
+	       $output.='noDesc[split]';
 	  }
-
-	  echo '
-		  </div>
-	      </a>
-
-		<div class="ag_preview_controlsWrap">
-			<input type="checkbox" value="stories" name="ag_preview_CBOX[]">'.$value.'
-		</div>
-
-	  </div>
-	  ';
      }
 }
+$returnArray[2] = $output;
 
-
-echo '
-<script type="text/javascript">
-     // Binding event to folder links
-    jQuery(".ag_preview_folderLink").click(function(e) {
-	e.preventDefault();
-	ag_folderSelected(jQuery(this),"folder");
-    });
-
-
-    // Binding event to file links
-    jQuery(".ag_preview_fileLink").click(function(e) {
-	e.preventDefault();
-	ag_itemSelected(jQuery(this),"file",jQuery(this).attr("alt"));
-    });
-</script>
-';
+echo implode("[ArraySplit]",$returnArray);
 
 ?>
