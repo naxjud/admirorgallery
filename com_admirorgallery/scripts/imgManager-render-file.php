@@ -1,14 +1,18 @@
 <?php
     //$returnArray;
 
-    $ag_url_img = urldecode($_POST['ag_url_img']);
-    $ag_url_html = urldecode($_POST['ag_url_html']);
-    $ag_url_php = urldecode($_POST['ag_url_php']);
 
-    $ag_url_desc = $_POST['itemDesc'];
-    $ag_lang_available = $_POST['ag_lang_available'];
-    $ag_lang_availableArray = explode(",",$ag_lang_available);
-    $ag_url_img_php = $ag_url_php.'/'.substr($ag_url_img,strlen($ag_url_html));
+     $ag_url_img = urldecode($_POST['ag_itemURL']);
+     $ag_url_html = urldecode($_POST['ag_htmlRoot']);
+     $ag_url_php = urldecode($_POST['ag_phpRoot']);
+
+     $ag_file_ext = substr(strrchr(basename($ag_url_img),'.'),1);
+
+     $ag_url_desc = substr($ag_url_img,0,strlen($ag_url_img)-strlen($ag_file_ext));
+     $ag_url_desc = $ag_url_php.$ag_url_desc.'desc';
+     $ag_lang_available = urldecode($_POST['ag_lang_available']);
+     $ag_lang_availableArray = explode("[split]",$ag_lang_available);
+     $ag_url_img_php = $ag_url_php.$ag_url_img;
 
     include_once(dirname(__FILE__).'/agHelper.php');
 
@@ -18,7 +22,7 @@
     if(file_exists($ag_url_php."/plugins/content/AdmirorGallery/thumbs/".$ag_possibleFolder."/".$ag_possibleFile)){
       $imagePath=$ag_url_html."plugins/content/AdmirorGallery/thumbs/".$ag_possibleFolder."/".$ag_possibleFile;
     }
-    $returnArray[0]= $imagePath;
+    $returnArray[0]= $ag_url_img;
 
     $tempInfo = agHelper::ag_imageInfo($ag_url_img_php);
 
@@ -26,7 +30,7 @@
     $returnArray[2] = $tempInfo["height"].'px';
     $returnArray[3] = $tempInfo["type"];
     $returnArray[4] = $tempInfo["size"];
-
+    $returnArray[5] = "noDesc";
 
     $langArray = Array();
     $ag_matchCheck = Array();
@@ -34,12 +38,13 @@
     $output='';
 
     if(file_exists($ag_url_desc)){
-      $file=fopen($ag_url_desc,"r");
-      while (!feof($file))
-        {
-        $ag_content.=fgetc($file);
-        }
-      fclose($file);
+	  $returnArray[5] = "hasDesc";
+	  $file=fopen($ag_url_desc,"r");
+	  while (!feof($file))
+	  {
+	       $ag_content.=fgetc($file);
+	  }
+	  fclose($file);
     }
     //Load default description fields
     $output = 'default[split]default[split]';
@@ -80,11 +85,10 @@
          }
 
     }
-    // Add check results for existing description
-    if(file_exists($ag_url_desc)){
-      $output.= "descTrue";
-    }
-    $returnArray[5]=$output;
 
-    echo implode(",",$returnArray);
+    $output=substr($output,0,strlen($output)-7);
+
+    $returnArray[6]=$output;
+
+    echo implode("[ArraySplit]",$returnArray);
 ?>

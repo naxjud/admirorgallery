@@ -6,6 +6,67 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 jimport('joomla.language.language');
+jimport('joomla.filesystem.archive');
+
+// PHP capture for form submition
+if(isset($_POST['pressbutton'])){
+     $action = $_POST['pressbutton'];
+     $webSafe=Array("/"," ",":",".","+");
+     switch ($action){
+	  case "bookmarkAdd" :{
+		    require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/imgManager-bookmarkAdd.php');
+	       break;
+	  } 
+	  case "bookmarkRemove" :{
+		    require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/imgManager-bookmarkRemove.php');
+	       break;
+	  } 
+	  case "folderNew" :{
+		    require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/imgManager-folderNew.php');
+	       break;
+	  } 
+	  case "upload" :{
+		    require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/imgManager-upload.php');
+	       break;
+	  } 
+	  case "rename" :{
+		    require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/imgManager-rename.php');
+	       break;
+	  } 
+	  case "remove" :{
+		    require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/imgManager-remove.php');
+	       break;
+	  } 
+	  case "description" :{
+		    require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/imgManager-description.php');
+	       break;
+	  } 
+	  case "removeDesc" :{
+		    require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/imgManager-removeDesc.php');
+	       break;
+	  } 
+     }
+}
+
+if (isset ($_POST['ag_itemURL'])){
+    $ag_init_itemURL=$_POST['ag_itemURL'];
+    if(is_dir(JPATH_SITE.'/'.$_POST['ag_itemURL'])){
+         $ag_init_itemType="folder";
+    }else{
+         $ag_init_itemType="file";
+    }
+}else
+{
+    $ag_init_itemURL='';
+    $ag_init_itemType='';
+}
+
+$ag_lang_available = JLanguage::getKnownLanguages(JPATH_SITE);
+$ag_lang_available_string="";
+foreach($ag_lang_available as $ag_lang_availableKey => $ag_lang_availableValue){
+     $ag_lang_available_string.=$ag_lang_availableValue["tag"].'[split]'.$ag_lang_availableValue["name"].'[split]';
+}
+$ag_lang_available_string=substr($ag_lang_available_string,0,strlen($ag_lang_available_string)-7);
 
 $doc = &JFactory::getDocument();
 $doc->addStyleSheet(JURI::base().'components/com_admirorgallery/css/template.css');
@@ -13,137 +74,195 @@ $doc->addScript(JURI::base().'components/com_admirorgallery/scripts/jquery.js');
 $doc->addScript(JURI::base().'components/com_admirorgallery/jquery-treeview/jquery.treeview.pack.js');
 $doc->addScript(JURI::base().'components/com_admirorgallery/jquery-treeview/lib/jquery.cookie.js');
 $doc->addStyleSheet(JURI::base().'components/com_admirorgallery/jquery-treeview/jquery.treeview.css');
-
-// LOAD MESSAGES GROWL LIBRARY
-require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/growl.php');
-require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/imgManager-bookmarkParser.php');
-
-$ag_script_path ='components/com_admirorgallery/scripts/descriptions-handler.php';
-
-$ag_lang_available = JLanguage::getKnownLanguages(JPATH_SITE);
-//
 $doc->addScriptDeclaration('
-//HELPER FUNCTION. RETURNS FILENAME FROM PATH
-function ag_extractFilename(fileName){
-    var temp = fileName.split("/");
-    return temp.pop();
-}
-//FILE CLICK EVENT
-function ag_itemSelected(item,itemType,itemDesc){
 
-     // UPDATE HTML & PHP URLS VALUE AS HIDDEN INPUT
-     jQuery("#ag_item_html").val(jQuery(item).attr("href"));
-     jQuery("#ag_item_php").val(jQuery(item).attr("rel"));
+var ag_init_itemURL="'.$ag_init_itemURL.'";
+var ag_init_itemType="'.$ag_init_itemType.'";
 
-     //CLEAR ALL HIGHLIGHT FOR SELECTED ITEM
-     jQuery(".ag_selectedItem").removeClass("ag_selectedItem");
-     jQuery("#ag_treeView a[href$="+jQuery(item).attr("href")+"]").parent().addClass("ag_selectedItem");
+// < TOOLBAR HIGHLITE >
+function ag_toolbar_highlite(itemType){
 
-     //CHECK IS THE #ag_imgDesc_info PRESENT
-     if (jQuery("#ag_imgDesc_info").length<1)
-     jQuery("#ag_preview").html("<div class=\'ag_screenSection_title\'></div><table border=\'0\' cellspacing=\'0\' cellpadding=\'0\'><tbody><tr><td><img src=\''.JURI::base().'components/com_admirorgallery\images/ag_emptyImage.jpg\' class=\'filePreview\' /></td>	<td id=\'ag_imgDesc_wrap\'><div id=\'ag_imgDesc_info\'></div></td></tr></tbody></table><form method=\'post\' id=\'ag_form\'><input type=\'hidden\' id=\'ag_form_url_desc\' value=\'\' /><div id=\'ag_descData\'></div></form>");
-     jQuery("#ag_imgDesc_info").html("<h2>"+ag_extractFilename(jQuery(item).attr("href"))+"</h2>");
+     var toolbarSet = new Array();
+	  toolbarSet["all"]=new Array("bookmarkAdd","bookmarkRemove","folderNew","upload","rename","remove","description","removeDesc");
+	  toolbarSet["folder"]=new Array("bookmarkAdd","bookmarkRemove","folderNew","upload","rename","remove");
+	  toolbarSet["file"]=new Array("rename","description","removeDesc");
 
-//FILL LANGUAGE ARRAY
-var ag_lang_available=new Array();
-');
-
-$counter=0;
-foreach($ag_lang_available as $ag_lang_availableKey => $ag_lang_availableValue){
-        $doc->addScriptDeclaration('ag_lang_available['.$counter.']=new Array();');
-        $doc->addScriptDeclaration('ag_lang_available['.$counter.'][0]="'.$ag_lang_availableValue["tag"].'";');
-        $doc->addScriptDeclaration('ag_lang_available['.$counter.'][1]="'.$ag_lang_availableValue["name"].'";');
-        $counter++;
-}
-$doc->addScriptDeclaration('
-jQuery.ajax({
-      type: "POST",
-      url: "components/com_admirorgallery/scripts/imgManager-render-file.php",
-      data: "itemDesc="+itemDesc+"&ag_lang_available="+ag_lang_available+"&ag_url_img="+jQuery(item).attr("href")+"&ag_url_php='.urlencode(JPATH_SITE).'&ag_url_html='.urlencode(JURI::root()).'",
-      async: false,
-      timeout: 3000,
-      success: function(msg){
-            var msgArray=msg.split(",");
-
-            jQuery("#ag_preview .ag_screenSection_title").html(msgArray[0]);
-
-            jQuery("#ag_preview .filePreview").attr("src",msgArray[0]);
-            //desc
-            jQuery("#ag_imgDesc_info").append("'.JText::_( "Width").': "+msgArray[1]+"<br />");
-            jQuery("#ag_imgDesc_info").append("'.JText::_( "Height").': "+msgArray[2]+"<br />");
-            jQuery("#ag_imgDesc_info").append("'.JText::_( "Type").': "+msgArray[3]+"<br />");
-            jQuery("#ag_imgDesc_info").append("'.JText::_( "Size").': "+msgArray[4]+"<br />");
-
-
-           jQuery(".icon-32-description").attr("class","icon-32-description");
-           jQuery("#ag_form_url_desc").val(itemDesc);
-
-            jQuery("#ag_descData").html("");// Delete previous data
-            var msgArray=msgArray[5].split("[split]");
-            var msgArrayLength=msgArray.length-1;
-            for(i=0;i<msgArrayLength;i+=3){
-                jQuery("#ag_descData").append("<div class=\"t\"><div class=\"t\"><div class=\"t\"></div></div></div>");
-                jQuery("#ag_descData").append("<div class=\"m mID"+i+"\"></div>");
-                jQuery("#ag_descData .mID"+i+"").append("<span class=\"ag_nameLabel\">"+msgArray[i]+"</span>");
-                jQuery("#ag_descData .mID"+i+"").append("<span class=\"ag_tagLabel\">"+msgArray[i+1]+"</span>");
-                jQuery("#ag_descData .mID"+i+"").append("<textarea class=\"ag_inputText\" id=\"ag_"+msgArray[i+1]+"\">"+msgArray[i+2]+"</textarea>");
-                jQuery("#ag_descData").append("<div class=\"b\"><div class=\"b\"><div class=\"b\"></div></div></div><p></p>");
-            }
-            if(msgArray[msgArrayLength] == "descTrue"){
-                      jQuery(".icon-32-removeDesc").attr("class","icon-32-removeDesc");
-              }else{
-                      jQuery(".icon-32-removeDesc").attr("class","icon-32-removeDesc ag_toolbar_off");
-              }
-      }
-     });
+     // TURN OFF ALL
+     for ( var i=0; i<toolbarSet["all"].length; i++ )
+     {
+	  jQuery(".icon-32-"+toolbarSet["all"][i]).attr("class","icon-32-"+toolbarSet["all"][i]+" ag_toolbar_off");
+     }
+     // TURN ON NEEDED
+     if(itemType){
+	  for ( var i=0; i<toolbarSet[itemType].length; i++ )
+	  {
+	       jQuery(".icon-32-"+toolbarSet[itemType][i]).attr("class","icon-32-"+toolbarSet[itemType][i]);
+	  }
+     }
 
 }
+// < / TOOLBAR HIGHLITE >
 
-// Folder click event
-function ag_folderSelected(item,itemType)
-{
+function basename(path) {
+     return path.replace(/'.chr(92).chr(92).'/g,"/").replace( /.*\//, "" );
+}
 
-     // UPDATE HTML & PHP URLS VALUE AS HIDDEN INPUT
-     jQuery("#ag_item_html").val(jQuery(item).attr("href"));
-     jQuery("#ag_item_php").val(jQuery(item).attr("rel"));
+function dirname(path) {
+     return path.replace(/'.chr(92).chr(92).'/g,"/").replace(/\/[^\/]*$/, "")+"/";
+}
+
+function submitbutton(pressbutton) {
+		jQuery("#pressbutton").val(pressbutton);
+		document.forms["adminForm"].submit();
+}
+
+function ag_item_highlite(itemURL){
+
+     jQuery("#ag_itemURL").val(itemURL);
 
      // CLEAR ALL HIGHLIGHT FOR SELECTED ITEM
      jQuery(".ag_selectedItem").removeClass("ag_selectedItem");
 
      // SET NEW HIGHLIGHT FOR ACTIVE ITEM
-     jQuery("#ag_bookmarksView a[href$="+jQuery(item).attr("href")+"]").parent().addClass("ag_selectedItem");
-     jQuery("#ag_treeView a[href$="+jQuery(item).attr("href")+"]").parent().addClass("ag_selectedItem");
-     jQuery("#ag_preview").html("<div class=\'ag_screenSection_title\'>"+jQuery(item).attr("href")+"</div>");
-     jQuery("#ag_preview").append("<fieldset></fieldset>");
+     jQuery("#ag_bookmarksView a[href$="+itemURL+"]").parent().addClass("ag_selectedItem");
+     jQuery("#ag_treeView a[href$="+itemURL+"]").parent().addClass("ag_selectedItem");
+   
+}
 
-     jQuery("#ag_preview fieldset").append("<table cellspacing=\'0\' cellpadding=\'3\' border=\'0\'><tbody><tr><td id=\'fieldset1_row1_td1\'></td><td id=\'fieldset1_row1_td2\'></td></tr><tr><td id=\'fieldset1_row2_td1\'></td><td id=\'fieldset1_row2_td2\'></td></tr></tbody></table>");
-
-     jQuery("#ag_preview fieldset #fieldset1_row1_td1").append("'.JText::_( 'Set / Change Name to:' ).'&nbsp;");
-     jQuery("#ag_preview fieldset #fieldset1_row1_td2").append("<input type=\'text\' name=\'setChangeNameTo\' id=\'setChangeNameTo\' /><br />");
-     
-     jQuery("#ag_preview fieldset #fieldset1_row2_td1").append("'.JText::_( 'Upload File:' ).'&nbsp;");
-     jQuery("#ag_preview fieldset #fieldset1_row2_td2").append("<input type=\'file\' name=\'Filedata\' id=\'file-upload\' />");
-
+function ag_folder_selected(itemURL){
+     ag_item_highlite(itemURL);
+     ag_toolbar_highlite("folder");
      jQuery.ajax({
 	  type: "POST",
 	  url: "components/com_admirorgallery/scripts/imgManager-render-folder.php",
-	  data: "ag_phpPath="+jQuery(item).attr("rel")+"&ag_htmlPath="+jQuery(item).attr("href")+"&ag_phpRoot='.JPATH_SITE.'/&ag_siteRoot='.JURI::root().'",
+	  data: "ag_itemURL="+itemURL+"&ag_phpRoot='.urlencode(JPATH_SITE).'&ag_htmlRoot='.urlencode(dirname(JURI::base())).'",
 	  async: false,
 	  success: function(msg){
-	       jQuery("#ag_preview").append(
-		    msg
-	       );
+
+	       jQuery("#ag_preview").html("<div class=\'ag_screenSection_title\'></div><fieldset></fieldset><div id=\'ag_itemsWrapper\'></div>");
+
+	       var msgArray=msg.split("[ArraySplit]");
+
+	       jQuery("#ag_preview .ag_screenSection_title").html(msgArray[0]);
+
+	       var msgArrayFolders=msgArray[1].split("[split]");
+	       var msgArrayLength=msgArrayFolders.length-1;
+	       for(i=0;i<msgArrayLength;i+=2){
+		    jQuery("#ag_preview #ag_itemsWrapper").append("<div class=\'ag_preview_itemWrap\'><a href=\'"+msgArrayFolders[i]+"\' class=\'ag_preview_itemLink ag_folderLink\'><div align=\'center\' class=\'ag_preview_imgWrap\'><img src=\''.JURI::base().'components/com_media/images/folder.png\' /></div></a><div class=\'ag_preview_controlsWrap\'><input type=\'checkbox\' value=\'"+msgArrayFolders[i]+"\' name=\'ag_preview_CBOX[]\'>"+msgArrayFolders[i+1]+"</div></div>");
+	       }
+	       var msgArrayFiles=msgArray[2].split("[split]");
+	       var msgArrayLength=msgArrayFiles.length-1;
+	       for(i=0;i<msgArrayLength;i+=3){
+		    if(msgArrayFiles[i+2]=="hasDesc"){
+			 jQuery("#ag_preview #ag_itemsWrapper").append("<div class=\'ag_preview_itemWrap\'><a href=\'"+msgArrayFiles[i]+"\' class=\'ag_preview_itemLink ag_fileLink\'><div align=\'center\' class=\'ag_preview_imgWrap\'><span class=\'ag_imgTag_wrap\'><img src=\''.JURI::base().'components/com_admirorgallery/images/imgTag_desc.gif\' class=\'ag_imgTag_img\' /></span><img src=\''.dirname(JURI::base()).'"+msgArrayFiles[i]+"\' class=\'ag_imgThumb\' /></div></a><div class=\'ag_preview_controlsWrap\'><input type=\'checkbox\' value=\'"+msgArrayFiles[i]+"\' name=\'ag_preview_CBOX[]\'>"+msgArrayFiles[i+1]+"</div></div>");       
+		    }else{
+			 jQuery("#ag_preview #ag_itemsWrapper").append("<div class=\'ag_preview_itemWrap\'><a href=\'"+msgArrayFiles[i]+"\' class=\'ag_preview_itemLink ag_fileLink\'><div align=\'center\' class=\'ag_preview_imgWrap\'><img src=\''.dirname(JURI::base()).'"+msgArrayFiles[i]+"\' class=\'ag_imgThumb\' /></div></a><div class=\'ag_preview_controlsWrap\'><input type=\'checkbox\' value=\'"+msgArrayFiles[i]+"\' name=\'ag_preview_CBOX[]\'>"+msgArrayFiles[i+1]+"</div></div>");       
+		    }
+	       }
+
+	       jQuery("#ag_preview fieldset").append("<table cellspacing=\'0\' cellpadding=\'3\' border=\'0\'><tbody><tr><td id=\'fieldset1_row1_td1\'></td><td id=\'fieldset1_row1_td2\'></td></tr><tr><td id=\'fieldset1_row2_td1\'></td><td id=\'fieldset1_row2_td2\'></td></tr></tbody></table>");
+	       // SET CHANGE NAME INPUT
+	       jQuery("#ag_preview fieldset #fieldset1_row1_td1").append("'.JText::_( 'Set / Change Name to:' ).'&nbsp;");
+	       jQuery("#ag_preview fieldset #fieldset1_row1_td2").append("<input type=\'text\' name=\'setChangeNameTo\' id=\'setChangeNameTo\' size=\'50\' /><br />");
+	       // UPLOAD INPUT
+	       jQuery("#ag_preview fieldset #fieldset1_row2_td1").append("'.JText::_( 'Upload File:' ).'&nbsp;");
+	       jQuery("#ag_preview fieldset #fieldset1_row2_td2").append("<input type=\'file\' name=\'file_upload\' size=\'50\' title=\''.JText::_( 'Only jpg, jpeg, gif, png and zip are valid extensions.').'\' />");
+
+	       // Binding event to folder links
+	       jQuery("#ag_preview .ag_folderLink").click(function(e) {
+		    e.preventDefault();
+		    ag_folder_selected(jQuery(this).attr("href"));
+	       });
+
+	       // Binding event to file links
+	       jQuery("#ag_preview .ag_fileLink").click(function(e) {
+		    e.preventDefault();
+		    ag_file_selected(jQuery(this).attr("href"));
+	       });
+
 	  }
      });
-
 }
 
-//Page init
+function ag_file_selected(itemURL){
+     ag_item_highlite(itemURL);
+     ag_toolbar_highlite("file");
+     jQuery.ajax({
+	  type: "POST",
+	  url: "components/com_admirorgallery/scripts/imgManager-render-file.php",
+	  data: "ag_itemURL="+itemURL+"&ag_phpRoot='.urlencode(JPATH_SITE).'&ag_htmlRoot='.urlencode(dirname(JURI::base())).'&ag_lang_available='.urlencode($ag_lang_available_string).'",
+	  async: false,
+	  success: function(msg){
+
+	       jQuery("#ag_preview").html("<div class=\'ag_screenSection_title\'></div><fieldset></fieldset><div class=\'filePreview\'></div><div id=\'ag_imgDesc_info\'></div><div id=\'ag_descData\'></div>");
+
+	       var msgArray=msg.split("[ArraySplit]");
+
+	       jQuery("#ag_preview .ag_screenSection_title").html("<a href=\'"+dirname(msgArray[0])+"\' title=\'"+dirname(msgArray[0])+"\' onClick=\'ag_folder_selected(jQuery(this).attr(\"href\")); return false;\'>"+dirname(msgArray[0])+"</a>"+basename(msgArray[0]));
+	       if(msgArray[5]=="hasDesc"){
+		    jQuery("#ag_preview .filePreview").html("<span class=\'ag_imgTag_wrap\'><img src=\''.JURI::base().'components/com_admirorgallery/images/imgTag_desc.gif\' class=\'ag_imgTag_img\' /></span><img src=\''.dirname(JURI::base()).'"+msgArray[0]+"\' class=\'ag_imgThumb\' />");
+	       }else{
+		    jQuery("#ag_preview .filePreview").html("<img src=\''.dirname(JURI::base()).'"+msgArray[0]+"\' class=\'ag_imgThumb\' />");
+	       }
+
+	  jQuery("#ag_imgDesc_info").append("<div class=\"t\"><div class=\"t\"><div class=\"t\"></div></div></div>");	       
+	  jQuery("#ag_imgDesc_info").append("<div class=\"m m_imgInfo\"></div>");
+	       jQuery("#ag_imgDesc_info .m_imgInfo").append("'.JText::_( "Width").': <b>"+msgArray[1]+"</b>&nbsp;|&nbsp;");
+	       jQuery("#ag_imgDesc_info .m_imgInfo").append("'.JText::_( "Height").': <b>"+msgArray[2]+"</b>&nbsp;|&nbsp;");
+	       jQuery("#ag_imgDesc_info .m_imgInfo").append("'.JText::_( "Type").': <b>"+msgArray[3]+"</b>&nbsp;|&nbsp;");
+	       jQuery("#ag_imgDesc_info .m_imgInfo").append("'.JText::_( "Size").': <b>"+msgArray[4]+"</b>");
+	  jQuery("#ag_imgDesc_info").append("<div class=\"b\"><div class=\"b\"><div class=\"b\"></div></div></div><p></p>");
+ 
+	       var msgArray=msgArray[6].split("[split]");
+	       var msgArrayLength=msgArray.length-1;
+	       for(i=0;i<msgArrayLength;i+=3){
+		    jQuery("#ag_descData").append("<div class=\"t\"><div class=\"t\"><div class=\"t\"></div></div></div>");
+		    jQuery("#ag_descData").append("<div class=\"m mID"+i+"\"></div>");
+		    jQuery("#ag_descData .mID"+i+"").append("<span class=\"ag_nameLabel\">"+msgArray[i]+"</span>");
+		    jQuery("#ag_descData .mID"+i+"").append("<span class=\"ag_tagLabel\">"+msgArray[i+1]+"</span>");
+		    jQuery("#ag_descData .mID"+i+"").append("<textarea class=\"ag_inputText\" name=\'ag_desc_content[]\'>"+msgArray[i+2]+"</textarea><input type=\'hidden\' name=\'ag_desc_tags[]\' value=\'"+msgArray[i+1]+"\' />");
+		    jQuery("#ag_descData").append("<div class=\"b\"><div class=\"b\"><div class=\"b\"></div></div></div><p></p>");
+	       }
+
+	       jQuery("#ag_preview fieldset").append("<table cellspacing=\'0\' cellpadding=\'3\' border=\'0\'><tbody><tr><td id=\'fieldset1_row1_td1\'></td><td id=\'fieldset1_row1_td2\'></td></tr><tr><td id=\'fieldset1_row2_td1\'></td><td id=\'fieldset1_row2_td2\'></td></tr></tbody></table>");
+	       // SET CHANGE NAME INPUT
+	       jQuery("#ag_preview fieldset #fieldset1_row1_td1").append("'.JText::_( 'Set / Change Name to:' ).'&nbsp;");
+	       jQuery("#ag_preview fieldset #fieldset1_row1_td2").append("<input type=\'text\' name=\'setChangeNameTo\' id=\'setChangeNameTo\' size=\'50\' /><br />");
+	       
+
+	  }
+     });
+}
+
 jQuery(function(){
-    //Disables the buttons, because no image is selected
-    jQuery(".icon-32-description").attr("class","icon-32-description ag_toolbar_off");
-    jQuery(".icon-32-removeDesc").attr("class","icon-32-removeDesc ag_toolbar_off");
-   
+');
+
+// RENDER ALL NOTICES
+if(!empty($ag_notice)){
+     foreach($ag_notice as $key => $value){
+         if(isset ($value[1])){
+	  $doc->addScriptDeclaration('ag_showMessage("'.JText::_( $value[0]).'<br />'.$value[1].'","notice");');
+         }else{
+          $doc->addScriptDeclaration('ag_showMessage("'.JText::_( $value[0]).'","notice");');
+         }
+     }
+}
+
+// RENDER ALL ERRORS
+if(!empty($ag_error)){
+     foreach($ag_error as $key => $value){
+         if(isset ($value[1])){
+	  $doc->addScriptDeclaration('ag_showMessage("'.JText::_( $value[0]).'<br />'.$value[1].'","error");');
+         }else{
+          $doc->addScriptDeclaration('ag_showMessage("'.JText::_( $value[0]).'","error");');
+         }
+     }
+}
+
+$doc->addScriptDeclaration('
+
+     ag_toolbar_highlite();
+
     //Init Treview
     jQuery("#ag_treeView").treeview({
 	animated: "fast",
@@ -155,44 +274,84 @@ jQuery(function(){
      // Binding event to folder links
     jQuery(".ag_folderLink").click(function(e) {
 	e.preventDefault();        
-	ag_folderSelected(jQuery(this),"folder");
+	ag_folder_selected(jQuery(this).attr("href"));
     });
-
 
     // Binding event to file links
     jQuery(".ag_fileLink").click(function(e) {
-	e.preventDefault();        
-	ag_itemSelected(jQuery(this),"file",jQuery(this).attr("alt"));
+	e.preventDefault();
+	ag_file_selected(jQuery(this).attr("href"));
     });
+
+     if(ag_init_itemURL != ""){
+	  if(ag_init_itemType == "folder"){	  
+	       ag_folder_selected(ag_init_itemURL);
+	  }else{
+	       ag_file_selected(ag_init_itemURL);
+	  }
+     }
+
 });//jQuery(function()
 
 jQuery.noConflict();
+
 ');
 
 
-function ag_renderFiles($imagesFolder_phpPath,$imagesFolder_htmlPath){
+// LOAD MESSAGES GROWL LIBRARY
+require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/growl.php');
+
+
+// GET ROOT FOLDER
+global $mainframe;
+$plugin =& JPluginHelper::getPlugin('content', 'AdmirorGallery');
+$pluginParams = new JParameter( $plugin->params );
+$ag_rootFolder = $pluginParams->get('rootFolder','images/stories/');
+
+
+// FUNCTIONS
+function ag_bookmarkParser_render($bookmarkPath){
+
+     $ag_bookmarks_xml =& JFactory::getXMLParser( 'simple' );
+     $ag_bookmarks_xml->loadFile( $bookmarkPath );
+
+     foreach($ag_bookmarks_xml->document->bookmark as $key => $value){
+	  echo '
+	  <div class="ag_bookmark">
+	       <img src="'.JURI::base().'components/com_admirorgallery/jquery-treeview/images/folder.gif" />
+	       &nbsp;
+	       <a href="'.$ag_bookmarks_xml->document->bookmark[$key]->data().'" class="ag_folderLink" title="'.$ag_bookmarks_xml->document->bookmark[$key]->data().'">
+	       '.basename($ag_bookmarks_xml->document->bookmark[$key]->data()).'
+	       </a>
+	  </div>
+	  '."\n";
+     }
+
+}
+
+function ag_treeView_render($ag_folder_path){
 
     $ag_ext_valid = array ("jpg","jpeg","gif","png");
-    $imagesFolder_files = JFolder::files($imagesFolder_phpPath);
-    $imagesFolder_folders = JFolder::folders($imagesFolder_phpPath);
+    $imagesFolder_files = JFolder::files(JPATH_SITE.'/'.$ag_folder_path);
+    $imagesFolder_folders = JFolder::folders(JPATH_SITE.'/'.$ag_folder_path);
 
     echo '<ul>'."\n";
 
     foreach($imagesFolder_folders as $key => $value){
-	echo '<li><img src="'.JURI::base().'components/com_admirorgallery/jquery-treeview/images/folder.gif" />&nbsp;<a href="'.$imagesFolder_htmlPath.'/'.$value.'" rel="'.$imagesFolder_phpPath.'/'.$value.'" class="ag_folderLink">'.$value.'</a>';
-	ag_renderFiles($imagesFolder_phpPath.'/'.$value, $imagesFolder_htmlPath.'/'.$value);
+	echo '<li><img src="'.JURI::base().'components/com_admirorgallery/jquery-treeview/images/folder.gif" />&nbsp;<a href="'.$ag_folder_path.$value.'/" title="'.$ag_folder_path.$value.'/" class="ag_folderLink">'.$value.'</a>';
+	ag_treeView_render($ag_folder_path.$value.'/');
 	echo '</li>'."\n";
     }
 
-     foreach($imagesFolder_files as $key => $value){
-	  $ag_file_ext = strtolower(JFile::getExt($value));
+    foreach($imagesFolder_files as $key => $value){
+	  $ag_file_ext = strtolower(JFile::getExt(JPATH_SITE.'/'.$ag_folder_path.$value));
 	  $ag_ext_check = array_search($ag_file_ext,$ag_ext_valid);
           $ag_file_descName = substr($value, 0, -(strlen($ag_file_ext))).'desc';
           if(is_numeric($ag_ext_check)){
-	    if(file_exists($imagesFolder_phpPath.'/'.$ag_file_descName)){
-	      echo '<li><img src="'.JURI::base().'components/com_admirorgallery/jquery-treeview/images/file.gif" /><a href="'.$imagesFolder_htmlPath.'/'.$value.'" alt="'.$imagesFolder_phpPath.'/'.$ag_file_descName.'" rel="descTrue" class="ag_fileLink">'.$value.'</a></li>'."\n";
+	    if(file_exists(JPATH_SITE.'/'.$ag_folder_path.$ag_file_descName)){
+	      echo '<li><img src="'.JURI::base().'components/com_admirorgallery/jquery-treeview/images/file.gif" /><a href="'.$ag_folder_path.$value.'" class="ag_fileLink">'.$value.'</a></li>'."\n";
 	    }else{
-	      echo '<li><a href="'.$imagesFolder_htmlPath.'/'.$value.'" alt="'.$imagesFolder_phpPath.'/'.$ag_file_descName.'" rel="descFalse" class="ag_fileLink">'.$value.'</a></li>'."\n";
+	      echo '<li><a href="'.$ag_folder_path.$value.'" class="ag_fileLink">'.$value.'</a></li>'."\n";
 	    }
 	  }
      }
@@ -202,312 +361,55 @@ function ag_renderFiles($imagesFolder_phpPath,$imagesFolder_htmlPath){
 }//function ag_renderFiles($imagesFolder_phpPath,$imagesFolder_htmlPath)
 
 
-// RENDER SCREEN STRUCTURE
+// FORMAT FORM
 echo '
-<script language="javascript" type="text/javascript">
-jQuery.expr[\':\'].icontains = function(obj, index, meta, stack){ return (obj.textContent || obj.innerText || jQuery(obj).text() || \'\').toLowerCase().indexOf(meta[3].toLowerCase()) >= 0; };
-function submitbutton(pressbutton) {
+<form action="index.php" method="post" name="adminForm" enctype="multipart/form-data">
+	<input type="hidden" name="option" value="com_admirorgallery" />
+	<input type="hidden" name="task" value="image-manager" />
+	<input type="hidden" name="ag_itemURL" value="'.$ag_init_itemURL.'" id="ag_itemURL" />
+	<input type="hidden" name="pressbutton" value="" id="pressbutton" />
+'."\n";
 
-     switch(pressbutton)
-     {
-     case "description":
-          if(jQuery(".icon-32-description").attr("class") == "icon-32-description ag_toolbar_off"){
-               ag_showMessage("'.JText::_( "Cannot create Description file if no image selected." ).'","error");
-               return;
-          }else{
-               var ag_desc_content="";
-			jQuery("#ag_form textarea").each(function(index) {
-
-				// Converts HTML to Plain
-				var htmlStr = jQuery(this).val();
-				//htmlStr = htmlStr.replace(/"/gi, "&quot;").replace(/&/gi, "&amp;").replace(/\'/gi, "&#39;").replace(/</gi, "&lt;").replace(/>/gi, "&gt;");
-
-				ag_desc_content+=(jQuery(this).attr("id")+"[split]");
-				ag_desc_content+=(htmlStr+"[split]");
-			});
-
-			jQuery.ajax({
-				type: "POST",
-				url: "'.$ag_script_path.'",
-				data: "ag_desc_action=description&ag_url_desc="+jQuery("#ag_form_url_desc").val()+"&ag_desc_content="+ag_desc_content,
-				timeout: 3000,
-				async: false,
-				success: function(msg){
-                                        if(msg==="created"){
-						ag_showMessage("'.JText::_( "Image Description created.").'","notice");
-						if(jQuery("a[alt="+jQuery("#ag_form_url_desc").val()+"]").attr("rel")=="descFalse"){
-							jQuery("a[alt="+jQuery("#ag_form_url_desc").val()+"]").parent().prepend(\'<img src="'.JURI::base().'components/com_admirorgallery/jquery-treeview/images/file.gif" />\');
-							jQuery("a[alt="+jQuery("#ag_form_url_desc").val()+"]").attr("rel","descTrue");
-						}
-					}else{
-						ag_showMessage("'.JText::_( "Error occurred. Image Description not created.").'","error");
-					}
-
-
-				}
-			});
-          }
-     break;
-      case "removeDesc":
-	  jQuery.ajax({
-		type: "POST",
-		url: "'.$ag_script_path.'",
-		data: "ag_desc_action=removeDesc&ag_url_desc="+jQuery("#ag_form_url_desc").val(),
-		timeout: 3000,
-		async: false,
-		success: function(msg){
-			switch(msg){
-			      case "removed":
-				  ag_showMessage("'.JText::_( "Image Description removed.").'","notice");
-				  jQuery("a[alt="+jQuery("#ag_form_url_desc").val()+"]").parent().find("img").remove();
-				  jQuery("a[alt="+jQuery("#ag_form_url_desc").val()+"]").attr("rel","descFalse");
-				  jQuery(".ag_inputText").each(function(index) {
-				    jQuery(this).val("");
-				  });
-				  jQuery(".icon-32-removeDesc").attr("class","icon-32-removeDesc ag_toolbar_off");
-			      break;
-			      case "noDesc":
-			      break;
-			      defaut:
-				  ag_showMessage("'.JText::_( "Error occurred. Image Description not removed.").'","error");
-			      }
-
-		}
-	});
-
-      break;
-     case "bookmarkAdd":
-	  jQuery.ajax({
-		    type: "POST",
-		    url: "'.$ag_script_path.'",
-		    data: "ag_desc_action=bookmarkAdd&ag_item_php="+jQuery("#ag_item_php").val()+"&ag_root_php="+jQuery("#ag_root_php").val()+"&ag_bookmarks="+jQuery("#ag_bookmarks").val(),
-		    timeout: 3000,
-		    async: false,
-		    success: function(msg){
-			 switch(msg)
-			 {
-			 case "noFolder":
-			      ag_showMessage("'.JText::_("No folder selected.").'","error");
-			 break;
-			 case "bookmarkExists":
-			      ag_showMessage("'.JText::_("Gallery already exists.").'","error");
-			 break;
-			 case "cannotWriteBookmark":
-			      ag_showMessage("'.JText::_("Cannot write gallery list.").'","error");
-			 break;
-			 default:
-			      ag_showMessage("'.JText::_("Gallery list updated.").'","notice");
-			      ag_bookmarks(msg);
-			 }
-		    }
-	  });
-     break;
-     case "bookmarkRemove":
-	  jQuery.ajax({
-		    type: "POST",
-		    url: "'.$ag_script_path.'",
-		    data: "ag_desc_action=bookmarkRemove&ag_item_php="+jQuery("#ag_item_php").val()+"&ag_root_php="+jQuery("#ag_root_php").val()+"&ag_bookmarks="+jQuery("#ag_bookmarks").val(),
-		    timeout: 3000,
-		    async: false,
-		    success: function(msg){
-			 switch(msg)
-			 {
-			 case "noFolder":
-			      ag_showMessage("'.JText::_("No folder selected.").'","error");
-			 break;
-			 case "bookmarkNotExists":
-			      ag_showMessage("'.JText::_("Gallery doesn't exists in listing.").'","error");
-			 break;
-			 case "cannotWriteBookmark":
-			      ag_showMessage("'.JText::_("Cannot write gallery list.").'","error");
-			 break;
-			 default:
-			      ag_showMessage("'.JText::_("Gallery list updated.").'","notice");
-			      ag_bookmarks(msg);
-			 }
-		    }
-	  });
-     break;
-     case "folderNew":
-	  jQuery.ajax({
-		    type: "POST",
-		    url: "'.$ag_script_path.'",
-		    data: "ag_desc_action=folderNew&ag_item_php="+jQuery("#ag_item_php").val()+"&ag_root_php="+jQuery("#ag_root_php").val()+"&setChangeNameTo="+jQuery("#setChangeNameTo").val(),
-		    timeout: 3000,
-		    async: false,
-		    success: function(msg){
-
-			 switch(msg)
-			 {
-			 case "noFolder":
-			      ag_showMessage("'.JText::_("No folder selected.").'","error");
-			 break;
-			 case "folderNotCreated":
-			      ag_showMessage("'.JText::_("Folder not created.").'","error");
-			 break;
-			 default:
-			      ag_showMessage("'.JText::_("Folder created.").'","notice");
-			      // REFRESHING TREE VIEW AND PREVIEW. PATCH FOR TREE VIEW NOT GOOD
-			      jQuery("#ag_treeView a[href$="+jQuery("#ag_item_html").val()+"]").parent().find("ul").prepend("<li><img src=\''.JURI::base().'components/com_admirorgallery/jquery-treeview/images/folder.gif\' />&nbsp;<a href=\'"+jQuery("#ag_item_html").val()+"/"+msg+"\' rel=\'"+jQuery("#ag_item_php").val()+"/"+msg+"\' class=\'ag_folderLink\' onclick=\'ag_folderSelected(jQuery(this),\"folder\");return false;\'>"+msg+"</a></li>");
-			      ag_folderSelected(jQuery("#ag_treeView a[href$="+jQuery("#ag_item_html").val()+"]"),"folder");
-			 }
-
-		    }
-	  });
-     break;
-     case "upload":
-	  jQuery.ajax({
-		    type: "POST",
-		    url: "'.$ag_script_path.'",
-		    data: "ag_desc_action=upload",
-		    timeout: 3000,
-		    async: false,
-		    success: function(msg){
-			 ag_showMessage(msg,"notice");
-		    }
-	  });
-     break;
-     case "rename":
-
-	  var ag_preview_checked = "";
-	  jQuery(\'#ag_preview\').find(\'input:checkbox\').each(function(index) {
-	       if(jQuery(this).attr(\'checked\') == true){
-		    ag_preview_checked+=(jQuery(this).parent().parent().find(\'a\').attr(\'rel\')+\'[split]\');
-	       }
-	  });
-	  if(ag_preview_checked.length>0){
-	       // REMOVE LAST [split]
-	       ag_preview_checked = ag_preview_checked.substr(0,ag_preview_checked.length-7);
-	  }
-
-	  jQuery.ajax({
-		    type: "POST",
-		    url: "'.$ag_script_path.'",
-		    data: "ag_desc_action=rename&ag_preview_checked="+ag_preview_checked+"&setChangeNameTo="+jQuery("#setChangeNameTo").val(),
-		    timeout: 3000,
-		    async: false,
-		    success: function(msg){
-			 switch(msg)
-			 {
-			 case "noItemSelected":
-			      ag_showMessage("'.JText::_("No item selected.").'","error");
-			 break;
-			 case "nameNotSet":
-			      ag_showMessage("'.JText::_("New name not set.").'","error");
-			 break;
-			 case "renameError":
-			      ag_showMessage("'.JText::_("Rename Error").'","error");
-			 break;
-			 default:
-			      ag_showMessage("'.JText::_("Selected item renamed.").'","notice");
-			      // REFRESHING TREE VIEW AND PREVIEW. PATCH FOR TREE VIEW NOT GOOD
-                              //jQuery(".ag_preview_controlsWrap:icontains(\'bun.jpg\')").html(\'<input type="checkbox" name="ag_preview_CBOX[]" value="stories">\'+jQuery("#setChangeNameTo").val());
-			      ag_folderSelected(jQuery("#ag_treeView a[href$="+jQuery("#ag_item_html").val()+"]"),"folder");
-			 }
-		    }
-	  });
-     break;
-     case "remove":
-
-	  var ag_preview_checked = "";
-	  jQuery(\'#ag_preview\').find(\'input:checkbox\').each(function(index) {
-	       if(jQuery(this).attr(\'checked\') == true){
-		    ag_preview_checked+=(jQuery(this).parent().parent().find(\'a\').attr(\'rel\')+\'[split]\');
-	       }
-	  });
-     if(ag_preview_checked.length>0){
-	  // REMOVE LAST [split]
-	  ag_preview_checked = ag_preview_checked.substr(0,ag_preview_checked.length-7);
-     }
-
-
-	  jQuery.ajax({
-		    type: "POST",
-		    url: "'.$ag_script_path.'",
-		    data: "ag_desc_action=remove&ag_preview_checked="+ag_preview_checked,
-		    timeout: 3000,
-		    async: false,
-		    success: function(msg){
-			 switch(msg)
-			 {
-			 case "nothingSelected":
-			      ag_showMessage("'.JText::_("No item selected.").'","error");
-			 break;
-			 default:
-			      ag_showMessage("'.JText::_("Selected items deleted.").'","notice");
-			      // REFRESHING TREE VIEW AND PREVIEW. PATCH FOR TREE VIEW NOT GOOD
-jQuery("#ag_treeView").treeview();
-			      ag_folderSelected(jQuery("#ag_treeView a[href$="+jQuery("#ag_item_html").val()+"]"),"folder");
-			 }
-		    }
-	  });
-     break;
-     }
-
-}
-</script>
-
-<form action="index.php" method="post" name="adminForm">
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="ag_root_html" value="'.JURI::root().'" id="ag_root_html" />
-	<input type="hidden" name="ag_root_php" value="'.JPATH_SITE.'/" id="ag_root_php" />
-	<input type="hidden" name="ag_item_html" value="" id="ag_item_html" />
-	<input type="hidden" name="ag_item_php" value="" id="ag_item_php" />
-	<input type="hidden" name="ag_bookmarks" value="" id="ag_bookmarks" />
-</form>
-
+// FORMAT SCREEN
+echo '
 <table border="0" cellspacing="0" cellpadding="0">
-<tbody>
-<tr>
-<td id="ag_bookmarksView">
-</td>
-<td id="ag_treeView">
-<!-- TREE VIEW -->
-<div class="ag_screenSection_title">'.JText::_( "All Folders").'</div>
-<ul>
-<li><img src="'.JURI::base().'components/com_admirorgallery/jquery-treeview/images/folder.gif" />&nbsp;<a href="'.JURI::root().'images" rel="'.JPATH_SITE.'/images" class="ag_folderLink">images/</a>
-';
-ag_renderFiles(JPATH_SITE.'/images',JURI::root().'images');
-echo '
-</li>
-</ul>
-</td>
-<!-- PREVIEW -->
-<td id="ag_preview">
+     <tbody>
+	  <tr>
+	       <td id="ag_bookmarksView">
+		    <div class="ag_screenSection_title">'.JText::_( "Galleries").'</div>
+		    '."\n";
 
-</td>
-</tr>
-</tbody>
+ag_bookmarkParser_render(JPATH_SITE.'/administrator/components/com_admirorgallery/assets/bookmarks.xml');
+
+echo '
+	       </td>
+	       <td id="ag_treeView">
+		    <div class="ag_screenSection_title">'.JText::_( "Root Folder").'</div>
+
+			 <ul>
+			      <li>
+				   <img src="'.JURI::base().'components/com_admirorgallery/jquery-treeview/images/folder.gif" />
+				   &nbsp;
+				   <a href="'.$ag_rootFolder.'" class="ag_folderLink" title="'.$ag_rootFolder.'">
+				   '.$ag_rootFolder.'
+				   </a>
+			 '."\n";
+
+ag_treeView_render($ag_rootFolder);
+
+echo '
+			      </li>
+			 </ul>
+
+	       </td>
+	       <td id="ag_preview">
+		    <div class="ag_screenSection_title">'.JText::_( "Selected Item Details").'</div>
+	       </td>
+	  </tr>
+     </tbody>
 </table>
-';
 
-// PARSE BOOKMARKS
-$ag_bookmarks = imgManager_bookmarkParser(JPATH_BASE.DS.'components/com_admirorgallery/assets/bookmarks.xml');
-
-// UPDATE AG_BOOKMARKS
-echo '
-<script type="text/javascript">
-
-function ag_basename(file) {
-     var Parts = file.split("/");
-     return Parts[ Parts.length -1 ];
-}
-
-function ag_bookmarks(ag_bookmarks){
-     var ag_bookmarksArray = ag_bookmarks.split("[split]");
-     var ag_bookmarks_content = "<div class=\'ag_screenSection_title\'>'.JText::_( "Galleries").'</div>";
-     for ( var i=0;i<ag_bookmarksArray.length;i++ )
-     {
-	  ag_bookmarks_content+="<div class=\'ag_bookmark\'><img src=\''.JURI::base().'components/com_admirorgallery/jquery-treeview/images/folder.gif\'/>&nbsp;<a href=\''.JURI::root().'"+ag_bookmarksArray[i]+"\' rel=\''.urlencode(JPATH_SITE).'/"+ag_bookmarksArray[i]+"\' class=\'ag_folderLink\' title=\''.JURI::root().'"+ag_bookmarksArray[i]+"\' onclick=\'ag_folderSelected(jQuery(this),\"folder\");return false;\'>"+ag_basename(ag_bookmarksArray[i])+"</a></div>";
-     }
-     jQuery("#ag_bookmarksView").html(ag_bookmarks_content);
-     jQuery("#ag_bookmarks").val(ag_bookmarks);
-
-}
-
-ag_bookmarks("'.$ag_bookmarks.'");
-
-</script>
-';
+</form>
+'."\n";
 
 ?>

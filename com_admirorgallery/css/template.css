@@ -51,7 +51,6 @@
 #ag_descData
 {
      display:block;
-     padding-top:20px;
 }
 
 #ag_controlPanel_wrapper
@@ -126,11 +125,6 @@
     padding:10px;
 }
 
-#ag_preview .filePreview
-{
-    width:200px;
-}
-
 #ag_imgDesc_wrap
 {
      padding-left:20px;
@@ -139,14 +133,12 @@
 
 #ag_imgDesc_info
 {
-	padding-bottom:10px;
+     display:block;
 }
 
 
 
 /* --- IMAGE DESCRIPTION */
-
-
 
 .ag_nameLabel
 {
@@ -182,12 +174,13 @@ div.ag_preview_imgWrap
     padding:5px;
 }
 
-div.ag_preview_imgWrap img
+#ag_preview .ag_imgThumb
 {
-    border-width:0;
-    height:70px;
-    padding:0;
-    margin:0;
+    height:80px;
+}
+
+#ag_preview .filePreview{
+      margin-bottom:10px;
 }
 
 .ag_preview_itemLink:hover
@@ -212,6 +205,24 @@ div.ag_preview_imgWrap img
     margin:0;
     margin-right:5px;
     float:left;
+}
+
+.ag_imgTag_wrap {
+     background-color:transparent;
+     position:absolute;
+     z-index:100;
+     margin:0;
+     padding:0;
+}
+
+.ag_imgTag_img {
+     z-index:100;
+     background-color:transparent;
+     border-width:0;
+     margin:0;
+     padding:0;
+     width:16px;
+     height:16px;
 }
 
 /* ===================================== TOOLBAR */
