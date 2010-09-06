@@ -314,17 +314,18 @@ function ag_bookmarkParser_render($bookmarkPath){
 
      $ag_bookmarks_xml =& JFactory::getXMLParser( 'simple' );
      $ag_bookmarks_xml->loadFile( $bookmarkPath );
-
-     foreach($ag_bookmarks_xml->document->bookmark as $key => $value){
-	  echo '
-	  <div class="ag_bookmark">
-	       <img src="'.JURI::base().'components/com_admirorgallery/jquery-treeview/images/folder.gif" />
-	       &nbsp;
-	       <a href="'.$ag_bookmarks_xml->document->bookmark[$key]->data().'" class="ag_folderLink" title="'.$ag_bookmarks_xml->document->bookmark[$key]->data().'">
-	       '.basename($ag_bookmarks_xml->document->bookmark[$key]->data()).'
-	       </a>
-	  </div>
-	  '."\n";
+     if(isset($ag_bookmarks_xml->document->bookmark)){
+         foreach($ag_bookmarks_xml->document->bookmark as $key => $value){
+              echo '
+              <div class="ag_bookmark">
+                   <img src="'.JURI::base().'components/com_admirorgallery/jquery-treeview/images/folder.gif" />
+                   &nbsp;
+                   <a href="'.$ag_bookmarks_xml->document->bookmark[$key]->data().'" class="ag_folderLink" title="'.$ag_bookmarks_xml->document->bookmark[$key]->data().'">
+                   '.basename($ag_bookmarks_xml->document->bookmark[$key]->data()).'
+                   </a>
+              </div>
+              '."\n";
+         }
      }
 
 }
