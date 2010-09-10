@@ -11,6 +11,11 @@ $AG->loadCSS($AG->currTemplateRoot.'listed.css');
 
 // Form HTML code, with unique ID and Class Name
 $html.='<!-- ======================= Admiror Gallery -->
+<style type="text/css">
+.AG_listed .ag_thumbTd a:hover{border-bottom:2px solid #'.$AG->params['highliteColor'].';}
+.AG_listed a .ag_imageThumb{background-color:#'.$AG->params['foregroundColor'].';}
+.AG_listed .ag_description, .AG_listed .ag_imageStat span{color:#'.$AG->params['foregroundColor'].';}
+</style>
 <div id="AG_'.$AG->getGalleryID().'" class="AG_'.$AG->params['template'].'">
 ';
 foreach ($AG->images as $imageKey => $imageName)

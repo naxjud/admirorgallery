@@ -24,6 +24,28 @@ class agHelper{
     //                                                                          //
     //////////////////////////////////////////////////////////////////////////////
 
+protected function ag_foregroundColor ( $hex,$adjust )
+{
+     $red   = hexdec( $hex[0] . $hex[1] );
+     $green = hexdec( $hex[2] . $hex[3] );
+     $blue  = hexdec( $hex[4] . $hex[5] );
+     if(($red+$green+$blue) >= 255){
+	  $red -= $adjust; $green -= $adjust; $blue -= $adjust;
+	  if ( $red < 0 ) $red = 0;
+	  if ( $green < 0 ) $green = 0;
+	  if ( $blue < 0 ) $blue = 0;
+     }else{
+	  $red += $adjust; $green += $adjust; $blue += $adjust;
+	  if ( $red > 255 ) $red = 255;
+	  if ( $green > 255 ) $green = 255;
+	  if ( $blue > 255 ) $blue = 255;
+     }
+
+     return str_pad( dechex( $red ), 2, '0', 0 )
+	  . str_pad( dechex( $green ), 2, '0', 0 )
+	  . str_pad( dechex( $blue ), 2, '0', 0 );
+}
+
     protected function ag_imageInfo($imageURL){
 
       list($width, $height, $type, $attr) = getimagesize($imageURL);

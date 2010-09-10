@@ -205,7 +205,8 @@ class agGallery extends agHelper {
     function initGallery($match){
         $this->match = $match;
         $this->readInlineParams();
-        $this->imagesFolderName = preg_replace("/{.+?}/", "", $match);
+        $this->imagesFolderNameOriginal = preg_replace("/{.+?}/", "", $match);
+        $this->imagesFolderName = strip_tags($this->imagesFolderNameOriginal);
         $this->imagesFolderPhysicalPath = $this->sitePhysicalPath.$this->params['rootFolder'].$this->imagesFolderName.'/';
         $this->thumbsFolderPhysicalPath = $this->sitePhysicalPath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/';
         $this->imagesFolderPath = $this->sitePath.$this->params["rootFolder"].$this->imagesFolderName.'/';
@@ -363,10 +364,12 @@ class agGallery extends agHelper {
         $this->params['newImageTag']=$this->ag_getParams("newImageTag",$this->match,$this->staticParams['newImageTag']);
         $this->params['newImageTag_days']= $this->ag_getParams("newImageDays",$this->match,$this->staticParams['newImageTag_days']);
         $this->params['sortImages']=$this->ag_getParams("sortByDate",$this->match,$this->staticParams['sortImages']);
-        $this->params['frame_width']=$this->ag_getParams("frameWidth",$this->match,$this->staticParams['frame_width']);
-        $this->params['frame_height']=$this->ag_getParams("frameHeight",$this->match,$this->staticParams['frame_height']);
+        $this->params['frameWidth']=$this->ag_getParams("frameWidth",$this->match,$this->staticParams['frame_width']);
+        $this->params['frameHeight']=$this->ag_getParams("frameHeight",$this->match,$this->staticParams['frame_height']);
         $this->params['showSignature']=$this->ag_getParams("showSignature",$this->match,$this->staticParams['showSignature']);
         $this->params['popupEngine']=$this->ag_getParams("popupEngine",$this->match,$this->staticParams['popupEngine']);
+	$this->params['foregroundColor'] = $this->ag_getParams("foregroundColor",$this->match,$this->staticParams['foregroundColor']);
+	$this->params['highliteColor'] = $this->ag_getParams("highliteColor",$this->match,$this->staticParams['highliteColor']);
     }
      /**
      * Gallery constructor
@@ -388,6 +391,8 @@ class agGallery extends agHelper {
         $this->staticParams['loadjQuery']= $globalParams->get('loadjQuery', true);
         $this->staticParams['jQueryNoConflict']= $globalParams->get('jQueryNoConflict', true);
         $this->staticParams['rootFolder']= $globalParams->get('rootFolder','/images/stories/');
+	$this->staticParams['foregroundColor']= $globalParams->get('foregroundColor','808080');
+	$this->staticParams['highliteColor']= $globalParams->get('highliteColor','fea804');
         $this->popupEngine = new agPopup();
         $this->params = $this->staticParams;
         //$this->errors = new agErrors();

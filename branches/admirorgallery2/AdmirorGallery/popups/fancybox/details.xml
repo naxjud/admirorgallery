@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <details>
-  <name>Classic Gallery</name>
+  <name>Fancybox</name>
   <creationDate>Sep, 10th 2010.</creationDate>
   <author>Vasiljevski &amp; Kekeljevic</author>
   <version>1.1</version>
-  <description>Simple gallery of thumbnail images.</description>
-  <type>template</type>
+  <description>Adaptation of &lt;a href="http://fancybox.net/" target="_blank"&gt;Fancybox&lt;/a&gt; library.</description>
+  <type>popup</type>
 </details>

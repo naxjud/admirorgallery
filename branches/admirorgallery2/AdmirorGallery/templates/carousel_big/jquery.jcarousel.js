@@ -488,9 +488,9 @@
          */
         scroll: function(i, a) {
         
-        this.container.parents('.AG_carousel_big').find('.jcarousel-control a').css({backgroundPosition:"left top", cursor:"pointer"});
+        this.container.find('.jcarousel-control a').css({backgroundPosition:"left top", cursor:"pointer"});
         
-        this.container.parents('.AG_carousel_big').find('.jcarousel-control a[rel="'+i+'"]').css({backgroundPosition:"left -20px", cursor:"default"});
+        this.container.find('.jcarousel-control a[rel="'+i+'"]').css({backgroundPosition:"left -20px", cursor:"default"});
         
         
             if (this.locked || this.animating)

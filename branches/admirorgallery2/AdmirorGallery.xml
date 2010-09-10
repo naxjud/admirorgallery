@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install version="1.5" type="plugin" group="content">
-	<name>Admiror Gallery Plugin</name>
+	<name>Admiror Gallery Engine</name>
 	<author>Igor Kekeljevic</author>
 	<creationDate>01/10/2009</creationDate>	
 	<copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
@@ -15,11 +15,16 @@
 
 		<param name="rootFolder" type="text" default="/images/stories/" size="50" label="IMAGES ROOT FOLDER" description="IMAGES ROOT FOLDER DESC" />
 
-                <param name="th_height" type="text" default="120" size="5" label="IMAGE THUMBNAIL HEIGHT" description="IMAGE THUMBNAIL HEIGHT DESC" />
+                <param name="th_height" type="text" default="120" size="4" label="IMAGE THUMBNAIL HEIGHT" description="IMAGE THUMBNAIL HEIGHT DESC" />
 
 		<param name="template" type="folderlist" default="classic" label="GALLERY TEMPLATE" description="GALLERY TEMPLATE DESC" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
 
 		<param name="popupEngine" type="folderlist" default="slimbox" label="POPUP ENGINE" description="POPUP ENGINE DESC" directory="plugins/content/AdmirorGallery/popups" exclude="" stripext="" hide_none="true" hide_default="true" />
+
+                <param name="foregroundColor" type="text" default="808080" size="6" label="GALLERY FOREGROUND COLOR" description="GALLERY FOREGROUND COLOR DESC" />
+               
+	        <param name="highliteColor" type="text" default="fea804" size="6" label="GALLERY HIGHLITE COLOR" description="GALLERY HIGHLITE COLOR DESC" />
+
 
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param type="spacer" default="GALLERY FRAME SIZE" />	

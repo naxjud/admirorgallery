@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <details>
-  <name>Flash Gallery</name>
-  <creationDate>Aug, 08th 2010.</creationDate>
+  <name>Simple Flash Gallery</name>
+  <creationDate>Sep, 08th 2010.</creationDate>
   <author>Vasiljevski &amp; Kekeljevic</author>
   <version>1.0</version>
-  <description>Template is using.. </description>
+  <description>Simple flash gallery. It looks like a desktop with photographs.</description>
+  <type>template</type>
 </details>
