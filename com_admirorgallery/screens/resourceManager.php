@@ -32,6 +32,7 @@ $doc = &JFactory::getDocument();
 $doc->addStyleSheet(JURI::base().'components/com_admirorgallery/css/template.css');
 $doc->addScript(JURI::base().'components/com_admirorgallery/scripts/jquery.js');
 $doc->addScript(JURI::base().'components/com_admirorgallery/scripts/jquery.js');
+// LOAD MESSAGES GROWL LIBRARY
 require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/growl.php');
 
 $doc->addScriptDeclaration('
@@ -43,6 +44,31 @@ function submitbutton(pressbutton) {
 
 jQuery(function(){
 
+');
+
+// RENDER ALL NOTICES
+if(!empty($ag_notice)){
+     foreach($ag_notice as $key => $value){
+         if(isset ($value[1])){
+	  $doc->addScriptDeclaration('ag_showMessage("'.JText::_( $value[0]).'<br />'.$value[1].'","notice");');
+         }else{
+          $doc->addScriptDeclaration('ag_showMessage("'.JText::_( $value[0]).'","notice");');
+         }
+     }
+}
+
+// RENDER ALL ERRORS
+if(!empty($ag_error)){
+     foreach($ag_error as $key => $value){
+         if(isset ($value[1])){
+	  $doc->addScriptDeclaration('ag_showMessage("'.JText::_( $value[0]).'<br />'.$value[1].'","error");');
+         }else{
+          $doc->addScriptDeclaration('ag_showMessage("'.JText::_( $value[0]).'","error");');
+         }
+     }
+}
+
+$doc->addScriptDeclaration('
 	jQuery(".ag_title_link").click(function(e) {
 		e.preventDefault();
 		if(jQuery(this).closest("tr").find(\'input:checkbox\').attr("checked") == true){
@@ -84,12 +110,14 @@ jQuery.noConflict();
 
 ');
 
+
 // Read folder with gallery templates
 $ag_resourceManager_installed = JFolder::folders(JPATH_SITE.'/plugins/content/AdmirorGallery/'.$ag_resourceManager_screen);// N U
 sort($ag_resourceManager_installed);
 
 // Rendering the form and table grid
-echo '<script type="text/javascript">jQuery("#ag_screenWrapper").remove();</script>
+echo '
+<script type="text/javascript">jQuery("#ag_screenWrapper").remove();</script>
 <div id="ag_screenWrapper">
 <form action="index.php?option=com_admirorgallery&task='.$ag_resourceManager_screen.'" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 '.JText::_('Select ZIP package to install').': <input type="file" name="file_upload" size="50" />
@@ -209,7 +237,5 @@ echo '
 </form>
 </div>
 ';
-
-
 
 ?>

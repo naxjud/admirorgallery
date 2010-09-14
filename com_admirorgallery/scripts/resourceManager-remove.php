@@ -7,15 +7,14 @@ if(!empty($ag_cidArray)){
 	foreach($ag_cidArray as $ag_cidArrayKey => $ag_cidArrayValue){
 		if(!empty($ag_cidArrayValue)){
 			if(JFolder::delete(JPATH_SITE.'/plugins/content/AdmirorGallery/'.$task.'/'.$ag_cidArrayValue)){
-			      $msg = JText::_('Package removed.');
-			      $msgType = "notice";
+			      $ag_notice[] = Array ('Package removed.',$ag_cidArrayValue);
 			}else{
-			      $msg = JText::_('Package cannot be removed.');
-			      $msgType = "error";
+			      $ag_error[] = Array ('Package cannot be removed.',$ag_cidArrayValue);
 			}
-			echo '<script type="text/javascript">ag_showMessage("'. $msg .'", "'.$msgType.'");</script>';
 		}
 	}
+}else{
+    $ag_error[] = Array ('No package selected.');
 }
 
 
