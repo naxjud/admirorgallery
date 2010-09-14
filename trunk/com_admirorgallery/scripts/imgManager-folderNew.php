@@ -2,15 +2,14 @@
 
 if(!empty($_POST["ag_itemURL"]) && is_dir(JPATH_SITE.$_POST["ag_itemURL"])){
 
-     $ag_item_php = JPATH_SITE.$_POST["ag_itemURL"];
-     $ag_root_php = JPATH_SITE.'/';
+     $ag_itemURL = $_POST["ag_itemURL"];
      $setChangeNameTo=$_POST["setChangeNameTo"];
 
      if(empty($setChangeNameTo)){
 	  $setChangeNameTo = "new-folder-".date(c);
      }
 
-     if(file_exists($ag_item_php."/".$setChangeNameTo)){
+     if(file_exists(JPATH_SITE.$ag_itemURL."/".$setChangeNameTo)){
 	  $setChangeNameTo = $setChangeNameTo."-".date(c);
      }
 
@@ -20,7 +19,7 @@ if(!empty($_POST["ag_itemURL"]) && is_dir(JPATH_SITE.$_POST["ag_itemURL"])){
      }	
      $setChangeNameTo = htmlspecialchars(strip_tags($setChangeNameTo));
 
-     if(JFolder::create($ag_item_php."/".$setChangeNameTo,0755)){
+     if(JFolder::create(JPATH_SITE.$ag_itemURL."/".$setChangeNameTo,0755)){
 	  $ag_notice[] = Array ("Folder created:",$setChangeNameTo);
      }else{
 	  $ag_error[] = Array ("Cannot create folder.",$setChangeNameTo);

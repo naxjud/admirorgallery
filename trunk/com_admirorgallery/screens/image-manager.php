@@ -48,17 +48,22 @@ if(isset($_POST['pressbutton'])){
      }
 }
 
+// GET ROOT FOLDER
+global $mainframe;
+$plugin =& JPluginHelper::getPlugin('content', 'AdmirorGallery');
+$pluginParams = new JParameter( $plugin->params );
+$ag_rootFolder = $pluginParams->get('rootFolder','/images/stories/');
+
+$ag_init_itemURL=$ag_rootFolder;
+$ag_init_itemType="folder";
+
 if (isset ($_POST['ag_itemURL'])){
     $ag_init_itemURL=$_POST['ag_itemURL'];
-    if(is_dir(JPATH_SITE.'/'.$_POST['ag_itemURL'])){
+    if(is_dir(JPATH_SITE.$ag_init_itemURL)){
          $ag_init_itemType="folder";
     }else{
          $ag_init_itemType="file";
     }
-}else
-{
-    $ag_init_itemURL='';
-    $ag_init_itemType='';
 }
 
 $ag_lang_available = JLanguage::getKnownLanguages(JPATH_SITE);
@@ -299,13 +304,6 @@ jQuery.noConflict();
 
 ');
 
-// GET ROOT FOLDER
-global $mainframe;
-$plugin =& JPluginHelper::getPlugin('content', 'AdmirorGallery');
-$pluginParams = new JParameter( $plugin->params );
-$ag_rootFolder = $pluginParams->get('rootFolder','images/stories/');
-
-
 // FUNCTIONS
 function ag_bookmarkParser_render($bookmarkPath){
 
@@ -382,7 +380,7 @@ ag_bookmarkParser_render(JPATH_SITE.'/administrator/components/com_admirorgaller
 echo '
 	       </td>
 	       <td id="ag_treeView">
-		    <div class="ag_screenSection_title">'.JText::_( "Root Folder").'</div>
+		    <div class="ag_screenSection_title">'.JText::_( "Images Root Folder").'</div>
 
 			 <ul>
 			      <li>
