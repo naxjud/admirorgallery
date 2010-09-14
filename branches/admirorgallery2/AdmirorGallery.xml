@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install version="1.5" type="plugin" group="content">
 	<name>Admiror Gallery Engine</name>
-	<author>Igor Kekeljevic</author>
+	<author>Vasiljevski and Kekeljevic</author>
 	<creationDate>01/10/2009</creationDate>	
 	<copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
 	<authorEmail></authorEmail>
