@@ -74,6 +74,8 @@ $doc->addScript(JURI::base().'components/com_admirorgallery/scripts/jquery.js');
 $doc->addScript(JURI::base().'components/com_admirorgallery/jquery-treeview/jquery.treeview.pack.js');
 $doc->addScript(JURI::base().'components/com_admirorgallery/jquery-treeview/lib/jquery.cookie.js');
 $doc->addStyleSheet(JURI::base().'components/com_admirorgallery/jquery-treeview/jquery.treeview.css');
+// LOAD MESSAGES GROWL LIBRARY
+require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/growl.php');
 $doc->addScriptDeclaration('
 
 var ag_init_itemURL="'.$ag_init_itemURL.'";
@@ -296,11 +298,6 @@ $doc->addScriptDeclaration('
 jQuery.noConflict();
 
 ');
-
-
-// LOAD MESSAGES GROWL LIBRARY
-require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/growl.php');
-
 
 // GET ROOT FOLDER
 global $mainframe;

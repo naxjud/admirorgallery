@@ -2,6 +2,7 @@
 
 $file = JRequest::getVar( 'file_upload', null, 'files' );
 $task = JRequest::getVar( 'task', null, 'post');
+$resourceType = substr($task,0,strlen($task)-1);
 
 $config =& JFactory::getConfig();
 $tmp_dest = $config->getValue('config.tmp_path');
@@ -22,17 +23,31 @@ if(isset($file) && !empty($file['name'])){
 			if(JArchive::extract($tmp_dest.'/'.$filename, JPATH_SITE.'/plugins/content/AdmirorGallery/'. JFile::makeSafe($task) )){
 			     JFile::delete($tmp_dest.'/'.$filename);
 			}
-			$msg = JText::_('ZIP package is installed.');
-			$msgType = "notice";
+
+		// TEMPLATE DETAILS PARSING
+		if(JFIle::exists(JPATH_SITE.'/plugins/content/AdmirorGallery/'.JFile::makeSafe($task).'/'.JFile::stripExt($filename).'/details.xml')){
+			$ag_resourceManager_xml =& JFactory::getXMLParser( 'simple' );
+			$ag_resourceManager_xml->loadFile(JPATH_SITE.'/plugins/content/AdmirorGallery/'.JFile::makeSafe($task).'/'.JFile::stripExt($filename).'/details.xml');
+			$ag_resourceManager_type = $ag_resourceManager_xml->document->type[0]->data();	
+		
+		}
+
+		if($ag_resourceManager_type == $resourceType){
+		    $ag_notice[] = Array ('ZIP package is installed.',$filename);
+		}else{
+		    JFolder::delete(JPATH_SITE.'/plugins/content/AdmirorGallery/'.JFile::makeSafe($task).'/'.JFile::stripExt($filename));
+		    $ag_notice[] = Array ('ZIP package is not valid resource type.',$filename);
+		}
+
+
          } else {
-              $msg = JText::_('Cannot upload file to temp folder. Please check permissions.');
-	      $msgType = "error";
+              $ag_error[] = Array ('Cannot upload file to temp folder. Please check permissions.');
          }
       } else {
-         $msg = JText::_('Only zip archives can be installed.');
-	 $msgType = "error";
+         $ag_error[] = Array ('Only zip archives can be installed.');
       }
-	echo '<script type="text/javascript">ag_showMessage("'. $msg .'", "'.$msgType.'");</script>';
+}else{
+    $ag_error[] = Array ('Archive not selected.');
 }
 
 ?>
