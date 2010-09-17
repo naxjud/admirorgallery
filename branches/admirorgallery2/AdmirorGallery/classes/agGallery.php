@@ -336,26 +336,6 @@ class agGallery extends agHelper {
           }
 	  return $errors;
     }
-     /**
-     * Sets path values
-     * @param <string> $path
-     * @param <string> $sitePhysicalPath
-     */
-    function setSitePaths($path, $sitePhysicalPath){
-        if (substr($path, -1) == "/")
-            $path = substr($path, 0, -1);
-        $this->sitePath = $path;
-        $this->sitePhysicalPath = $sitePhysicalPath;
-        $this->thumbsFolderPhysicalPath = $sitePhysicalPath.PLUGIN_BASE_PATH.'thumbs/';
-        $this->imagesFolderPhysicalPath = $sitePhysicalPath.$this->params["rootFolder"];
-    }
-     /**
-     * Sets document reference
-     * @param <pointer> $document
-     */
-    function setDocument($document){
-        $this->doc = $document;
-    }
      // Reads inline parametar if any or sets default values
     function readInlineParams(){
         ////setting parametars for current gallery, if there is no inline params default params are set
@@ -372,10 +352,13 @@ class agGallery extends agHelper {
 	$this->params['highliteColor'] = $this->ag_getParams("highliteColor",$this->match,$this->staticParams['highliteColor']);
     }
      /**
-     * Gallery constructor
+     * Gallery constructor, sets path values, sets document reference
      * @param <JParameter> $globalParams
+     * @param <string> $path
+     * @param <string> $sitePhysicalPath
+     * @param <pointer> $document
      */
-    function  __construct($globalParams) {
+    function  __construct($globalParams,$path, $sitePhysicalPath,$document) {
         $this->staticParams['th_height']= $globalParams->get('th_height', 200);
         $this->staticParams['template']= $globalParams->get('template', 'classic');
         $this->staticParams['newImageTag']= $globalParams->get('newImageTag', true);
@@ -395,6 +378,15 @@ class agGallery extends agHelper {
 	$this->staticParams['highliteColor']= $globalParams->get('highliteColor','fea804');
         $this->popupEngine = new agPopup();
         $this->params = $this->staticParams;
+        if (substr($path, -1) == "/")
+            $path = substr($path, 0, -1);
+        $this->sitePath = $path;
+        $this->sitePhysicalPath = $sitePhysicalPath;
+        $this->thumbsFolderPhysicalPath = $sitePhysicalPath.PLUGIN_BASE_PATH.'thumbs/';
+        $this->imagesFolderPhysicalPath = $sitePhysicalPath.$this->params["rootFolder"];
+        $this->cleanThumbsFolder();
+        $this->doc = $document;
+        $this->loadCSS('AdmirorGallery.css');
         //$this->errors = new agErrors();
     }
 
