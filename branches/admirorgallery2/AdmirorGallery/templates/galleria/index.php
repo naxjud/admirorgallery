@@ -24,6 +24,8 @@ $html.='
 <script>
     jQuery(\'#AG_'.$AG->getGalleryID().'\').galleria({
         image_crop: false,
+	height: '.$AG->params['frame_height'].',
+	max_scale_ratio: 1,
 	transition: \'fade\'
     });
 </script>
