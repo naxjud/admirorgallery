@@ -9,7 +9,7 @@ $this->popupEngine->rel= 'sexylightbox[AdmirorGallery'.$this->getGalleryID().']'
 $this->popupEngine->endCode='
     <script type="text/javascript" charset="utf-8">
           jQuery(document).ready(function(){
-          SexyLightbox.initialize({color:\'white\',dir:\''.$this->sitePath.'/plugins/content/AdmirorGallery/popups/'.$this->params['popupEngine'].'\'})
+          SexyLightbox.initialize({color:\'black\',dir:\''.$this->sitePath.'/plugins/content/AdmirorGallery/popups/'.$this->params['popupEngine'].'\'})
           });
 </script>';
 ?>
