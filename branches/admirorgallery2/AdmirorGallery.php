@@ -2,12 +2,14 @@
 /*
  // Admiror Gallery, based on Simple Image Gallery
  // Author: Igor Kekeljevic & Nikola Vasiljevski, 2010.
- // Version: 2.0 beta
+ // Version: 2.0
  */
 defined('_JEXEC') or die('Restricted access');
 // Import library dependencies
 jimport('joomla.event.plugin');
 jimport('joomla.plugin.plugin');
+
+define('AG_VERSION', '2.0');
 
 class plgContentAdmirorGallery extends JPlugin {
     //Constructor

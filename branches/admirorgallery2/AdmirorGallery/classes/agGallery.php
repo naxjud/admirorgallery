@@ -317,9 +317,9 @@ class agGallery extends agHelper {
                     }
                 }
                                 // ERROR - Invalid image
-                if (!file_exists($thumb_file)) {
+                if (!file_exists($thumb_file.'d')) {
                         //$this->addError("Cannot read thumbnail");
-                            $this->addError(JText::_("Cannot read thumbnail"));
+                            $this->addError(JText::sprintf("Cannot read thumbnail",$thumb_file));
                 }
         }
     }
@@ -328,9 +328,15 @@ class agGallery extends agHelper {
      */
     function writeErrors(){
 	  $errors="";
+          $osVersion = $this->ag_get_os_($_SERVER['HTTP_USER_AGENT']);
+          $phpVersion = phpversion();
           if (isset($this->errors)){
 	  foreach($this->errors as $key => $value){
-               $errors.='<div class="error">'.$value.'</div>'."\n";
+               $errors.='<div class="error">'.$value.' <br/>
+                        Admiror Gallery: '.AG_VERSION.'<br/>
+                        Server OS:'.$osVersion.'<br/>
+                        PHP:'. $phpVersion.'
+                        </div>'."\n";
 	  }
           unset($this->errors);
           }

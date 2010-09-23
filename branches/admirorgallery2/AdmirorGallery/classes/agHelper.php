@@ -281,5 +281,32 @@ protected function ag_foregroundColor ( $hex,$adjust )
       $contents = fwrite($handle,'<html><body bgcolor="#FFFFFF"></body></html>');
       fclose($handle);
     }
+    protected function ag_get_os_($user_agent)
+    {
+	$oses = array (
+		'Windows 3.11' => 'Win16',
+		'Windows 95' => '(Windows 95)|(Win95)|(Windows_95)',
+		'Windows 98' => '(Windows 98)|(Win98)',
+		'Windows 2000' => '(Windows NT 5.0)|(Windows 2000)',
+		'Windows XP' => '(Windows NT 5.1)|(Windows XP)',
+		'Windows 2003' => '(Windows NT 5.2)',
+		'Windows NT 4.0' => '(Windows NT 4.0)|(WinNT4.0)|(WinNT)|(Windows NT)',
+		'Windows ME' => 'Windows ME',
+		'Open BSD'=>'OpenBSD',
+		'Sun OS'=>'SunOS',
+		'Linux'=>'(Linux)|(X11)',
+		'Macintosh'=>'(Mac_PowerPC)|(Macintosh)',
+		'QNX'=>'QNX',
+		'BeOS'=>'BeOS',
+		'OS/2'=>'OS/2',
+		'Search Bot'=>'(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp/cat)|(msnbot)|(ia_archiver)'
+	);
+    foreach($oses as $os=>$pattern)
+            {
+                    if (preg_match('/'.$pattern.'/', $user_agent))
+                            return $os;
+            }
+            return 'Unknown';
+    }
 }
 ?>
