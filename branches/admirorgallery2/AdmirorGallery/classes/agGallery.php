@@ -317,7 +317,7 @@ class agGallery extends agHelper {
                     }
                 }
                                 // ERROR - Invalid image
-                if (!file_exists($thumb_file.'d')) {
+                if (!file_exists($thumb_file)) {
                         //$this->addError("Cannot read thumbnail");
                             $this->addError(JText::sprintf("Cannot read thumbnail",$thumb_file));
                 }

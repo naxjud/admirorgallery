@@ -1,3 +1,7 @@
+Version 2.0.2 Revision: 126
+- error handling updated, gives more details about the error
+- language files updated
+- 
 Version 2.0.1 Revision: 123
 - PHP version check, only 5.0.0 and greater are supported
 - removed overhead functiones, calls moved to agGallery constructor.
