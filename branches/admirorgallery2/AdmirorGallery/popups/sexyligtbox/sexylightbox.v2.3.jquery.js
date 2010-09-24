@@ -44,12 +44,12 @@ jQuery.bind = function(object, method){
                           transition : 'easeInOutBack',
                           loops      : 2
                         },
-        BoxStyles     : { 'width' : 486, 'height': 320 },
+        BoxStyles     : {'width' : 486, 'height': 320},
         Skin          : {
-                          'white' : { 'hexcolor': '#FFFFFF', 'captionColor': '#000000', 'background-color': '#000000', 'opacity': 0.6 },
-                          'black' : { 'hexcolor': '#000000', 'captionColor': '#FFFFFF', 'background-color': '#000000', 'opacity': 0.6 },
-                          'blanco': { 'hexcolor': '#FFFFFF', 'captionColor': '#000000', 'background-color': '#000000', 'opacity': 0.6 },
-                          'negro' : { 'hexcolor': '#000000', 'captionColor': '#FFFFFF', 'background-color': '#000000', 'opacity': 0.6 }
+                          'white' : {'hexcolor': '#FFFFFF', 'captionColor': '#000000', 'background-color': '#000000', 'opacity': 0.6},
+                          'black' : {'hexcolor': '#000000', 'captionColor': '#FFFFFF', 'background-color': '#000000', 'opacity': 0.6},
+                          'blanco': {'hexcolor': '#FFFFFF', 'captionColor': '#000000', 'background-color': '#000000', 'opacity': 0.6},
+                          'negro' : {'hexcolor': '#000000', 'captionColor': '#FFFFFF', 'background-color': '#000000', 'opacity': 0.6}
                         }
       };
     },
@@ -126,10 +126,10 @@ jQuery.bind = function(object, method){
       },
 
       resize: function(x, y) {
-        this.element.css({ 'height': 0, 'width': 0 });
-        if (this.shim) this.shim.css({ 'height': 0, 'width': 0 });
+        this.element.css({'height': 0, 'width': 0});
+        if (this.shim) this.shim.css({'height': 0, 'width': 0});
 
-        var win = { x: $(document).width(), y: $(document).height() };
+        var win = {x: $(document).width(), y: $(document).height()};
         var chromebugfix = $.browser.safari ? (win.x - 25 < document.body.clientWidth ? document.body.clientWidth : win.x) : win.x;
 
         this.element.css({
@@ -139,7 +139,7 @@ jQuery.bind = function(object, method){
 
         if (this.shim)
         {
-          this.shim.css({ 'height': 0, 'width': 0 });
+          this.shim.css({'height': 0, 'width': 0});
           this.shim.css({
             width  : x ? x : chromebugfix, //* chrome fix
             height : y ? y : win.y
@@ -173,7 +173,7 @@ jQuery.bind = function(object, method){
 
         this.transition = this.element.fadeOut(this.options.closeDuration, $.bind(this, function(){
           this.element.trigger('hide');
-          this.element.css({ 'height': 0, 'width': 0 });
+          this.element.css({'height': 0, 'width': 0});
         }));
 
         return this;
@@ -365,8 +365,8 @@ $('body').append('<div id="'+name+'-Wrapper"><div id="'+name+'-Background"></div
     @description  Cambiar de tama�o y posicionar el lightbox en el centro de la pantalla
     */
     replaceBox: function(data) {
-      var size   = { x: $(window).width(), y: $(window).height() };
-      var scroll = { x: $(window).scrollLeft(), y: $(window).scrollTop() };
+      var size   = {x: $(window).width(), y: $(window).height()};
+      var scroll = {x: $(window).scrollLeft(), y: $(window).scrollTop()};
       var width  = this.options.BoxStyles['width'];
       var height = this.options.BoxStyles['height'];
       
@@ -443,7 +443,7 @@ $('body').append('<div id="'+name+'-Wrapper"><div id="'+name+'-Background"></div
     getInfo: function (image, id) {
       image=$(image);
       IEuta = $('<a id="'+this.options.name+'-'+id+'" title="'+image.attr('title')+'" rel="'+image.attr('rel')+'"></a>');
-      IEuta.css({ 'background-image' : 'url('+this.options.dir+'/'+this.options.color+'/'+this.options.buttons+')' });
+      IEuta.css({'background-image' : 'url('+this.options.dir+'/'+this.options.color+'/'+this.options.buttons+')'});
       IEuta.attr('href', image.attr('href')); //IE fix
       return IEuta;
     },
@@ -476,7 +476,7 @@ $('body').append('<div id="'+name+'-Wrapper"><div id="'+name+'-Background"></div
       params['modal']   = parseInt(params['modal']);
 
       this.overlay.options.hideOnClick = !params['modal'];
-      this.lightbox  = $.extend({}, params, { 'width' : params['width'] + 14 });
+      this.lightbox  = $.extend({}, params, {'width' : params['width'] + 14});
       this.navigator = this.lightbox.title ? true : false;
 
       if ( force=='image' || baseURL.match(imageURL) )
@@ -494,7 +494,7 @@ $('body').append('<div id="'+name+'-Wrapper"><div id="'+name+'-Background"></div
 
               this.lightbox.height = params['height'] - (this.navigator ? 21 : 35);
               
-              this.replaceBox({ 'resize' : 1 });
+              this.replaceBox({'resize' : 1});
               
               // Mostrar la imagen, solo cuando la animacion de resizado se ha completado
               this.ResizeBox.bind('complete', $.bind(this, function(){

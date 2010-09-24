@@ -43,7 +43,6 @@ $html .= '
     </td></tr>
     </td></tr></tbody></table>
     </td></tr></tbody></table>';
-
 }
 
 $html .='<!-- Admiror Gallery --></div>';
