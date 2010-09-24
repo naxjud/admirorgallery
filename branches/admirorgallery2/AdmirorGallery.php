@@ -71,8 +71,8 @@ class plgContentAdmirorGallery extends JPlugin {
                 }
                 //Create directory in thumbs for gallery
                 JFolder::create($AG->thumbsFolderPhysicalPath, 0755);
-                if (is_writable($AG->thumbsFolderPhysicalPath))
-                    $AG->generateThumbs();
+                if (is_writable($AG->thumbsFolderPhysicalPath)) $AG->generateThumbs();
+                else $AG->addError(JText::sprintf('Admiror Gallery cannot create thumbnails in %s <br/>Check folder permmisions!',$AG->thumbsFolderPhysicalPath));
                 include (dirname(__FILE__).'/AdmirorGallery/templates/'.$AG->params['template'].'/index.php');
                 $AG->clearOldThumbs();
                 $row->text = $AG->writeErrors().preg_replace("#{AdmirorGallery[^}]*}".$AG->imagesFolderNameOriginal."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
