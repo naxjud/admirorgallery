@@ -31,7 +31,12 @@
 	
 		<param name="frame_width" type="text" default="500" size="5" label="GALLERY FRAME WIDTH" description="GALLERY FRAME WIDTH DESC" />
 		<param name="frame_height" type="text" default="300" size="5" label="GALLERY FRAME HEIGHT" description="GALLERY FRAME HEIGHT DESC" />
-				
+
+                <param name="squareImages" type="radio" default="0" label="MAKE THUMBS SQUARE" description="MAKE THUMBS SQUARE DESC">
+			<option value="1">Yes</option>
+			<option value="0">No</option>
+		</param>
+
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param type="spacer" default="NEW IMAGES SETTINGS" />
 		

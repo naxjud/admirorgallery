@@ -224,7 +224,7 @@ protected function ag_foregroundColor ( $hex,$adjust )
     }
 
     //Creates thumbnail from original images, return $errorMessage;
-    protected function ag_createThumb($original_file, $thumb_file, $new_h) {
+    protected function ag_createThumb($original_file, $thumb_file, $new_h, $square=0) {
         //GD check
         if (!function_exists('gd_info')) {
             // ERROR - Invalid image
@@ -239,26 +239,51 @@ protected function ag_foregroundColor ( $hex,$adjust )
         } else {
             return JText::sprintf('Unsupported image type for image',$original_file);
         }
-        @$old_x = imageSX($src_img);
-        @$old_y = imageSY($src_img);
+        @$src_width = imageSX($src_img);//$src_width
+        @$src_height = imageSY($src_img);//$src_height
 
-        @$thumb_w = $old_x * ($new_h / $old_y);
-        @$thumb_h = $new_h;
+        @$dst_w = $src_width * ($new_h / $src_height);
+        @$dst_h = $new_h;
 
-        if($thumb_w==0 || $thumb_h==0){
+        $src_w=$src_width;
+        $src_h=$src_height;
+        $src_x=0;
+        $src_y=0;
+
+        if($src_width==0 || $src_height==0){
             return JText::sprintf('Image is missing or not valid. Cannot read this image',$original_file);
         }
+        if($square){
+            $dst_w = $new_h;
+            $dst_h = $new_h;
+            if($src_width>$src_height){
+                $src_x = ceil(($src_width-$src_height)/2);
+                $src_w=$src_height;
+                $src_h=$src_height;
+            }else{
+                $src_y = ceil(($src_height-$src_width)/2);
+                $src_w=$src_width;
+                $src_h=$src_width;
+            }
+        }else{
+            if($src_width<$src_height){
+                $dst_w=$new_h;
+                $dst_h=floor($src_height*($dst_w/$src_width));
+            }else{
+                $dst_h=$new_h;
+                $dst_w=floor($src_width*($dst_h/$src_height));
+            }
+        }
+        @$dst_img = imagecreatetruecolor($dst_w, $dst_h);
 
-        @$dst_img = imagecreatetruecolor($thumb_w, $thumb_h);
-		
 		// PNG THUMBS WITH ALPHA PATCH
         if (preg_match("/png/i", $original_file)) {
         // Turn off alpha blending and set alpha flag
             imagealphablending($dst_img, false);
             imagesavealpha($dst_img, true);
         }
-
-        @imagecopyresampled($dst_img, $src_img, 0, 0, 0, 0, $thumb_w, $thumb_h, $old_x, $old_y);
+        
+        @imagecopyresampled($dst_img, $src_img, 0, 0, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
 
         if (preg_match("/jpg|jpeg/i", $original_file)) {
             @imagejpeg($dst_img, $thumb_file);

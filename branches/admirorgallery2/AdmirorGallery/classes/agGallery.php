@@ -34,6 +34,7 @@ class agGallery extends agHelper {
     var $currTemplateRoot='';
     // Virtual path. Example: "http://www.mysite.com/plugins/content/AdmirorGallery/"
     var $pluginPath = '';
+    var $squareImage = false;
     private $errors = array();
     private $doc = null;
     private $descArray = array ();
@@ -309,11 +310,11 @@ class agGallery extends agHelper {
                 $original_file = $this->imagesFolderPhysicalPath.$imagesValue;
                 $thumb_file = $this->thumbsFolderPhysicalPath.$imagesValue;
                 if (!file_exists($thumb_file)) {
-                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height']));
+                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height']),$this->params['squareImages']);
                 }else{
                 list($imagewidth, $imageheight) = getimagesize($thumb_file);
                 if ($imageheight != $this->params['th_height']) {
-                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height']));
+                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height']),$this->params['squareImages']);
                     }
                 }
                                 // ERROR - Invalid image
@@ -356,6 +357,7 @@ class agGallery extends agHelper {
         $this->params['popupEngine']=$this->ag_getParams("popupEngine",$this->match,$this->staticParams['popupEngine']);
 	$this->params['foregroundColor'] = $this->ag_getParams("foregroundColor",$this->match,$this->staticParams['foregroundColor']);
 	$this->params['highliteColor'] = $this->ag_getParams("highliteColor",$this->match,$this->staticParams['highliteColor']);
+        $this->params['squareImages'] = $this->ag_getParams("highliteColor",$this->match,$this->staticParams['squareImages']);
     }
      /**
      * Gallery constructor, sets path values, sets document reference
@@ -382,6 +384,7 @@ class agGallery extends agHelper {
         $this->staticParams['rootFolder']= $globalParams->get('rootFolder','/images/stories/');
 	$this->staticParams['foregroundColor']= $globalParams->get('foregroundColor','808080');
 	$this->staticParams['highliteColor']= $globalParams->get('highliteColor','fea804');
+        $this->staticParams['squareImages']= $globalParams->get('squareImages',false);
         $this->popupEngine = new agPopup();
         $this->params = $this->staticParams;
         if (substr($path, -1) == "/")
