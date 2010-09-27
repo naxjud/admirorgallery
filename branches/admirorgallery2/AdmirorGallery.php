@@ -23,7 +23,7 @@ class plgContentAdmirorGallery extends JPlugin {
         $gd_exists=true;
         // just startup
         global $mainframe;
-        if (!preg_match("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text)) {
+        if ((!preg_match("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text)) && (!preg_match("#{AG[^}]*}(.*?){/AG}#s", $row->text))) {
             return;
         }
         $doc = &JFactory::getDocument();
@@ -32,10 +32,11 @@ class plgContentAdmirorGallery extends JPlugin {
         {
             $doc->addStyleSheet('plugins/content/AdmirorGallery/AdmirorGallery.css');
              $html = '<div class="error">Admiror Gallery requires PHP version 5.0.0 or greater!</div>'."\n";
-             if (preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER) > 0) {
+                     if ((preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER)> 0) || (preg_match_all("#{AG[^}]*}(.*?){/AG}#s", $row->text, $matches, PREG_PATTERN_ORDER)> 0) ){
                  foreach ($matches[0] as $match) {
                     $galleryname = preg_replace("/{.+?}/", "", $match);
                     $row->text = preg_replace("#{AdmirorGallery[^}]*}".$galleryname."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
+                    $row->text = preg_replace("#{AG[^}]*}".$galleryname."{/AG}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
                  }
              }
             return;
@@ -43,7 +44,7 @@ class plgContentAdmirorGallery extends JPlugin {
         // Load gallery class php script
         require_once (dirname(__FILE__).'/AdmirorGallery/classes/agGallery.php');
         //CreateGallerys
-        if (preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER) > 0) {
+        if ((preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER)> 0) || (preg_match_all("#{AG[^}]*}(.*?){/AG}#s", $row->text, $matches, PREG_PATTERN_ORDER)> 0) ) {
             $plugin = &JPluginHelper::getPlugin('content', 'AdmirorGallery');
             $AG = new agGallery(new JParameter($plugin->params),JURI::base(),JPATH_SITE,$doc);
             //Load current language
@@ -76,6 +77,7 @@ class plgContentAdmirorGallery extends JPlugin {
                 include (dirname(__FILE__).'/AdmirorGallery/templates/'.$AG->params['template'].'/index.php');
                 $AG->clearOldThumbs();
                 $row->text = $AG->writeErrors().preg_replace("#{AdmirorGallery[^}]*}".$AG->imagesFolderNameOriginal."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
+                $row->text = $AG->writeErrors().preg_replace("#{AG[^}]*}".$AG->imagesFolderNameOriginal."{/AG}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
             }// foreach($matches[0] as $match)
             /* ========================= SIGNATURE ====================== */
             if($AG->params['showSignature']){
