@@ -16,7 +16,7 @@ $html.='<!-- ======================= Admiror Gallery -->
 .AG_listed a .ag_imageThumb{background-color:#'.$AG->params['foregroundColor'].';}
 .AG_listed .ag_description, .AG_listed .ag_imageStat span{color:#'.$AG->params['foregroundColor'].';}
 </style>
-<div id="AG_'.$AG->getGalleryID().'" class="AG_'.$AG->params['template'].'">
+<div id="AG_'.$AG->getGalleryID().'" class="ag_reseter AG_'.$AG->params['template'].'">
 ';
 foreach ($AG->images as $imageKey => $imageName)
 {

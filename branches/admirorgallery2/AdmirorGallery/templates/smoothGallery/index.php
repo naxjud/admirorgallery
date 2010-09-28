@@ -8,7 +8,7 @@ $AG->loadJS($AG->currTemplateRoot.'scripts/jd.gallery.namespaced.js');
 
 // Form HTML code
 $html = '<!-- ======================= Admiror Gallery -->
-<div id="AG_'.$AG->getGalleryID().'">';
+<div class="ag_reseter" id="AG_'.$AG->getGalleryID().'">';
 foreach ($AG->images as $imagesKey => $imageValue){
  $html.='<div class="imageElement"> <h3>'.$AG->writeDescription($imageValue).'</h3>
   <a href="'.$AG->imagesFolderPath.$imageValue.'" title="" class="open"></a>

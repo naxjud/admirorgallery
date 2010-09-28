@@ -10,7 +10,7 @@ $AG->loadCSS($AG->currTemplateRoot.'/galleria.css');
 $AG->params['newImageTag']=false;
 
 // Form HTML code
-$html = '<div id="AG_'.$AG->getGalleryID().'" class="AG_'.$AG->params['template'].'">';
+$html = '<div id="AG_'.$AG->getGalleryID().'" class="ag_reseter AG_'.$AG->params['template'].'">';
 
 // Loops over the array of images inside target gallery folder, adding wrapper with SPAN tag and write Popup thumbs inside this wrapper
 foreach ($AG->images as $imageKey => $imageName){

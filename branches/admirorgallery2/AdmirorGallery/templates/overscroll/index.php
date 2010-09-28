@@ -9,7 +9,7 @@ $AG->loadCSS($AG->currTemplateRoot.'listed.css');
 $html=$AG->initPopup();
 $html .='<div class="ag_overscroll_bodyHolder ag_overscroll" style="width:'.$AG->params['frame_width'].'px; height:'.$AG->params['frame_height'].'px">';
 $html .= '<!-- ======================= Admiror Gallery -->
-<div id="AdmirorGallery'.$AG->getGalleryID().'">
+<div id="AdmirorGallery'.$AG->getGalleryID().'" class="ag_reseter">
   <div class="AdmirorOverscrollGallery">';
 //disables new image tag
 $AG->params['newImageTag']=false;

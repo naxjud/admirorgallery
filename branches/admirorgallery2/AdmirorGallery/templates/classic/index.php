@@ -15,7 +15,7 @@ $html.='<!-- ======================= Admiror Gallery -->
      .AG_classic .ag_imageThumb{border-color:#'.$AG->params['foregroundColor'].'}
      .AG_classic .ag_imageThumb:hover{background-color:#'.$AG->params['highliteColor'].'}
 </style>
-<div id="AG_'.$AG->getGalleryID().'" class="AG_'.$AG->params['template'].'">
+<div id="AG_'.$AG->getGalleryID().'" class="ag_reseter AG_'.$AG->params['template'].'">
   <table cellspacing="0" cellpadding="0" border="0">
     <tbody>
       <tr>

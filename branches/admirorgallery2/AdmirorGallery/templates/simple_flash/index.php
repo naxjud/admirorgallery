@@ -37,7 +37,7 @@ jQuery(function(){
 
 // Add wrapper with unique ID name,used by jQuery Flash library for embeding SWF file
 $html.='
-<div id="AG_'.$AG->getGalleryID().'"></div>
+<div class="ag_reseter" id="AG_'.$AG->getGalleryID().'"></div>
 ';
 
 ?>

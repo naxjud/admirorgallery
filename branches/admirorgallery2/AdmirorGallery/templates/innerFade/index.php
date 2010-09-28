@@ -6,7 +6,7 @@ $AG->loadJS($AG->currTemplateRoot.'jquery.innerfade.js');
 // Form HTML code
 $html = '
 <!-- ======================= Admiror Gallery -->
-<ul id="ag_innerFade'.$AG->getGalleryID().'">
+<ul id="ag_innerFade'.$AG->getGalleryID().'" class="ag_reseter">
 ';
 foreach ($AG->images as $imagesKey => $imageValue)
 {

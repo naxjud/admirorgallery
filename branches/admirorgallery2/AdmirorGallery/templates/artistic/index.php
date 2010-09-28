@@ -9,7 +9,7 @@ $AG->loadCSS($AG->currTemplateRoot.'template.css');
 $html=$AG->initPopup();
 // Form HTML code, with unique ID and Class Name
 $html.='<!-- ======================= Admiror Gallery -->
-<div id="AG_'.$AG->getGalleryID().'" class="AG_'.$AG->params['template'].'">
+<div id="AG_'.$AG->getGalleryID().'" class="ag_reseter AG_'.$AG->params['template'].'">
 <table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tbody>
 <tr>

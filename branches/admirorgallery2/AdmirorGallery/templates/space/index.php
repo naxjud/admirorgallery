@@ -10,7 +10,7 @@ $AG->loadJS($AG->currTemplateRoot.'spacegallery.js');
 
 // Form HTML code
 $html = '<!-- ======================= Admiror Gallery -->
-<div class="AG_'.$AG->getGalleryID().'">
+<div class="ag_reseter AG_'.$AG->getGalleryID().'">
 <style type="text/css">
     #myGallery'.$AG->getGalleryID().' {
         width: '.$AG->params['frame_width'].'px;

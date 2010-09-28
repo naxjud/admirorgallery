@@ -8,7 +8,7 @@ $AG->loadJS($AG->currTemplateRoot.'jquery.jcarousel.js');
 $html=$AG->initPopup();
 // Form HTML code
 $html ='<!-- ======================= Admiror Gallery -->
-<div id="AG_'.$AG->getGalleryID().'" class="AG_'.$AG->params['template'].'">
+<div id="AG_'.$AG->getGalleryID().'" class="ag_reseter AG_'.$AG->params['template'].'">
 <ul id="ag_carousel_'.$AG->getGalleryID().'" class="jcarousel-skin-tango">';
 foreach ($AG->images as $imageKey => $imageName){
 		$html .= '<li>
