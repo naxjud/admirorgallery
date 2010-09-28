@@ -224,7 +224,7 @@ protected function ag_foregroundColor ( $hex,$adjust )
     }
 
     //Creates thumbnail from original images, return $errorMessage;
-    protected function ag_createThumb($original_file, $thumb_file, $new_h, $square=0) {
+    protected function ag_createThumb($original_file, $thumb_file, $new_h, $square='0') {
         //GD check
         if (!function_exists('gd_info')) {
             // ERROR - Invalid image

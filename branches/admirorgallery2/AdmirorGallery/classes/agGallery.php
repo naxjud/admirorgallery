@@ -310,16 +310,16 @@ class agGallery extends agHelper {
                 $original_file = $this->imagesFolderPhysicalPath.$imagesValue;
                 $thumb_file = $this->thumbsFolderPhysicalPath.$imagesValue;
                 if (!file_exists($thumb_file)) {
-                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height']),$this->params['squareImages']);
+                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height'],$this->params['squareImages']));
                 }else{
                 list($imagewidth, $imageheight) = getimagesize($thumb_file);
                 if ($imageheight != $this->params['th_height']) {
-                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height']),$this->params['squareImages']);
+                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height'],$this->params['squareImages']));
                     }
                 }
-                                // ERROR - Invalid image
+                // ERROR - Invalid image
                 if (!file_exists($thumb_file)) {
-                        //$this->addError("Cannot read thumbnail");
+                           //$this->addError("Cannot read thumbnail");
                             $this->addError(JText::sprintf("Cannot read thumbnail",$thumb_file));
                 }
         }
@@ -357,7 +357,7 @@ class agGallery extends agHelper {
         $this->params['popupEngine']=$this->ag_getParams("popupEngine",$this->match,$this->staticParams['popupEngine']);
 	$this->params['foregroundColor'] = $this->ag_getParams("foregroundColor",$this->match,$this->staticParams['foregroundColor']);
 	$this->params['highliteColor'] = $this->ag_getParams("highliteColor",$this->match,$this->staticParams['highliteColor']);
-        $this->params['squareImages'] = $this->ag_getParams("highliteColor",$this->match,$this->staticParams['squareImages']);
+        $this->params['squareImages'] = $this->ag_getParams("squareImages",$this->match,$this->staticParams['squareImages']);
     }
      /**
      * Gallery constructor, sets path values, sets document reference
