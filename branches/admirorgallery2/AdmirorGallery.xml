@@ -20,9 +20,9 @@
                 <param name="th_height" type="text" default="120" size="4" label="THUMBNAIL HEIGHT" description="THUMBNAIL HEIGHT DESC" />
 
 		<param name="th_autoSize" type="radio" default="none" label="THUMBNAIL AUTO SIZE" description="THUMBNAIL AUTO SIZE DESC">
-			<option value="width">Width</option>
-			<option value="height">Height</option>
-			<option value="none">None</option>
+			<option value="width">WIDTH</option>
+			<option value="height">HEIGHT</option>
+			<option value="none">NONE</option>
 		</param>	
 		
 		<param name="template" type="folderlist" default="classic" label="GALLERY TEMPLATE" description="GALLERY TEMPLATE DESC" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
@@ -44,42 +44,42 @@
 		<param type="spacer" default="NEW IMAGES SETTINGS" />
 		
 		<param name="newImageTag" type="radio" default="1" label="MARK NEW IMAGES" description="MARK NEW IMAGES DESC">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
+			<option value="1">YES</option>
+			<option value="0">NO</option>
 		</param>		
 		
 		<param name="newImageTag_days" type="text" default="7" size="5" label="NEW IMAGE DAYS LIMIT" description="NEW IMAGE DAYS LIMIT DESC" />
 		<param name="sortImages" type="radio" default="1" label="NEW IMAGES FIRST" description="NEW IMAGES FIRST DESC" >		
-			<option value="1">Yes</option>
-			<option value="0">No</option>
+			<option value="1">YES</option>
+			<option value="0">NO</option>
 		</param>
 				
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param type="spacer" default="ADDITIONAL SETTINGS" />	
 		
 		<param name="showSignature" type="radio" default="1" label="SHOW SIGNATURE" description="SHOW SIGNATURE DESC" >
-			<option value="1">Yes</option>
-			<option value="0">No</option>
+			<option value="1">YES</option>
+			<option value="0">NO</option>
 		</param>
 		
 		<param name="ignoreError" type="radio" default="1" label="IGNORE INVALID IMAGE" description="IGNORE INVALID IMAGE DESC" >
-			<option value="1">Yes</option>
-			<option value="0">No</option>
+			<option value="1">YES</option>
+			<option value="0">NO</option>
 		</param>
 
                 <param name="ignoreAllError" type="radio" default="0" label="IGNORE NOTICE OF RECOVERABLE ERRORS" description="IGNORE NOTICE OF RECOVERABLE ERRORS DESC" >
-			<option value="1">Yes</option>
-			<option value="0">No</option>
+			<option value="1">YES</option>
+			<option value="0">NO</option>
 		</param>
 		
 		<param name="loadjQuery" type="radio" default="1" label="LOAD JQUERY" description="LOAD JQUERY DESC" >
-			<option value="1">Yes</option>
-			<option value="0">No</option>
+			<option value="1">YES</option>
+			<option value="0">NO</option>
 		</param>
 
                 <param name="jQueryNoConflict" type="radio" default="1" label="USE NO CONFLICT MODE" description="USE NO CONFLICT MODE DESC" >
-			<option value="1">Yes</option>
-			<option value="0">No</option>
+			<option value="1">YES</option>
+			<option value="0">NO</option>
 		</param>
 		
 <!-- 		<param name="deleteThumbFolder" type="list" default="0" label="Delete Thumb Folder On Next Show" description="Delets temporary thumbs folder" >
