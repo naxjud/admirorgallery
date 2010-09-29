@@ -302,6 +302,11 @@ class agGallery extends agHelper {
     }
     //Generates thumbs, check for settings change and recreates thumbs if it needs to
     function generateThumbs(){
+        if(($this->params['th_width']==0) || ($this->params['th_height']==0))
+        {
+            $this->adderror(JText::_("Cannot create thumbnails! Width and height must be greater then 0"));
+            return;
+        }
         //Add's index.html to thumbs folder
         if (!file_exists($this->thumbsFolderPhysicalPath.'/index.html'))
         {$this->ag_indexWrite($this->thumbsFolderPhysicalPath.'/index.html');}
@@ -310,11 +315,11 @@ class agGallery extends agHelper {
                 $original_file = $this->imagesFolderPhysicalPath.$imagesValue;
                 $thumb_file = $this->thumbsFolderPhysicalPath.$imagesValue;
                 if (!file_exists($thumb_file)) {
-                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height'],$this->params['squareImages']));
+                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_width'],$this->params['th_height'],$this->params['th_autoSize']));
                 }else{
                 list($imagewidth, $imageheight) = getimagesize($thumb_file);
-                if ($imageheight != $this->params['th_height']) {
-                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_height'],$this->params['squareImages']));
+                if ($imageheight != $this->params['th_height'] || $imagewidth != $this->params['th_width']) {
+                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_width'],$this->params['th_height'],$this->params['th_autoSize']));
                     }
                 }
                 // ERROR - Invalid image
@@ -347,7 +352,9 @@ class agGallery extends agHelper {
     function readInlineParams(){
         ////setting parametars for current gallery, if there is no inline params default params are set
         $this->params['template']= $this->ag_getParams("template",$this->match,$this->staticParams['template']);
+        $this->params['th_width'] = $this->ag_getParams("width",$this->match,$this->staticParams['th_width']);
         $this->params['th_height'] = $this->ag_getParams("height",$this->match,$this->staticParams['th_height']);
+        $this->params['th_autoSize'] = $this->ag_getParams("autoSize",$this->match,$this->staticParams['th_autoSize']);
         $this->params['newImageTag']=$this->ag_getParams("newImageTag",$this->match,$this->staticParams['newImageTag']);
         $this->params['newImageTag_days']= $this->ag_getParams("newImageDays",$this->match,$this->staticParams['newImageTag_days']);
         $this->params['sortImages']=$this->ag_getParams("sortByDate",$this->match,$this->staticParams['sortImages']);
@@ -357,7 +364,6 @@ class agGallery extends agHelper {
         $this->params['popupEngine']=$this->ag_getParams("popupEngine",$this->match,$this->staticParams['popupEngine']);
 	$this->params['foregroundColor'] = $this->ag_getParams("foregroundColor",$this->match,$this->staticParams['foregroundColor']);
 	$this->params['highliteColor'] = $this->ag_getParams("highliteColor",$this->match,$this->staticParams['highliteColor']);
-        $this->params['squareImages'] = $this->ag_getParams("squareImages",$this->match,$this->staticParams['squareImages']);
     }
      /**
      * Gallery constructor, sets path values, sets document reference
@@ -367,7 +373,9 @@ class agGallery extends agHelper {
      * @param <pointer> $document
      */
     function  __construct($globalParams,$path, $sitePhysicalPath,$document) {
-        $this->staticParams['th_height']= $globalParams->get('th_height', 200);
+        $this->staticParams['th_width']= $globalParams->get('th_width', 200);
+        $this->staticParams['th_height']= $globalParams->get('th_height', 120);
+        $this->staticParams['th_autoSize']= $globalParams->get('th_autoSize', "none");
         $this->staticParams['template']= $globalParams->get('template', 'classic');
         $this->staticParams['newImageTag']= $globalParams->get('newImageTag', true);
         $this->staticParams['newImageTag_days']= $globalParams->get('newImageTag_days', '7');
@@ -384,7 +392,6 @@ class agGallery extends agHelper {
         $this->staticParams['rootFolder']= $globalParams->get('rootFolder','/images/stories/');
 	$this->staticParams['foregroundColor']= $globalParams->get('foregroundColor','808080');
 	$this->staticParams['highliteColor']= $globalParams->get('highliteColor','fea804');
-        $this->staticParams['squareImages']= $globalParams->get('squareImages',false);
         $this->popupEngine = new agPopup();
         $this->params = $this->staticParams;
         if (substr($path, -1) == "/")

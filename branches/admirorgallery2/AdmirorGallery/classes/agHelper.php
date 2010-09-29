@@ -224,59 +224,62 @@ protected function ag_foregroundColor ( $hex,$adjust )
     }
 
     //Creates thumbnail from original images, return $errorMessage;
-    protected function ag_createThumb($original_file, $thumb_file, $new_h, $square='0') {
-        //GD check
-        if (!function_exists('gd_info')) {
-            // ERROR - Invalid image
-            return JText::_('GD support is not enabled');
-        }
-        if (preg_match("/jpg|jpeg/i", $original_file)) {
-            @$src_img = imagecreatefromjpeg($original_file);
-        } else if (preg_match("/png/i", $original_file)) {
-            @$src_img = imagecreatefrompng($original_file);
-        } else if (preg_match("/gif/i", $original_file)) {
-            @$src_img = imagecreatefromgif($original_file);
-        } else {
-            return JText::sprintf('Unsupported image type for image',$original_file);
-        }
-        @$src_width = imageSX($src_img);//$src_width
-        @$src_height = imageSY($src_img);//$src_height
+    protected function ag_createThumb($original_file, $thumb_file, $new_w, $new_h, $autoSize) {
 
-        @$dst_w = $src_width * ($new_h / $src_height);
-        @$dst_h = $new_h;
+	//GD check
+	if (!function_exists('gd_info')) {
+	    // ERROR - Invalid image
+	    return JText::_('GD support is not enabled');
+	}
 
+	// Create src_img
+	if (preg_match("/jpg|jpeg/i", $original_file)) {
+	    @$src_img = imagecreatefromjpeg($original_file);
+	} else if (preg_match("/png/i", $original_file)) {
+	    @$src_img = imagecreatefrompng($original_file);
+	} else if (preg_match("/gif/i", $original_file)) {
+	    @$src_img = imagecreatefromgif($original_file);
+	} else {
+	    return JText::sprintf('Unsupported image type for image',$original_file);
+	}
+
+	@$src_width = imageSX($src_img);//$src_width
+	@$src_height = imageSY($src_img);//$src_height
         $src_w=$src_width;
         $src_h=$src_height;
         $src_x=0;
         $src_y=0;
+	$dst_w = $new_w;
+	$dst_h = $new_h;
+	$src_ratio=$src_w/$src_h;	
+	$dst_ratio=$new_w/$new_h;
 
-        if($src_width==0 || $src_height==0){
-            return JText::sprintf('Image is missing or not valid. Cannot read this image',$original_file);
-        }
-        if($square){
-            $dst_w = $new_h;
-            $dst_h = $new_h;
-            if($src_width>$src_height){
-                $src_x = ceil(($src_width-$src_height)/2);
-                $src_w=$src_height;
-                $src_h=$src_height;
-            }else{
-                $src_y = ceil(($src_height-$src_width)/2);
-                $src_w=$src_width;
-                $src_h=$src_width;
-            }
-        }else{
-            if($src_width<$src_height){
-                $dst_w=$new_h;
-                $dst_h=floor($src_height*($dst_w/$src_width));
-            }else{
-                $dst_h=$new_h;
-                $dst_w=floor($src_width*($dst_h/$src_height));
-            }
-        }
+switch ($autoSize) {
+    case "width":
+	    // AUTO WIDTH
+	    $dst_w = $dst_h*$src_ratio;
+        break;
+    case "height":
+	    // AUTO HEIGHT
+	    $dst_h = $dst_w/$src_ratio;
+        break;
+    case "none":
+	// If proportion of source image is wider then proportion of thumbnail image, then use full height of source image and crop the width.
+	if ($src_ratio > $dst_ratio) {
+	    // KEEP HEIGHT, CROP WIDTH
+	    $src_w = $src_h*$dst_ratio;
+	    $src_x = floor(($src_width-$src_w)/2);
+	}else{
+	    // KEEP WIDTH, CROP HEIGHT
+	    $src_h = $src_w/$dst_ratio;
+	    $src_y = floor(($src_height-$src_h)/2);
+	}
+        break;
+}
+
         @$dst_img = imagecreatetruecolor($dst_w, $dst_h);
 
-		// PNG THUMBS WITH ALPHA PATCH
+	// PNG THUMBS WITH ALPHA PATCH
         if (preg_match("/png/i", $original_file)) {
         // Turn off alpha blending and set alpha flag
             imagealphablending($dst_img, false);

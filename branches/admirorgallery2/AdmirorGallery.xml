@@ -15,8 +15,16 @@
 
 		<param name="rootFolder" type="text" default="/images/stories/" size="50" label="IMAGES ROOT FOLDER" description="IMAGES ROOT FOLDER DESC" />
 
-                <param name="th_height" type="text" default="120" size="4" label="IMAGE THUMBNAIL HEIGHT" description="IMAGE THUMBNAIL HEIGHT DESC" />
+                <param name="th_width" type="text" default="200" size="4" label="THUMBNAIL WIDTH" description="THUMBNAIL WIDTH DESC" />
 
+                <param name="th_height" type="text" default="120" size="4" label="THUMBNAIL HEIGHT" description="THUMBNAIL HEIGHT DESC" />
+
+		<param name="th_autoSize" type="radio" default="none" label="THUMBNAIL AUTO SIZE" description="THUMBNAIL AUTO SIZE DESC">
+			<option value="width">Width</option>
+			<option value="height">Height</option>
+			<option value="none">None</option>
+		</param>	
+		
 		<param name="template" type="folderlist" default="classic" label="GALLERY TEMPLATE" description="GALLERY TEMPLATE DESC" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
 
 		<param name="popupEngine" type="folderlist" default="slimbox" label="POPUP ENGINE" description="POPUP ENGINE DESC" directory="plugins/content/AdmirorGallery/popups" exclude="" stripext="" hide_none="true" hide_default="true" />
@@ -31,11 +39,6 @@
 	
 		<param name="frame_width" type="text" default="500" size="5" label="GALLERY FRAME WIDTH" description="GALLERY FRAME WIDTH DESC" />
 		<param name="frame_height" type="text" default="300" size="5" label="GALLERY FRAME HEIGHT" description="GALLERY FRAME HEIGHT DESC" />
-
-                <param name="squareImages" type="radio" default="0" label="MAKE THUMBS SQUARE" description="MAKE THUMBS SQUARE DESC">
-			<option value="1">Yes</option>
-			<option value="0">No</option>
-		</param>
 
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param type="spacer" default="NEW IMAGES SETTINGS" />
