@@ -239,48 +239,34 @@ class agGallery extends agHelper {
                               // Set image name as imageDescription value, as predifined value
                               $this->descArray[$f] = $f;
 
-                              // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
-                              if(file_exists($this->imagesFolderPhysicalPath.(substr($f, 0, -3))."desc")){
-                                $descriptionFileApsolutePath=$this->imagesFolderPhysicalPath.(substr($f, 0, -3))."desc";
-                        }else{
-                          $descriptionFileApsolutePath=$this->imagesFolderPhysicalPath.(substr($f, 0, -3))."DESC";
+			// Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+			$ag_pathWithStripExt=$this->imagesFolderPhysicalPath.agHelper::ag_removExtension($f);
+			$descriptionFileApsolutePath=$ag_pathWithStripExt.".XML";
+			if(file_exists($ag_pathWithStripExt.".xml")){
+			  $descriptionFileApsolutePath=$ag_pathWithStripExt.".xml";
                         }
 
                       if(file_exists($descriptionFileApsolutePath)){// Check is descriptions file exists
 
-                            // Read Description File Content
-                            $descriptionFileContent='';
-                            $file=fopen($descriptionFileApsolutePath,"r");
-                            while (!feof($file))
-                              {
-                              $descriptionFileContent.=fgetc($file);
-                              }
-                            fclose($file);
+			  $ag_imgXML_xml = & JFactory::getXMLParser( 'simple' );
+			  $ag_imgXML_xml->loadFile($descriptionFileApsolutePath);
+			  $ag_imgXML_captions =& $ag_imgXML_xml->document->captions[0];
+			  $lang =& JFactory::getLanguage();
+			  $langTag=strtolower($lang->getTag());
 
-                            $descriptionFileContent=str_replace("\n","<br>",$descriptionFileContent);
+			  // GET DEFAULT LABEL
+			  foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
+			      if(strtolower($ag_imgXML_caption->attributes('lang')) == "default"){
+				    $this->descArray[$f] = $ag_imgXML_caption->data();
+			      }
+			  }
 
-
-                            $langTag="default";
-                              if(stripos($descriptionFileContent, "{".$langTag."}") !== false && stripos($descriptionFileContent, "{/".$langTag."}") !== false){// If none lang encoding match found extract default tag and place it as imageDescription value
-                                    $from="{".$langTag."}";
-                                    $to="{/".$langTag."}";
-                              $content=$descriptionFileContent;
-                              $content=stristr($content, $from);
-                              $content=substr($content,strlen($from),strpos($content, $to)-(strlen($to)-1));
-                              $this->descArray[$f]=$content;
-                            }
-
-                                    $lang =& JFactory::getLanguage();
-                                    $langTag=strtolower($lang->getTag());
-
-                                    if(stripos($descriptionFileContent, "{".$langTag."}") !== false && stripos($descriptionFileContent, "{/".$langTag."}") !== false){// Extract part of text which suits to tag for language and place it as imageDescription value
-                                      $from="{".$langTag."}";
-                                      $to="{/".$langTag."}";
-                              $content=$descriptionFileContent;
-                              $content=stristr($content, $from);
-                              $content=substr($content,strlen($from),strpos($content, $to)-(strlen($to)-1));
-                              $this->descArray[$f]=$content;
-                            }
+			  // GET CURRENT LANG LABEL
+			  foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
+			      if(strtolower($ag_imgXML_caption->attributes('lang')) == strtolower($langTag)){
+				    $this->descArray[$f] = $ag_imgXML_caption->data();
+			      }
+			  }
 
                       }// if(file_exists($descriptionFileApsolutePath))
 

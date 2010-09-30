@@ -336,5 +336,14 @@ switch ($autoSize) {
             }
             return 'Unknown';
     }
+    function ag_removExtension($fileName)
+    {
+        $ext = strrchr($fileName, '.');
+        if($ext !== false)
+        {
+         $fileName = substr($fileName, 0, -strlen($ext));
+        }
+        return $fileName;
+    }
 }
 ?>
