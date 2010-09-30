@@ -23,7 +23,7 @@ class plgContentAdmirorGallery extends JPlugin {
         $gd_exists=true;
         // just startup
         global $mainframe;
-        if ((!preg_match("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text)) && (!preg_match("#{AG[^}]*}(.*?){/AG}#s", $row->text))) {
+        if (!preg_match("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}|{AG[^}]*}(.*?){/AG}#s", $row->text)) {
             return;
         }
         $doc = &JFactory::getDocument();
@@ -35,8 +35,7 @@ class plgContentAdmirorGallery extends JPlugin {
                      if ((preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER)> 0) || (preg_match_all("#{AG[^}]*}(.*?){/AG}#s", $row->text, $matches, PREG_PATTERN_ORDER)> 0) ){
                  foreach ($matches[0] as $match) {
                     $galleryname = preg_replace("/{.+?}/", "", $match);
-                    $row->text = preg_replace("#{AdmirorGallery[^}]*}".$galleryname."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
-                    $row->text = preg_replace("#{AG[^}]*}".$galleryname."{/AG}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
+                    $row->text = preg_replace("#{AdmirorGallery[^}]*}".$galleryname."{/AdmirorGallery}|{AG[^}]*}".$galleryname."{/AG}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
                  }
              }
             return;
@@ -44,7 +43,7 @@ class plgContentAdmirorGallery extends JPlugin {
         // Load gallery class php script
         require_once (dirname(__FILE__).'/AdmirorGallery/classes/agGallery.php');
         //CreateGallerys
-        if ((preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER)> 0) || (preg_match_all("#{AG[^}]*}(.*?){/AG}#s", $row->text, $matches, PREG_PATTERN_ORDER)> 0) ) {
+        if (preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}|{AG[^}]*}(.*?){/AG}#s", $row->text, $matches, PREG_PATTERN_ORDER)> 0) {
             $plugin = &JPluginHelper::getPlugin('content', 'AdmirorGallery');
             $AG = new agGallery(new JParameter($plugin->params),JURI::base(),JPATH_SITE,$doc);
             //Load current language
@@ -68,16 +67,14 @@ class plgContentAdmirorGallery extends JPlugin {
                 $AG->initGallery($match);// match = ;
                 // ERROR - Cannot find folder with images
                 if (!file_exists($AG->imagesFolderPhysicalPath)) {
-                    $AG->addError(JText::sprintf('Cannot find folder inside folder',$AG->imagesFolderName,$AG->imagesFolderPhysicalPath));
-                }
+                    $AG->addError(JText::sprintf('Cannot find folder inside folder',$AG->imagesFolderName,$AG->imagesFolderPhysicalPath));}
                 //Create directory in thumbs for gallery
                 JFolder::create($AG->thumbsFolderPhysicalPath, 0755);
                 if (is_writable($AG->thumbsFolderPhysicalPath)) $AG->generateThumbs();
                 else $AG->addError(JText::sprintf('Admiror Gallery cannot create thumbnails in %s <br/>Check folder permmisions!',$AG->thumbsFolderPhysicalPath));
                 include (dirname(__FILE__).'/AdmirorGallery/templates/'.$AG->params['template'].'/index.php');
                 $AG->clearOldThumbs();
-                $row->text = $AG->writeErrors().preg_replace("#{AdmirorGallery[^}]*}".$AG->imagesFolderNameOriginal."{/AdmirorGallery}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
-                $row->text = $AG->writeErrors().preg_replace("#{AG[^}]*}".$AG->imagesFolderNameOriginal."{/AG}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
+                $row->text = $AG->writeErrors().preg_replace("#{AdmirorGallery[^}]*}".$AG->imagesFolderNameOriginal."{/AdmirorGallery}|{AG[^}]*}".$AG->imagesFolderNameOriginal."{/AG}#s", "<div style='clear:both'></div>".$html, $row->text, 1);
             }// foreach($matches[0] as $match)
             /* ========================= SIGNATURE ====================== */
             if($AG->params['showSignature']){
