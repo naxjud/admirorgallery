@@ -1,13 +1,10 @@
 <?php
 
-
-// $ag_preview_checked_array = $_POST['ag_preview_CBOX'];
-
-
 if(isset($_POST["ag_itemURL"])){
      if(isset($_POST["setChangeNameTo"])){
 
 	  $ag_itemURL = $_POST["ag_itemURL"];
+	  $ag_folderName = dirname($ag_itemURL);
 	  $setChangeNameTo = $_POST["setChangeNameTo"];
 
 	  // CREATE WEBSAFE TITLES
@@ -17,13 +14,20 @@ if(isset($_POST["ag_itemURL"])){
 	  $setChangeNameTo = htmlspecialchars(strip_tags($setChangeNameTo));
 
 	  if(!is_dir(JPATH_SITE.$ag_itemURL)){
-	       $ag_file_ext = JFile::getExt(basename($ag_itemURL));
-	       $ag_itemURL_desc = dirname($ag_itemURL).'/'.JFile::stripExt(basename($ag_itemURL)).'.desc';
+
+	      // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+	      $ag_pathWithStripExt=JPATH_SITE.$ag_folderName.'/'.JFile::stripExt(basename($ag_itemURL));
+	      $ag_imgXML_path=$ag_pathWithStripExt.".XML";
+	      if(JFIle::exists($ag_pathWithStripExt.".xml")){
+		  $ag_imgXML_path=$ag_pathWithStripExt.".xml";
+	      }
+	      $ag_file_ext = JFile::getExt(basename($ag_itemURL));
+
                $ag_file_new_name = dirname($ag_itemURL).'/'.$setChangeNameTo.'.'.$ag_file_ext;
                if (!file_exists(JPATH_SITE.$ag_file_new_name)){
                    if(rename(JPATH_SITE.$ag_itemURL,JPATH_SITE.$ag_file_new_name)){
-                        if(file_exists(JPATH_SITE.$ag_itemURL_desc)){
-                             rename(JPATH_SITE.$ag_itemURL_desc,JPATH_SITE.dirname($ag_itemURL).'/'.$setChangeNameTo.'.desc');
+                        if(file_exists($ag_imgXML_path)){
+                             rename($ag_imgXML_path,JPATH_SITE.dirname($ag_itemURL).'/'.$setChangeNameTo.'.xml');
                         }
                         $ag_notice[] = Array ("Image renamed:",basename($ag_itemURL));
                         $_POST["ag_itemURL"] = dirname($ag_itemURL).'/'.$setChangeNameTo.'.'.$ag_file_ext;

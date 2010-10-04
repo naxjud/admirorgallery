@@ -55,7 +55,7 @@
 
 #ag_controlPanel_wrapper
 {
-     padding:20px 10px 20px 350px;
+     padding:20px 10px 20px 370px;
      background-image: url('../images/ag_poster.jpg');
      background-repeat: no-repeat;
      
@@ -199,6 +199,28 @@ div.ag_preview_imgWrap
     white-space:nowrap
 }
 
+.ag_preview_itemTitle
+{
+    font-weight:bold;
+    border-top:1px solid #ccc;
+    margin-top:3px;
+    display:block;
+     line-height:20px;
+}
+
+.ag_hasXML, .ag_hasThumb
+{
+     vertical-align:middle;
+}
+
+.ag_preview_priorityLabel
+{
+    float:left;
+    line-height:12px;
+    border-left:1px solid #ccc;
+    padding-left:5px;
+}
+
 .ag_preview_controlsWrap input
 {
     padding:0;
@@ -284,6 +306,11 @@ div.ag_preview_imgWrap
 
 .icon-32-rename    { 
         background-image: url(../images/toolbar/icon-32-rename.png); 
+	background-position: left top;
+}
+
+.icon-32-priority    { 
+        background-image: url(../images/toolbar/icon-32-priority.png); 
 	background-position: left top;
 }
 

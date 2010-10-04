@@ -29,9 +29,9 @@ class TOOLBAR_admirorgallery{
 				JToolBarHelper :: custom( 'upload', 'upload','upload', JText::_( 'Upload' ), false, false );
 				JToolBarHelper :: custom( 'rename', 'rename','rename', JText::_( 'Rename' ), false, false );
 				JToolBarHelper :: custom( 'remove', 'remove','remove', JText::_( 'Delete' ), false, false );
+				JToolBarHelper :: custom( 'priority', 'priority','priority', JText::_( 'Set Priority' ), false, false );
 				JToolBarHelper :: divider();
-				JToolBarHelper :: custom( 'description', 'description','description', JText::_( 'Save Desc' ), false, false );
-				JToolBarHelper :: custom( 'removeDesc', 'removeDesc','removeDesc', JText::_( 'Remove Desc' ), false, false );
+				JToolBarHelper :: custom( 'description', 'description','description', JText::_( 'Write Captions' ), false, false );
 			 break;
 			default:
 				JToolBarHelper::title( JText::_( 'Control Panel' ), 'default.png' );

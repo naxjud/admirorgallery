@@ -1,94 +1,128 @@
 <?php
-    //$returnArray;
+
+$ag_itemURL = $ag_init_itemURL;
+
+$ag_folderName = dirname($ag_itemURL);
+$ag_fileName = basename($ag_itemURL);
+
+$ag_hasXML="";
+$ag_hasThumb="";
+
+// Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+$ag_pathWithStripExt=JPATH_SITE.$ag_folderName.'/'.JFile::stripExt(basename($ag_itemURL));
+$ag_imgXML_path=$ag_pathWithStripExt.".XML";
+if(JFIle::exists($ag_pathWithStripExt.".xml")){
+    $ag_imgXML_path=$ag_pathWithStripExt.".xml";
+}
+
+include_once(dirname(__FILE__).'/agHelper.php');
+$tempInfo = agHelper::ag_imageInfo(JPATH_SITE.$ag_itemURL);
+$ag_file_width = $tempInfo["width"].'px';
+$ag_file_height = $tempInfo["height"].'px';
+$ag_file_type = $tempInfo["type"];
+$ag_file_size = $tempInfo["size"];
+
+if(file_exists(JPATH_SITE."/plugins/content/AdmirorGallery/thumbs/".basename($ag_folderName)."/".basename($ag_fileName))){
+     $ag_hasThumb='<img src="'.JURI::base().'components/com_admirorgallery/images/icon-hasThumb.png" class="ag_hasThumb" />';
+}
+
+if(file_exists($ag_imgXML_path)){
+     $ag_hasXML='<img src="'.JURI::base().'components/com_admirorgallery/images/icon-hasXML.png" class="ag_hasXML" />';
+     $ag_imgXML_xml = & JFactory::getXMLParser( 'simple' );
+     $ag_imgXML_xml->loadFile($ag_imgXML_path);
+     $ag_imgXML_captions =& $ag_imgXML_xml->document->captions[0];
+}
+
+$ag_preview_content='';
+$ag_preview_content.='
+<div class="ag_screenSection_title">
+    <a href="'.$ag_folderName.'/" class="ag_folderLink">'.$ag_folderName.'/</a>'.$ag_fileName.'
+</div>
+<fieldset>
+    <table cellspacing="0" cellpadding="3" border="0">
+      <tbody>
+	<tr>
+	  <td id="fieldset1_row1_td1">'.JText::_( 'Set / Change Name to:' ).'&nbsp;</td><td id="fieldset1_row1_td2"><input type="text" name="setChangeNameTo" id="setChangeNameTo" size="50" /><br /></td>
+	</tr>
+      </tbody>
+    </table>
+</fieldset>
+<div class="filePreview">
+    <img src="'.dirname(JURI::base()).$ag_itemURL.'" class="ag_imgThumb" />
+</div>
+<div id="ag_imgDesc_info">
+    <div class="t"><div class="t"><div class="t"></div></div></div>	       
+	<div class="m m_imgInfo">
+	  '.$ag_hasXML.$ag_hasThumb.'
+	  '.JText::_( "Width").': <b>'.$ag_file_width.'</b>&nbsp;|&nbsp;
+	  '.JText::_( "Height").': <b>'.$ag_file_height.'</b>&nbsp;|&nbsp;
+	  '.JText::_( "Type").': <b>'.$ag_file_type.'</b>&nbsp;|&nbsp;
+	  '.JText::_( "Size").': <b>'.$ag_file_size.'</b>
+	</div>
+    <div class="b"><div class="b"><div class="b"></div></div></div>
+</div>
+<p> </p>
+<div id="ag_descData">
+';
+
+function ag_render_caption($ag_lang_name, $ag_lang_tag, $ag_lang_content){
+    return '
+	<div id="ag_imgDesc_info">
+	    <div class="t"><div class="t"><div class="t"></div></div></div>	       
+		<div class="m m_imgInfo">
+		    <span class="ag_nameLabel">'.$ag_lang_name.'</span>
+		    <span class="ag_tagLabel">'.$ag_lang_tag.'</span>
+		    <br style="clear:both" />
+		    <textarea class="ag_inputText" name="ag_desc_content[]">'.$ag_lang_content.'</textarea><input type="hidden" name="ag_desc_tags[]" value="'.$ag_lang_tag.'" />
+		</div>
+	    <div class="b"><div class="b"><div class="b"></div></div></div>
+	</div>
+	<p> </p>
+    ';
+}
+
+$ag_matchCheck = Array("default");
+
+// GET DEFAULT LABEL
+$ag_imgXML_caption_content="";
+if(!empty($ag_imgXML_captions->caption)){
+  foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
+      if(strtolower($ag_imgXML_caption->attributes('lang')) == "default"){
+	  $ag_imgXML_caption_content = $ag_imgXML_caption->data();
+      }
+  }
+}
+$ag_preview_content.= ag_render_caption("Default", "default", $ag_imgXML_caption_content);
 
 
-     $ag_url_img = urldecode($_POST['ag_itemURL']);
-     $ag_url_html = urldecode($_POST['ag_htmlRoot']);
-     $ag_url_php = urldecode($_POST['ag_phpRoot']);
-
-     $ag_file_ext = substr(strrchr(basename($ag_url_img),'.'),1);
-
-     $ag_url_desc = substr($ag_url_img,0,strlen($ag_url_img)-strlen($ag_file_ext));
-     $ag_url_desc = $ag_url_php.$ag_url_desc.'desc';
-     $ag_lang_available = urldecode($_POST['ag_lang_available']);
-     $ag_lang_availableArray = explode("[split]",$ag_lang_available);
-     $ag_url_img_php = $ag_url_php.$ag_url_img;
-
-    include_once(dirname(__FILE__).'/agHelper.php');
-
-    $ag_possibleFolder = basename(dirname($ag_url_img));
-    $ag_possibleFile = basename($ag_url_img);
-    $imagePath = $ag_url_img;
-    if(file_exists($ag_url_php."/plugins/content/AdmirorGallery/thumbs/".$ag_possibleFolder."/".$ag_possibleFile)){
-      $imagePath=$ag_url_html."plugins/content/AdmirorGallery/thumbs/".$ag_possibleFolder."/".$ag_possibleFile;
-    }
-    $returnArray[0]= $ag_url_img;
-
-    $tempInfo = agHelper::ag_imageInfo($ag_url_img_php);
-
-    $returnArray[1] = $tempInfo["width"].'px';
-    $returnArray[2] = $tempInfo["height"].'px';
-    $returnArray[3] = $tempInfo["type"];
-    $returnArray[4] = $tempInfo["size"];
-    $returnArray[5] = "noDesc";
-
-    $langArray = Array();
-    $ag_matchCheck = Array();
-    $ag_content='';
-    $output='';
-
-    if(file_exists($ag_url_desc)){
-	  $returnArray[5] = "hasDesc";
-	  $file=fopen($ag_url_desc,"r");
-	  while (!feof($file))
-	  {
-	       $ag_content.=fgetc($file);
+// GET LABELS ON SITE LANGUAGES
+$ag_lang_available = JLanguage::getKnownLanguages(JPATH_SITE);
+if(!empty($ag_lang_available)){
+    foreach($ag_lang_available as $ag_lang){
+	$ag_imgXML_caption_content="";
+	if(!empty($ag_imgXML_captions->caption)){
+	  foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
+	      if(strtolower($ag_imgXML_caption->attributes('lang')) == strtolower($ag_lang["tag"])){
+		  $ag_imgXML_caption_content = $ag_imgXML_caption->data();
+		  $ag_matchCheck[]=strtolower($ag_lang["tag"]);
+	      }
 	  }
-	  fclose($file);
+	}
+	$ag_preview_content.= ag_render_caption($ag_lang["name"], $ag_lang["tag"], $ag_imgXML_caption_content);
     }
-    //Load default description fields
-    $output = 'default[split]default[split]';
-    $from='{default}';
-    $to='{/default}';
-    $extract=stristr($ag_content, $from);
-    $extract=substr($extract,strlen($from),strpos($extract, $to)-(strlen($to)-1));
-    $output.= $extract.'[split]';
-    $ag_matchCheck[]='default';
+}
 
-    //Load all available lang fields
-    $langCount = count($ag_lang_availableArray);
-    for($a = 0; $a < $langCount ; $a+=2) {// List descriptions for installed languages
-        $output .= $ag_lang_availableArray[$a+1].'[split]'.strtolower($ag_lang_availableArray[$a]).'[split]';
-        $from='{'.strtolower($ag_lang_availableArray[$a]).'}';
-        $to='{/'.strtolower($ag_lang_availableArray[$a]).'}';
-        $extract=stristr($ag_content, $from);
-        $extract=substr($extract,strlen($from),strpos($extract,$to)-(strlen($to)-1));
-        $output.=$extract.'[split]';
-        if(strlen($extract)>0){
-              $ag_matchCheck[]=strtolower($ag_lang_availableArray[$a]);
-         }
+if(!empty($ag_imgXML_captions->caption)){
+    foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
+	$ag_imgXML_caption_attr = $ag_imgXML_caption->attributes('lang');
+	if(!is_numeric(array_search(strtolower($ag_imgXML_caption_attr),$ag_matchCheck))){
+	      $ag_preview_content.= ag_render_caption($ag_imgXML_caption_attr, $ag_imgXML_caption_attr, $ag_imgXML_caption->data());
+	}
     }
-    // Create other langTag fields
-    if(count($ag_matchCheck)>0){
+}
 
-         if (preg_match_all("#{(.*?)}#i", $ag_content, $ag_matches, PREG_PATTERN_ORDER) > 0) {
-              for ($i = 0; $i < count($ag_matches[0]) ; $i+=2) {
-                   if(!is_numeric(array_search(strtolower($ag_matches[1][$i]),$ag_matchCheck))){
-                    $output .= $ag_matches[1][$i].'[split]'.strtolower($ag_matches[1][$i]).'[split]';
-                                $from='{'.strtolower($ag_matches[1][$i]).'}';
-                                $to='{/'.strtolower($ag_matches[1][$i]).'}';
-                                $extract=stristr($ag_content, $from);
-                                $extract=substr($extract,strlen($from),strpos($extract,$to)-(strlen($to)-1));
-                                $output.=$extract.'[split]';
-                   }
-              }
-         }
+$ag_preview_content.='
+</div>
+';
 
-    }
-
-    $output=substr($output,0,strlen($output)-7);
-
-    $returnArray[6]=$output;
-
-    echo implode("[ArraySplit]",$returnArray);
 ?>
