@@ -23,9 +23,6 @@ $ag_images_count = sizeof($AG->images);
 $ag_images_col1 = array_slice($AG->images, 0, $ag_images_count/2);
 $ag_images_col2 = array_slice($AG->images, $ag_images_count/2);
 
-// Loads values into $AG->imageInfo array for target image
-$AG->getImageInfo($imageName);
-
 $html .= '
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
     <tbody>
@@ -34,7 +31,9 @@ $html .= '
 
 foreach ($ag_images_col1 as $imageKey => $imageName)
 {
-$html .= '
+    // Loads values into $AG->imageInfo array for target image
+    $AG->getImageInfo($imageName);
+    $html .= '
     <table border="0" cellspacing="0" cellpadding="0" width="100%" class="ag_item">
     <tbody>
     <tr><td class="ag_thumbTd">
@@ -59,7 +58,9 @@ $html .='</td><td style="width:10px;">&nbsp;</td><td>';
 
 foreach ($ag_images_col2 as $imageKey => $imageName)
 {
-$html .= '
+    // Loads values into $AG->imageInfo array for target image
+    $AG->getImageInfo($imageName);
+    $html .= '
     <table border="0" cellspacing="0" cellpadding="0" width="100%" class="ag_item">
     <tbody>
     <tr><td class="ag_thumbTd">
