@@ -175,43 +175,115 @@ protected function ag_foregroundColor ( $hex,$adjust )
         }
     }
     //Read's all images from folder.
-    protected function ag_imageArrayFromFolder($targetFolder,$sort){
-        if (!file_exists($targetFolder))
-        {
-                return null;
-        }
-        if ($dh = opendir($targetFolder)) {
-          while (($f = readdir($dh)) !== false) {
-                  if((substr(strtolower($f),-3) == 'jpg') || (substr(strtolower($f),-4) == 'jpeg') || (substr(strtolower($f),-3) == 'gif') || (substr(strtolower($f),-3) == 'png')) {
-                          $images[] = $f;
-                  }
-          }
-        if (isset($images))
-        {
-              if ($sort)
-              {
-                      for($i=0;$i<count($images);$i++)
-                      {
-                            $imagesPath[$i]=$targetFolder.$images[$i];
-                      }
-                      array_multisort(
-                                    array_map( 'filectime', $imagesPath ),
-                                    SORT_NUMERIC,
-                                    SORT_DESC,
-                                    $images
-                            );
-                      unset($imagesPath);
-              }
-              else
-                            array_multisort($images, SORT_ASC, SORT_REGULAR);
-        return $images;
-        }
-        else
-        {
-            return null;
-        }
-         closedir($dh);
-        }
+    protected function ag_imageArrayFromFolder($targetFolder,$arrange){
+
+	  if (!file_exists($targetFolder))
+	  {
+		    return null;
+	  }
+	  if ($dh = opendir($targetFolder)) {
+
+	       $ag_ext_valid = array ("jpg","jpeg","gif","png");// SET VALID IMAGE EXTENSION
+
+	       while (($f = readdir($dh)) !== false) {
+			 if(is_numeric(array_search(strtolower(agHelper::ag_getExtension(basename($f))),$ag_ext_valid))){
+				   $images[] = $f;
+			 }
+	       }
+	  }
+	  closedir($dh);
+
+	  if(!empty($images)){
+	  switch ($arrange) {
+	       case "priority":
+
+		    $ag_images_priority=Array();
+		    $ag_images_noPriority=Array();
+		    $images_sorted=Array();
+
+		    foreach($images as $key => $value){
+
+			 // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+			 $ag_pathWithStripExt=$targetFolder.agHelper::ag_removExtension($value);
+			 $ag_imgXML_path=$ag_pathWithStripExt.".XML";
+			 if(file_exists($ag_pathWithStripExt.".xml")){
+			      $ag_imgXML_path=$ag_pathWithStripExt.".xml";
+			 }
+
+			 if(file_exists($ag_imgXML_path)){
+			      $ag_imgXML_xml = & JFactory::getXMLParser( 'simple' );
+			      $ag_imgXML_xml->loadFile($ag_imgXML_path);
+			      $ag_imgXML_priority =& $ag_imgXML_xml->document->priority[0]->data();
+			 }
+
+			 if(!empty($ag_imgXML_priority) && file_exists($ag_imgXML_path)){
+			      $ag_images_priority[$value] = $ag_imgXML_priority;// PRIORITIES IMAGES
+			 }else{
+			      $ag_images_noPriority[] = $value;// NON PRIORITIES IMAGES
+			 }
+
+		    }
+
+		    if(!empty($ag_images_priority)){
+		    asort($ag_images_priority);
+			 foreach($ag_images_priority as $key => $value){
+			      $images_sorted[]=$key;
+			 }
+		    }
+
+		    if(!empty($ag_images_noPriority)){
+		    natcasesort($ag_images_noPriority);
+			 foreach($ag_images_noPriority as $key => $value){
+			      $images_sorted[]=$value;
+			 }
+		    }
+		    $images=$images_sorted;
+
+	       break;
+	       case "date":
+
+	       $ag_new_images=Array();
+
+	       foreach($images as $key => $value){
+
+		    // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+		    $ag_pathWithStripExt=$targetFolder.agHelper::ag_removExtension($value);
+		    $ag_imgXML_path=$ag_pathWithStripExt.".XML";
+		    if(file_exists($ag_pathWithStripExt.".xml")){
+			 $ag_imgXML_path=$ag_pathWithStripExt.".xml";
+		    }
+
+		    if(file_exists($ag_imgXML_path)){
+			 $ag_imgXML_xml = & JFactory::getXMLParser( 'simple' );
+			 $ag_imgXML_xml->loadFile($ag_imgXML_path);
+			 $ag_imgXML_date =& $ag_imgXML_xml->document->date[0]->data();
+		    }
+		    if(!empty($ag_imgXML_date) && file_exists($ag_imgXML_path)){
+			 $ag_new_images[$value] = $ag_imgXML_date;
+		    }else{
+			 $ag_new_images[$value] = date ("YmdHs", filemtime($targetFolder.$value));
+		    }
+
+	       }
+
+	       $images=Array();
+	       if(!empty($ag_new_images)){
+	       asort($ag_new_images);
+	       $ag_new_images = array_reverse($ag_new_images);
+		    foreach($ag_new_images as $key => $value){
+			 $images[]=$key;
+		    }
+	       }
+
+	       break;
+	       case "alphanumeric":
+		    natcasesort($images);
+	       break;
+	  }
+	  }
+
+	  return $images;
+
     }
         //Gets the atributes value by name, else returns false
     protected function ag_getParams($attrib, $tag, $default){
@@ -344,6 +416,12 @@ switch ($autoSize) {
          $fileName = substr($fileName, 0, -strlen($ext));
         }
         return $fileName;
+    }
+    function ag_getExtension($fileName)
+    {
+        $ext = strrchr($fileName, '.');
+        $ext=substr($ext, 1);
+        return $ext;
     }
 }
 ?>

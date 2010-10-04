@@ -255,18 +255,22 @@ class agGallery extends agHelper {
 			  $langTag=strtolower($lang->getTag());
 
 			  // GET DEFAULT LABEL
-			  foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
-			      if(strtolower($ag_imgXML_caption->attributes('lang')) == "default"){
-				    $this->descArray[$f] = $ag_imgXML_caption->data();
+			 if(!empty($ag_imgXML_captions->caption)){
+			      foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
+				   if(strtolower($ag_imgXML_caption->attributes('lang')) == "default"){
+					$this->descArray[$f] = $ag_imgXML_caption->data();
+				   }
 			      }
-			  }
+			 }
 
 			  // GET CURRENT LANG LABEL
-			  foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
+			 if(!empty($ag_imgXML_captions->caption)){
+			      foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
 			      if(strtolower($ag_imgXML_caption->attributes('lang')) == strtolower($langTag)){
 				    $this->descArray[$f] = $ag_imgXML_caption->data();
 			      }
-			  }
+			      }
+			 }
 
                       }// if(file_exists($descriptionFileApsolutePath))
 
@@ -284,7 +288,7 @@ class agGallery extends agHelper {
     }
     // Loads images array, sorted as defined bu parametar.
     private function loadImageFiles(){
-         $this->images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath, $this->params['sortImages']);
+         $this->images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath, $this->params['arrange']);
     }
     //Generates thumbs, check for settings change and recreates thumbs if it needs to
     function generateThumbs(){
@@ -341,9 +345,9 @@ class agGallery extends agHelper {
         $this->params['th_width'] = $this->ag_getParams("width",$this->match,$this->staticParams['th_width']);
         $this->params['th_height'] = $this->ag_getParams("height",$this->match,$this->staticParams['th_height']);
         $this->params['th_autoSize'] = $this->ag_getParams("autoSize",$this->match,$this->staticParams['th_autoSize']);
+        $this->params['arrange']=$this->ag_getParams("arrange",$this->match,$this->staticParams['arrange']);
         $this->params['newImageTag']=$this->ag_getParams("newImageTag",$this->match,$this->staticParams['newImageTag']);
         $this->params['newImageTag_days']= $this->ag_getParams("newImageDays",$this->match,$this->staticParams['newImageTag_days']);
-        $this->params['sortImages']=$this->ag_getParams("sortByDate",$this->match,$this->staticParams['sortImages']);
         $this->params['frameWidth']=$this->ag_getParams("frameWidth",$this->match,$this->staticParams['frame_width']);
         $this->params['frameHeight']=$this->ag_getParams("frameHeight",$this->match,$this->staticParams['frame_height']);
         $this->params['showSignature']=$this->ag_getParams("showSignature",$this->match,$this->staticParams['showSignature']);
@@ -363,9 +367,9 @@ class agGallery extends agHelper {
         $this->staticParams['th_height']= $globalParams->get('th_height', 120);
         $this->staticParams['th_autoSize']= $globalParams->get('th_autoSize', "none");
         $this->staticParams['template']= $globalParams->get('template', 'classic');
+        $this->staticParams['arrange']= $globalParams->get('arrange', 'priority');
         $this->staticParams['newImageTag']= $globalParams->get('newImageTag', true);
         $this->staticParams['newImageTag_days']= $globalParams->get('newImageTag_days', '7');
-        $this->staticParams['sortImages']= $globalParams->get('sortImages', false);
         $this->staticParams['frame_width']= $globalParams->get('frame_width', false);
         $this->staticParams['frame_height']= $globalParams->get('frame_height', false);
         $this->staticParams['showSignature']= $globalParams->get('showSignature', '1');

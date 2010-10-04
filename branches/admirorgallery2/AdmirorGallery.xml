@@ -13,7 +13,7 @@
 
 	<param type="spacer" default="BASIC SETTINGS" />
 
-		<param name="rootFolder" type="text" default="/images/stories/" size="50" label="IMAGES ROOT FOLDER" description="IMAGES ROOT FOLDER DESC" />
+		<param name="rootFolder" type="text" default="/images/stories/" size="20" label="IMAGES ROOT FOLDER" description="IMAGES ROOT FOLDER DESC" />
 
                 <param name="th_width" type="text" default="200" size="4" label="THUMBNAIL WIDTH" description="THUMBNAIL WIDTH DESC" />
 
@@ -28,6 +28,12 @@
 		<param name="template" type="folderlist" default="classic" label="GALLERY TEMPLATE" description="GALLERY TEMPLATE DESC" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
 
 		<param name="popupEngine" type="folderlist" default="slimbox" label="POPUP ENGINE" description="POPUP ENGINE DESC" directory="plugins/content/AdmirorGallery/popups" exclude="" stripext="" hide_none="true" hide_default="true" />
+
+		<param name="arrange" type="radio" default="priority" label="ARRANGE IMAGES BY" description="ARRANGE IMAGES BY DESC">
+			<option value="priority">PRIORITY</option>
+			<option value="date">DATE</option>
+			<option value="alphanumeric">ALPHANUMERIC</option>
+		</param>
 
                 <param name="foregroundColor" type="text" default="808080" size="6" label="GALLERY FOREGROUND COLOR" description="GALLERY FOREGROUND COLOR DESC" />
                
@@ -49,10 +55,6 @@
 		</param>		
 		
 		<param name="newImageTag_days" type="text" default="7" size="5" label="NEW IMAGE DAYS LIMIT" description="NEW IMAGE DAYS LIMIT DESC" />
-		<param name="sortImages" type="radio" default="1" label="NEW IMAGES FIRST" description="NEW IMAGES FIRST DESC" >		
-			<option value="1">YES</option>
-			<option value="0">NO</option>
-		</param>
 				
 		<param name="@spacer" type="spacer" default="" label="" description="" />
 		<param type="spacer" default="ADDITIONAL SETTINGS" />	
