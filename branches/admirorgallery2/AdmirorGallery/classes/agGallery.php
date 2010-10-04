@@ -342,16 +342,16 @@ class agGallery extends agHelper {
     function readInlineParams(){
         ////setting parametars for current gallery, if there is no inline params default params are set
         $this->params['template']= $this->ag_getParams("template",$this->match,$this->staticParams['template']);
-        $this->params['th_width'] = $this->ag_getParams("width",$this->match,$this->staticParams['th_width']);
-        $this->params['th_height'] = $this->ag_getParams("height",$this->match,$this->staticParams['th_height']);
-        $this->params['th_autoSize'] = $this->ag_getParams("autoSize",$this->match,$this->staticParams['th_autoSize']);
+        $this->params['th_width'] = $this->ag_getParams("thumbWidth",$this->match,$this->staticParams['th_width']);
+        $this->params['th_height'] = $this->ag_getParams("thumbHeight",$this->match,$this->staticParams['th_height']);
+        $this->params['th_autoSize'] = $this->ag_getParams("thumbAutoSize",$this->match,$this->staticParams['th_autoSize']);
         $this->params['arrange']=$this->ag_getParams("arrange",$this->match,$this->staticParams['arrange']);
         $this->params['newImageTag']=$this->ag_getParams("newImageTag",$this->match,$this->staticParams['newImageTag']);
         $this->params['newImageTag_days']= $this->ag_getParams("newImageDays",$this->match,$this->staticParams['newImageTag_days']);
         $this->params['frameWidth']=$this->ag_getParams("frameWidth",$this->match,$this->staticParams['frame_width']);
         $this->params['frameHeight']=$this->ag_getParams("frameHeight",$this->match,$this->staticParams['frame_height']);
         $this->params['showSignature']=$this->ag_getParams("showSignature",$this->match,$this->staticParams['showSignature']);
-        $this->params['popupEngine']=$this->ag_getParams("popupEngine",$this->match,$this->staticParams['popupEngine']);
+        $this->params['popupEngine']=$this->ag_getParams("popup",$this->match,$this->staticParams['popupEngine']);
 	$this->params['foregroundColor'] = $this->ag_getParams("foregroundColor",$this->match,$this->staticParams['foregroundColor']);
 	$this->params['highliteColor'] = $this->ag_getParams("highliteColor",$this->match,$this->staticParams['highliteColor']);
     }
