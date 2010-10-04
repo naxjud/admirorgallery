@@ -23,7 +23,7 @@ foreach ($AG->images as $imageKey => $imageName)
     $html .= '<span class="ag_thumb">';
     $html .= $AG->writePopupThumb($imageName);
     $html .='<span class="ag_description">'.$AG->writeDescription($imageName).'</span>';
-    $html .='<span class="ag_size">'.$AG->imageInfo["size"].'</span>';
+    //$html .='<span class="ag_size">'.$AG->imageInfo["size"].'</span>';
     $html .='</span>';
 }			
 $html .='</td></tr></tbody></table><!-- Admiror Gallery --></div>';
