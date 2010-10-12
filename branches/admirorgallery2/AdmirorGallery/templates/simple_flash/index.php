@@ -25,8 +25,8 @@ $AG->insertJSCode('
 jQuery(function(){
 	jQuery("#AG_'.$AG->getGalleryID().'").flash({
 		swf: "'.$AG->pluginPath.$AG->currTemplateRoot.'simple_flash_gallery.swf",
-		width: '.$AG->params['frame_width'].',
-		height: '.$AG->params['frame_height'].',
+		width: '.$AG->params['frameWidth'].',
+		height: '.$AG->params['frameHeight'].',
 		flashvars: {
 			xmlString:\''.$xmlGen.'\',
 			thumbPercentage:'.$AG->getParameter("thumbPercentage",30).'
