@@ -32,6 +32,7 @@ $html.='
 
 <style type="text/css">
     #AG_'.$AG->getGalleryID().'{position:relative;background-color:#'.$AG->params['foregroundColor'].';}
+    #AG_'.$AG->getGalleryID().' .galleria-container{position:relative;overflow:hidden;background:#'.$AG->params['foregroundColor'].';}
     #AG_'.$AG->getGalleryID().' .galleria-thumbnails .galleria-image{border-color:#'.$AG->params['foregroundColor'].';}
     #AG_'.$AG->getGalleryID().' .galleria-thumb-nav-left:hover,
     #AG_'.$AG->getGalleryID().' .galleria-thumb-nav-right:hover,

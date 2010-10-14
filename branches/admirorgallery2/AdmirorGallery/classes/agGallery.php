@@ -5,10 +5,12 @@
  * @author Nikola Vasiljevski
  * 11.07.2010
  */
+//define( 'DS', DIRECTORY_SEPARATOR ); Defined in Joomla
+//define('PLUGIN_BASE_PATH', DS.'plugins'.DS.'content'.DS.'AdmirorGallery'.DS);
 define('PLUGIN_BASE_PATH', '/plugins/content/AdmirorGallery/');
 
-require_once (dirname(__FILE__).'/agHelper.php');
-require_once (dirname(__FILE__).'/agPopup.php');
+require_once (dirname(__FILE__).DS.'agHelper.php');
+require_once (dirname(__FILE__).DS.'agPopup.php');
 
 class agGallery extends agHelper {
     var $sitePath='';
@@ -39,6 +41,7 @@ class agGallery extends agHelper {
     private $doc = null;
     private $descArray = array ();
     private $match = '';
+    private $DS='/';
 
     // relativ plugin path
    // const PLUGIN_BASE_PATH = '/plugins/content/AdmirorGallery/';
@@ -51,7 +54,7 @@ class agGallery extends agHelper {
      * @param <string> $imageName
      */
     function getImageInfo($imageName){
-        $this->imageInfo = agHelper::ag_imageInfo($this->imagesFolderPhysicalPath.'/'.$imageName);
+        $this->imageInfo = agHelper::ag_imageInfo($this->imagesFolderPhysicalPath.DS.$imageName);
         $this->imageInfo["size"] = agHelper::ag_fileRoundSize($this->imageInfo["size"]);
     }
     /**
@@ -177,7 +180,7 @@ class agGallery extends agHelper {
      * Initialises Popup engine. Loads popupEngine settings and scripts
      */
     function initPopup(){
-        require ('plugins/content/AdmirorGallery/popups/'.$this->params['popupEngine'].'/index.php');	
+        require ('plugins'.DS.'content'.DS.'AdmirorGallery'.DS.'popups'.DS.$this->params['popupEngine'].DS.'index.php');
         return  $this->popupEngine->initCode;
     }
     /*
@@ -208,8 +211,8 @@ class agGallery extends agHelper {
         $this->readInlineParams();
         $this->imagesFolderNameOriginal = preg_replace("/{.+?}/", "", $match);
         $this->imagesFolderName = strip_tags($this->imagesFolderNameOriginal);
-        $this->imagesFolderPhysicalPath = $this->sitePhysicalPath.$this->params['rootFolder'].$this->imagesFolderName.'/';
-        $this->thumbsFolderPhysicalPath = $this->sitePhysicalPath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/';
+        $this->imagesFolderPhysicalPath = $this->sitePhysicalPath.$this->params['rootFolder'].$this->imagesFolderName.DS;
+        $this->thumbsFolderPhysicalPath = $this->sitePhysicalPath.PLUGIN_BASE_PATH.'thumbs'.DS.$this->imagesFolderName.DS;
         $this->imagesFolderPath = $this->sitePath.$this->params["rootFolder"].$this->imagesFolderName.'/';
         $this->readDescriptionFiles();
         $this->loadImageFiles();
@@ -298,8 +301,8 @@ class agGallery extends agHelper {
             return;
         }
         //Add's index.html to thumbs folder
-        if (!file_exists($this->thumbsFolderPhysicalPath.'/index.html'))
-        {$this->ag_indexWrite($this->thumbsFolderPhysicalPath.'/index.html');}
+        if (!file_exists($this->thumbsFolderPhysicalPath.DS.'index.html'))
+        {$this->ag_indexWrite($this->thumbsFolderPhysicalPath.DS.'index.html');}
         // Check for Changes
         foreach ($this->images as $imagesKey=>$imagesValue) {
                 $original_file = $this->imagesFolderPhysicalPath.$imagesValue;
@@ -388,7 +391,7 @@ class agGallery extends agHelper {
             $path = substr($path, 0, -1);
         $this->sitePath = $path;
         $this->sitePhysicalPath = $sitePhysicalPath;
-        $this->thumbsFolderPhysicalPath = $sitePhysicalPath.PLUGIN_BASE_PATH.'thumbs/';
+        $this->thumbsFolderPhysicalPath = $sitePhysicalPath.PLUGIN_BASE_PATH.'thumbs'.DS;
         $this->imagesFolderPhysicalPath = $sitePhysicalPath.$this->params["rootFolder"];
         $this->cleanThumbsFolder();
         $this->doc = $document;
