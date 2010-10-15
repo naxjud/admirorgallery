@@ -1,0 +1,58 @@
+/* ===================================== TOOLBAR */
+
+.icon-48-default{
+        background-image: url(../images/toolbar/icon-48-default.png);  
+	background-position: left top;
+}
+
+.icon-48-templates{
+        background-image: url(../images/toolbar/icon-48-templates.png);  
+}
+
+.icon-48-popupsThemes{
+        background-image: url(../images/toolbar/icon-48-popupsThemes.png);  
+}
+
+.icon-48-image-manager{
+        background-image: url(../images/toolbar/icon-48-image-manager.png); 
+}
+
+.icon-32-update    { 
+        background-image: url(../images/toolbar/icon-32-update.png);  
+}
+
+.icon-32-install    { 
+        background-image: url(../images/toolbar/icon-32-install.png);  
+}
+
+.icon-32-remove    { 
+        background-image: url(../images/toolbar/icon-32-remove.png);  
+}
+
+.icon-32-description    { 
+        background-image: url(../images/toolbar/icon-32-description.png); 
+}
+
+.icon-32-bookmarkAdd    { 
+        background-image: url(../images/toolbar/icon-32-bookmarkAdd.png); 
+}
+
+.icon-32-bookmarkRemove    { 
+        background-image: url(../images/toolbar/icon-32-bookmarkRemove.png);  
+}
+
+.icon-32-folderNew    { 
+        background-image: url(../images/toolbar/icon-32-folderNew.png); 
+}
+
+.icon-32-rename    { 
+        background-image: url(../images/toolbar/icon-32-rename.png); 
+}
+
+.icon-32-priority    { 
+        background-image: url(../images/toolbar/icon-32-priority.png); 
+}
+
+.icon-32-upload-file    { 
+        background-image: url(../images/toolbar/icon-32-upload-file.png); 
+}

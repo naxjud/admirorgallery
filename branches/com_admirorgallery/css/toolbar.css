@@ -1,0 +1,48 @@
+/* toolbar */
+ div.toolbar { text-align: right; padding: 0; display:block; margin-bottom:10px; border-bottom:1px solid #ccc;}
+ 
+ table.toolbar                           { border-collapse: collapse; padding: 0; margin: 0;     }
+ table.toolbar td                        { padding: 1px 1px 1px 4px; text-align: center; color: #666; height: 48px; }
+ table.toolbar td.spacer  { width: 10px; }
+ table.toolbar td.divider { border-right: 1px solid #eee; width: 5px; } 
+ 
+ table.toolbar span { float: none; width: 32px; height: 32px; margin: 0 auto; display: block; }
+ 
+ table.toolbar a {
+    display: block; float: left;
+        white-space: nowrap;
+        border: 1px solid #fbfbfb;
+        padding: 1px 5px;
+        cursor: pointer;
+ }
+ 
+ table.toolbar a:hover {
+        border-left: 1px solid #eee;
+        border-top: 1px solid #eee;
+        border-right: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        text-decoration: none;
+        color: #0B55C4;
+ }
+
+/** toolbar icons **/
+.icon-32-folderNew    { 
+        background-image: url(../../../administrator/components/com_admirorgallery/images/toolbar/icon-32-folderNew.png);  
+}
+.icon-32-remove    { 
+        background-image: url(../../../administrator/components/com_admirorgallery/images/toolbar/icon-32-remove.png);  
+}
+.icon-32-rename    { 
+        background-image: url(../../../administrator/components/com_admirorgallery/images/toolbar/icon-32-rename.png);  
+}
+
+.icon-32-priority    { 
+        background-image: url(../../../administrator/components/com_admirorgallery/images/toolbar/icon-32-priority.png);  
+}
+
+.icon-32-upload-file    { 
+        background-image: url(../../../administrator/components/com_admirorgallery/images/toolbar/icon-32-upload-file.png);  
+}
+.icon-32-description    { 
+        background-image: url(../../../administrator/components/com_admirorgallery/images/toolbar/icon-32-description.png);  
+}

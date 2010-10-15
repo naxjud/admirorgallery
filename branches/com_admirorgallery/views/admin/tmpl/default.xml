@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Single Gallery Admin">
+		<message>
+			<![CDATA[SINGLE GALLERY ADMIN DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>Single Gallery Admin</name>
+		<description>SINGLE GALLERY ADMIN DESC</description>
+		
+		<params>
+		
+		      <param name="galleryName" type="text" default="" label="Enter gallery name" description="" size="20" />
+		      		
+		</params>
+	</state>
+</metadata>
