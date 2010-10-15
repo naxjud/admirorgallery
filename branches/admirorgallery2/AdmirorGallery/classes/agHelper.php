@@ -276,7 +276,7 @@ protected function ag_foregroundColor ( $hex,$adjust )
 	       }
 
 	       break;
-	       case "alphanumeric":
+	       case "name":
 		    natcasesort($images);
 	       break;
 	  }
