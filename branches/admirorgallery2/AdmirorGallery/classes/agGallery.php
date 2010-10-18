@@ -310,10 +310,26 @@ class agGallery extends agHelper {
                 if (!file_exists($thumb_file)) {
                         $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_width'],$this->params['th_height'],$this->params['th_autoSize']));
                 }else{
-                list($imagewidth, $imageheight) = getimagesize($thumb_file);
-                if ($imageheight != $this->params['th_height'] || $imagewidth != $this->params['th_width']) {
-                        $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_width'],$this->params['th_height'],$this->params['th_autoSize']));
-                    }
+
+		  list($imagewidth, $imageheight) = getimagesize($thumb_file);
+		  switch($this->params['th_autoSize']){
+		    case "none":
+		      if ($imageheight != $this->params['th_height'] || $imagewidth != $this->params['th_width']) {
+			  $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_width'],$this->params['th_height'],$this->params['th_autoSize']));
+		      }
+		    break;
+		    case "height":
+		      if ($imagewidth != $this->params['th_width']) {
+			  $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_width'],$this->params['th_height'],$this->params['th_autoSize']));
+		      }
+		    break;
+		    case "width":
+		      if ($imageheight != $this->params['th_height']) {
+			  $this->addError(agHelper::ag_createThumb($this->imagesFolderPhysicalPath.$imagesValue, $thumb_file, $this->params['th_width'],$this->params['th_height'],$this->params['th_autoSize']));
+		      }
+		    break;
+		  }
+               
                 }
                 // ERROR - Invalid image
                 if (!file_exists($thumb_file)) {
