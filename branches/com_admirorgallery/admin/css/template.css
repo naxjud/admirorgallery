@@ -105,7 +105,7 @@
      vertical-align:top;
      border-right:1px solid #ccc;
      padding:10px;
-      width:1%;
+     width:1%;
 }
 
 .ag_bookmark
@@ -123,7 +123,49 @@
 {
   vertical-align:top;
   padding:10px;
+}
+
+.ag_breadcrumb_button
+{
+     display:inline-block;
+     background-image:url("../images/breadcrumb-button.jpg");
+     background-repeat:no-repeat;
+     padding-right:10px;
+     background-position:right top;
+     margin:0 3px;
+     text-decoration:none;
+}
+
+.ag_breadcrumb_button span
+{
+     display:inline-block;
+     background-image:url("../images/breadcrumb-button.jpg");
+     background-position:left top;
+     padding-left:10px;
+     line-height:24px;
+}
+
+a.ag_breadcrumb_button:hover
+{
+     background-position:right -24px;
+     text-decoration:none;
+}
+
+a.ag_breadcrumb_button:hover span
+{
+     background-position:left -24px;
+}
+
+#ag_preview p,#ag_preview span,#ag_preview div,#ag_preview td,#ag_preview input
+{
   font-size:10px;
+}
+
+#ag_preview a,#ag_preview a:hover
+{
+     font-size:10px;
+     text-decoration:none;
+     font-weight:normal;
 }
 
 #ag_preview .fieldset
@@ -135,7 +177,6 @@
 #ag_preview input
 {
   border:1px solid silver;
-  font-size:10px;
 }
 
 
@@ -194,7 +235,7 @@ div.ag_preview_imgWrap
 }
 
 #ag_preview .filePreview{
-      margin-bottom:10px;
+    margin-bottom:10px;
 }
 
 .ag_preview_itemLink:hover
@@ -206,8 +247,6 @@ div.ag_preview_imgWrap
 .ag_preview_controlsWrap
 {
     background-color:#eee;
-    font-family:Arial,Helvetica,sans-serif;
-    font-size:10px;
     text-align:left;
     padding:5px;
     white-space:nowrap
@@ -219,12 +258,22 @@ div.ag_preview_imgWrap
     border-top:1px solid #ccc;
     margin-top:3px;
     display:block;
-     line-height:20px;
+    line-height:22px;
+}
+
+.ag_hasXML, .ag_itemControls
+{
+     vertical-align:middle;
+     margin:0;
+     padding:0;
+     line-height:22px;
 }
 
 .ag_hasXML, .ag_hasThumb
 {
      vertical-align:middle;
+     margin:0;
+     padding:0;
 }
 
 .ag_preview_priorityLabel
@@ -314,14 +363,14 @@ div.ag_preview_imgWrap
 /* ================================================== */
 /* <custom> */
 
-#jGrowl div.header, #jGrowl div.jgmessage
+#jGrowl div.ag_header, #jGrowl div.ag_message
 {
     font-style:sans-serif;
     font-size:12px;
     color:white;
 }
 
-#jGrowl div.header
+#jGrowl div.ag_header
 {
     padding:0;
     margin:0;
@@ -330,7 +379,7 @@ div.ag_preview_imgWrap
     margin-bottom:5px;
 }
 
-#jGrowl div.jgmessage
+#jGrowl div.ag_message
 {
     border:0;
     text-align:left;

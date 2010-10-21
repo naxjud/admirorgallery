@@ -7,6 +7,8 @@ jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 jimport('joomla.language.language');
 jimport('joomla.filesystem.archive');
+jimport('joomla.application.component.helper');
+
 
 // ************************************************* ADMIN TOOLBAR
 //
@@ -18,10 +20,6 @@ if($controller = JRequest::getVar('controller')) {
       require_once (JPATH_COMPONENT.DS.'controllers'.DS.$controller.'.php');
 }
 
-// Component Helper
-jimport('joomla.application.component.helper');
-
-
 // Load the toolbar helper
 require_once( JPATH_COMPONENT.DS.'helpers'.DS.'toolbar.php' );
 
@@ -32,15 +30,14 @@ require_once( JPATH_COMPONENT.DS.'helpers'.DS.'toolbar.php' );
 // GET ROOT FOLDER
 global $mainframe;
 $plugin =& JPluginHelper::getPlugin('content', 'AdmirorGallery');
-if (isset ($plugin->params))
-{$pluginParams = new JParameter( $plugin->params );}
-else {$pluginParams= new JParameter(null);
+if (isset ($plugin->params)){
+     $pluginParams = new JParameter( $plugin->params );
+}
+else {
+     $pluginParams= new JParameter(null);
 }
 $ag_rootFolder = $pluginParams->get('rootFolder','/images/stories/').$this->galleryName.'/';
 $ag_init_itemURL=$ag_rootFolder;
-if (isset($_POST['ag_itemURL'])){
-     $ag_init_itemURL=$_POST['ag_itemURL'];
-}
 
 // PHP capture for form submition
 if(isset($_POST['pressbutton'])){
@@ -74,12 +71,19 @@ if(isset($_POST['pressbutton'])){
 	       break;
 	  } 
     }
-
 }
 
-if (isset($_POST['ag_itemURL'])){
+
+if (!empty($_POST['ag_itemURL'])){
      $ag_init_itemURL=$_POST['ag_itemURL'];
 }
+
+$doc = &JFactory::getDocument();
+$doc->addScript (JURI::root().'includes/js/joomla.javascript.js');
+$doc->addScript(JURI::root().'plugins/content/AdmirorGallery/jquery.js');
+$doc->addStyleSheet(JURI::root().'administrator/components/com_admirorgallery/css/template.css');
+$doc->addStyleSheet(JURI::root().'components/com_admirorgallery/css/toolbar.css');
+
 
 if(file_exists(JPATH_SITE.$ag_init_itemURL)){
      if(is_dir(JPATH_SITE.$ag_init_itemURL)){
@@ -92,22 +96,14 @@ if(file_exists(JPATH_SITE.$ag_init_itemURL)){
      $ag_error[] = Array ("Folder or image not found.", $ag_init_itemURL);
 }
 
-$doc = &JFactory::getDocument();
-
-$doc->addScript (JURI::root().'includes/js/joomla.javascript.js');
-$doc->addScript(JURI::root().'plugins/content/AdmirorGallery/jquery.js');
 // LOAD MESSAGES GROWL LIBRARY
 require_once (JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'scripts'.DS.'growl.php');
-
-$doc->addStyleSheet(JURI::root().'administrator/components/com_admirorgallery/css/template.css');
-$doc->addStyleSheet(JURI::root().'components/com_admirorgallery/css/toolbar.css');
 
 $doc->addScriptDeclaration('
 
 var ag_init_itemURL="'.$ag_init_itemURL.'";
 var ag_init_itemType="'.$ag_init_itemType.'";
 
-// < TOOLBAR HIGHLITE >
 function ag_toolbar_highlite(itemType){
 
      var toolbarSet = new Array();
@@ -129,7 +125,6 @@ function ag_toolbar_highlite(itemType){
      }
 
 }
-// < / TOOLBAR HIGHLITE >
 
 function basename(path) {
      return path.replace(/'.chr(92).chr(92).'/g,"/").replace( /.*\//, "" );
@@ -235,8 +230,7 @@ jQuery.noConflict();
 
 
 <form action="<?php echo JURI::current();?>" method="POST" name="adminForm" enctype="multipart/form-data" id="adminForm">
-	<input type="hidden" name="task" value="" id="task" />
-	<input type="hidden" name="ag_itemURL" value="<?php $ag_init_itemURL;?>" id="ag_itemURL" />
+	<input type="hidden" name="ag_itemURL" value="<?php echo $ag_init_itemURL;?>" id="ag_itemURL" />
 	<input type="hidden" name="pressbutton" value="" id="pressbutton" />
 
 <div id="ag_preview">

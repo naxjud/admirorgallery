@@ -1,5 +1,9 @@
 <?php
 
+
+/** ensure this file is being included by a parent file */
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 $ag_itemURL = $ag_init_itemURL;
 
 $ag_folderName = dirname($ag_itemURL);
@@ -7,19 +11,16 @@ $ag_fileName = basename($ag_itemURL);
 
 $ag_preview_content='';
 
-if($ag_itemURL != $ag_rootFolder){
+include_once(dirname(__FILE__).'/agHelper.php');
+
+require_once(JPATH_BASE.DS.'components'.DS.'com_admirorgallery'.DS.'scripts'.DS.'imgManager-breadcrumb.php');
+
 $ag_preview_content.='
 <div class="ag_screenSection_title">
-     <a href="'.$ag_folderName.'/"  class="ag_folderLink">'.$ag_folderName.'/</a>'.$ag_fileName.'
+     '.$ag_breadcrumb.'
 </div>
 ';
-}else{
-$ag_preview_content.='
-<div class="ag_screenSection_title">
-     '.$ag_itemURL.'
-</div>
-';
-}
+
 
 $ag_preview_content.='
 <div class="fieldset">
@@ -48,15 +49,17 @@ if(!empty($ag_folders)){
 foreach($ag_folders as $key => $value){
      $ag_preview_content.='
 <div class="ag_preview_itemWrap">
-<a href="'.$ag_itemURL.$value.'/" class="ag_preview_itemLink ag_folderLink">
+<a href="'.$ag_itemURL.$value.'/" class="ag_preview_itemLink ag_folderLink" title="'.$value.'">
 <div align="center" class="ag_preview_imgWrap">
      <img src="'.JURI::root().'administrator/components/com_media/images/folder.png" />
 </div>
 </a>
 <div class="ag_preview_controlsWrap">
-<input type="checkbox" value="'.$ag_itemURL.$value.'/" name="ag_preview_CBOX[]">
-<br style="clear:both" />
-<span class="ag_preview_itemTitle">'.$value.'</span>
+<span class="ag_itemControls">
+     <input type="checkbox" value="'.$ag_itemURL.$value.'/" name="ag_preview_CBOX[]">
+     <br style="clear:both" />
+</span>
+<span class="ag_preview_itemTitle">'.agHelper::ag_shrinkString($value,20,true).'</span>
 </div>
 </div>
 ';
@@ -145,19 +148,21 @@ foreach($ag_images as $key => $value){
 
      $ag_preview_content.='
      <div class="ag_preview_itemWrap">
-     <a href="'.$ag_itemURL.$value.'" class="ag_preview_itemLink ag_fileLink">
+     <a href="'.$ag_itemURL.$value.'" class="ag_preview_itemLink ag_fileLink" title="'.$value.'">
 	  <div align="center" class="ag_preview_imgWrap">
-	  <img src="'.substr(JURI::root(),0,-1).$ag_itemURL.$value.'" class="ag_imgThumb" />
+	  <img src="'.JURI::root().'administrator/components/com_admirorgallery/scripts/thumbnailer.php?img='.substr(JURI::root(),0,-1).$ag_itemURL.$value.'&height=80" class="ag_imgThumb" />
 	  </div>
      </a>
      <div class="ag_preview_controlsWrap">
-	  <input type="checkbox" value="'.$ag_itemURL.$value.'" name="ag_preview_CBOX[]">
-	  <span class="ag_preview_priorityLabel">'.JText::_( 'Priority' ).':&nbsp;</span>
-	  <input type="textbox" size="3" value="'.$ag_imgXML_priority.'" name="ag_preview_PRIORITY['.$ag_itemURL.$value.']">
-	  <br style="clear:both" />
+	  <span class="ag_itemControls">
+	       <input type="checkbox" value="'.$ag_itemURL.$value.'" name="ag_preview_CBOX[]">
+	       <span class="ag_preview_priorityLabel">'.JText::_( 'Priority' ).':&nbsp;</span>
+	       <input type="textbox" size="3" value="'.$ag_imgXML_priority.'" name="ag_preview_PRIORITY['.$ag_itemURL.$value.']">
+	       <br style="clear:both" />
+	  </span>
 	  <span class="ag_preview_itemTitle">
 	  '.$ag_hasXML.$ag_hasThumb.'
-	  '.$value.'</span>
+	  '.agHelper::ag_shrinkString($value,20,true).'</span>
      </div>
      </div>
      ';

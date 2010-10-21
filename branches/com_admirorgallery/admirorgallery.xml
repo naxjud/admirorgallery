@@ -45,6 +45,7 @@
 	  <folder>screens</folder>
 	  <folder>scripts</folder>
 	  <folder>assets</folder>
+	  <folder>fancybox</folder>
       </files>
       
       <!-- Administration Language File Copy Section -->

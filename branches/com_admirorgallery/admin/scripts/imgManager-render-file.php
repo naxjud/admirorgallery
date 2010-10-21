@@ -1,5 +1,9 @@
 <?php
 
+
+/** ensure this file is being included by a parent file */
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 $ag_itemURL = $ag_init_itemURL;
 
 $ag_folderName = dirname($ag_itemURL);
@@ -33,10 +37,12 @@ if(file_exists($ag_imgXML_path)){
      $ag_imgXML_captions =& $ag_imgXML_xml->document->captions[0];
 }
 
+require_once(JPATH_BASE.DS.'components'.DS.'com_admirorgallery'.DS.'scripts'.DS.'imgManager-breadcrumb.php');
+
 $ag_preview_content='';
 $ag_preview_content.='
 <div class="ag_screenSection_title">
-    <a href="'.$ag_folderName.'/" class="ag_folderLink">'.$ag_folderName.'/</a>'.$ag_fileName.'
+'.$ag_breadcrumb.'
 </div>
 <div class="fieldset">
     <div class="t"><div class="t"><div class="t"></div></div></div>	       
@@ -52,7 +58,11 @@ $ag_preview_content.='
     <div class="b"><div class="b"><div class="b"></div></div></div>
 </div>
 <div class="filePreview">
-    <img src="'.substr(JURI::root(),0,-1).$ag_itemURL.'" class="ag_imgThumb" />
+';
+
+require_once (JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'fancybox'.DS.'index.php');
+
+$ag_preview_content.='
 </div>
 <div id="ag_imgDesc_info">
     <div class="t"><div class="t"><div class="t"></div></div></div>	       

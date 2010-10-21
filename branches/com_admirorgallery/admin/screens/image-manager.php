@@ -11,7 +11,12 @@ jimport('joomla.filesystem.archive');
 // GET ROOT FOLDER
 global $mainframe;
 $plugin =& JPluginHelper::getPlugin('content', 'AdmirorGallery');
-$pluginParams = new JParameter( $plugin->params );
+if (isset ($plugin->params)){
+     $pluginParams = new JParameter( $plugin->params );
+}
+else {
+     $pluginParams= new JParameter(null);
+}
 $ag_rootFolder = $pluginParams->get('rootFolder','/images/stories/');
 $ag_init_itemURL=$ag_rootFolder;
 if (isset($_POST['ag_itemURL'])){
@@ -63,14 +68,23 @@ if (isset($_POST['ag_itemURL'])){
      $ag_init_itemURL=$_POST['ag_itemURL'];
 }
      
+
+
+$doc = &JFactory::getDocument();
+$doc->addStyleSheet(JURI::base().'components/com_admirorgallery/css/template.css');
+$doc->addStyleSheet(JURI::base().'components/com_admirorgallery/css/toolbar.css');
+$doc->addScript(JURI::root().'plugins/content/AdmirorGallery/jquery.js');
+$doc->addScript(JURI::base().'components/com_admirorgallery/jquery-treeview/jquery.treeview.pack.js');
+$doc->addScript(JURI::base().'components/com_admirorgallery/jquery-treeview/lib/jquery.cookie.js');
+$doc->addStyleSheet(JURI::base().'components/com_admirorgallery/jquery-treeview/jquery.treeview.css');
+
 if(file_exists(JPATH_SITE.$ag_init_itemURL)){
      if(is_dir(JPATH_SITE.$ag_init_itemURL)){
 	  $ag_init_itemType="folder";
-	  require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/imgManager-render-folder.php');
      }else{
 	  $ag_init_itemType="file";
-	  require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/imgManager-render-file.php');
      }
+     require_once (JPATH_BASE.DS.'components'.DS.'com_admirorgallery'.DS.'scripts'.DS.'imgManager-render-'.$ag_init_itemType.'.php');
 }else{
      $ag_error[] = Array ("Folder or image not found.", $ag_init_itemURL);
 $ag_preview_content='
@@ -81,13 +95,6 @@ $ag_preview_content='
 }
 
 
-$doc = &JFactory::getDocument();
-$doc->addStyleSheet(JURI::base().'components/com_admirorgallery/css/template.css');
-$doc->addStyleSheet(JURI::base().'components/com_admirorgallery/css/toolbar.css');
-$doc->addScript(JURI::root().'plugins/content/AdmirorGallery/jquery.js');
-$doc->addScript(JURI::base().'components/com_admirorgallery/jquery-treeview/jquery.treeview.pack.js');
-$doc->addScript(JURI::base().'components/com_admirorgallery/jquery-treeview/lib/jquery.cookie.js');
-$doc->addStyleSheet(JURI::base().'components/com_admirorgallery/jquery-treeview/jquery.treeview.css');
 // LOAD MESSAGES GROWL LIBRARY
 require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/growl.php');
 $doc->addScriptDeclaration('
