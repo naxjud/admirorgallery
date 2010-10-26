@@ -37,7 +37,7 @@ if(file_exists($ag_imgXML_path)){
      $ag_imgXML_captions =& $ag_imgXML_xml->document->captions[0];
 }
 
-require_once(JPATH_BASE.DS.'components'.DS.'com_admirorgallery'.DS.'scripts'.DS.'imgManager-breadcrumb.php');
+require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'scripts'.DS.'imgManager-breadcrumb.php');
 
 $ag_preview_content='';
 $ag_preview_content.='

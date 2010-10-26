@@ -13,7 +13,7 @@ $ag_preview_content='';
 
 include_once(dirname(__FILE__).'/agHelper.php');
 
-require_once(JPATH_BASE.DS.'components'.DS.'com_admirorgallery'.DS.'scripts'.DS.'imgManager-breadcrumb.php');
+require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'scripts'.DS.'imgManager-breadcrumb.php');
 
 $ag_preview_content.='
 <div class="ag_screenSection_title">

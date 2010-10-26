@@ -229,7 +229,7 @@ jQuery.noConflict();
 ?>
 
 
-<form action="<?php echo JURI::current();?>" method="POST" name="adminForm" enctype="multipart/form-data" id="adminForm">
+<form action="<?php echo JURI::getInstance()->toString();?>" method="POST" name="adminForm" enctype="multipart/form-data" id="adminForm">
 	<input type="hidden" name="ag_itemURL" value="<?php echo $ag_init_itemURL;?>" id="ag_itemURL" />
 	<input type="hidden" name="pressbutton" value="" id="pressbutton" />
 

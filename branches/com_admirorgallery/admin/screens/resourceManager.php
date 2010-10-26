@@ -31,8 +31,7 @@ $limit		= $mainframe->getUserStateFromRequest( 'global.list.limit', 'limit', $ma
 $doc = &JFactory::getDocument();
 $doc->addStyleSheet(JURI::base().'components/com_admirorgallery/css/template.css');
 $doc->addStyleSheet(JURI::base().'components/com_admirorgallery/css/toolbar.css');
-$doc->addScript(JURI::base().'components/com_admirorgallery/scripts/jquery.js');
-$doc->addScript(JURI::base().'components/com_admirorgallery/scripts/jquery.js');
+$doc->addScript(JURI::root().'plugins/content/AdmirorGallery/jquery.js');
 // LOAD MESSAGES GROWL LIBRARY
 require_once (JPATH_BASE.DS.'components/com_admirorgallery/scripts/growl.php');
 

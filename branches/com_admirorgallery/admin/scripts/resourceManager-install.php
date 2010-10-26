@@ -28,8 +28,9 @@ if(isset($file) && !empty($file['name'])){
 		if(JFIle::exists(JPATH_SITE.'/plugins/content/AdmirorGallery/'.JFile::makeSafe($task).'/'.JFile::stripExt($filename).'/details.xml')){
 			$ag_resourceManager_xml =& JFactory::getXMLParser( 'simple' );
 			$ag_resourceManager_xml->loadFile(JPATH_SITE.'/plugins/content/AdmirorGallery/'.JFile::makeSafe($task).'/'.JFile::stripExt($filename).'/details.xml');
-			$ag_resourceManager_type = $ag_resourceManager_xml->document->type[0]->data();	
-		
+			if(isset($ag_resourceManager_xml->document->type[0])){
+			    $ag_resourceManager_type = $ag_resourceManager_xml->document->type[0]->data();	
+			}
 		}
 
 		if($ag_resourceManager_type == $resourceType){

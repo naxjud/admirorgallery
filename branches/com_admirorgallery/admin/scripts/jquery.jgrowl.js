@@ -187,7 +187,7 @@
 				'<div class="jGrowl-notification ui-state-highlight ui-corner-all' + 
 				((o.group != undefined && o.group != '') ? ' ' + o.group : '') + '">' +
 				'<div class="close">' + o.closeTemplate + '</div>' +
-				'<div class="header">' + o.header + '</div>' +
+				'<div class="ag_header">' + o.header + '</div>' +
 				'<div class="jgmessage">' + message + '</div></div>'
 			).data("jGrowl", o).addClass(o.theme).children('div.close').bind("click.jGrowl", function() {
 				$(this).parent().trigger('jGrowl.close');
