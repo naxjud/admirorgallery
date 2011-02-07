@@ -2,6 +2,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+jimport('joomla.filesystem.file');
+
 $AG_templateID = JRequest::getVar( 'AG_template' );// Current template for AG Component
 
  ?>
@@ -86,6 +88,21 @@ echo '
 <input type="hidden" name="pressbutton" value="" id="pressbutton" />
 </form>
 </div>
+<br style="clear:both" />
+';
+
+if(JFIle::exists(JPATH_COMPONENT_ADMINISTRATOR.'/admirorgallery.xml')){
+     $ag_admirorgallery_xml =& JFactory::getXMLParser( 'simple' );
+     $ag_admirorgallery_xml->loadFile( JPATH_COMPONENT_ADMINISTRATOR.'/admirorgallery.xml' );
+     $ag_admirorgallery_version_component = $ag_admirorgallery_xml->document->version[0]->data();
+     $ag_admirorgallery_version_plugin = $ag_admirorgallery_xml->document->plugin_version[0]->data();
+     $ag_admirorgallery_version_button = $ag_admirorgallery_xml->document->button_version[0]->data();
+     echo JText::_('COMPONENT VERSION:').'&nbsp;'.$ag_admirorgallery_version_component."<br />";
+     echo JText::_('PLUGIN VERSION:').'&nbsp;'.$ag_admirorgallery_version_plugin."<br />";
+     echo JText::_('BUTTON VERSION:').'&nbsp;'.$ag_admirorgallery_version_button."<br />";
+}
+
+echo '
 </td>
 <td style="vertical-align:text-top; width:50%" class="AG_descriptionWrapper">
 '."\n";
