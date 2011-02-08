@@ -125,48 +125,6 @@
      padding-left:20px;
 }
 
-#AG_img_templates
-{
-     background-image:url("../images/toolbar/icon-48-templates.png");
-     background-repeat:no-repeat;
-     display:block;
-     width:48px;
-     height:48px;
-     float:left;
-     margin-right:10px;
-}
-
-#AG_img_popups
-{
-     background-image:url("../images/toolbar/icon-48-popups.png");
-     background-repeat:no-repeat;
-     display:block;
-     width:48px;
-     height:48px;
-     float:left;
-     margin-right:10px;
-}
-
-#AG_img_imagemanager
-{
-     background-image:url("../images/toolbar/icon-48-imagemanager.png");
-     background-repeat:no-repeat;
-     display:block;
-     width:48px;
-     height:48px;
-     float:left;
-     margin-right:10px;
-}
-
-#AG_img_explanation
-{
-     background-image:url("../images/explanation.jpg");
-     background-repeat:no-repeat;
-     display:block;
-     width:499px;
-     height:415px;
-}
-
 
 /* ================================================== IMAGE DESCRIPTION */
 
