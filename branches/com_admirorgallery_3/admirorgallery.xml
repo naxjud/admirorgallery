@@ -7,7 +7,7 @@
 	<authorUrl>http://www.admiror-design-studio.com</authorUrl>
 	<copyright>(C) 2010 All rights reserved.</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.162</version>	
+	<version>3.0.163</version>	
 	<button_version>1.0.0</button_version>
 	<plugin_version>3.0.0</plugin_version>
 	<description>ADMIRORDESCRIPTION</description>	
@@ -26,9 +26,10 @@
 			<file driver="mysql">sql/uninstall.mysql.utf8.sql</file>
 		</sql>
 	</uninstall>-->
-	
+
 	<files folder="component">
 		<folder>controllers</folder>
+		<folder>elements</folder>
 		<folder>helpers</folder>
 		<folder>models</folder>
 		<folder>views</folder>
@@ -91,4 +92,5 @@
 		    <media/>
 	       </plugin>
 	</plugins>
+	
 </install>
