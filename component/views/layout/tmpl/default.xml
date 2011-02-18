@@ -8,10 +8,13 @@
 	<state>
 		<name>LAYOUT</name>
 		<description>LAYOUT DESC</description>
-		
-		<params>
-		
-	        <param name="galleryName" type="text" default="" label="Enter gallery name" description="" size="20" />
+
+
+
+
+		<params addPath="/components/com_admirorgallery/elements">
+
+	        <param name="galleryName" type="galleryName" default="" label="Enter gallery name" description="" size="20" />
 		      
 	    <param type="spacer" default="BASIC SETTINGS" />
 
