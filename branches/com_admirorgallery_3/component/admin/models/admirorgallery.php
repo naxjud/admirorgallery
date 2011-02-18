@@ -22,7 +22,7 @@ class AdmirorgalleryModelAdmirorgallery extends JModel
 	  // $db->query();
 
 	  $db =& JFactory::getDBO();
-	  $query = "UPDATE #__plugins SET params='".$AG_DB_input."' WHERE name='Content - AdmirorGallery';"; // This change value
+	  $query = "UPDATE #__plugins SET params='".$AG_DB_input."' WHERE name LIKE '%AdmirorGallery%';"; // This change value
 	  $db->setQuery($query);
 	  if($db->query()){
 	       JFactory::getApplication()->enqueueMessage( JText::_( "PARAMS UPDATED." ), 'message' );

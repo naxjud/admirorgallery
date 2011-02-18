@@ -9,9 +9,9 @@
 		<name>IMAGEMANAGER</name>
 		<description>IMAGEMANAGER DESC</description>
 		
-		<params>
+		<params addPath="/components/com_admirorgallery/elements">
 		
-		      <param name="galleryName" type="text" default="" label="ENTER GALLERY NAME" description="" size="20" />
+		    <param name="galleryName" type="galleryName" default="" label="Enter gallery name" description="" size="20" />
 		      		
 		</params>
 	</state>
