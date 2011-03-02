@@ -10,6 +10,23 @@ $ag_folderName = dirname($ag_itemURL);
 $ag_fileName = basename($ag_itemURL);
 $AG_imgInfo = AG_Helper::_imageInfo(JPATH_SITE.$ag_itemURL);
 
+require_once (JPATH_SITE.DS.'plugins'.DS.'content'.DS.'AdmirorGallery'.DS.'classes'.DS.'agHelper.php');
+
+//ag_sureRemoveDir($dir, $DeleteMe);
+class AG_component extends agHelper {
+    function ag_sureRemoveDir($thumbsFolderPhysicalPath){
+        agHelper::ag_sureRemoveDir($thumbsFolderPhysicalPath, 1);
+    }
+    function ag_createThumb($original_file, $thumb_file, $new_w, $new_h, $autoSize){
+        agHelper::ag_createThumb($original_file, $thumb_file, $new_w, $new_h, $autoSize);
+    }
+}
+$thumbsFolderPhysicalPath = JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'assets'.DS.'thumbs';
+AG_component::ag_sureRemoveDir($thumbsFolderPhysicalPath);
+if(!JFolder::create($thumbsFolderPhysicalPath,0755)){
+    JFactory::getApplication()->enqueueMessage( JText::_( "CANNOT CREATE FOLDER:" )."&nbsp;".$newFolderName, 'error' );
+}
+
 $ag_hasXML="";
 $ag_hasThumb="";
 
@@ -39,6 +56,9 @@ $ag_preview_content.='
 </div>
 ';
 
+
+AG_component::ag_createThumb(JPATH_SITE.$ag_itemURL, $thumbsFolderPhysicalPath.DS.basename($ag_itemURL), 145, 80, "none");
+
 $ag_preview_content.='
 <div class="AG_margin_bottom AG_thumbAndInfo_wrapper">
 <table cellspacing="0" cellpadding="0" border="0">
@@ -46,7 +66,7 @@ $ag_preview_content.='
 	<tr>
 	    <td>
 		<a class="AG_item_link" href="'.substr(JURI::root(),0,-1).$ag_itemURL.'" title="'.$ag_itemURL.'" rel="lightbox[\'AG\']" target="_blank">
-		    <img src="'.JURI::root().'administrator/components/com_admirorgallery/scripts/thumbnailer.php?img='.JPATH_SITE.$ag_itemURL.'&height=120" alt="'.$ag_itemURL.'">
+		    <img src="'.JURI::root().'administrator/components/com_admirorgallery/assets/thumbs/'.basename($ag_itemURL).'" alt="'.$ag_itemURL.'">
 		</a>
 	    </td>
 	    <td class="AG_border_color AG_border_width" style="border-left-style:solid;">

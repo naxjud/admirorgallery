@@ -101,7 +101,6 @@ AG_jQuery(".ag_hidden_ID").each(function(index) {
         albumInitFolders_array[galleryIndex] = albumFolder;
         albumInitFolders = albumInitFolders_array.toString();
     }
-
     AG_jQuery("#AG_Form").append("<input type=\'hidden\' name=\'AG_form_paginInitPages_"+AG_jQuery(this).attr(\'id\')+"\' value=\'"+paginInitPages+"\' />");
     AG_jQuery("#AG_Form").append("<input type=\'hidden\' name=\'AG_form_albumInitFolders_"+AG_jQuery(this).attr(\'id\')+"\' value=\'"+albumInitFolders+"\' />");
 
