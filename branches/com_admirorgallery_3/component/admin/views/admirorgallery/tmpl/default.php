@@ -61,11 +61,12 @@ echo '
 
 '."\n";
 
+
 $db =& JFactory::getDBO();
-$query = "SELECT * FROM #__plugins";
+$query = "SELECT * FROM #__plugins WHERE name LIKE '%AdmirorGallery%'";
 $db->setQuery($query);
-$row = $db->loadAssocList('name');
-$paramsdata = $row['Content - AdmirorGallery']['params'];
+$row = $db->loadAssoc();
+$paramsdata = $row['params'];
 $paramsdefs = JPATH_SITE.'/plugins/content/AdmirorGallery.xml';
 $myparams = new JParameter($paramsdata,$paramsdefs);
 echo $myparams->render( 'params' );
