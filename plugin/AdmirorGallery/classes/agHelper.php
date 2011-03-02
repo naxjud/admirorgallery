@@ -398,7 +398,7 @@ switch ($autoSize) {
 		'Macintosh'=>'(Mac_PowerPC)|(Macintosh)',
 		'QNX'=>'QNX',
 		'BeOS'=>'BeOS',
-		'OS/2'=>'OS/2',
+		'OS/2'=>'OS\/2',
 		'Search Bot'=>'(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp/cat)|(msnbot)|(ia_archiver)'
 	);
     foreach($oses as $os=>$pattern)

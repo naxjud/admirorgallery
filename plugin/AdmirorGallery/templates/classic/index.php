@@ -53,7 +53,7 @@ $html.='
 $html.= $AG->writePagination();
 
 // Support for Albums
-if(!empty($AG->folders)){
+if(!empty($AG->folders) && $AG->params['albumUse']){
      $html.= '<h1>'.JText::_( 'Albums' ).'</h1>'."\n";
      $html.= $AG->writeFolderThumb("albums/album.png", $AG->params['thumbHeight']);
 }

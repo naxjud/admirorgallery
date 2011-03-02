@@ -168,26 +168,25 @@ class agGallery extends agHelper {
         // Album Support
         $html = "";
         if($this->params['albumUse'] && !empty($this->folders)){
-              $html.= '<div class="AG_album_wrap">'."\n";
-              foreach ($this->folders as $folderKey => $folderName){
-	    $thumbImg=$this->sitePath.PLUGIN_BASE_PATH.$this->currTemplateRoot.$default_folder_img;
-	    $images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath.$folderName, $this->params['arrange']);
-	    if(!empty($images)){
-	          $thumbImg=$this->imagesFolderPhysicalPath.$folderName.DS.$images[0];
-	    }
-	    $folderImg='<img src="'.JURI::root().'administrator/components/com_admirorgallery/scripts/thumbnailer.php?img='.$thumbImg.'&height='.$thumbHeight.'" />'."\n";
-	    $html.='<a href="#" onClick="AG_form_submit_'.$this->articleID.'('.$this->index.',1,\''.$this->imagesFolderName.DS.$folderName.'\'); return false;" class="AG_album_thumb">';
-	    $html.='<span class="AG_album_thumb_img">';
-	    $html.=$folderImg;
-	    $html.='</span>';
-	    $html.='<span class="AG_album_thumb_label">';
-	    $html.=$folderName;
-	    $html.='</span>';
-	    $html.='</a>';
-	}
-	$html.= '<br style="clear:both;" /></div>'."\n";
-          }
-          return $html;
+            $html.= '<div class="AG_album_wrap">'."\n";
+            foreach ($this->folders as $folderKey => $folderName){
+                $images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath.$folderName, $this->params['arrange']);
+                if(!empty($images)){
+                    $original_file = $this->imagesFolderPhysicalPath.$folderName.DS.$images[0];                    
+                    $this->Album_generateThumb($original_file);
+                    $html.='<a href="#" onClick="AG_form_submit_'.$this->articleID.'('.$this->index.',1,\''.$this->imagesFolderName.'/'.$folderName.'\'); return false;" class="AG_album_thumb">';
+                    $html.='<span class="AG_album_thumb_img">';
+                    $html.='<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$folderName.'/'.$images[0].'" />'."\n";
+                    $html.='</span>';
+                    $html.='<span class="AG_album_thumb_label">';
+                    $html.=$folderName;
+                    $html.='</span>';
+                    $html.='</a>';
+                }
+            }
+            $html.= '<br style="clear:both;" /></div>'."\n";
+        }
+        return $html;
     }
 
     function writePagination(){
@@ -466,6 +465,51 @@ class agGallery extends agHelper {
         }
 	}
     }
+    
+    //Generates Album Thumbs
+    function Album_generateThumb($original_file){
+        if(($this->params['thumbWidth']==0) || ($this->params['thumbHeight']==0))
+        {
+            $this->adderror(JText::_("Cannot create thumbnails! Width and height must be greater then 0"));
+            return;
+        }
+        $imagesFolderPhysicalPath = $this->imagesFolderPhysicalPath.basename(dirname($original_file)).DS;
+        $thumbsFolderPhysicalPath = $this->thumbsFolderPhysicalPath.basename(dirname($original_file)).DS;
+        //Create directory in thumbs for gallery
+        if (!file_exists($thumbsFolderPhysicalPath))
+        {JFolder::create($thumbsFolderPhysicalPath, 0755);}
+        //Add's index.html to thumbs folder
+        if (!file_exists($thumbsFolderPhysicalPath.'index.html'))
+        {$this->ag_indexWrite($thumbsFolderPhysicalPath.'index.html');}
+        $thumb_file = $thumbsFolderPhysicalPath.basename($original_file);        
+        if (!file_exists($thumb_file)) {
+            $this->addError(agHelper::ag_createThumb($original_file, $thumb_file, $this->params['thumbWidth'],$this->params['thumbHeight'],$this->params['thumbAutoSize']));
+        }else{
+            list($imagewidth, $imageheight) = getimagesize($thumb_file);
+            switch($this->params['thumbAutoSize']){
+                case "none":
+                if ($imageheight != $this->params['thumbHeight'] || $imagewidth != $this->params['thumbWidth']) {
+                    $this->addError(agHelper::ag_createThumb($original_file, $thumb_file, $this->params['thumbWidth'],$this->params['thumbHeight'],$this->params['thumbAutoSize']));
+                }
+                break;
+                case "height":
+                if ($imagewidth != $this->params['thumbWidth']) {
+                    $this->addError(agHelper::ag_createThumb($original_file, $thumb_file, $this->params['thumbWidth'],$this->params['thumbHeight'],$this->params['thumbAutoSize']));
+                }
+                break;
+                case "width":
+                if ($imageheight != $this->params['thumbHeight']) {
+                    $this->addError(agHelper::ag_createThumb($original_file, $thumb_file, $this->params['thumbWidth'],$this->params['thumbHeight'],$this->params['thumbAutoSize']));
+                }
+                break;
+            }
+        }
+        // ERROR - Invalid image
+        if (!file_exists($thumb_file)) {
+            //$this->addError("Cannot read thumbnail");
+            $this->addError(JText::sprintf("Cannot read thumbnail",$thumb_file));
+        }
+    }
     /*
      * Returns error html
      */
@@ -477,7 +521,8 @@ class agGallery extends agHelper {
 	  foreach($this->errors as $key => $value){
                $errors.='<div class="error">'.$value.' <br/>
                         Admiror Gallery: '.AG_VERSION.'<br/>
-                        Server OS:'.$osVersion.'<br/>
+                        Server OS:'.$_SERVER['SERVER_SOFTWARE'].'<br/>
+						Client OS:'.$osVersion.'<br/>
                         PHP:'. $phpVersion.'
                         </div>'."\n";
 	  }

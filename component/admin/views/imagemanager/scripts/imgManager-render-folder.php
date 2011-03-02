@@ -9,6 +9,24 @@ $ag_itemURL = $ag_init_itemURL;
 $ag_folderName = dirname($ag_itemURL);
 $ag_fileName = basename($ag_itemURL);
 
+require_once (JPATH_SITE.DS.'plugins'.DS.'content'.DS.'AdmirorGallery'.DS.'classes'.DS.'agHelper.php');
+
+//ag_sureRemoveDir($dir, $DeleteMe);
+class AG_component extends agHelper {
+    function ag_sureRemoveDir($thumbsFolderPhysicalPath){
+        agHelper::ag_sureRemoveDir($thumbsFolderPhysicalPath, 1);
+    }
+    function ag_createThumb($original_file, $thumb_file, $new_w, $new_h, $autoSize){
+        agHelper::ag_createThumb($original_file, $thumb_file, $new_w, $new_h, $autoSize);
+    }
+}
+$thumbsFolderPhysicalPath = JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'assets'.DS.'thumbs';
+AG_component::ag_sureRemoveDir($thumbsFolderPhysicalPath);
+if(!JFolder::create($thumbsFolderPhysicalPath,0755)){
+    JFactory::getApplication()->enqueueMessage( JText::_( "CANNOT CREATE FOLDER:" )."&nbsp;".$newFolderName, 'error' );
+}
+
+
 $ag_preview_content='';
 
 $ag_preview_content.='
@@ -154,11 +172,15 @@ foreach($ag_images as $key => $value){
 	  $ag_hasThumb='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasThumb.png"  class="ag_hasThumb" />';
      }
 
+
+
+AG_component::ag_createThumb(JPATH_SITE.$ag_itemURL.$value, $thumbsFolderPhysicalPath.DS.$value, 145, 80, "none");
+
      $ag_preview_content.='
      <div class="AG_border_color AG_border_width AG_item_wrapper">
 	<a href="'.$ag_itemURL.$value.'" class="AG_fileLink AG_item_link" title="'.$value.'">
 	      <div style="display:block; text-align:center;" class="AG_item_img_wrapper">
-	      <img src="'.JURI::root().'administrator/components/com_admirorgallery/scripts/thumbnailer.php?img='.JPATH_SITE.$ag_itemURL.$value.'&height=80" class="ag_imgThumb" />
+	      <img src="'.JURI::root().'administrator/components/com_admirorgallery/assets/thumbs/'.$value.'" class="ag_imgThumb" />
 	      </div>
 	</a>
 	<div class="AG_border_color AG_border_width AG_item_controls_wrapper">
