@@ -5,7 +5,7 @@ class AG_helper {
     function _renderBreadcrumb($AG_itemURL, $ag_rootFolder, $ag_folderName, $ag_fileName) {
         $ag_breadcrumb='';
         $ag_breadcrumb_link='';
-        if($ag_rootFolder!=$AG_itemURL){
+        if($ag_rootFolder!=$AG_itemURL && !empty($AG_itemURL)){
             $ag_breadcrumb.='<a href="'.$ag_rootFolder.'" class="AG_folderLink AG_common_button"><span><span>'.substr($ag_rootFolder,0,-1).'</span></span></a>/';
             $ag_breadcrumb_link.=$ag_rootFolder;
             $ag_breadcrumb_cut=substr($ag_folderName,strlen($ag_rootFolder));

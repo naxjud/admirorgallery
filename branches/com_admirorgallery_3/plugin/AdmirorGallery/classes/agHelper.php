@@ -127,7 +127,7 @@ protected function ag_foregroundColor ( $hex,$adjust )
                     }
             }
     }
-    protected function ag_clearOldThumbs($imagesFolder,$thumbsFolder){
+    protected function ag_clearOldThumbs($imagesFolder,$thumbsFolder,$albumsInUse=false){
 
       // Generate array of thumbs
       $targetFolder=$thumbsFolder;
@@ -137,7 +137,7 @@ protected function ag_foregroundColor ( $hex,$adjust )
       $targetFolder=$imagesFolder;
       $images=agHelper::ag_imageArrayFromFolder($targetFolder,0);
 
-      if (empty($images)){
+      if (empty($images) && !$albumsInUse){
       agHelper::ag_sureRemoveDir($thumbsFolder, 1);
       return;
       }
@@ -176,7 +176,7 @@ protected function ag_foregroundColor ( $hex,$adjust )
     }
     //Read's all images from folder.
     protected function ag_imageArrayFromFolder($targetFolder,$arrange){
-
+	  $images=Array();
 	  if (!file_exists($targetFolder))
 	  {
 		    return null;
@@ -281,7 +281,6 @@ protected function ag_foregroundColor ( $hex,$adjust )
 	       break;
 	  }
 	  }
-
 	  return $images;
 
     }
