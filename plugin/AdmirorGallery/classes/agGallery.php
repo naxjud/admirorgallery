@@ -302,7 +302,7 @@ class agGallery extends agHelper {
                         $this->albumParentLink = '
                         <a href="#" onClick="AG_form_submit_'.$this->articleID.'('.$this->index.',1,\''.dirname($this->imagesFolderName).'\'); return false;" class="AG_album_parent">
                             <span>
-                                '.dirname($this->imagesFolderName).'
+                                '.basename(dirname($this->imagesFolderName)).'
                             </span>
                         </a>
                         <br style="clear:both;" />
@@ -328,7 +328,7 @@ class agGallery extends agHelper {
     }
     // Clears obsolete thumbnails
     function clearOldThumbs(){
-        $this->ag_clearOldThumbs($this->imagesFolderPhysicalPath, $this->thumbsFolderPhysicalPath);
+        $this->ag_clearOldThumbs($this->imagesFolderPhysicalPath, $this->thumbsFolderPhysicalPath,$this->params['albumUse']);
     }
     // Reads description files
     private function readDescriptionFiles(){
