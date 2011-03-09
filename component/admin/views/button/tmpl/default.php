@@ -19,6 +19,7 @@ $ag_init_itemURL=$ag_rootFolder;
 <script type="text/javascript" src="<?php echo JURI::root().'plugins/content/AdmirorGallery/AG_jQuery.js';?>"></script>
 <link rel="stylesheet" href="<?php echo JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_template.'/css/add-trigger.css'; ?>" type="text/css" />
 
+<div style="display:block" class="AG_margin_medium">
 <form action="index.php" id="AG_form" method="post" enctype="multipart/form-data">
 
 <div style="float: right">
@@ -55,7 +56,7 @@ $query = "SELECT * FROM #__plugins";
 $db->setQuery($query);
 $row = $db->loadAssocList('name');
 $paramsdata = $row['Content - AdmirorGallery']['params'];
-$paramsdefs = JPATH_SITE.'/plugins/editors-xtd/admirorgallery/admirorgallery.xml';
+$paramsdefs = JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'button'.DS.'tmpl'.DS.'default.xml';
 $myparams = new JParameter($paramsdata,$paramsdefs);
 echo $myparams->render( 'params' );
 
@@ -91,6 +92,6 @@ function AG_createTriggerCode(){
 </script>
 
 </form>
-
+</div>
 
 

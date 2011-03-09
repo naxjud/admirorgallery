@@ -49,4 +49,5 @@ a.AG_album_parent span
      padding-left:20px;
      background-image:url("back.png");
      background-repeat:no-repeat;
+     white-space:nowrap;
 }

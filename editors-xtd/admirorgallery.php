@@ -51,7 +51,7 @@ class plgButtonAdmirorgallery extends JPlugin
 		$params =& JComponentHelper::getParams('com_admirorgallery');
 
 		$doc = & JFactory::getDocument();
-		$doc->addStyleSheet(JURI::root().'plugins/editors-xtd/admirorgallery/admirorgallery.css');
+		$doc->addStyleSheet(JURI::root().'administrator/components/com_admirorgallery/templates/default/css/add-trigger.css');
 		$doc->addScript(JURI::root().'plugins/content/AdmirorGallery/AG_jQuery.js');
 		$doc->addScriptDeclaration("            
 		function buttonTestClick(txt) {
@@ -62,9 +62,9 @@ class plgButtonAdmirorgallery extends JPlugin
 
 		$template 	= $mainframe->getTemplate();
 
-	       $app =& JFactory::getApplication();
-	       if ($app->isSite()) $link = 'administrator/index.php?option=com_admirorgallery&amp;view=button&amp;tmpl=component&amp;e_name='.$name;
-	       if ($app->isAdmin()) $link = 'index.php?option=com_admirorgallery&amp;view=button&amp;tmpl=component&amp;e_name='.$name;
+        $app =& JFactory::getApplication();
+	       
+        $link = 'index.php?option=com_admirorgallery&amp;view=button&amp;tmpl=component&amp;e_name='.$name;
 
 		JHTML::_('behavior.modal');
 
