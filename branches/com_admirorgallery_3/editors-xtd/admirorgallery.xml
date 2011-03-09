@@ -10,7 +10,6 @@
 	<version>1.0.0</version>
 	<description></description>
 	<files>
-		<folder plugin="admirorgallery">admirorgallery</folder>
 		<filename plugin="admirorgallery">admirorgallery.php</filename>
 	</files>
 	<params />

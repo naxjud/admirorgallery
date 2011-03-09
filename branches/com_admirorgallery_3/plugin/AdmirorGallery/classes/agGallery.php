@@ -279,18 +279,16 @@ class agGallery extends agHelper {
         $this->imagesFolderNameOriginal = preg_replace("/{.+?}/", "", $match);
         $this->imagesFolderName = strip_tags($this->imagesFolderNameOriginal);
         // Pagination Support
-        if($this->params['paginUse']){
+        if($this->params['paginUse'] || $this->params['albumUse']){
             $this->paginInitPages[]=1;
-	    if(!empty($_POST['AG_form_paginInitPages_'.$this->articleID])){
-	        $AG_form_paginInitPages_array=explode(",",$_POST['AG_form_paginInitPages_'.$this->articleID]);
-	        $this->paginInitPages[$this->index]=$AG_form_paginInitPages_array[$this->index];
-	    }
-        
+	        if(!empty($_POST['AG_form_paginInitPages_'.$this->articleID])){
+	            $AG_form_paginInitPages_array=explode(",",$_POST['AG_form_paginInitPages_'.$this->articleID]);
+	            $this->paginInitPages[$this->index]=$AG_form_paginInitPages_array[$this->index];
+	        }        
             $this->doc->addScriptDeclaration('var paginInitPages_'.$this->articleID.'="'.implode(",", $this->paginInitPages).'";');
-        }
-        // Album Support
-        $this->albumParentLink = '';
-        if($this->params['albumUse']){
+
+            // Album Support
+            $this->albumParentLink = '';
             $this->albumInitFolders[]="";
             $this->albumInitFolders[$this->index]=$this->imagesFolderName; // Set init folders
             if(!empty($_POST['AG_form_albumInitFolders_'.$this->articleID])){
@@ -311,6 +309,7 @@ class agGallery extends agHelper {
             }
         
             $this->doc->addScriptDeclaration('var albumInitFolders_'.$this->articleID.'="'.implode(",", $this->albumInitFolders).'";');
+            
         }
         $this->imagesFolderPhysicalPath = $this->sitePhysicalPath.$this->params['rootFolder'].$this->imagesFolderName.DS;
         $this->thumbsFolderPhysicalPath = $this->sitePhysicalPath.PLUGIN_BASE_PATH.'thumbs'.DS.$this->imagesFolderName.DS;
