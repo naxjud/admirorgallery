@@ -7,9 +7,9 @@
 	<authorUrl>http://www.admiror-design-studio.com</authorUrl>
 	<copyright>(C) 2010 All rights reserved.</copyright>
 	<license>GNU/GPL</license>
-	<version>3.0.170</version>	
+	<version>3.0.172</version>	
 	<button_version>1.0.1</button_version>
-	<plugin_version>3.0.2</plugin_version>
+	<plugin_version>3.0.3</plugin_version>
 	<description>ADMIRORDESCRIPTION</description>	
 	<installfile>install/install.php</installfile>
 	<uninstallfile>install/uninstall.php</uninstallfile>

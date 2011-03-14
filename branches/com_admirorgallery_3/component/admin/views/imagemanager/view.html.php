@@ -21,7 +21,7 @@ class AdmirorgalleryViewImagemanager extends JView
 		    // SET SHORCUTS
 		    AG_jQuery(document).bind("keydown", "alt+a", function (){submitbutton("AG_apply");return false;});
 		    AG_jQuery(document).bind("keydown", "alt+r", function (){submitbutton("AG_reset");return false;});
-
+		   
 	       });//AG_jQuery(function()
 	  ');
 

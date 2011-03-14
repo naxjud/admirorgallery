@@ -133,8 +133,8 @@ AG_jQuery(function(){
 	  ag_file_selected(AG_jQuery(this).attr("href"));
       });
 
-      AG_jQuery(".AG_cbox_remove").click(function(e) {
-	  AG_jQuery(this).closest(".AG_item_wrapper").toggleClass("AG_mark_for_delete");
+      AG_jQuery(".AG_cbox_selectItem").click(function(e) {
+	  AG_jQuery(this).closest(".AG_item_wrapper").toggleClass("AG_mark_selectItem");
       });
 
 '."\n";
