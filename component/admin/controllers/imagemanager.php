@@ -41,12 +41,6 @@ class AdmirorgalleryControllerImagemanager extends AdmirorgalleryController
 	            $model->_bookmarkRemove($AG_cbox_bookmarkRemove);
 	        }
 
-	        // BOOKMARK ADD
-	        $AG_cbox_bookmarkAdd = JRequest::getVar( 'AG_cbox_bookmarkAdd' );
-	        if(!empty($AG_cbox_bookmarkAdd)){
-	            $model->_bookmarkAdd($AG_cbox_bookmarkAdd);
-	        }
-
 	        // PRIORITY
 	        $AG_cbox_priority = JRequest::getVar( 'AG_cbox_priority' );
 	        if(!empty($AG_cbox_priority)){
@@ -65,10 +59,24 @@ class AdmirorgalleryControllerImagemanager extends AdmirorgalleryController
 	            $model->_addFolders($AG_itemURL,$AG_addFolders);
 	        }
 
-	        // REMOVE
-	        $AG_cbox_remove = JRequest::getVar( 'AG_cbox_remove' );
-	        if(!empty($AG_cbox_remove)){
-	            $model->_remove($AG_cbox_remove);
+	        // REMOVE // BOOKMARK ADD
+	        $AG_cbox_selectItem = JRequest::getVar( 'AG_cbox_selectItem' );
+	        $AG_operations_targetFolder = JRequest::getVar( 'AG_operations_targetFolder' );
+	        if(!empty($AG_cbox_selectItem)){	            
+                switch (JRequest::getVar( 'AG_operations' )) {
+                    case "move":
+                        $model->_move($AG_cbox_selectItem,$AG_operations_targetFolder); 
+                        break;
+                    case "copy":
+                        $model->_copy($AG_cbox_selectItem,$AG_operations_targetFolder); 
+                        break;
+                    case "bookmark":
+                        $model->_bookmarkAdd($AG_cbox_selectItem); 
+                        break;
+                    case "delete":
+                        $model->_remove($AG_cbox_selectItem);
+                        break;
+                }
 	        }
 
 	        // RENAME
@@ -91,7 +99,7 @@ class AdmirorgalleryControllerImagemanager extends AdmirorgalleryController
 	        // FILE MODELS
 
 	        // DESCRIPTIONS
-	        $AG_desc_content = JRequest::getVar( 'AG_desc_content' );
+	        $AG_desc_content = JRequest::getVar( 'AG_desc_content', '', 'POST','ARRAY','JREQUEST_ALLOWHTML' );
 	        $AG_desc_tags = JRequest::getVar( 'AG_desc_tags' );
 	        if(!empty($AG_desc_content)){
 	            $model->_desc_content($AG_itemURL,$AG_desc_content,$AG_desc_tags);

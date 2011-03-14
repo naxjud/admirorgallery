@@ -36,6 +36,31 @@ $ag_preview_content.='
      '.AG_helper::_renderBreadcrumb($AG_itemURL, $ag_rootFolder, $ag_folderName, $ag_fileName).'
 </div>
 <hr />
+
+<table cellspacing="0" cellpadding="0" border="0" class="AG_fieldset">
+     <tbody>
+     <tr>
+          <td>
+                <img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" />
+          </td>	      <td>
+	            '.JText::_( 'OPERATION WITH SELECTED ITEMS:' ).'
+	      </td>
+	      <td>
+            <select id="AG_operations" name="AG_operations">
+                <option value="none" >'.JText::_( 'AG_NONE' ).'</option>
+                <option value="delete" >Delete</option>
+                <option value="copy">Copy to</option>
+                <option value="move">Move to</option>
+                <option value="bookmark">Bookmark</option>
+            </select>
+	      </td>
+      	  <td id="AG_targetFolder">
+      	  </td>  	  
+     </tr>
+     </tbody>
+</table>
+<hr />
+
 <table cellspacing="0" cellpadding="0" border="0" class="AG_fieldset">
      <tbody>
      <tr>
@@ -77,11 +102,9 @@ if(!empty($ag_folders)){
 	</a>
 	<div class="AG_border_color AG_border_width AG_item_controls_wrapper">
 	    <table border="0" cellspacing="0" cellpadding="0"><tbody><tr>
-	    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/uninstalled.png" style="float:left;" /></td>
-	    <td><input type="checkbox" value="'.$ag_itemURL.$value.'/" name="AG_cbox_remove[]" class="AG_cbox_remove"></td>
-	    <td><span class="AG_border_color AG_border_width AG_separator">&nbsp;</span></td>
-	    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/bookmark.png" style="float:left;" /></td>
-	    <td><input type="checkbox" value="'.$ag_itemURL.$value.'/" name="AG_cbox_bookmarkAdd[]"></td>
+	    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" /></td>
+	    <td><input type="checkbox" value="'.$ag_itemURL.$value.'/" name="AG_cbox_selectItem[]" class="AG_cbox_selectItem"></td>
+	    <td><div class="AG_border_color AG_border_width AG_separator">&nbsp;</div></td>
 	    </tr></tbody></table>
 	    <div class="AG_border_color AG_border_width AG_controls_item_name">
 	    <input type="text" value="'.$value.'" name="AG_rename['.$ag_itemURL.$value.']" class="AG_input" style="width:95%" />
@@ -185,8 +208,8 @@ AG_component::ag_createThumb(JPATH_SITE.$ag_itemURL.$value, $thumbsFolderPhysica
 	</a>
 	<div class="AG_border_color AG_border_width AG_item_controls_wrapper">
 	    <table border="0" cellspacing="0" cellpadding="0"><tbody><tr>
-	    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/uninstalled.png" style="float:left;" /></td>
-	    <td><input type="checkbox" value="'.$ag_itemURL.$value.'" name="AG_cbox_remove[]" class="AG_cbox_remove"></td>
+	    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" /></td>
+	    <td><input type="checkbox" value="'.$ag_itemURL.$value.'" name="AG_cbox_selectItem[]" class="AG_cbox_selectItem"></td>
 	    <td><div class="AG_border_color AG_border_width AG_separator">&nbsp;</div></td>
 	    <td>'.JText::_( 'Priority' ).':&nbsp;</td>
 	    <td><input type="text" size="3" value="'.$ag_imgXML_priority.'" name="AG_cbox_priority['.$ag_itemURL.$value.']" class="AG_input" /></td>
@@ -216,6 +239,20 @@ if(empty($ag_folders) && empty($ag_images)){
 $ag_preview_content.= JText::_( 'No folders or images found in current folder ...' );
 }
 
+
+$AG_folderDroplist="<select id='AG_operations_targetFolder' name='AG_operations_targetFolder'>";
+$AG_folders=JFolder::listFolderTree(JPATH_SITE.$ag_rootFolder,"");
+$AG_rootFolder_strlen = strlen($ag_rootFolder);
+$AG_folderDroplist.="<option value='".$ag_rootFolder."' >".JText::_( 'IMAGES ROOT FOLDER' )."</option>";
+if(!empty($AG_folders)){
+  foreach($AG_folders as $AG_folders_key => $AG_folders_value){
+    $AG_folderName = substr($AG_folders_value['relname'],$AG_rootFolder_strlen);
+    $AG_folderDroplist.="<option value='".$ag_rootFolder.$AG_folderName."' >".$AG_folderName."</option>";
+  }
+}
+$AG_folderDroplist.="</select>";
+
+
 $ag_preview_content.='
 
 <div style="clear:both" class="AG_margin_bottom"></div>
@@ -224,12 +261,8 @@ $ag_preview_content.='
 <h2>'.JText::_( 'LEGEND' ).'</h2>
 <table><tbody>
 <tr>
-    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/uninstalled.png" style="float:left;" /></td>
-    <td>'.JText::_( 'SELECT TO REMOVE FILE OR FOLDER.' ).'</td>
-</tr>
-<tr>
-    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/bookmark.png" style="float:left;" /></td>
-    <td>'.JText::_( 'SELECT FOLDER TO BOOKMARK IT IN THE LIST OF GALLERIES.' ).'</td>
+    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" /></td>
+    <td>'.JText::_( 'SELECT FILE OR FOLDER.' ).'</td>
 </tr>
 <tr>
     <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasThumb.png" style="float:left;" /></td>
@@ -242,6 +275,26 @@ $ag_preview_content.='
 </tbody></table>
 <div>
 
+<script type="text/javascript">
+AG_jQuery("#AG_operations").change(function() {
+        switch(AG_jQuery(this).val())
+        {
+        case "delete":
+          AG_jQuery("#AG_targetFolder").html("<img src=\''.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/alert.png\'  style=\'float:left;\' />&nbsp;'.JText::_( 'SELECTED ITEMS WILL BE DELETED!' ).'");
+          break;
+        case "move":
+          AG_jQuery("#AG_targetFolder").html("'.$AG_folderDroplist.'");
+          break;
+        case "copy":
+          AG_jQuery("#AG_targetFolder").html("'.$AG_folderDroplist.'");
+          break;
+        default:
+          AG_jQuery("#AG_targetFolder").html("");
+        }        
+});
+
+
+</script>
 
 ';
 

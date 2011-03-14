@@ -27,6 +27,17 @@
 
 
 /* toolbar */
+
+div.toolbar {
+    display:block;
+    height:80px;
+}
+
+div.toolbar table
+{
+    float:right;
+}
+
 .AG_toolbar { padding: 10px; display:block; border-bottom-style:solid;}
  
 .AG_toolbar table.toolbar                           { border-collapse: collapse; padding: 0; margin: 0;     }

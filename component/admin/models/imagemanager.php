@@ -282,7 +282,71 @@ class AdmirorgalleryModelImagemanager extends JModel
               }//if(!empty($value))
           }
     }
+    
+    
+    // COPY
+    function _copy($AG_cbox_selectItem, $AG_operations_targetFolder) {
+        foreach($AG_cbox_selectItem as $key => $value){
+	        if(is_dir(JPATH_SITE.DS.$value)){
+	            if(JFolder::copy (JPATH_SITE.DS.$value, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($value))){
+	                JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM COPIED:' )."&nbsp;".$value, 'message' );
+                }else{
+                    JFactory::getApplication()->enqueueMessage( JText::_( 'CANNOT COPY ITEM:' )."&nbsp;".$value, 'error' );	      
+                }
+	        }else{
+	            if(JFile::copy (JPATH_SITE.DS.$value, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($value))){
+	                // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+	                $AG_folderName = dirname($value);
+	                $AG_pathWithStripExt=JPATH_SITE.$AG_folderName.'/'.JFile::stripExt(basename($value));
+	                $AG_imgXML_path=$AG_pathWithStripExt.".XML";
+	                if(JFIle::exists($AG_pathWithStripExt.".xml")){
+	                    $AG_imgXML_path=$AG_pathWithStripExt.".xml";
 
+	                }
+	                if(JFIle::exists($AG_imgXML_path)){
+	                    JFile::copy ($AG_imgXML_path, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($AG_imgXML_path));
+                    }
+	                JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM COPIED:' )."&nbsp;".$value, 'message' );
+                }else{
+                    JFactory::getApplication()->enqueueMessage( JText::_( 'CANNOT COPY ITEM:' )."&nbsp;".$value, 'error' );	      
+                }
+	        }
+        }
+    }
+    
+    
+    
+    // MOVE
+    function _move($AG_cbox_selectItem, $AG_operations_targetFolder) {
+        foreach($AG_cbox_selectItem as $key => $value){
+	        if(is_dir(JPATH_SITE.DS.$value)){
+	            if(JFolder::move (JPATH_SITE.DS.$value, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($value))){
+	                JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM MOVED:' )."&nbsp;".$value, 'message' );
+                }else{
+                    JFactory::getApplication()->enqueueMessage( JText::_( 'CANNOT MOVED ITEM:' )."&nbsp;".$value, 'error' );	      
+                }
+	        }else{
+	            if(JFile::move (JPATH_SITE.DS.$value, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($value))){
+	                // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+	                $AG_folderName = dirname($value);
+	                $AG_pathWithStripExt=JPATH_SITE.$AG_folderName.'/'.JFile::stripExt(basename($value));
+	                $AG_imgXML_path=$AG_pathWithStripExt.".XML";
+	                if(JFIle::exists($AG_pathWithStripExt.".xml")){
+	                    $AG_imgXML_path=$AG_pathWithStripExt.".xml";
+	                }	                
+	                if(JFIle::exists($AG_imgXML_path)){
+		                JFile::move ($AG_imgXML_path, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($AG_imgXML_path));
+	                }
+	                JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM MOVED:' )."&nbsp;".$value, 'message' );
+                }else{
+                    JFactory::getApplication()->enqueueMessage( JText::_( 'CANNOT MOVED ITEM:' )."&nbsp;".$value, 'error' );	      
+                }
+	        }
+        }
+    }
+    
+    
+    
     function _remove($AG_cbox_remove) {
         foreach($AG_cbox_remove as $key => $value){
 	$AG_folderName = dirname($value);
@@ -304,7 +368,7 @@ class AdmirorgalleryModelImagemanager extends JModel
 	            }
 
 	            if (file_exists($AG_imgXML_path)){
-		JFile::delete($AG_imgXML_path);
+		            JFile::delete($AG_imgXML_path);
 	            }
 	            JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM DELETED:' )."&nbsp;".$value, 'message' );
 	      }else{
@@ -379,7 +443,7 @@ class AdmirorgalleryModelImagemanager extends JModel
         if(!empty($AG_desc_content)){
 	    foreach($AG_desc_content as $key => $value) {
 	          if(!empty($value)){
-		      $ag_captions_new .= "\t".'<caption lang="'.strtolower($AG_desc_tags[$key]).'">'.stripslashes(htmlspecialchars($value)).'</caption>'."\n";
+		      $ag_captions_new .= "\t".'<caption lang="'.strtolower($AG_desc_tags[$key]).'">'.htmlentities($value).'</caption>'."\n";
 	          }	  
 	    }
         }

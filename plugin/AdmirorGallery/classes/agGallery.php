@@ -140,27 +140,24 @@ class agGallery extends agHelper {
      */
     function writePopupThumb($image){
         $html='';
-	if($this->popupEngine->customPopupThumb){
-	    $html=$this->popupEngine->customPopupThumb;
-	    $html=str_replace("{imagePath}",$this->imagesFolderPath.$image,$html);
-	    $html=str_replace("{imageDescription}",htmlspecialchars(strip_tags($this->descArray[$image])),$html);
-	    $html=str_replace("{className}",$this->popupEngine->className,$html);
-	    $html=str_replace("{rel}",$this->popupEngine->rel,$html);
-	    $html=str_replace("{customAttr}",$this->popupEngine->customTag,$html);
-	    $html=str_replace("{newImageTag}",$this->writeNewImageTag($image),$html);
-	    $html=str_replace("{thumbImagePath}",$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$image,$html);
-	}else{
-
-	    // Rich Text Format Support
-	    if($this->params['plainTextCaptions']){
-	        $html.='<a href="'.$this->imagesFolderPath.$image.'" title="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="'.$this->popupEngine->className.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customAttr.' target="_blank">';
+	    if($this->popupEngine->customPopupThumb){
+	        $html=$this->popupEngine->customPopupThumb;
+	        $html=str_replace("{imagePath}",$this->imagesFolderPath.$image,$html);
+	        $html=str_replace("{imageDescription}",htmlspecialchars($this->descArray[$image]),$html);
+	        $html=str_replace("{className}",$this->popupEngine->className,$html);
+	        $html=str_replace("{rel}",$this->popupEngine->rel,$html);
+	        $html=str_replace("{customAttr}",$this->popupEngine->customTag,$html);
+	        $html=str_replace("{newImageTag}",$this->writeNewImageTag($image),$html);
+	        $html=str_replace("{thumbImagePath}",$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$image,$html);
 	    }else{
-	        $html.='<a href="'.$this->imagesFolderPath.$image.'" title="'.$this->descArray[$image].'" class="'.$this->popupEngine->className.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customAttr.' target="_blank">';
+            $html.='
+            <a href="'.$this->imagesFolderPath.$image.'" title="'.htmlspecialchars($this->descArray[$image]).'" class="'.$this->popupEngine->className.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customAttr.' target="_blank">
+            '.$this->writeNewImageTag($image).'
+	        <img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$image.'
+		    " alt="'.htmlspecialchars($this->descArray[$image]).'" class="ag_imageThumb">
+		    </a>
+		    ';
 	    }
-	    $html.=$this->writeNewImageTag($image);
-	    $html.='<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$image.'
-		" alt="'.htmlspecialchars(strip_tags($this->descArray[$image])).'" class="ag_imageThumb"></a>';
-	}
         return $html;
     }
 
@@ -375,7 +372,13 @@ class agGallery extends agHelper {
 			      }
 			      }
 			 }
-
+			 
+			 
+			 // RICH TEXT SUPPORT
+			 if($this->params['plainTextCaptions']){
+		        $this->descArray[$f] = strip_tags($this->descArray[$f]);	 
+			 }
+			 
                       }// if(file_exists($descriptionFileApsolutePath))
 
 
