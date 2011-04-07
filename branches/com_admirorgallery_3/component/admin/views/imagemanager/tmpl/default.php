@@ -43,7 +43,7 @@ require_once (JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_admirorgalle
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="view" value="imagemanager" />
 <input type="hidden" name="controller" value="imagemanager" />
-<input type="hidden" name="AG_itemURL" value="<?php echo $ag_init_itemURL;?>" />
+<input type="hidden" name="AG_itemURL" value="<?php echo $ag_init_itemURL;?>" id="AG_input_itemURL" />
 
 <?php
 
@@ -137,12 +137,26 @@ AG_jQuery(function(){
 	  AG_jQuery(this).closest(".AG_item_wrapper").toggleClass("AG_mark_selectItem");
       });
 
+
+      AG_jQuery("#AG_bookmarks_showHide").click(function(e) {
+        e.preventDefault();
+        if(AG_jQuery(".AG_bookmarks_wrapper").css("display")!="none"){
+            AG_jQuery(".AG_bookmarks_wrapper").css("display","none");
+            AG_jQuery("#AG_bookmarks_showHide").find("span").find("span").html("'.JText::_( 'Show Sidebar' ).'");
+        }else{
+            AG_jQuery(".AG_bookmarks_wrapper").css("display","block");  
+            AG_jQuery("#AG_bookmarks_showHide").find("span").find("span").html("'.JText::_( 'Hide Sidebar' ).'");   
+        }
+
+      });
+
 '."\n";
 
 if($AG_frontEnd=='true'){
 echo '
      // SET SHORCUTS
      AG_jQuery(document).bind("keydown", "alt+a", function (){submitbutton("AG_apply");return false;});
+     AG_jQuery(document).bind("keydown", "return", function (){submitbutton("AG_apply");return false;});
      AG_jQuery(document).bind("keydown", "alt+r", function (){submitbutton("AG_reset");return false;});
 '."\n";
 }
@@ -173,7 +187,8 @@ echo '
 <table border="0" cellspacing="0" cellpadding="0" width="100%">
      <tbody>
 	  <tr>
-	       <td class="AG_bookmarks_wrapper">
+	       <td class="AG_bookmarks_wrapper" style="display:none;">
+	       
 		    <h1><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/bookmark.png" style="float:left;" />&nbsp;'.JText::_( "GALLERIES").'</h1>
 		    '."\n";
 
@@ -200,19 +215,21 @@ if(isset($ag_bookmarks_xml->document->bookmark)){
 }
 
 echo '
-	          <div style="clear:both" class="AG_margin_bottom"></div>
-	          <hr />
-	          <div  class="AG_legend">
-	          <h2>'.JText::_( 'LEGEND' ).'</h2>
-	          <table><tbody>
-	          <tr>
-		      <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/bookmarkRemove.png" style="float:left;" /></td>
-		      <td>'.JText::_( 'Select to remove bookmark.' ).'</td>
-	          </tr>
-	          </tbody></table>
-	          <div>
+	              <div style="clear:both" class="AG_margin_bottom"></div>
+	              <hr />
+	              <div  class="AG_legend">
+	              <h2>'.JText::_( 'LEGEND' ).'</h2>
+	              <table><tbody>
+	              <tr>
+		          <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/bookmarkRemove.png" style="float:left;" /></td>
+		          <td>'.JText::_( 'Select to remove bookmark.' ).'</td>
+	              </tr>
+	              </tbody></table>
+	              <div>
+	          
 	       </td>
 	       <td class="AG_border_color AG_border_width AG_details_wrapper">
+	       <a class="AG_common_button" href="" id="AG_bookmarks_showHide"><span><span>'.JText::_( "Show Sidebar").'</span></span></a>
 		    '.$ag_preview_content.'
 	       </td>
 	  </tr>
