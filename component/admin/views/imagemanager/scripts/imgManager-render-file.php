@@ -49,13 +49,40 @@ if(file_exists($ag_imgXML_path)){
 }
 
 $ag_preview_content='';
+
+// GET IMAGES FOR NEXT AND PREV IMAGES FUNCTIONS
+$ag_files=JFolder::files(JPATH_SITE.$ag_folderName);
+
+if(!empty($ag_files)){
+    $ag_ext_valid = array ("jpg","jpeg","gif","png");// SET VALID IMAGE EXTENSION
+    $ag_images=Array();
+    foreach($ag_files as $key => $value){
+        if(is_numeric(array_search(strtolower(JFile::getExt(basename($value))),$ag_ext_valid))){
+            $ag_images[]=$value;
+        }
+    }
+ if(array_search($ag_fileName, $ag_images)!=0){    
+        $ag_fileName_prev=$ag_images[array_search($ag_fileName, $ag_images)-1];
+    }
+    if(array_search($ag_fileName, $ag_images)<count($ag_images)-1){
+        $ag_fileName_next=$ag_images[array_search($ag_fileName, $ag_images)+1];
+    }
+    if(!empty($ag_fileName_prev)){
+        $ag_preview_content.='<a class="AG_common_button" href="" onclick="AG_jQuery(\'#AG_input_itemURL\').val(\''.$ag_folderName.'/'.$ag_fileName_prev.'\');submitbutton(\'AG_reset\');return false;"><span><span>'.JText::_( "Previous Image").'</span></span></a>'."\n";
+    }
+    if(!empty($ag_fileName_next)){
+        $ag_preview_content.='<a class="AG_common_button" href="" onclick="AG_jQuery(\'#AG_input_itemURL\').val(\''.$ag_folderName.'/'.$ag_fileName_next.'\');submitbutton(\'AG_reset\');return false;"><span><span>'.JText::_( "Next Image").'</span></span></a>'."\n";
+    }
+}
+
+$ag_preview_content.='<hr />';
+
 $ag_preview_content.='
 <h1>'.JText::_( 'Image Details for file:' ).'</h1>
 <div class="AG_border_color AG_border_width AG_margin_bottom AG_breadcrumbs_wrapper">
 '.AG_helper::_renderBreadcrumb($AG_itemURL, $ag_rootFolder, $ag_folderName, $ag_fileName).'
 </div>
 ';
-
 
 AG_component::ag_createThumb(JPATH_SITE.$ag_itemURL, $thumbsFolderPhysicalPath.DS.basename($ag_itemURL), 145, 80, "none");
 

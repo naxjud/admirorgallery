@@ -30,6 +30,10 @@ if(!JFolder::create($thumbsFolderPhysicalPath,0755)){
 $ag_preview_content='';
 
 $ag_preview_content.='
+<hr />
+'."\n";
+
+$ag_preview_content.='
 <h1>'.JText::_( 'CURRENT FOLDER:' ).'</h1>
 
 <div class="AG_breadcrumbs_wrapper">
