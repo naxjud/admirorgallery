@@ -18,8 +18,8 @@ class AdmirorgalleryViewResourcemanager extends JView
 	       AG_jQuery(function(){
 
 		    // SET SHORCUTS
-		    AG_jQuery(document).bind("keydown", "alt+a", function (){submitbutton("AG_apply");return false;});
-		    AG_jQuery(document).bind("keydown", "alt+r", function (){submitbutton("AG_reset");return false;});
+		    AG_jQuery(document).bind("keydown", "ctrl+return", function (){submitbutton("AG_apply");return false;});	
+		    AG_jQuery(document).bind("keydown", "ctrl+backspace", function (){submitbutton("AG_reset");return false;});
 
 	       });//AG_jQuery(function()
 	  ');
