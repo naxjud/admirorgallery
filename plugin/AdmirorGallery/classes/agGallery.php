@@ -304,6 +304,11 @@ class agGallery extends agHelper {
                         ';
                 }
             }
+            
+            // Breadcrump Support           
+            if(JSite::getMenu()->getActive()->query['view']=="layout"){
+                $this->writeBreadcrum();
+            }
         
             $this->doc->addScriptDeclaration('var albumInitFolders_'.$this->articleID.'="'.implode(",", $this->albumInitFolders).'";');
             
@@ -532,6 +537,29 @@ class agGallery extends agHelper {
           }
 	  return $errors;
     }
+    // **************************** Breadcrump Support
+    // Written by Lee Anderson
+    // Authors e-mail: landerson@atlas-tech.com
+    //
+    function writeBreadcrum() {
+        $folderNames = str_replace('//', '/', $this->imagesFolderName);
+        $albumName = explode("/", $folderNames);
+        $folderNumber = count($albumName) -1;
+        $linkFolderName = '';
+        for ($i=0; $i<=$folderNumber; $i++) {
+            $linkFolderName .= $albumName[$i].'/';
+            $linkFolderName = str_replace('//', '/', $linkFolderName);
+            if ($albumName[$i] != '' && $i!=0) {
+                $this->events['name'] = $albumName[$i];
+                $link = 'Javascript: AG_form_submit_'.$this->articleID.'('.$this->index.',1,\''.$linkFolderName.'\');';                                                       
+                $mainframe = &JFactory::getApplication();
+                $document  = &JFactory::getDocument();             
+                $pathway   =& $mainframe->getPathway();
+                $document->setTitle( $this->events['name'] );            
+                $pathway->addItem($this->events['name'], $link);
+            }
+        }
+    }
      // Reads inline parametar if any or sets default values
     function readInlineParams(){
         ////setting parametars for current gallery, if there is no inline params default params are set
@@ -603,6 +631,7 @@ class agGallery extends agHelper {
         $this->staticParams['paginUse']= $globalParams->get('paginUse', true);
         $this->staticParams['paginImagesPerGallery']= $globalParams->get('paginImagesPerGallery', 10);
     }
+    
 
     //**************************************************************************
     // END Gallery Functions                                                  //

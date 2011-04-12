@@ -459,7 +459,7 @@ class AdmirorgalleryModelImagemanager extends JModel
 	    $ag_imgXML_content = preg_replace("#<captions[^}]*>(.*?)</captions>#s", $ag_captions_new,$ag_imgXML_content);
         }else{
 	    $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
-	    $ag_imgXML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<priority>1</priority>'."\n".$ag_captions_new."\n".'</image>';
+	    $ag_imgXML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<priority></priority>'."\n".$ag_captions_new."\n".'</image>';
         }
 
         // echo htmlentities($ag_imgXML_content, ENT_QUOTES);
