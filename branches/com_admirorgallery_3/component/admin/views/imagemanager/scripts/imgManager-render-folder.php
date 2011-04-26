@@ -6,24 +6,27 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $ag_itemURL = $ag_init_itemURL;
 
+$ag_XML_thumb = "";
+
 $ag_folderName = dirname($ag_itemURL);
 $ag_fileName = basename($ag_itemURL);
 
 require_once (JPATH_SITE.DS.'plugins'.DS.'content'.DS.'AdmirorGallery'.DS.'classes'.DS.'agHelper.php');
 
-//ag_sureRemoveDir($dir, $DeleteMe);
-class AG_component extends agHelper {
-    function ag_sureRemoveDir($thumbsFolderPhysicalPath){
-        agHelper::ag_sureRemoveDir($thumbsFolderPhysicalPath, 1);
-    }
-    function ag_createThumb($original_file, $thumb_file, $new_w, $new_h, $autoSize){
-        agHelper::ag_createThumb($original_file, $thumb_file, $new_w, $new_h, $autoSize);
-    }
-}
 $thumbsFolderPhysicalPath = JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'assets'.DS.'thumbs';
-AG_component::ag_sureRemoveDir($thumbsFolderPhysicalPath);
+
+agHelper::ag_sureRemoveDir($thumbsFolderPhysicalPath,true);
 if(!JFolder::create($thumbsFolderPhysicalPath,0755)){
     JFactory::getApplication()->enqueueMessage( JText::_( "CANNOT CREATE FOLDER:" )."&nbsp;".$newFolderName, 'error' );
+}
+
+function ag_render_caption($ag_lang_name, $ag_lang_tag, $ag_lang_content){
+    return '
+	<div class="AG_border_color AG_border_width AG_margin_bottom">
+	    '.$ag_lang_name.' / '.$ag_lang_tag.'
+	    <textarea class="AG_textarea" name="AG_desc_content[]">'.$ag_lang_content.'</textarea><input type="hidden" name="AG_desc_tags[]" value="'.$ag_lang_tag.'" />
+	</div>
+    ';
 }
 
 
@@ -46,16 +49,19 @@ $ag_preview_content.='
      <tr>
           <td>
                 <img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" />
-          </td>	      <td>
+          </td>
+	      <td>
 	            '.JText::_( 'OPERATION WITH SELECTED ITEMS:' ).'
 	      </td>
 	      <td>
             <select id="AG_operations" name="AG_operations">
-                <option value="none" >'.JText::_( 'AG_NONE' ).'</option>
-                <option value="delete" >Delete</option>
-                <option value="copy">Copy to</option>
-                <option value="move">Move to</option>
-                <option value="bookmark">Bookmark</option>
+                <option value="none" >'.JText::_( 'NONE' ).'</option>
+                <option value="delete" >'.JText::_( 'DELETE' ).'</option>
+                <option value="copy">'.JText::_( 'COPY TO' ).'</option>
+                <option value="move">'.JText::_( 'MOVE TO' ).'</option>
+                <option value="bookmark">'.JText::_( 'BOOKMARK' ).'</option>
+                <option value="show">'.JText::_( 'SHOW' ).'</option>
+                <option value="hide">'.JText::_( 'HIDE' ).'</option>
             </select>
 	      </td>
       	  <td id="AG_targetFolder">
@@ -88,32 +94,178 @@ $ag_preview_content.='
      </tbody>
 </table>
 <hr />
-';
+
+<input type="hidden" name="AG_folderSettings_status" id="AG_folderSettings_status" />
+<a href="" id="AG_btn_showFolderSettings" class="AG_common_button">
+    <span><span>
+    '.JText::_( 'EDIT FOLDER CAPTIONS' ).'
+    </span></span>
+</a>
+<div id="AG_folderSettings_wrapper" style="display:none;">
+
+<br />
+'."\n";
+
+// Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+$ag_pathWithStripExt=JPATH_SITE.$ag_folderName.'/'.JFile::stripExt($ag_fileName);
+$ag_XML_path=$ag_pathWithStripExt.".XML";
+if(JFIle::exists($ag_pathWithStripExt.".xml")){
+    $ag_XML_path=$ag_pathWithStripExt.".xml";
+}
+
+// Load if XML exists
+if(file_exists($ag_XML_path)){
+    $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
+    $ag_XML_xml->loadFile($ag_XML_path);
+    if($ag_XML_xml->document->thumb[0]){
+        $ag_XML_thumb =& $ag_XML_xml->document->thumb[0]->data();
+    }
+    if($ag_XML_xml->document->captions[0]){
+        $ag_XML_captions =& $ag_XML_xml->document->captions[0];
+    }
+}
+
+
+$ag_matchCheck = Array("default");
+
+// GET DEFAULT LABEL
+$ag_XML_caption_content="";
+if(!empty($ag_XML_captions->caption)){
+  foreach($ag_XML_captions->caption as $ag_imgXML_caption){
+      if(strtolower($ag_imgXML_caption->attributes('lang')) == "default"){
+	  $ag_XML_caption_content = $ag_imgXML_caption->data();
+      }
+  }
+}
+$ag_preview_content.= ag_render_caption("Default", "default", $ag_XML_caption_content);
+
+
+// GET LABELS ON SITE LANGUAGES
+$ag_lang_available = JLanguage::getKnownLanguages(JPATH_SITE);
+if(!empty($ag_lang_available)){
+    foreach($ag_lang_available as $ag_lang){
+	$ag_XML_caption_content="";
+	if(!empty($ag_XML_captions->caption)){
+	  foreach($ag_XML_captions->caption as $ag_imgXML_caption){
+	      if(strtolower($ag_imgXML_caption->attributes('lang')) == strtolower($ag_lang["tag"])){
+		  $ag_XML_caption_content = $ag_imgXML_caption->data();
+		  $ag_matchCheck[]=strtolower($ag_lang["tag"]);
+	      }
+	  }
+	}
+	$ag_preview_content.= ag_render_caption($ag_lang["name"], $ag_lang["tag"], $ag_XML_caption_content);
+    }
+}
+
+if(!empty($ag_XML_captions->caption)){
+    foreach($ag_XML_captions->caption as $ag_imgXML_caption){
+	$ag_imgXML_caption_attr = $ag_imgXML_caption->attributes('lang');
+	if(!is_numeric(array_search(strtolower($ag_imgXML_caption_attr),$ag_matchCheck))){
+	      $ag_preview_content.= ag_render_caption($ag_imgXML_caption_attr, $ag_imgXML_caption_attr, $ag_imgXML_caption->data());
+	}
+    }
+}
+
 
 $ag_preview_content.='
+</div>
+
+<hr />
+
 ';
 
+
 // RENDER FOLDERS
-$ag_folders=JFolder::folders(JPATH_SITE.$ag_itemURL);
+
+
+// CREATED SORTED ARRAY OF FOLDERS
+$ag_files=JFolder::folders(JPATH_SITE.$ag_itemURL);
+
+if(!empty($ag_files)){
+
+     $ag_folders_priority=Array();
+     $ag_folders_noPriority=Array();
+     $ag_folders=Array();
+
+     foreach($ag_files as $key => $value){
+       $ag_folderName = $ag_itemURL;
+       $ag_fileName = basename($value);
+       // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+       $ag_pathWithStripExt=JPATH_SITE.$ag_folderName.JFile::stripExt($ag_fileName);
+       $ag_XML_path=$ag_pathWithStripExt.".XML";
+       if(JFIle::exists($ag_pathWithStripExt.".xml")){
+	    $ag_XML_path=$ag_pathWithStripExt.".xml";
+       }
+       if(file_exists($ag_XML_path)){
+	    $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
+	    $ag_XML_xml->loadFile($ag_XML_path);
+	    $ag_XML_priority =& $ag_XML_xml->document->priority[0]->data();
+       }
+
+       if(!empty($ag_XML_priority) && file_exists($ag_XML_path)){
+	    $ag_folders_priority[$value] = $ag_XML_priority;// PRIORITIES IMAGES
+       }else{
+	    $ag_folders_noPriority[] = $value;// NON PRIORITIES IMAGES
+       }
+     }
+}
+
+if(!empty($ag_folders_priority)){
+asort($ag_folders_priority);
+     foreach($ag_folders_priority as $key => $value){
+	  $ag_folders[]=$key;
+     }
+}
+
+if(!empty($ag_folders_noPriority)){
+natcasesort($ag_folders_noPriority);
+     foreach($ag_folders_noPriority as $key => $value){
+	  $ag_folders[]=$value;
+     }
+}
+
 if(!empty($ag_folders)){
     foreach($ag_folders as $key => $value){
+    
+     $ag_hasXML="";
+     $ag_hasThumb="";	
+
+     // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+     $ag_pathWithStripExt=JPATH_SITE.$ag_itemURL.JFile::stripExt(basename($value));
+     $ag_XML_path=$ag_pathWithStripExt.".xml";
+     if(JFIle::exists($ag_pathWithStripExt.".XML")){
+	  $ag_XML_path=$ag_pathWithStripExt.".XML";
+     }
+
+     $ag_XML_priority="";
+     $ag_XML_visibility = "VISIBLE";
+     if(file_exists($ag_XML_path)){
+	  $ag_hasXML='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png"  class="ag_hasXML" />';
+	  $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
+	  $ag_XML_xml->loadFile($ag_XML_path);
+	  $ag_XML_priority =& $ag_XML_xml->document->priority[0]->data();
+        if($ag_XML_xml->document->visibility[0]){
+            $ag_XML_visibility =& $ag_XML_xml->document->visibility[0]->data();
+        }
+     }    
+    
+    
+    
+    
+    
 	$ag_preview_content.='
     <div class="AG_border_color AG_border_width AG_item_wrapper">
-	<a href="'.$ag_itemURL.$value.'/" class="AG_folderLink AG_item_link" title="'.$value.'">
-	    <div style="display:block; text-align:center;" class="AG_item_img_wrapper">
-		<img src="'.JURI::root().'administrator/components/com_media/images/folder.png" />
+	    <a href="'.$ag_itemURL.$value.'/" class="AG_folderLink AG_item_link" title="'.$value.'">
+	        <div style="display:block; text-align:center;" class="AG_item_img_wrapper">
+		    <img src="'.JURI::root().'administrator/components/com_media/images/folder.png" />
+	        </div>
+	    </a>
+	    <div class="AG_border_color AG_border_width AG_item_controls_wrapper">
+	        <input type="text" value="'.$value.'" name="AG_rename['.$ag_itemURL.$value.']" class="AG_input" style="width:95%" /><hr />
+	        '.JText::_( $ag_XML_visibility ).'<hr />
+	        <img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" /><input type="checkbox" value="'.$ag_itemURL.$value.'/" name="AG_cbox_selectItem[]" class="AG_cbox_selectItem"><hr />
+	        '.JText::_( 'PRIORITY' ).':&nbsp;<input type="text" size="3" value="'.$ag_XML_priority.'" name="AG_cbox_priority['.$ag_itemURL.$value.']" class="AG_input" />
 	    </div>
-	</a>
-	<div class="AG_border_color AG_border_width AG_item_controls_wrapper">
-	    <table border="0" cellspacing="0" cellpadding="0"><tbody><tr>
-	    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" /></td>
-	    <td><input type="checkbox" value="'.$ag_itemURL.$value.'/" name="AG_cbox_selectItem[]" class="AG_cbox_selectItem"></td>
-	    <td><div class="AG_border_color AG_border_width AG_separator">&nbsp;</div></td>
-	    </tr></tbody></table>
-	    <div class="AG_border_color AG_border_width AG_controls_item_name">
-	    <input type="text" value="'.$value.'" name="AG_rename['.$ag_itemURL.$value.']" class="AG_input" style="width:95%" />
-	    </div>
-	</div>
     </div>
     ';
     }
@@ -139,18 +291,18 @@ if(!empty($ag_files)){
 
 	       // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
 	       $ag_pathWithStripExt=JPATH_SITE.$ag_folderName.JFile::stripExt($ag_fileName);
-	       $ag_imgXML_path=$ag_pathWithStripExt.".XML";
+	       $ag_XML_path=$ag_pathWithStripExt.".XML";
 	       if(JFIle::exists($ag_pathWithStripExt.".xml")){
-		    $ag_imgXML_path=$ag_pathWithStripExt.".xml";
+		    $ag_XML_path=$ag_pathWithStripExt.".xml";
 	       }
-	       if(file_exists($ag_imgXML_path)){
-		    $ag_imgXML_xml = & JFactory::getXMLParser( 'simple' );
-		    $ag_imgXML_xml->loadFile($ag_imgXML_path);
-		    $ag_imgXML_priority =& $ag_imgXML_xml->document->priority[0]->data();
+	       if(file_exists($ag_XML_path)){
+		    $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
+		    $ag_XML_xml->loadFile($ag_XML_path);
+		    $ag_XML_priority =& $ag_XML_xml->document->priority[0]->data();
 	       }
 
-	       if(!empty($ag_imgXML_priority) && file_exists($ag_imgXML_path)){
-		    $ag_images_priority[$value] = $ag_imgXML_priority;// PRIORITIES IMAGES
+	       if(!empty($ag_XML_priority) && file_exists($ag_XML_path)){
+		    $ag_images_priority[$value] = $ag_XML_priority;// PRIORITIES IMAGES
 	       }else{
 		    $ag_images_noPriority[] = $value;// NON PRIORITIES IMAGES
 	       }
@@ -182,17 +334,21 @@ foreach($ag_images as $key => $value){
 
      // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
      $ag_pathWithStripExt=JPATH_SITE.$ag_itemURL.JFile::stripExt(basename($value));
-     $ag_imgXML_path=$ag_pathWithStripExt.".xml";
+     $ag_XML_path=$ag_pathWithStripExt.".xml";
      if(JFIle::exists($ag_pathWithStripExt.".XML")){
-	  $ag_imgXML_path=$ag_pathWithStripExt.".XML";
+	  $ag_XML_path=$ag_pathWithStripExt.".XML";
      }
 
-     $ag_imgXML_priority="";
-     if(file_exists($ag_imgXML_path)){
+     $ag_XML_priority="";
+     $ag_XML_visibility = "VISIBLE";
+     if(file_exists($ag_XML_path)){
 	  $ag_hasXML='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png"  class="ag_hasXML" />';
-	  $ag_imgXML_xml = & JFactory::getXMLParser( 'simple' );
-	  $ag_imgXML_xml->loadFile($ag_imgXML_path);
-	  $ag_imgXML_priority =& $ag_imgXML_xml->document->priority[0]->data();
+	  $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
+	  $ag_XML_xml->loadFile($ag_XML_path);
+	  $ag_XML_priority =& $ag_XML_xml->document->priority[0]->data();
+        if($ag_XML_xml->document->visibility[0]){
+            $ag_XML_visibility =& $ag_XML_xml->document->visibility[0]->data();
+        }
      }
 
      if(file_exists(JPATH_SITE."/plugins/content/AdmirorGallery/thumbs/".basename($ag_folderName)."/".basename($value))){
@@ -201,7 +357,12 @@ foreach($ag_images as $key => $value){
 
 
 
-AG_component::ag_createThumb(JPATH_SITE.$ag_itemURL.$value, $thumbsFolderPhysicalPath.DS.$value, 145, 80, "none");
+agHelper::ag_createThumb(JPATH_SITE.$ag_itemURL.$value, $thumbsFolderPhysicalPath.DS.$value, 145, 80, "none");
+
+$AG_thumb_checked="";
+if($ag_XML_thumb==$value){
+    $AG_thumb_checked=" CHECKED";
+}
 
      $ag_preview_content.='
      <div class="AG_border_color AG_border_width AG_item_wrapper">
@@ -210,27 +371,12 @@ AG_component::ag_createThumb(JPATH_SITE.$ag_itemURL.$value, $thumbsFolderPhysica
 	      <img src="'.JURI::root().'administrator/components/com_admirorgallery/assets/thumbs/'.$value.'" class="ag_imgThumb" />
 	      </div>
 	</a>
-	<div class="AG_border_color AG_border_width AG_item_controls_wrapper">
-	    <table border="0" cellspacing="0" cellpadding="0"><tbody><tr>
-	    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" /></td>
-	    <td><input type="checkbox" value="'.$ag_itemURL.$value.'" name="AG_cbox_selectItem[]" class="AG_cbox_selectItem"></td>
-	    <td><div class="AG_border_color AG_border_width AG_separator">&nbsp;</div></td>
-	    <td>'.JText::_( 'Priority' ).':&nbsp;</td>
-	    <td><input type="text" size="3" value="'.$ag_imgXML_priority.'" name="AG_cbox_priority['.$ag_itemURL.$value.']" class="AG_input" /></td>
-';
-
-if(!empty($ag_hasXML) || !empty($ag_hasThumb)){
-$ag_preview_content.='
-	    <td><div class="AG_border_color AG_border_width AG_separator">&nbsp;</div></td>
-	    <td>'.$ag_hasXML.$ag_hasThumb.'</td>
-';
-}
-
-$ag_preview_content.='
-	    </tr></tbody></table>
-	    <div class="AG_border_color AG_border_width AG_controls_item_name">
-	    <input type="text" value="'.JFile::stripExt(basename($value)).'" name="AG_rename['.$ag_itemURL.$value.']" class="AG_input" style="width:95%" />
-	    </div>
+	<div class="AG_border_color AG_border_width AG_item_controls_wrapper">	
+	    <input type="text" value="'.JFile::stripExt(basename($value)).'" name="AG_rename['.$ag_itemURL.$value.']" class="AG_input" style="width:95%" /><hr /> 
+	    '.JText::_( $ag_XML_visibility ).'<hr />
+        <img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" /><input type="checkbox" value="'.$ag_itemURL.$value.'" name="AG_cbox_selectItem[]" class="AG_cbox_selectItem"><hr />
+	    '.JText::_( 'PRIORITY' ).':&nbsp;<input type="text" size="3" value="'.$ag_XML_priority.'" name="AG_cbox_priority['.$ag_itemURL.$value.']" class="AG_input" /><hr />
+        <input type="radio" value="'.$value.'" name="AG_folder_thumb" class="AG_folder_thumb" class="AG_input"'.$AG_thumb_checked.' />&nbsp;'.JText::_( 'FOLDER THUMB' ).' 
 	</div>
      </div>
      ';
@@ -258,26 +404,6 @@ $AG_folderDroplist.="</select>";
 
 
 $ag_preview_content.='
-
-<div style="clear:both" class="AG_margin_bottom"></div>
-<hr />
-<div  class="AG_legend">
-<h2>'.JText::_( 'LEGEND' ).'</h2>
-<table><tbody>
-<tr>
-    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" /></td>
-    <td>'.JText::_( 'SELECT FILE OR FOLDER.' ).'</td>
-</tr>
-<tr>
-    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasThumb.png" style="float:left;" /></td>
-    <td>'.JText::_( 'Image has thumbnail created.' ).'</td>
-</tr>
-<tr>
-    <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png" style="float:left;" /></td>
-    <td>'.JText::_( 'Image has additional details saved.' ).'</td>
-</tr>
-</tbody></table>
-<div>
 
 <script type="text/javascript">
 AG_jQuery("#AG_operations").change(function() {
