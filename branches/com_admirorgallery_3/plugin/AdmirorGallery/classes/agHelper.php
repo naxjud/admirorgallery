@@ -16,6 +16,8 @@ class agHelper {
      * @return <type>
      */
     private function array_natsort_list($array) {
+
+echo "init za sort: <br />"; print_r($array); echo "<hr />";
       // for all arguments without the first starting at end of list
     for ($i=func_num_args();$i>1;$i--) {
         // get column to sort by
@@ -31,7 +33,7 @@ class agHelper {
         // sort array on values
         natsort($temporary_array);
         // delete double values
-        $temporary_array = array_unique($temporary_array);
+        //$temporary_array = array_unique($temporary_array);
         // walk through temporary array
         foreach($temporary_array as $temporary_value) {
             // walk through original array
@@ -189,11 +191,11 @@ class agHelper {
 
         // Generate array of thumbs
         $targetFolder = $thumbsFolder;
-        $thumbs = agHelper::ag_imageArrayFromFolder($targetFolder, 0);
+        //$thumbs = agHelper::ag_imageArrayFromFolder($targetFolder, 0);
 
         // Generate array of images
         $targetFolder = $imagesFolder;
-        $images = agHelper::ag_imageArrayFromFolder($targetFolder, 0);
+        //$images = agHelper::ag_imageArrayFromFolder($targetFolder, 0);
 
         if (empty($images) && !$albumsInUse) {
             agHelper::ag_sureRemoveDir($thumbsFolder, 1);
@@ -263,43 +265,43 @@ class agHelper {
             }
         }
         closedir($dh);
-
+echo "init: <br />"; print_r($images); echo "<hr />";
         if (!empty($images)) {
             $ag_images_data = Array();
             // READS XML DATA AND GENERATES ARRAYS
             foreach ($images as $key => $value) {
                 // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
                 $ag_pathWithStripExt = $targetFolder . agHelper::ag_removExtension(basename($value));
+                               
                 $ag_XML_path = $ag_pathWithStripExt . ".xml";
                 if (agHelper::ag_exists($ag_pathWithStripExt . ".XML")) {
                     $ag_XML_path = $ag_pathWithStripExt . ".XML";
                 }
+                
+                $ag_xml_value = Array();
+                $ag_xml_value["value"] = $value; // IMAGE NAME
                 if (agHelper::ag_exists($ag_XML_path)) {
                     $ag_XML_xml = simplexml_load_file($ag_XML_path);
-                    if(isset($ag_XML_xml))
-                    {
-                        $ag_xml_value = Array();
-                        $ag_img_visible = (int)$ag_XML_xml->visible;
-                        if (isset($ag_XML_xml->visibility) && $ag_img_visible != 'VISIBLE') {
-                            continue;
+                    if(isset($ag_XML_xml)){
+                        if (isset($ag_XML_xml->visible)){
+                            if ((string)$ag_XML_xml->visible == 'false'){
+                                continue; // SKIP HIDDEN IMAGES
+                            }
                         }
-                        $ag_xml_value["value"] = $value;
-                        $ag_imgXML_priority = (string)$ag_XML_xml->priority;
-                        $ag_imgXML_date =  (string)$ag_XML_xml->date;
-                        if ($ag_imgXML_priority) {
-                            $ag_xml_value["priority"] = $ag_imgXML_priority; // PRIORITIES IMAGES
-                        } else {
-                            $ag_xml_value["priority"] = -1; // NON PRIORITIES IMAGES
+                        if (isset($ag_XML_xml->priority)) {
+                            $ag_xml_value["priority"] = (string)$ag_XML_xml->priority; // XML PRIORITY
                         }
-                        if ($ag_imgXML_date) {
-                            $ag_xml_value["date"] = $ag_imgXML_date;
-                        } else {
-                            $ag_xml_value["date"] = date("YmdHs", filemtime($targetFolder . $value));
+                        if (isset($ag_XML_xml->date)) {
+                            $ag_xml_value["date"] = (string)$ag_XML_xml->date; // XML DATE
                         }
-                        //print_r($ag_xml_value);
-                        $ag_images_data[] = $ag_xml_value;
+                    }else{
+                        $ag_xml_value["priority"] = -1; // DEFAULT PRIORITY                
+                        $ag_xml_value["date"] = date("YmdHs", filemtime($targetFolder . $value)); // DEFAULT DATE          
                     }
                 }
+                
+                $ag_images_data[] = $ag_xml_value;
+                
             }
             $sortParam= 'priority';
             switch ($arrange) {
@@ -317,6 +319,7 @@ class agHelper {
                 $images[] = $original_value['value'];
             }
         }
+echo "FINAL: <br />"; print_r($images); echo "<hr />";
         return $images;
     }
     /**
