@@ -11,6 +11,21 @@ class AdmirorgalleryModelImagemanager extends JModel
 
     public $webSafe=Array("/"," ",":",".","+","&");
 
+    
+    // ========================= THIS SAVES XML
+    //
+    function _saveXML($ag_itemURL, $ag_XML_path, $ag_XML_content){
+        if(!empty($ag_XML_content)){
+	    $handle = fopen($ag_XML_path,"w") or die("");
+	    if(fwrite($handle,$ag_XML_content)){
+	        JFactory::getApplication()->enqueueMessage( JText::_( "DESCRIPTION FILE CREATED:" )."&nbsp;".basename($ag_itemURL), 'message' );
+	    }else{
+	        JFactory::getApplication()->enqueueMessage( JText::_( "CANNOT WRITE DESCRIPTION FILE:" )."&nbsp;".basename($ag_itemURL), 'error' );
+	    }
+	    fclose($handle);
+        }    
+    }
+
     function _bookmarkRename($AG_originalPath,$AG_newPath) {
             $AG_bookmark_ID = $AG_originalPath.'/';
             $ag_bookmarkFile=JPATH_SITE.'/administrator/components/com_admirorgallery/assets/bookmarks.xml';
@@ -164,7 +179,7 @@ class AdmirorgalleryModelImagemanager extends JModel
     }
 
     function _cbox_priority($ag_preview_checked_array) {
-
+    
         foreach($ag_preview_checked_array as $key => $value){
 
             $ag_itemURL = $key;
@@ -175,43 +190,38 @@ class AdmirorgalleryModelImagemanager extends JModel
 
 	// Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
 	$ag_pathWithStripExt=JPATH_SITE.$ag_folderName.'/'.JFile::stripExt(basename($ag_itemURL));
-	$ag_imgXML_path=$ag_pathWithStripExt.".xml";
+	$ag_XML_path=$ag_pathWithStripExt.".xml";
 	if(JFIle::exists($ag_pathWithStripExt.".XML")){
-	            $ag_imgXML_path=$ag_pathWithStripExt.".XML";
+	            $ag_XML_path=$ag_pathWithStripExt.".XML";
 	}
 
 	$ag_priority_new = '<priority>'.$ag_priority.'</priority>';
 
-	$ag_imgXML_priority="";
-	if(file_exists($ag_imgXML_path)){
-	          $ag_imgXML_xml = & JFactory::getXMLParser( 'simple' );
-	          $ag_imgXML_xml->loadFile($ag_imgXML_path);
-	          $ag_imgXML_priority =& $ag_imgXML_xml->document->priority[0]->data();
+	$ag_XML_priority="";
+	if(file_exists($ag_XML_path)){
+	          $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
+	          $ag_XML_xml->loadFile($ag_XML_path);
+	          $ag_XML_priority =& $ag_XML_xml->document->priority[0]->data();
 	}
 
-            if($ag_imgXML_priority != $ag_priority){
-	if(file_exists($ag_imgXML_path)){
-	            $file=fopen($ag_imgXML_path,"r");
+            if($ag_XML_priority != $ag_priority){
+	if(file_exists($ag_XML_path)){
+	            $file=fopen($ag_XML_path,"r");
 	            while (!feof($file))
 	            {
-		          $ag_imgXML_content.=fgetc($file);
+		          $ag_XML_content.=fgetc($file);
 	            }
 	            fclose($file);
-	            $ag_imgXML_content = preg_replace("#<priority[^}]*>(.*?)</priority>#s", $ag_priority_new,$ag_imgXML_content);
+	            $ag_XML_content = preg_replace("#<priority[^}]*>(.*?)</priority>#s", $ag_priority_new,$ag_XML_content);
 	}else{
 	            $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
-	            $ag_imgXML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".$ag_priority_new."\n".'<captions>'."\n".'</captions>'."\n".'</image>';
+	            $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visibility>VISIBLE</visibility>'."\n".$ag_priority_new."\n".'<thumb></thumb>'."\n".'<captions>'."\n".'</captions>'."\n".'</image>';
 	}
 
-	if(!empty($ag_imgXML_content)){
-	            $handle = fopen($ag_imgXML_path,"w") or die("");
-	            if(fwrite($handle,$ag_imgXML_content)){
-		JFactory::getApplication()->enqueueMessage( JText::_( "DESCRIPTION FILE CREATED:" )."&nbsp;".basename($ag_itemURL), 'message' );
-	            }else{
-		JFactory::getApplication()->enqueueMessage( JText::_( "CANNOT WRITE DESCRIPTION FILE:" )."&nbsp;".basename($ag_itemURL), 'error' );
-	            }
-	            fclose($handle);
-	}
+    // Save XML
+    $this->_saveXML($ag_itemURL, $ag_XML_path, $ag_XML_content);
+	
+	
               }
 
             }else{
@@ -222,6 +232,55 @@ class AdmirorgalleryModelImagemanager extends JModel
         }
 
     }
+    
+    
+    
+    // =================================== _SET_VISIBILITY
+    // 
+   function _set_visibility($AG_cbox_selectItem, $ag_folderName, $AG_visible) {
+        foreach($AG_cbox_selectItem as $key => $value){
+
+            $ag_itemURL = $value;
+	       
+            // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+            $ag_pathWithStripExt=JPATH_SITE.$ag_folderName.JFile::stripExt(basename($ag_itemURL));
+            $ag_XML_path=$ag_pathWithStripExt.".xml";
+            if(JFIle::exists($ag_pathWithStripExt.".XML")){
+                $ag_XML_path=$ag_pathWithStripExt.".XML";
+            }
+
+            // Set new Visibility tag
+            if($AG_visible=="show"){            
+                $ag_visibility_new = "<visibility>VISIBLE</visibility>";
+            }else{
+                $ag_visibility_new = "<visibility>HIDDEN</visibility>";            
+            }
+
+            if(file_exists($ag_XML_path)){
+                $file=fopen($ag_XML_path,"r");
+                while (!feof($file)){
+                      $ag_XML_content.=fgetc($file);
+                }
+                fclose($file);
+                if (preg_match("#<visibility[^}]*>(.*?)</visibility>#s", $ag_XML_content)){
+                    $ag_XML_content = preg_replace("#<visibility[^}]*>(.*?)</visibility>#s", $ag_visibility_new,$ag_XML_content);
+                } else {
+                    $ag_XML_content = preg_replace("#</image>#s", $ag_visibility_new."\n"."</image>",$ag_XML_content);
+                }  
+            }else{
+                $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
+                $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".$ag_visibility_new."\n".'<priority></priority>'."\n".'<thumb></thumb>'."\n".'<captions></captions>'."\n".'</image>';
+            }
+
+            // Save XML
+            $this->_saveXML($ag_itemURL, $ag_XML_path, $ag_XML_content);	  
+	       
+        }
+
+    }
+    
+    
+    
 
     function _fileUpload($AG_itemURL,$file) {
         $config =& JFactory::getConfig();
@@ -298,13 +357,13 @@ class AdmirorgalleryModelImagemanager extends JModel
 	                // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
 	                $AG_folderName = dirname($value);
 	                $AG_pathWithStripExt=JPATH_SITE.$AG_folderName.'/'.JFile::stripExt(basename($value));
-	                $AG_imgXML_path=$AG_pathWithStripExt.".XML";
+	                $ag_XML_path=$AG_pathWithStripExt.".XML";
 	                if(JFIle::exists($AG_pathWithStripExt.".xml")){
-	                    $AG_imgXML_path=$AG_pathWithStripExt.".xml";
+	                    $ag_XML_path=$AG_pathWithStripExt.".xml";
 
 	                }
-	                if(JFIle::exists($AG_imgXML_path)){
-	                    JFile::copy ($AG_imgXML_path, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($AG_imgXML_path));
+	                if(JFIle::exists($ag_XML_path)){
+	                    JFile::copy ($ag_XML_path, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($ag_XML_path));
                     }
 	                JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM COPIED:' )."&nbsp;".$value, 'message' );
                 }else{
@@ -330,12 +389,12 @@ class AdmirorgalleryModelImagemanager extends JModel
 	                // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
 	                $AG_folderName = dirname($value);
 	                $AG_pathWithStripExt=JPATH_SITE.$AG_folderName.'/'.JFile::stripExt(basename($value));
-	                $AG_imgXML_path=$AG_pathWithStripExt.".XML";
+	                $ag_XML_path=$AG_pathWithStripExt.".XML";
 	                if(JFIle::exists($AG_pathWithStripExt.".xml")){
-	                    $AG_imgXML_path=$AG_pathWithStripExt.".xml";
+	                    $ag_XML_path=$AG_pathWithStripExt.".xml";
 	                }	                
-	                if(JFIle::exists($AG_imgXML_path)){
-		                JFile::move ($AG_imgXML_path, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($AG_imgXML_path));
+	                if(JFIle::exists($ag_XML_path)){
+		                JFile::move ($ag_XML_path, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($ag_XML_path));
 	                }
 	                JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM MOVED:' )."&nbsp;".$value, 'message' );
                 }else{
@@ -362,13 +421,13 @@ class AdmirorgalleryModelImagemanager extends JModel
 	      if(JFile::delete(JPATH_SITE.DS.$value)){
 	            // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
 	            $AG_pathWithStripExt=JPATH_SITE.$AG_folderName.'/'.JFile::stripExt(basename($value));
-	            $AG_imgXML_path=$AG_pathWithStripExt.".XML";
+	            $ag_XML_path=$AG_pathWithStripExt.".XML";
 	            if(JFIle::exists($AG_pathWithStripExt.".xml")){
-		        $AG_imgXML_path=$AG_pathWithStripExt.".xml";
+		        $ag_XML_path=$AG_pathWithStripExt.".xml";
 	            }
 
-	            if (file_exists($AG_imgXML_path)){
-		            JFile::delete($AG_imgXML_path);
+	            if (file_exists($ag_XML_path)){
+		            JFile::delete($ag_XML_path);
 	            }
 	            JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM DELETED:' )."&nbsp;".$value, 'message' );
 	      }else{
@@ -394,17 +453,17 @@ class AdmirorgalleryModelImagemanager extends JModel
         if(!is_dir(JPATH_SITE.$AG_originalPath)){
 	// Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
 	$ag_pathWithStripExt=JPATH_SITE.$AG_folderName.DS.JFile::stripExt($AG_originalName);
-	$ag_imgXML_path=$ag_pathWithStripExt.".XML";
+	$ag_XML_path=$ag_pathWithStripExt.".XML";
 	if(JFIle::exists($ag_pathWithStripExt.".xml")){
-	    $ag_imgXML_path=$ag_pathWithStripExt.".xml";
+	    $ag_XML_path=$ag_pathWithStripExt.".xml";
 	}
 	$ag_file_ext = JFile::getExt($AG_originalName);
 
 	$ag_file_new_name = $AG_folderName.DS.$AG_newName.'.'.$ag_file_ext;
 	if (!file_exists(JPATH_SITE.$ag_file_new_name)){
 	    if(rename(JPATH_SITE.$AG_originalPath,JPATH_SITE.$ag_file_new_name)){
-	        if(file_exists($ag_imgXML_path)){
-	            rename($ag_imgXML_path,JPATH_SITE.$AG_folderName.DS.$AG_newName.'.xml');
+	        if(file_exists($ag_XML_path)){
+	            rename($ag_XML_path,JPATH_SITE.$AG_folderName.DS.$AG_newName.'.xml');
 	        }
 	        JFactory::getApplication()->enqueueMessage( JText::_( "IMAGE RENAMED:" )."&nbsp;".$AG_originalName, 'message' );
 	    }else{
@@ -426,15 +485,70 @@ class AdmirorgalleryModelImagemanager extends JModel
 	  }
         }
     }
+    
+    // =================================== _FOLDER_DESC_CONTENT
+    // It creates caption tags with its content. After that it checks if XML already exists. If is it replace captions, if not it creates a new XML
+    function _folder_desc_content($ag_itemURL,$AG_desc_content, $AG_desc_tags,$AG_folder_thumb) {
+        $ag_folderName = dirname($ag_itemURL);
+
+        // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+        $ag_pathWithStripExt=JPATH_SITE.$ag_folderName.DS.JFile::stripExt(basename($ag_itemURL));
+        $ag_XML_path=$ag_pathWithStripExt.".xml";
+        if(JFIle::exists($ag_pathWithStripExt.".XML")){
+	        $ag_XML_path=$ag_pathWithStripExt.".XML";
+        }
+
+        // Set new Captions tag
+        $ag_captions_new = "";
+        $ag_captions_new.="<captions>"."\n";
+        if(!empty($AG_desc_content)){
+	    foreach($AG_desc_content as $key => $value) {
+	          if(!empty($value)){
+		      $ag_captions_new .= "\t".'<caption lang="'.strtolower($AG_desc_tags[$key]).'">'.htmlspecialchars($value, ENT_QUOTES, "UTF-8").'</caption>'."\n";
+	          }	  
+	    }
+        }
+        $ag_captions_new.="</captions>";
+        
+        // Set new Thumb tag
+        $ag_thumb_new = "<thumb>".$AG_folder_thumb."</thumb>";
+
+        if(file_exists($ag_XML_path)){
+	        $file=fopen($ag_XML_path,"r");
+	        while (!feof($file))
+	        {
+	              $ag_XML_content.=fgetc($file);
+	        }
+	        fclose($file);
+            if (preg_match("#<thumb[^}]*>(.*?)</thumb>#s", $ag_XML_content)) {
+                $ag_XML_content = preg_replace("#<thumb[^}]*>(.*?)</thumb>#s", $ag_thumb_new,$ag_XML_content);
+            } else {
+                $ag_XML_content = preg_replace("#</image>#s", $ag_thumb_new."\n"."</image>",$ag_XML_content);
+            }
+            if (preg_match("#<captions[^}]*>(.*?)</captions>#s", $ag_XML_content)) {
+                $ag_XML_content = preg_replace("#<captions[^}]*>(.*?)</captions>#s", $ag_captions_new,$ag_XML_content);
+            } else {
+                $ag_XML_content = preg_replace("#</image>#s", $ag_captions_new."\n"."</image>",$ag_XML_content);
+            }	    
+        }else{
+	        $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
+	        $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visibility>VISIBLE</visibility>'."\n".'<priority></priority>'."\n".'<thumb>'.$AG_folder_thumb.'</thumb>'."\n".$ag_captions_new."\n".'</image>';
+        }
+
+        // Save XML
+        $this->_saveXML($ag_itemURL, $ag_XML_path, $ag_XML_content);
+        
+    }
+    
 
     function _desc_content($ag_itemURL,$AG_desc_content, $AG_desc_tags) {
         $ag_folderName = dirname($ag_itemURL);
 
         // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
         $ag_pathWithStripExt=JPATH_SITE.$ag_folderName.DS.JFile::stripExt(basename($ag_itemURL));
-        $ag_imgXML_path=$ag_pathWithStripExt.".xml";
+        $ag_XML_path=$ag_pathWithStripExt.".xml";
         if(JFIle::exists($ag_pathWithStripExt.".XML")){
-	    $ag_imgXML_path=$ag_pathWithStripExt.".XML";
+	    $ag_XML_path=$ag_pathWithStripExt.".XML";
         }
 
         $ag_captions_new = "";
@@ -443,36 +557,28 @@ class AdmirorgalleryModelImagemanager extends JModel
         if(!empty($AG_desc_content)){
 	    foreach($AG_desc_content as $key => $value) {
 	          if(!empty($value)){
-		      $ag_captions_new .= "\t".'<caption lang="'.strtolower($AG_desc_tags[$key]).'">'.htmlentities($value).'</caption>'."\n";
+		      $ag_captions_new .= "\t".'<caption lang="'.strtolower($AG_desc_tags[$key]).'">'.htmlspecialchars($value, ENT_QUOTES, "UTF-8").'</caption>'."\n";
 	          }	  
 	    }
         }
         $ag_captions_new.="</captions>";
 
-        if(file_exists($ag_imgXML_path)){
-	    $file=fopen($ag_imgXML_path,"r");
+        if(file_exists($ag_XML_path)){
+	    $file=fopen($ag_XML_path,"r");
 	    while (!feof($file))
 	    {
-	          $ag_imgXML_content.=fgetc($file);
+	          $ag_XML_content.=fgetc($file);
 	    }
 	    fclose($file);
-	    $ag_imgXML_content = preg_replace("#<captions[^}]*>(.*?)</captions>#s", $ag_captions_new,$ag_imgXML_content);
+	    $ag_XML_content = preg_replace("#<captions[^}]*>(.*?)</captions>#s", $ag_captions_new,$ag_XML_content);
         }else{
 	    $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
-	    $ag_imgXML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<priority></priority>'."\n".$ag_captions_new."\n".'</image>';
+	    $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visibility>VISIBLE</visibility>'."\n".'<priority></priority>'."\n".$ag_captions_new."\n".'</image>';
         }
-
-        // echo htmlentities($ag_imgXML_content, ENT_QUOTES);
-
-        if(!empty($ag_imgXML_content)){
-	    $handle = fopen($ag_imgXML_path,"w") or die("");
-	    if(fwrite($handle,$ag_imgXML_content)){
-	        JFactory::getApplication()->enqueueMessage( JText::_( "DESCRIPTION FILE CREATED:" )."&nbsp;".basename($ag_itemURL), 'message' );
-	    }else{
-	        JFactory::getApplication()->enqueueMessage( JText::_( "CANNOT WRITE DESCRIPTION FILE:" )."&nbsp;".basename($ag_itemURL), 'error' );
-	    }
-	    fclose($handle);
-        }
+        
+        // Save XML
+        $this->_saveXML($ag_itemURL, $ag_XML_path, $ag_XML_content);
+        
     }
 
 }

@@ -107,7 +107,7 @@ class agGallery extends agHelper {
      */
     function writeImage($imageName,$cssClass=''){
         return '<img src="'.$this->imagesFolderPath.$imageName.'"
-                alt="'.htmlspecialchars(strip_tags($this->descArray[$imageName])).'"
+                alt="'.strip_tags($this->descArray[$image]).'"
                 class="'.$cssClass.'">';
     }
     /**
@@ -118,7 +118,7 @@ class agGallery extends agHelper {
      */
     function writeThumb($imageName,$cssClass=''){
         return '<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$imageName.'"
-                alt="'.htmlspecialchars(strip_tags($this->descArray[$imageName])).'"
+                alt="'.strip_tags($this->descArray[$image]).'"
                 class="'.$cssClass.'">';
     }
     /**
@@ -143,7 +143,7 @@ class agGallery extends agHelper {
 	    if($this->popupEngine->customPopupThumb){
 	        $html=$this->popupEngine->customPopupThumb;
 	        $html=str_replace("{imagePath}",$this->imagesFolderPath.$image,$html);
-	        $html=str_replace("{imageDescription}",htmlspecialchars($this->descArray[$image]),$html);
+	        $html=str_replace("{imageDescription}",htmlspecialchars($this->descArray[$image], ENT_QUOTES, "UTF-8"),$html);
 	        $html=str_replace("{className}",$this->popupEngine->className,$html);
 	        $html=str_replace("{rel}",$this->popupEngine->rel,$html);
 	        $html=str_replace("{customAttr}",$this->popupEngine->customTag,$html);
@@ -151,10 +151,10 @@ class agGallery extends agHelper {
 	        $html=str_replace("{thumbImagePath}",$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$image,$html);
 	    }else{
             $html.='
-            <a href="'.$this->imagesFolderPath.$image.'" title="'.htmlspecialchars($this->descArray[$image]).'" class="'.$this->popupEngine->className.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customAttr.' target="_blank">
+            <a href="'.$this->imagesFolderPath.$image.'" title="'.htmlspecialchars($this->descArray[$image], ENT_QUOTES, "UTF-8").'" class="'.$this->popupEngine->className.'" rel="'.$this->popupEngine->rel.'" '.$this->popupEngine->customAttr.' target="_blank">
             '.$this->writeNewImageTag($image).'
 	        <img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$image.'
-		    " alt="'.htmlspecialchars($this->descArray[$image]).'" class="ag_imageThumb">
+		    " alt="'.strip_tags($this->descArray[$image]).'" class="ag_imageThumb">
 		    </a>
 		    ';
 	    }
@@ -168,17 +168,43 @@ class agGallery extends agHelper {
             $html.= '<div class="AG_album_wrap">'."\n";
             foreach ($this->folders as $folderKey => $folderName){
                 $images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath.$folderName, $this->params['arrange']);
+                
+                $thumb_file = "";
+                
                 if(!empty($images)){
-                    $original_file = $this->imagesFolderPhysicalPath.$folderName.DS.$images[0];                    
-                    $this->Album_generateThumb($original_file);
-                    $html.='<a href="#" onClick="AG_form_submit_'.$this->articleID.'('.$this->index.',1,\''.$this->imagesFolderName.'/'.$folderName.'\'); return false;" class="AG_album_thumb">';
-                    $html.='<span class="AG_album_thumb_img">';
-                    $html.='<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$folderName.'/'.$images[0].'" />'."\n";
-                    $html.='</span>';
-                    $html.='<span class="AG_album_thumb_label">';
-                    $html.=$folderName;
-                    $html.='</span>';
-                    $html.='</a>';
+                    $thumb_file = $images[0];// Get First image in folder as thumb 
+                }
+            
+                // Get Thumb URL value                
+                // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+                $ag_pathWithStripExt=$this->imagesFolderPhysicalPath.$folderName;
+                $descriptionFileApsolutePath=$ag_pathWithStripExt.".XML";
+                if(file_exists($ag_pathWithStripExt.".xml")){
+                    $descriptionFileApsolutePath=$ag_pathWithStripExt.".xml";
+                }
+                if(file_exists($descriptionFileApsolutePath)){// Check is descriptions file exists
+                    $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
+                    $ag_XML_xml->loadFile($descriptionFileApsolutePath);
+                    if($ag_XML_xml->document->thumb[0]){
+                        $thumb_file = & $ag_XML_xml->document->thumb[0]->data();
+                    }
+                }  
+                $ag_XML_visibility = "VISIBLE";     
+                if($ag_XML_xml->document->visibility[0]){
+                    $ag_XML_visibility =& $ag_XML_xml->document->visibility[0]->data();
+                }
+                if($ag_XML_visibility == "VISIBLE"){// SUPPORT FOR HIDDEN FOLDERS
+                        if(!empty($thumb_file)){
+                        $this->Album_generateThumb($folderName, $thumb_file);
+                        }
+                        $html.='<a href="#" onClick="AG_form_submit_'.$this->articleID.'('.$this->index.',1,\''.$this->imagesFolderName.'/'.$folderName.'\'); return false;" class="AG_album_thumb">';
+                        $html.='<span class="AG_album_thumb_img">';
+                        $html.='<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$folderName.'/'.basename($thumb_file).'" />'."\n";
+                        $html.='</span>';
+                        $html.='<span class="AG_album_thumb_label">';
+                        $html.=$this->descArray[$folderName];
+                        $html.='</span>';
+                        $html.='</a>';
                 }
             }
             $html.= '<br style="clear:both;" /></div>'."\n";
@@ -336,67 +362,72 @@ class agGallery extends agHelper {
         // Create Images Array
         unset($this->descArray);
 
-        if (file_exists($this->imagesFolderPhysicalPath))
-        {
-            if ($dh = opendir($this->imagesFolderPhysicalPath)) {
-              while (($f = readdir($dh)) !== false) {
-                      if((substr(strtolower($f),-3) == 'jpg') || (substr(strtolower($f),-4) == 'jpeg') || (substr(strtolower($f),-3) == 'gif') || (substr(strtolower($f),-3) == 'png')) {
+        if (file_exists($this->imagesFolderPhysicalPath)){
+        
+            $ag_images=Array();        
+            $ag_files=JFolder::files($this->imagesFolderPhysicalPath);
+            $ag_ext_valid = array ("jpg","jpeg","gif","png");// SET VALID IMAGE EXTENSION
+            foreach($ag_files as $key => $value){
+                if(is_numeric(array_search(strtolower(JFile::getExt(basename($value))),$ag_ext_valid))){
+                    $ag_images[]=$value;
+                }
+            }
+            $ag_files=array_merge($ag_images, JFolder::folders($this->imagesFolderPhysicalPath));
+        
+            if (!empty($ag_files)){
+                foreach($ag_files as $key => $f){                   
 
-                              // Set image name as imageDescription value, as predifined value
-                              $this->descArray[$f] = $f;
+                    // Set image name as imageDescription value, as predifined value
+                    $this->descArray[$f] = $f;
 
-			// Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
-			$ag_pathWithStripExt=$this->imagesFolderPhysicalPath.agHelper::ag_removExtension($f);
-			$descriptionFileApsolutePath=$ag_pathWithStripExt.".XML";
-			if(file_exists($ag_pathWithStripExt.".xml")){
-			  $descriptionFileApsolutePath=$ag_pathWithStripExt.".xml";
-                        }
+		            // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+		            $ag_pathWithStripExt=$this->imagesFolderPhysicalPath.agHelper::ag_removExtension($f);
+		            $descriptionFileApsolutePath=$ag_pathWithStripExt.".XML";
+		            if(file_exists($ag_pathWithStripExt.".xml")){
+		              $descriptionFileApsolutePath=$ag_pathWithStripExt.".xml";
+                                }
 
-                      if(file_exists($descriptionFileApsolutePath)){// Check is descriptions file exists
+                              if(file_exists($descriptionFileApsolutePath)){// Check is descriptions file exists
 
-			  $ag_imgXML_xml = & JFactory::getXMLParser( 'simple' );
-			  $ag_imgXML_xml->loadFile($descriptionFileApsolutePath);
-			  $ag_imgXML_captions =& $ag_imgXML_xml->document->captions[0];
-			  $lang =& JFactory::getLanguage();
-			  $langTag=strtolower($lang->getTag());
+		              $ag_imgXML_xml = & JFactory::getXMLParser( 'simple' );
+		              $ag_imgXML_xml->loadFile($descriptionFileApsolutePath);
+		              $ag_imgXML_captions =& $ag_imgXML_xml->document->captions[0];
+		              $lang =& JFactory::getLanguage();
+		              $langTag=strtolower($lang->getTag());
 
-			  // GET DEFAULT LABEL
-			 if(!empty($ag_imgXML_captions->caption)){
-			      foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
-				   if(strtolower($ag_imgXML_caption->attributes('lang')) == "default"){
-					$this->descArray[$f] = $ag_imgXML_caption->data();
-				   }
-			      }
-			 }
+		              // GET DEFAULT LABEL
+		             if(!empty($ag_imgXML_captions->caption)){
+		                  foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
+			               if(strtolower($ag_imgXML_caption->attributes('lang')) == "default"){
+				            $this->descArray[$f] = $ag_imgXML_caption->data();
+			               }
+		                  }
+		             }
 
-			  // GET CURRENT LANG LABEL
-			 if(!empty($ag_imgXML_captions->caption)){
-			      foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
-			      if(strtolower($ag_imgXML_caption->attributes('lang')) == strtolower($langTag)){
-				    $this->descArray[$f] = $ag_imgXML_caption->data();
-			      }
-			      }
+		              // GET CURRENT LANG LABEL
+		             if(!empty($ag_imgXML_captions->caption)){
+		                  foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
+		                  if(strtolower($ag_imgXML_caption->attributes('lang')) == strtolower($langTag)){
+			                $this->descArray[$f] = $ag_imgXML_caption->data();
+		                  }
+		                  }
+		             }
+		             
+		             
+		             // RICH TEXT SUPPORT
+		             if($this->params['plainTextCaptions']){
+	                    $this->descArray[$f] = strip_tags($this->descArray[$f]);
+		             }
+			     
+			     }
 			 }
 			 
-			 
-			 // RICH TEXT SUPPORT
-			 if($this->params['plainTextCaptions']){
-		        $this->descArray[$f] = strip_tags($this->descArray[$f]);	 
-			 }
-			 
-                      }// if(file_exists($descriptionFileApsolutePath))
+          }// if(file_exists($descriptionFileApsolutePath))
 
-
-                      }// if((substr(strtolower($f),-3) == 'jpg') || (substr(strtolower($f),-3) == 'gif') || (substr(strtolower($f),-3) == 'png'))
-              }// while (($f = readdir($dh)) !== false)
-
-              closedir($dh);
-
-            }// if ($dh = opendir($galleryApsolutePath))
         }
         else
         $this->descArray=null;
-
+        
     }
     // Loads images array, sorted as defined bu parametar.
     private function loadImageFiles(){
@@ -474,21 +505,22 @@ class agGallery extends agHelper {
     }
     
     //Generates Album Thumbs
-    function Album_generateThumb($original_file){
+    function Album_generateThumb($AG_parent_folder, $AG_img){
         if(($this->params['thumbWidth']==0) || ($this->params['thumbHeight']==0))
         {
             $this->adderror(JText::_("Cannot create thumbnails! Width and height must be greater then 0"));
             return;
         }
-        $imagesFolderPhysicalPath = $this->imagesFolderPhysicalPath.basename(dirname($original_file)).DS;
-        $thumbsFolderPhysicalPath = $this->thumbsFolderPhysicalPath.basename(dirname($original_file)).DS;
+        $imagesFolderPhysicalPath = $this->imagesFolderPhysicalPath.$AG_parent_folder.DS;
+        $thumbsFolderPhysicalPath = $this->thumbsFolderPhysicalPath.$AG_parent_folder.DS;
         //Create directory in thumbs for gallery
         if (!file_exists($thumbsFolderPhysicalPath))
         {JFolder::create($thumbsFolderPhysicalPath, 0755);}
         //Add's index.html to thumbs folder
         if (!file_exists($thumbsFolderPhysicalPath.'index.html'))
         {$this->ag_indexWrite($thumbsFolderPhysicalPath.'index.html');}
-        $thumb_file = $thumbsFolderPhysicalPath.basename($original_file);        
+        $original_file = $imagesFolderPhysicalPath.$AG_img; 
+        $thumb_file = $thumbsFolderPhysicalPath.$AG_img;        
         if (!file_exists($thumb_file)) {
             $this->addError(agHelper::ag_createThumb($original_file, $thumb_file, $this->params['thumbWidth'],$this->params['thumbHeight'],$this->params['thumbAutoSize']));
         }else{

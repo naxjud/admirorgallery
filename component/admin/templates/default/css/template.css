@@ -130,7 +130,6 @@
      padding-left:20px;
 }
 
-
 /* ================================================== IMAGE DESCRIPTION */
 
 /* RESET PADDING & MARGIN */
@@ -252,6 +251,7 @@
     padding:5px;
     white-space:nowrap;
     border-top-style:solid;
+    height:175px;
 }
 
 .AG_item_controls_wrapper td

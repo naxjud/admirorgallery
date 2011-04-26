@@ -76,6 +76,12 @@ class AdmirorgalleryControllerImagemanager extends AdmirorgalleryController
                     case "delete":
                         $model->_remove($AG_cbox_selectItem);
                         break;
+                    case "hide":
+                        $model->_set_visibility($AG_cbox_selectItem, $AG_itemURL, "hide");
+                        break;
+                    case "show":
+                        $model->_set_visibility($AG_cbox_selectItem, $AG_itemURL, "show");
+                        break;
                 }
 	        }
 
@@ -84,21 +90,29 @@ class AdmirorgalleryControllerImagemanager extends AdmirorgalleryController
 	        $webSafe=Array("/"," ",":",".","+","&");
 	        if(!empty($AG_rename)){
 	            foreach($AG_rename as $ren_key => $ren_value){
-		$AG_originalName=JFile::stripExt(basename($ren_key));
-		// CREATE WEBSAFE TITLES
-		foreach($webSafe as $key => $value){
-		    $AG_newName = str_replace($value,"-",$ren_value);
-		}
-		if($AG_originalName != $AG_newName && !empty($ren_value)){
-		    $model->_rename($AG_itemURL, $ren_key, $AG_newName);
-		}        
+		            $AG_originalName=JFile::stripExt(basename($ren_key));
+		            // CREATE WEBSAFE TITLES
+		            foreach($webSafe as $key => $value){
+		                $AG_newName = str_replace($value,"-",$ren_value);
+		            }
+		            if($AG_originalName != $AG_newName && !empty($ren_value)){
+		                $model->_rename($AG_itemURL, $ren_key, $AG_newName);
+		            }        
 	            }
+	        }
+	        
+	        // FOLDER DESCRIPTIONS
+	        $AG_desc_content = JRequest::getVar( 'AG_desc_content', '', 'POST','ARRAY','JREQUEST_ALLOWHTML' );
+	        $AG_desc_tags = JRequest::getVar( 'AG_desc_tags' );
+	        $AG_folder_thumb = JRequest::getVar( 'AG_folder_thumb' );
+	        if(JRequest::getVar( 'AG_folderSettings_status' ) == "edit"){
+                $model->_folder_desc_content($AG_itemURL,$AG_desc_content,$AG_desc_tags,$AG_folder_thumb);
 	        }
 	        
 	    }else{
 	        // FILE MODELS
 
-	        // DESCRIPTIONS
+	        // FILE DESCRIPTIONS
 	        $AG_desc_content = JRequest::getVar( 'AG_desc_content', '', 'POST','ARRAY','JREQUEST_ALLOWHTML' );
 	        $AG_desc_tags = JRequest::getVar( 'AG_desc_tags' );
 	        if(!empty($AG_desc_content)){

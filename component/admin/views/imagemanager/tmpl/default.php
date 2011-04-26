@@ -108,7 +108,7 @@ AG_jQuery(function(){
 	e.preventDefault();        
 	AG_jQuery("#AG_folder_add").prepend("<input type=\'text\' class=\'AG_input\' name=\'AG_addFolders[]\' /><br />");
     });
-
+    
      // Binding event to folder links
     AG_jQuery(".AG_folderLink").click(function(e) {
 	e.preventDefault();        
@@ -142,14 +142,30 @@ AG_jQuery(function(){
         e.preventDefault();
         if(AG_jQuery(".AG_bookmarks_wrapper").css("display")!="none"){
             AG_jQuery(".AG_bookmarks_wrapper").css("display","none");
-            AG_jQuery("#AG_bookmarks_showHide").find("span").find("span").html("'.JText::_( 'Show Sidebar' ).'");
+            AG_jQuery("#AG_bookmarks_showHide").find("span").find("span").html("'.JText::_( 'SHOW SIDEBAR' ).'");
         }else{
             AG_jQuery(".AG_bookmarks_wrapper").css("display","block");  
-            AG_jQuery("#AG_bookmarks_showHide").find("span").find("span").html("'.JText::_( 'Hide Sidebar' ).'");   
+            AG_jQuery("#AG_bookmarks_showHide").find("span").find("span").html("'.JText::_( 'HIDE SIDEBAR' ).'");   
         }
 
       });
-
+      
+      AG_jQuery("#AG_btn_showFolderSettings").click(function(e) {
+        e.preventDefault();
+        if(AG_jQuery("#AG_folderSettings_wrapper").css("display")!="none"){     
+            AG_jQuery("#AG_folderSettings_wrapper").css("display","none"); 
+            AG_jQuery("#AG_btn_showFolderSettings").find("span").find("span").html("'.JText::_( 'EDIT FOLDER CAPTIONS' ).'");
+        }else{
+            AG_jQuery("#AG_folderSettings_wrapper").css("display","block"); 
+            AG_jQuery("#AG_folderSettings_status").val("edit");
+            AG_jQuery("#AG_btn_showFolderSettings").find("span").find("span").html("'.JText::_( 'CLOSE FOLDER CAPTIONS' ).'");   
+        }
+      });
+      
+        AG_jQuery(".AG_folder_thumb").change(function(){
+            AG_jQuery("#AG_folderSettings_status").val("edit");
+        });
+            
 '."\n";
 
 if($AG_frontEnd=='true'){
