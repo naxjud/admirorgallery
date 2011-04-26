@@ -368,7 +368,7 @@ class agGallery extends agHelper {
             $ag_files=JFolder::files($this->imagesFolderPhysicalPath);
             $ag_ext_valid = array ("jpg","jpeg","gif","png");// SET VALID IMAGE EXTENSION
             foreach($ag_files as $key => $value){
-                if(is_numeric(array_search(strtolower(JFile::getExt(basename($value))),$ag_ext_valid))){
+                if(is_numeric(array_search(strtolower(agHelper::ag_getExtension(basename($value))),$ag_ext_valid))){
                     $ag_images[]=$value;
                 }
             }

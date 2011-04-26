@@ -77,10 +77,10 @@ class AdmirorgalleryControllerImagemanager extends AdmirorgalleryController
                         $model->_remove($AG_cbox_selectItem);
                         break;
                     case "hide":
-                        $model->_set_visibility($AG_cbox_selectItem, $AG_itemURL, "hide");
+                        $model->_set_visible($AG_cbox_selectItem, $AG_itemURL, "hide");
                         break;
                     case "show":
-                        $model->_set_visibility($AG_cbox_selectItem, $AG_itemURL, "show");
+                        $model->_set_visible($AG_cbox_selectItem, $AG_itemURL, "show");
                         break;
                 }
 	        }

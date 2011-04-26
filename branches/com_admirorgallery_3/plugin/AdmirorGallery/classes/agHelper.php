@@ -10,7 +10,50 @@
  * 11.07.2010
  */
 class agHelper {
-
+    /**
+     * http://www.php.net/manual/en/function.natsort.php#45346
+     * @param <type> $array
+     * @return <type>
+     */
+    private function array_natsort_list($array) {
+      // for all arguments without the first starting at end of list
+    for ($i=func_num_args();$i>1;$i--) {
+        // get column to sort by
+        $sort_by = func_get_arg($i-1);
+        // clear arrays
+        $new_array = array();
+        $temporary_array = array();
+        // walk through original array
+        foreach($array as $original_key => $original_value) {
+            // and save only values
+            $temporary_array[] = $original_value[$sort_by];
+        }
+        // sort array on values
+        natsort($temporary_array);
+        // delete double values
+        $temporary_array = array_unique($temporary_array);
+        // walk through temporary array
+        foreach($temporary_array as $temporary_value) {
+            // walk through original array
+            foreach($array as $original_key => $original_value) {
+                // and search for entries having the right value
+                if($temporary_value == $original_value[$sort_by]) {
+                    // save in new array
+                    $new_array[$original_key] = $original_value;
+                }
+            }
+        }
+        // update original array
+        $array = $new_array;
+    }
+    return $array;
+    }
+    /**
+     *  TODO:Add description
+     * @param <type> $hex
+     * @param <type> $adjust
+     * @return <type>
+     */
     protected function ag_foregroundColor($hex, $adjust) {
         $red = hexdec($hex[0] . $hex[1]);
         $green = hexdec($hex[2] . $hex[3]);
@@ -41,21 +84,11 @@ class agHelper {
         . str_pad(dechex($green), 2, '0', 0)
         . str_pad(dechex($blue), 2, '0', 0);
     }
-
-    ////  IMAGEINFO  /////////////////////////////////////////////////////////////
-    //                                                                          //
-    // Last Update: 06.12.2008.                                                 //
-    //                                                                          //
-    // FUNCTION INPUT:                                                          //
-    //    1. - $imageURL                                                        //
-    //                                                                          //
-    // FUNCTION OUTPUT:                                                         //
-    //    1. - $imageInfo array:"width","height","type","size"                  //
-    //                                                                          //
-    //                                                                          //
-    // Copyright: Igor Kekeljevic, 2008.                                        //
-    //                                                                          //
-    //////////////////////////////////////////////////////////////////////////////
+    /**
+     * IMAGEINFO Last Update: 06.12.2008. Igor Kekeljevic, 2008.
+     * @param <string> $imageURL
+     * @return $imageInfo array:"width","height","type","size"
+     */
     protected function ag_imageInfo($imageURL) {
 
         list($width, $height, $type, $attr) = getimagesize($imageURL);
@@ -89,7 +122,11 @@ class agHelper {
             );
         }
     }
-
+    /**
+     * Rounds the file size for output
+     * @param <type> $size
+     * @return <type>
+     */
     protected function ag_fileRoundSize($size) {
         $bytes = array('B', 'KB', 'MB', 'GB', 'TB');
         foreach ($bytes as $val) {
@@ -101,30 +138,36 @@ class agHelper {
         }
         return round($size, 2) . " " . $val;
     }
-    //Read's all floders in folder.
+    /**
+     * Read's all folders in folder.
+     * @param <string> $targetFolder
+     * @return array or null
+     */
     protected function ag_foldersArrayFromFolder($targetFolder) {
-
+        $returnValue = null;
         unset($folders);
 
         if (!file_exists($targetFolder)) {
-            return null;
+            return $returnValue;
         }
         $folders = array();
-
-        if ($dh = opendir($targetFolder)) {
+        $dh = opendir($targetFolder);
+        if ($dh) {
             while (($f = readdir($dh)) !== false) {
                 if (is_dir($targetFolder . $f) && $f != "." && $f != "..") {
                     $folders[] = $f;
                 }
             }
-            return $folders;
-        } else {
-            return null;
+            $returnValue = $folders;
         }
-
         closedir($dh);
+        return $returnValue;
     }
-
+    /**
+     * Removes thumb folder
+     * @param <type> $originalFolder
+     * @param <type> $thumbFolder
+     */
     protected function ag_cleanThumbsFolder($originalFolder, $thumbFolder) {
         $origin = agHelper::ag_foldersArrayFromFolder($originalFolder);
         $thumbs = agHelper::ag_foldersArrayFromFolder($thumbFolder);
@@ -135,7 +178,13 @@ class agHelper {
             }
         }
     }
-
+    /**
+     * Removes old and unused thumbs
+     * @param <type> $imagesFolder
+     * @param <type> $thumbsFolder
+     * @param <type> $albumsInUse
+     * @return <type>
+     */
     protected function ag_clearOldThumbs($imagesFolder, $thumbsFolder, $albumsInUse=false) {
 
         // Generate array of thumbs
@@ -163,7 +212,6 @@ class agHelper {
 
     /**
      * Makes directory, returns TRUE if exists or made
-     *
      * @param string $pathname The directory path.
      * @return boolean returns TRUE if exists or made or FALSE on failure.
      */
@@ -171,7 +219,12 @@ class agHelper {
         is_dir(dirname($pathname)) || agHelper::ag_mkdir_recursive(dirname($pathname), $mode);
         return is_dir($pathname) || @mkdir($pathname, $mode);
     }
-
+    /**
+     * Removes dir or file
+     * @param <type> $dir
+     * @param <type> $DeleteMe
+     * @return <type>
+     */
     public function ag_sureRemoveDir($dir, $DeleteMe) {
         if (!$dh = @opendir($dir))
             return;
@@ -187,8 +240,12 @@ class agHelper {
             @rmdir($dir);
         }
     }
-
-    //Read's all images from folder.
+    /**
+     * Read's all images from folder
+     * @param <string> $targetFolder
+     * @param <string> $arrange
+     * @return <array> Sorted array of pictures
+     */
     protected function ag_imageArrayFromFolder($targetFolder, $arrange) {
         $images = Array();
         if (!agHelper::ag_exists($targetFolder)) {
@@ -208,10 +265,7 @@ class agHelper {
         closedir($dh);
 
         if (!empty($images)) {
-            $ag_images_priority = Array();
-            $ag_images_noPriority = Array();
-            $images_sorted = Array();
-            $ag_new_images = Array();
+            $ag_images_data = Array();
             // READS XML DATA AND GENERATES ARRAYS
             foreach ($images as $key => $value) {
                 // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
@@ -221,56 +275,47 @@ class agHelper {
                     $ag_XML_path = $ag_pathWithStripExt . ".XML";
                 }
                 if (agHelper::ag_exists($ag_XML_path)) {
-                    $ag_XML_xml = & JFactory::getXMLParser('simple');
-                    $ag_XML_xml->loadFile($ag_XML_path);
-                    if (!$ag_XML_xml->document->visibility[0]->data()) {
-                        unset($images[$key]);
-                        continue;
-                    }
-                    $ag_imgXML_priority = & $ag_imgXML_xml->document->priority[0]->data();
-                    $ag_imgXML_date = & $ag_imgXML_xml->document->date[0]->data();
-                    if (!empty($ag_imgXML_priority) && agHelper::ag_exists($ag_imgXML_path)) {
-                        $ag_images_priority[$value] = $ag_imgXML_priority; // PRIORITIES IMAGES
-                    } else {
-                        $ag_images_noPriority[] = $value; // NON PRIORITIES IMAGES
-                    }
-                    if (!empty($ag_imgXML_date) && agHelper::ag_exists($ag_imgXML_path)) {
-                        $ag_new_images[$value] = $ag_imgXML_date;
-                    } else {
-                        $ag_new_images[$value] = date("YmdHs", filemtime($targetFolder . $value));
+                    $ag_XML_xml = simplexml_load_file($ag_XML_path);
+                    if(isset($ag_XML_xml))
+                    {
+                        $ag_xml_value = Array();
+                        $ag_img_visible = (int)$ag_XML_xml->visible;
+                        if (isset($ag_XML_xml->visibility) && $ag_img_visible != 'VISIBLE') {
+                            continue;
+                        }
+                        $ag_xml_value["value"] = $value;
+                        $ag_imgXML_priority = (string)$ag_XML_xml->priority;
+                        $ag_imgXML_date =  (string)$ag_XML_xml->date;
+                        if ($ag_imgXML_priority) {
+                            $ag_xml_value["priority"] = $ag_imgXML_priority; // PRIORITIES IMAGES
+                        } else {
+                            $ag_xml_value["priority"] = -1; // NON PRIORITIES IMAGES
+                        }
+                        if ($ag_imgXML_date) {
+                            $ag_xml_value["date"] = $ag_imgXML_date;
+                        } else {
+                            $ag_xml_value["date"] = date("YmdHs", filemtime($targetFolder . $value));
+                        }
+                        //print_r($ag_xml_value);
+                        $ag_images_data[] = $ag_xml_value;
                     }
                 }
             }
+            $sortParam= 'priority';
             switch ($arrange) {
-                case "priority":
-                {
-                    if (!empty($ag_images_priority)) {
-                        asort($ag_images_priority);
-                        array_push($images_sorted,$ag_images_priority);
-                    }
-                    if (!empty($ag_images_noPriority)) {
-                        natcasesort($ag_images_noPriority);
-                        array_push($images_sorted, $ag_images_noPriority);
-                    }
-                }
-                break;
                 case "date":
-                {
-                    if (!empty($ag_new_images)) {
-                        asort($ag_new_images);
-                        $images_sorted = array_reverse($ag_new_images);
-                    }
-                }
+                    $sortParam = 'date';
                 break;
                 case "name":
-                    natcasesort($images);
+                    $sortParam = 'value';
                 break;
             }
-            if($images_sort)
-            {
-                $images = $images_sorted;
+            $ag_images_data = agHelper::array_natsort_list($ag_images_data,$sortParam);
+            $images = Array();
+            foreach($ag_images_data as $original_key => $original_value) {
+                // and save only values
+                $images[] = $original_value['value'];
             }
-            
         }
         return $images;
     }
