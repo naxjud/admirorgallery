@@ -215,7 +215,7 @@ class AdmirorgalleryModelImagemanager extends JModel
 	            $ag_XML_content = preg_replace("#<priority[^}]*>(.*?)</priority>#s", $ag_priority_new,$ag_XML_content);
 	}else{
 	            $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
-	            $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visibility>VISIBLE</visibility>'."\n".$ag_priority_new."\n".'<thumb></thumb>'."\n".'<captions>'."\n".'</captions>'."\n".'</image>';
+	            $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visible>VISIBLE</visible>'."\n".$ag_priority_new."\n".'<thumb></thumb>'."\n".'<captions>'."\n".'</captions>'."\n".'</image>';
 	}
 
     // Save XML
@@ -235,9 +235,9 @@ class AdmirorgalleryModelImagemanager extends JModel
     
     
     
-    // =================================== _SET_VISIBILITY
+    // =================================== _SET_visible
     // 
-   function _set_visibility($AG_cbox_selectItem, $ag_folderName, $AG_visible) {
+   function _set_visible($AG_cbox_selectItem, $ag_folderName, $AG_visible) {
         foreach($AG_cbox_selectItem as $key => $value){
 
             $ag_itemURL = $value;
@@ -249,27 +249,28 @@ class AdmirorgalleryModelImagemanager extends JModel
                 $ag_XML_path=$ag_pathWithStripExt.".XML";
             }
 
-            // Set new Visibility tag
+            // Set new visible tag
             if($AG_visible=="show"){            
-                $ag_visibility_new = "<visibility>VISIBLE</visibility>";
+                $ag_visible_new = "<visible>VISIBLE</visible>";
             }else{
-                $ag_visibility_new = "<visibility>HIDDEN</visibility>";            
+                $ag_visible_new = "<visible>HIDDEN</visible>";            
             }
 
+            $ag_XML_content='';
             if(file_exists($ag_XML_path)){
                 $file=fopen($ag_XML_path,"r");
                 while (!feof($file)){
-                      $ag_XML_content.=fgetc($file);
+                      $ag_XML_content .= fgetc($file);
                 }
                 fclose($file);
-                if (preg_match("#<visibility[^}]*>(.*?)</visibility>#s", $ag_XML_content)){
-                    $ag_XML_content = preg_replace("#<visibility[^}]*>(.*?)</visibility>#s", $ag_visibility_new,$ag_XML_content);
+                if (preg_match("#<visible[^}]*>(.*?)</visible>#s", $ag_XML_content)){
+                    $ag_XML_content = preg_replace("#<visible[^}]*>(.*?)</visible>#s", $ag_visible_new,$ag_XML_content);
                 } else {
-                    $ag_XML_content = preg_replace("#</image>#s", $ag_visibility_new."\n"."</image>",$ag_XML_content);
+                    $ag_XML_content = preg_replace("#</image>#s", $ag_visible_new."\n"."</image>",$ag_XML_content);
                 }  
             }else{
                 $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
-                $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".$ag_visibility_new."\n".'<priority></priority>'."\n".'<thumb></thumb>'."\n".'<captions></captions>'."\n".'</image>';
+                $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".$ag_visible_new."\n".'<priority></priority>'."\n".'<thumb></thumb>'."\n".'<captions></captions>'."\n".'</image>';
             }
 
             // Save XML
@@ -532,7 +533,7 @@ class AdmirorgalleryModelImagemanager extends JModel
             }	    
         }else{
 	        $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
-	        $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visibility>VISIBLE</visibility>'."\n".'<priority></priority>'."\n".'<thumb>'.$AG_folder_thumb.'</thumb>'."\n".$ag_captions_new."\n".'</image>';
+	        $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visible>VISIBLE</visible>'."\n".'<priority></priority>'."\n".'<thumb>'.$AG_folder_thumb.'</thumb>'."\n".$ag_captions_new."\n".'</image>';
         }
 
         // Save XML
@@ -573,7 +574,7 @@ class AdmirorgalleryModelImagemanager extends JModel
 	    $ag_XML_content = preg_replace("#<captions[^}]*>(.*?)</captions>#s", $ag_captions_new,$ag_XML_content);
         }else{
 	    $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
-	    $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visibility>VISIBLE</visibility>'."\n".'<priority></priority>'."\n".$ag_captions_new."\n".'</image>';
+	    $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visible>VISIBLE</visible>'."\n".'<priority></priority>'."\n".$ag_captions_new."\n".'</image>';
         }
         
         // Save XML

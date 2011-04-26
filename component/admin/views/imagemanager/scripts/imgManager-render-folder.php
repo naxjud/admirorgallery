@@ -238,14 +238,14 @@ if(!empty($ag_folders)){
      }
 
      $ag_XML_priority="";
-     $ag_XML_visibility = "VISIBLE";
+     $ag_XML_visible = "VISIBLE";
      if(file_exists($ag_XML_path)){
 	  $ag_hasXML='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png"  class="ag_hasXML" />';
 	  $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
 	  $ag_XML_xml->loadFile($ag_XML_path);
 	  $ag_XML_priority =& $ag_XML_xml->document->priority[0]->data();
-        if($ag_XML_xml->document->visibility[0]){
-            $ag_XML_visibility =& $ag_XML_xml->document->visibility[0]->data();
+        if(isset($ag_XML_xml->document->visible[0])){
+            $ag_XML_visible =& $ag_XML_xml->document->visible[0]->data();
         }
      }    
     
@@ -262,7 +262,7 @@ if(!empty($ag_folders)){
 	    </a>
 	    <div class="AG_border_color AG_border_width AG_item_controls_wrapper">
 	        <input type="text" value="'.$value.'" name="AG_rename['.$ag_itemURL.$value.']" class="AG_input" style="width:95%" /><hr />
-	        '.JText::_( $ag_XML_visibility ).'<hr />
+	        '.JText::_( $ag_XML_visible ).'<hr />
 	        <img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" /><input type="checkbox" value="'.$ag_itemURL.$value.'/" name="AG_cbox_selectItem[]" class="AG_cbox_selectItem"><hr />
 	        '.JText::_( 'PRIORITY' ).':&nbsp;<input type="text" size="3" value="'.$ag_XML_priority.'" name="AG_cbox_priority['.$ag_itemURL.$value.']" class="AG_input" />
 	    </div>
@@ -340,14 +340,14 @@ foreach($ag_images as $key => $value){
      }
 
      $ag_XML_priority="";
-     $ag_XML_visibility = "VISIBLE";
+     $ag_XML_visible = "VISIBLE";
      if(file_exists($ag_XML_path)){
 	  $ag_hasXML='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png"  class="ag_hasXML" />';
 	  $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
 	  $ag_XML_xml->loadFile($ag_XML_path);
 	  $ag_XML_priority =& $ag_XML_xml->document->priority[0]->data();
-        if($ag_XML_xml->document->visibility[0]){
-            $ag_XML_visibility =& $ag_XML_xml->document->visibility[0]->data();
+        if(isset($ag_XML_xml->document->visible[0])){
+            $ag_XML_visible =& $ag_XML_xml->document->visible[0]->data();
         }
      }
 
@@ -373,7 +373,7 @@ if($ag_XML_thumb==$value){
 	</a>
 	<div class="AG_border_color AG_border_width AG_item_controls_wrapper">	
 	    <input type="text" value="'.JFile::stripExt(basename($value)).'" name="AG_rename['.$ag_itemURL.$value.']" class="AG_input" style="width:95%" /><hr /> 
-	    '.JText::_( $ag_XML_visibility ).'<hr />
+	    '.JText::_( $ag_XML_visible ).'<hr />
         <img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/operations.png" style="float:left;" /><input type="checkbox" value="'.$ag_itemURL.$value.'" name="AG_cbox_selectItem[]" class="AG_cbox_selectItem"><hr />
 	    '.JText::_( 'PRIORITY' ).':&nbsp;<input type="text" size="3" value="'.$ag_XML_priority.'" name="AG_cbox_priority['.$ag_itemURL.$value.']" class="AG_input" /><hr />
         <input type="radio" value="'.$value.'" name="AG_folder_thumb" class="AG_folder_thumb" class="AG_input"'.$AG_thumb_checked.' />&nbsp;'.JText::_( 'FOLDER THUMB' ).' 
