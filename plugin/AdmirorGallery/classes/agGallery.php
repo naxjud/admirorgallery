@@ -10,7 +10,7 @@ define('PLUGIN_BASE_PATH', '/plugins/content/AdmirorGallery/');
 require_once (dirname(__FILE__).DS.'agHelper.php');
 require_once (dirname(__FILE__).DS.'agPopup.php');
 
-class agGallery {
+class agGallery extends agHelper{
     var $sitePath='';
     var $sitePhysicalPath = '';
     // Virtual path. Example: "http://www.mysite.com/plugin/content/AdmirorGallery/thumbs/"
