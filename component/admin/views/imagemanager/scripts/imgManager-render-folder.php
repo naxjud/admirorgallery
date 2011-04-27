@@ -237,15 +237,19 @@ if(!empty($ag_folders)){
 	  $ag_XML_path=$ag_pathWithStripExt.".XML";
      }
 
-     $ag_XML_priority="";
      $ag_XML_visible = "VISIBLE";
+     $ag_XML_priority="";
      if(file_exists($ag_XML_path)){
-	  $ag_hasXML='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png"  class="ag_hasXML" />';
-	  $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
-	  $ag_XML_xml->loadFile($ag_XML_path);
-	  $ag_XML_priority =& $ag_XML_xml->document->priority[0]->data();
-        if(isset($ag_XML_xml->document->visible[0])){
-            $ag_XML_visible =& $ag_XML_xml->document->visible[0]->data();
+        $ag_hasXML='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png"  class="ag_hasXML" />';
+        $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
+        $ag_XML_xml = simplexml_load_file($ag_XML_path);
+        if(isset($ag_XML_xml->priority)){
+            $ag_XML_priority = $ag_XML_xml->priority;
+        }
+        if(isset($ag_XML_xml->visible)){
+            if((string)$ag_XML_xml->visible=="false"){
+                $ag_XML_visible = "HIDDEN";
+            }
         }
      }    
     
@@ -339,17 +343,21 @@ foreach($ag_images as $key => $value){
 	  $ag_XML_path=$ag_pathWithStripExt.".XML";
      }
 
-     $ag_XML_priority="";
      $ag_XML_visible = "VISIBLE";
+     $ag_XML_priority="";
      if(file_exists($ag_XML_path)){
-	  $ag_hasXML='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png"  class="ag_hasXML" />';
-	  $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
-	  $ag_XML_xml->loadFile($ag_XML_path);
-	  $ag_XML_priority =& $ag_XML_xml->document->priority[0]->data();
-        if(isset($ag_XML_xml->document->visible[0])){
-            $ag_XML_visible =& $ag_XML_xml->document->visible[0]->data();
+        $ag_hasXML='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png"  class="ag_hasXML" />';
+        $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
+        $ag_XML_xml = simplexml_load_file($ag_XML_path);
+        if(isset($ag_XML_xml->priority)){
+            $ag_XML_priority = $ag_XML_xml->priority;
         }
-     }
+        if(isset($ag_XML_xml->visible)){
+            if((string)$ag_XML_xml->visible=="false"){
+                $ag_XML_visible = "HIDDEN";
+            }
+        }
+     }   
 
      if(file_exists(JPATH_SITE."/plugins/content/AdmirorGallery/thumbs/".basename($ag_folderName)."/".basename($value))){
 	  $ag_hasThumb='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasThumb.png"  class="ag_hasThumb" />';

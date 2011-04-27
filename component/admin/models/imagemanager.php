@@ -32,7 +32,9 @@ class AdmirorgalleryModelImagemanager extends JModel
 
             $ag_bookmarks_xml =& JFactory::getXMLParser( 'simple' );
             $ag_bookmarks_xml->loadFile( $ag_bookmarkFile );
-            $ag_bookmarks_array = $ag_bookmarks_xml->document->bookmark;
+            if(isset($ag_bookmarks_xml->document->bookmark)){
+                $ag_bookmarks_array = $ag_bookmarks_xml->document->bookmark;
+            }
 
             // CHECK IF BOOKMARK ALREADY EXISTS
             $bookmarkCheck = false;
@@ -78,7 +80,9 @@ class AdmirorgalleryModelImagemanager extends JModel
 
             $ag_bookmarks_xml =& JFactory::getXMLParser( 'simple' );
             $ag_bookmarks_xml->loadFile( $ag_bookmarkFile );
-            $ag_bookmarks_array = $ag_bookmarks_xml->document->bookmark;
+            if(isset($ag_bookmarks_xml->document->bookmark)){
+                $ag_bookmarks_array = $ag_bookmarks_xml->document->bookmark;
+            }
 
             // CHECK IF BOOKMARK ALREADY EXISTS
             $bookmarkCheck = false;
@@ -207,6 +211,7 @@ class AdmirorgalleryModelImagemanager extends JModel
             if($ag_XML_priority != $ag_priority){
 	if(file_exists($ag_XML_path)){
 	            $file=fopen($ag_XML_path,"r");
+	            $ag_XML_content="";
 	            while (!feof($file))
 	            {
 		          $ag_XML_content.=fgetc($file);
@@ -214,8 +219,7 @@ class AdmirorgalleryModelImagemanager extends JModel
 	            fclose($file);
 	            $ag_XML_content = preg_replace("#<priority[^}]*>(.*?)</priority>#s", $ag_priority_new,$ag_XML_content);
 	}else{
-	            $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
-	            $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visible>VISIBLE</visible>'."\n".$ag_priority_new."\n".'<thumb></thumb>'."\n".'<captions>'."\n".'</captions>'."\n".'</image>';
+	            $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<visible>true</visible>'."\n".$ag_priority_new."\n".'<thumb></thumb>'."\n".'<captions>'."\n".'</captions>'."\n".'</image>';
 	}
 
     // Save XML
@@ -251,9 +255,9 @@ class AdmirorgalleryModelImagemanager extends JModel
 
             // Set new visible tag
             if($AG_visible=="show"){            
-                $ag_visible_new = "<visible>VISIBLE</visible>";
+                $ag_visible_new = "<visible>true</visible>";
             }else{
-                $ag_visible_new = "<visible>HIDDEN</visible>";            
+                $ag_visible_new = "<visible>false</visible>";            
             }
 
             $ag_XML_content='';
@@ -269,8 +273,7 @@ class AdmirorgalleryModelImagemanager extends JModel
                     $ag_XML_content = preg_replace("#</image>#s", $ag_visible_new."\n"."</image>",$ag_XML_content);
                 }  
             }else{
-                $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
-                $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".$ag_visible_new."\n".'<priority></priority>'."\n".'<thumb></thumb>'."\n".'<captions></captions>'."\n".'</image>';
+                $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".$ag_visible_new."\n".'<priority></priority>'."\n".'<thumb></thumb>'."\n".'<captions></captions>'."\n".'</image>';
             }
 
             // Save XML
@@ -347,22 +350,24 @@ class AdmirorgalleryModelImagemanager extends JModel
     // COPY
     function _copy($AG_cbox_selectItem, $AG_operations_targetFolder) {
         foreach($AG_cbox_selectItem as $key => $value){
+            // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+            $AG_folderName = dirname($value);
+            $AG_pathWithStripExt=JPATH_SITE.$AG_folderName.'/'.JFile::stripExt(basename($value));
+            $ag_XML_path=$AG_pathWithStripExt.".XML";
+            if(JFIle::exists($AG_pathWithStripExt.".xml")){
+                $ag_XML_path=$AG_pathWithStripExt.".xml";
+            }
 	        if(is_dir(JPATH_SITE.DS.$value)){
 	            if(JFolder::copy (JPATH_SITE.DS.$value, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($value))){
+	                if(JFIle::exists($ag_XML_path)){
+	                    JFile::copy ($ag_XML_path, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($ag_XML_path));
+                    }
 	                JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM COPIED:' )."&nbsp;".$value, 'message' );
                 }else{
                     JFactory::getApplication()->enqueueMessage( JText::_( 'CANNOT COPY ITEM:' )."&nbsp;".$value, 'error' );	      
                 }
 	        }else{
 	            if(JFile::copy (JPATH_SITE.DS.$value, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($value))){
-	                // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
-	                $AG_folderName = dirname($value);
-	                $AG_pathWithStripExt=JPATH_SITE.$AG_folderName.'/'.JFile::stripExt(basename($value));
-	                $ag_XML_path=$AG_pathWithStripExt.".XML";
-	                if(JFIle::exists($AG_pathWithStripExt.".xml")){
-	                    $ag_XML_path=$AG_pathWithStripExt.".xml";
-
-	                }
 	                if(JFIle::exists($ag_XML_path)){
 	                    JFile::copy ($ag_XML_path, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($ag_XML_path));
                     }
@@ -379,21 +384,25 @@ class AdmirorgalleryModelImagemanager extends JModel
     // MOVE
     function _move($AG_cbox_selectItem, $AG_operations_targetFolder) {
         foreach($AG_cbox_selectItem as $key => $value){
+            // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+            $AG_folderName = dirname($value);
+            $AG_pathWithStripExt=JPATH_SITE.$AG_folderName.'/'.JFile::stripExt(basename($value));
+            $ag_XML_path=$AG_pathWithStripExt.".XML";
+            if(JFIle::exists($AG_pathWithStripExt.".xml")){
+                $ag_XML_path=$AG_pathWithStripExt.".xml";
+            }	 
 	        if(is_dir(JPATH_SITE.DS.$value)){
 	            if(JFolder::move (JPATH_SITE.DS.$value, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($value))){
+                    $this->_bookmarkRemove(array($value));
+	                if(JFIle::exists($ag_XML_path)){
+		                JFile::move ($ag_XML_path, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($ag_XML_path));
+	                }
 	                JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM MOVED:' )."&nbsp;".$value, 'message' );
                 }else{
                     JFactory::getApplication()->enqueueMessage( JText::_( 'CANNOT MOVED ITEM:' )."&nbsp;".$value, 'error' );	      
                 }
 	        }else{
-	            if(JFile::move (JPATH_SITE.DS.$value, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($value))){
-	                // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
-	                $AG_folderName = dirname($value);
-	                $AG_pathWithStripExt=JPATH_SITE.$AG_folderName.'/'.JFile::stripExt(basename($value));
-	                $ag_XML_path=$AG_pathWithStripExt.".XML";
-	                if(JFIle::exists($AG_pathWithStripExt.".xml")){
-	                    $ag_XML_path=$AG_pathWithStripExt.".xml";
-	                }	                
+	            if(JFile::move (JPATH_SITE.DS.$value, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($value))){            
 	                if(JFIle::exists($ag_XML_path)){
 		                JFile::move ($ag_XML_path, JPATH_SITE.DS.$AG_operations_targetFolder.DS.basename($ag_XML_path));
 	                }
@@ -409,32 +418,34 @@ class AdmirorgalleryModelImagemanager extends JModel
     
     function _remove($AG_cbox_remove) {
         foreach($AG_cbox_remove as $key => $value){
-	$AG_folderName = dirname($value);
-	// DELETE
-	if(is_dir(JPATH_SITE.DS.$value)){
-	      if(JFolder::delete(JPATH_SITE.DS.$value)){	          
-	          $this->_bookmarkRemove(array($value));
-	          JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM DELETED:' )."&nbsp;".$value, 'message' );
-	      }else{
-	          JFactory::getApplication()->enqueueMessage( JText::_( 'CANNOT DELETE ITEM:' )."&nbsp;".$value, 'error' );	      
-	      }
-	}else{
-	      if(JFile::delete(JPATH_SITE.DS.$value)){
-	            // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
-	            $AG_pathWithStripExt=JPATH_SITE.$AG_folderName.'/'.JFile::stripExt(basename($value));
-	            $ag_XML_path=$AG_pathWithStripExt.".XML";
-	            if(JFIle::exists($AG_pathWithStripExt.".xml")){
-		        $ag_XML_path=$AG_pathWithStripExt.".xml";
-	            }
-
-	            if (file_exists($ag_XML_path)){
-		            JFile::delete($ag_XML_path);
-	            }
-	            JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM DELETED:' )."&nbsp;".$value, 'message' );
-	      }else{
-	          JFactory::getApplication()->enqueueMessage( JText::_( 'CANNOT DELETE ITEM:' )."&nbsp;".$value, 'error' );	      
-	      }
-	}
+	        $AG_folderName = dirname($value);
+            // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+            $AG_pathWithStripExt=JPATH_SITE.$AG_folderName.'/'.JFile::stripExt(basename($value));
+            $ag_XML_path=$AG_pathWithStripExt.".XML";
+            if(JFIle::exists($AG_pathWithStripExt.".xml")){
+                $ag_XML_path=$AG_pathWithStripExt.".xml";
+            }
+	        // DELETE
+	        if(is_dir(JPATH_SITE.DS.$value)){
+	              if(JFolder::delete(JPATH_SITE.DS.$value)){	          
+                        $this->_bookmarkRemove(array($value));
+                        if (file_exists($ag_XML_path)){
+                            JFile::delete($ag_XML_path);
+                        }
+                        JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM DELETED:' )."&nbsp;".$value, 'message' );
+	              }else{
+	                  JFactory::getApplication()->enqueueMessage( JText::_( 'CANNOT DELETE ITEM:' )."&nbsp;".$value, 'error' );	      
+	              }
+	        }else{
+	              if(JFile::delete(JPATH_SITE.DS.$value)){
+	                    if (file_exists($ag_XML_path)){
+		                    JFile::delete($ag_XML_path);
+	                    }
+	                    JFactory::getApplication()->enqueueMessage( JText::_( 'ITEM DELETED:' )."&nbsp;".$value, 'message' );
+	              }else{
+	                  JFactory::getApplication()->enqueueMessage( JText::_( 'CANNOT DELETE ITEM:' )."&nbsp;".$value, 'error' );	      
+	              }
+	        }
         }
     }
 
@@ -444,46 +455,50 @@ class AdmirorgalleryModelImagemanager extends JModel
         $AG_folderName = dirname($AG_originalPath);
 
 
-	// CREATE WEBSAFE TITLES
-	if(!empty($this->webSafe)){
-	    foreach($this->webSafe as $webSafekey => $webSafevalue){
-		  $AG_newName = str_replace($webSafevalue,"-",$AG_newName);
-	    }	
-	}
+	    // CREATE WEBSAFE TITLES
+	    if(!empty($this->webSafe)){
+	        foreach($this->webSafe as $webSafekey => $webSafevalue){
+		      $AG_newName = str_replace($webSafevalue,"-",$AG_newName);
+	        }	
+	    }
+	    
+	    // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+        $ag_pathWithStripExt=JPATH_SITE.$AG_folderName.DS.JFile::stripExt($AG_originalName);
+        $ag_XML_path=$ag_pathWithStripExt.".XML";
+        if(JFIle::exists($ag_pathWithStripExt.".xml")){
+            $ag_XML_path=$ag_pathWithStripExt.".xml";
+        }
 
         if(!is_dir(JPATH_SITE.$AG_originalPath)){
-	// Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
-	$ag_pathWithStripExt=JPATH_SITE.$AG_folderName.DS.JFile::stripExt($AG_originalName);
-	$ag_XML_path=$ag_pathWithStripExt.".XML";
-	if(JFIle::exists($ag_pathWithStripExt.".xml")){
-	    $ag_XML_path=$ag_pathWithStripExt.".xml";
-	}
-	$ag_file_ext = JFile::getExt($AG_originalName);
-
-	$ag_file_new_name = $AG_folderName.DS.$AG_newName.'.'.$ag_file_ext;
-	if (!file_exists(JPATH_SITE.$ag_file_new_name)){
-	    if(rename(JPATH_SITE.$AG_originalPath,JPATH_SITE.$ag_file_new_name)){
-	        if(file_exists($ag_XML_path)){
-	            rename($ag_XML_path,JPATH_SITE.$AG_folderName.DS.$AG_newName.'.xml');
+	        
+	        $ag_file_ext = JFile::getExt($AG_originalName);
+	        $ag_file_new_name = $AG_folderName.DS.$AG_newName.'.'.$ag_file_ext;
+	        if (!file_exists(JPATH_SITE.$ag_file_new_name)){
+	            if(rename(JPATH_SITE.$AG_originalPath,JPATH_SITE.$ag_file_new_name)){
+	                if(file_exists($ag_XML_path)){
+	                    rename($ag_XML_path,JPATH_SITE.$AG_folderName.DS.$AG_newName.'.xml');
+	                }
+	                JFactory::getApplication()->enqueueMessage( JText::_( "IMAGE RENAMED:" )."&nbsp;".$AG_originalName, 'message' );
+	            }else{
+	                JFactory::getApplication()->enqueueMessage( JText::_( "CANNOT RENAME IMAGE:" )."&nbsp;".$AG_originalName, 'error' );
+	            }
+	        }else{
+	            JFactory::getApplication()->enqueueMessage( JText::_( "FOLDER WITH THE SAME NAME ALREADY EXISTS." ), 'error' );
 	        }
-	        JFactory::getApplication()->enqueueMessage( JText::_( "IMAGE RENAMED:" )."&nbsp;".$AG_originalName, 'message' );
-	    }else{
-	        JFactory::getApplication()->enqueueMessage( JText::_( "CANNOT RENAME IMAGE:" )."&nbsp;".$AG_originalName, 'error' );
-	    }
-	}else{
-	    JFactory::getApplication()->enqueueMessage( JText::_( "FOLDER WITH THE SAME NAME ALREADY EXISTS." ), 'error' );
-	}
         }else{
-	if (!file_exists(JPATH_SITE.$AG_folderName.DS.$AG_newName)){
-	    if(rename(JPATH_SITE.$AG_originalPath,JPATH_SITE.$AG_folderName.DS.$AG_newName)){
-	        $this->_bookmarkRename($AG_originalPath, $AG_folderName.DS.$AG_newName);
-	        JFactory::getApplication()->enqueueMessage( JText::_( "FOLDER RENAMED:" )."&nbsp;".$AG_originalName, 'message' );
-	    }else{
-	      JFactory::getApplication()->enqueueMessage( JText::_( "CANNOT RENAME FOLDER:" )."&nbsp;".$AG_originalName, 'error' );
-	    }
-	  }else{
-	      JFactory::getApplication()->enqueueMessage( JText::_( "FOLDER WITH THE SAME NAME ALREADY EXISTS." ), 'error' );
-	  }
+            if (!file_exists(JPATH_SITE.$AG_folderName.DS.$AG_newName)){
+	            if(rename(JPATH_SITE.$AG_originalPath,JPATH_SITE.$AG_folderName.DS.$AG_newName)){
+	                $this->_bookmarkRename($AG_originalPath, $AG_folderName.DS.$AG_newName);
+	                if(file_exists($ag_XML_path)){
+	                    rename($ag_XML_path,JPATH_SITE.$AG_folderName.DS.$AG_newName.'.xml');
+	                }
+	                JFactory::getApplication()->enqueueMessage( JText::_( "FOLDER RENAMED:" )."&nbsp;".$AG_originalName, 'message' );
+	            }else{
+	              JFactory::getApplication()->enqueueMessage( JText::_( "CANNOT RENAME FOLDER:" )."&nbsp;".$AG_originalName, 'error' );
+	            }
+            }else{
+              JFactory::getApplication()->enqueueMessage( JText::_( "FOLDER WITH THE SAME NAME ALREADY EXISTS." ), 'error' );
+            }
         }
     }
     
@@ -514,6 +529,7 @@ class AdmirorgalleryModelImagemanager extends JModel
         // Set new Thumb tag
         $ag_thumb_new = "<thumb>".$AG_folder_thumb."</thumb>";
 
+        $ag_XML_content = "";
         if(file_exists($ag_XML_path)){
 	        $file=fopen($ag_XML_path,"r");
 	        while (!feof($file))
@@ -532,8 +548,7 @@ class AdmirorgalleryModelImagemanager extends JModel
                 $ag_XML_content = preg_replace("#</image>#s", $ag_captions_new."\n"."</image>",$ag_XML_content);
             }	    
         }else{
-	        $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
-	        $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visible>VISIBLE</visible>'."\n".'<priority></priority>'."\n".'<thumb>'.$AG_folder_thumb.'</thumb>'."\n".$ag_captions_new."\n".'</image>';
+	        $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<visible>true</visible>'."\n".'<priority></priority>'."\n".'<thumb>'.$AG_folder_thumb.'</thumb>'."\n".$ag_captions_new."\n".'</image>';
         }
 
         // Save XML
@@ -564,17 +579,17 @@ class AdmirorgalleryModelImagemanager extends JModel
         }
         $ag_captions_new.="</captions>";
 
+        $ag_XML_content = "";
         if(file_exists($ag_XML_path)){
-	    $file=fopen($ag_XML_path,"r");
-	    while (!feof($file))
-	    {
-	          $ag_XML_content.=fgetc($file);
-	    }
-	    fclose($file);
-	    $ag_XML_content = preg_replace("#<captions[^}]*>(.*?)</captions>#s", $ag_captions_new,$ag_XML_content);
+	        $file=fopen($ag_XML_path,"r");
+	        while (!feof($file))
+	        {
+	              $ag_XML_content.=fgetc($file);
+	        }
+	        fclose($file);
+	        $ag_XML_content = preg_replace("#<captions[^}]*>(.*?)</captions>#s", $ag_captions_new,$ag_XML_content);
         }else{
-	    $timeStamp = date ("YmdHs", filemtime(JPATH_SITE.$ag_itemURL));
-	    $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<date>'.$timeStamp.'</date>'."\n".'<visible>VISIBLE</visible>'."\n".'<priority></priority>'."\n".$ag_captions_new."\n".'</image>';
+	        $ag_XML_content = '<?xml version="1.0" encoding="utf-8"?>'."\n".'<image>'."\n".'<visible>true</visible>'."\n".'<priority></priority>'."\n".$ag_captions_new."\n".'</image>';
         }
         
         // Save XML
