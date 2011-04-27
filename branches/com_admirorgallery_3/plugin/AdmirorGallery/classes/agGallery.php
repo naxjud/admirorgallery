@@ -127,11 +127,11 @@ class agGallery extends agHelper {
      * @return <html>
      */
     function writeNewImageTag($image){
-	$fileStat=stat($this->imagesFolderPhysicalPath.$image);
-	$fileAge=time()-$fileStat['ctime'];
-	if((int)$fileAge < (int)($this->params['newImageTag_days']*24*60*60) && $this->params['newImageTag']==1){
-	  return '<span class="ag_newTag"><img src="'.$this->sitePath.PLUGIN_BASE_PATH.'newTag.gif" class="ag_newImageTag" /></span>';
-	}
+	    $FileAge = date("YmdHi", filemtime($this->imagesFolderPhysicalPath.$image)); // DEFAULT DATE
+	    $dateLimit = date("YmdHi", mktime(date("H"),date("i"),date("s"),date("m"),date("d")-(int)($this->params['newImageTag_days']),date("Y")));   
+	    if($FileAge > $dateLimit && $this->params['newImageTag']==1){
+	      return '<span class="ag_newTag"><img src="'.$this->sitePath.PLUGIN_BASE_PATH.'newTag.gif" class="ag_newImageTag" /></span>';
+	    }
     }
     /**
      * Generates HTML with Popup engine integration
@@ -162,50 +162,49 @@ class agGallery extends agHelper {
     }
 
     function writeFolderThumb($default_folder_img, $thumbHeight){
+        
         // Album Support
         $html = "";
         if($this->params['albumUse'] && !empty($this->folders)){
             $html.= '<div class="AG_album_wrap">'."\n";
             foreach ($this->folders as $folderKey => $folderName){
-                $images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath.$folderName, $this->params['arrange']);
-                
+                            
                 $thumb_file = "";
-                
-                if(!empty($images)){
-                    $thumb_file = $images[0];// Get First image in folder as thumb 
-                }
             
                 // Get Thumb URL value                
                 // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
                 $ag_pathWithStripExt=$this->imagesFolderPhysicalPath.$folderName;
-                $descriptionFileApsolutePath=$ag_pathWithStripExt.".XML";
+                $ag_XML_path=$ag_pathWithStripExt.".XML";
                 if(file_exists($ag_pathWithStripExt.".xml")){
-                    $descriptionFileApsolutePath=$ag_pathWithStripExt.".xml";
+                    $ag_XML_path=$ag_pathWithStripExt.".xml";
                 }
-                if(file_exists($descriptionFileApsolutePath)){// Check is descriptions file exists
+                if(file_exists($ag_XML_path)){// Check is descriptions file exists
                     $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
-                    $ag_XML_xml->loadFile($descriptionFileApsolutePath);
-                    if($ag_XML_xml->document->thumb[0]){
-                        $thumb_file = & $ag_XML_xml->document->thumb[0]->data();
+                    $ag_XML_xml = simplexml_load_file($ag_XML_path);
+                    if(isset($ag_XML_xml->thumb)){
+                        $thumb_file = (string)$ag_XML_xml->thumb;
                     }
-                }  
-                $ag_XML_visibility = "VISIBLE";     
-                if($ag_XML_xml->document->visibility[0]){
-                    $ag_XML_visibility =& $ag_XML_xml->document->visibility[0]->data();
                 }
-                if($ag_XML_visibility == "VISIBLE"){// SUPPORT FOR HIDDEN FOLDERS
-                        if(!empty($thumb_file)){
-                        $this->Album_generateThumb($folderName, $thumb_file);
-                        }
-                        $html.='<a href="#" onClick="AG_form_submit_'.$this->articleID.'('.$this->index.',1,\''.$this->imagesFolderName.'/'.$folderName.'\'); return false;" class="AG_album_thumb">';
-                        $html.='<span class="AG_album_thumb_img">';
-                        $html.='<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$folderName.'/'.basename($thumb_file).'" />'."\n";
-                        $html.='</span>';
-                        $html.='<span class="AG_album_thumb_label">';
-                        $html.=$this->descArray[$folderName];
-                        $html.='</span>';
-                        $html.='</a>';
+                if(empty($thumb_file)){
+                    $images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath.$folderName);
+                    if (!empty($images)) {
+                        $images = agHelper::array_sorting($images, $this->imagesFolderPhysicalPath.$folderName.DS);
+                        $thumb_file = $images[0];// Get First image in folder as thumb 
+                    }                
+                }                  
+                if(!empty($thumb_file)){
+                    $this->Album_generateThumb($folderName, $thumb_file);
+                }else{
+                    continue; // SKIP IF NO THUMB IMAGES
                 }
+                $html.='<a href="#" onClick="AG_form_submit_'.$this->articleID.'('.$this->index.',1,\''.$this->imagesFolderName.'/'.$folderName.'\'); return false;" class="AG_album_thumb">';
+                $html.='<span class="AG_album_thumb_img">';
+                $html.='<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$folderName.'/'.basename($thumb_file).'" />'."\n";
+                $html.='</span>';
+                $html.='<span class="AG_album_thumb_label">';
+                $html.=$this->descArray[$folderName];
+                $html.='</span>';
+                $html.='</a>';
             }
             $html.= '<br style="clear:both;" /></div>'."\n";
         }
@@ -431,30 +430,34 @@ class agGallery extends agHelper {
     }
     // Loads images array, sorted as defined bu parametar.
     private function loadImageFiles(){
+        $this->images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath);
+        if (!empty($this->images)) {
+            $this->images = agHelper::array_sorting($this->images, $this->imagesFolderPhysicalPath);
+        }
 
-          $this->images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath, $this->params['arrange']);
+        // Paginations Support
+        if($this->params['paginUse']){
+	        $this->paginImgTotal = count($this->images);
+	        $paginImages = Array();
+	        $ag_pagin_start = ($this->paginInitPages[$this->index]-1)*$this->params['paginImagesPerGallery'];
+	        $ag_pagin_end = ($this->paginInitPages[$this->index]*$this->params['paginImagesPerGallery'])-1;
 
-          // Paginations Support
-          if($this->params['paginUse']){
-	    $this->paginImgTotal = count($this->images);
-	    $paginImages = Array();
-	    $ag_pagin_start = ($this->paginInitPages[$this->index]-1)*$this->params['paginImagesPerGallery'];
-	    $ag_pagin_end = ($this->paginInitPages[$this->index]*$this->params['paginImagesPerGallery'])-1;
-
-	    if(!empty($this->images)){
-	      for($i=$ag_pagin_start;$i<=$ag_pagin_end;$i++){
-	        if($i < $this->paginImgTotal){
-	          $paginImages[] = $this->images[$i];
+	        if(!empty($this->images)){
+	          for($i=$ag_pagin_start;$i<=$ag_pagin_end;$i++){
+	            if($i < $this->paginImgTotal){
+	              $paginImages[] = $this->images[$i];
+	            }
+	          }
 	        }
-	      }
-	    }
 
-	    $this->images = $paginImages;
-          }
-
+	        $this->images = $paginImages;
+        }
     }
-    private function loadFolders(){
-         $this->folders = agHelper::ag_foldersArrayFromFolder($this->imagesFolderPhysicalPath);
+    private function loadFolders(){ 
+        $this->folders = agHelper::ag_foldersArrayFromFolder($this->imagesFolderPhysicalPath);
+        if (!empty($this->folders)) { 
+            $this->folders = agHelper::array_sorting($this->folders, $this->imagesFolderPhysicalPath);            
+        }
     }
     //Generates thumbs, check for settings change and recreates thumbs if it needs to
     function generateThumbs(){
