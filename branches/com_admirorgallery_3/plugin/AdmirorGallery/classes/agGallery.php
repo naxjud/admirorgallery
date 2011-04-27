@@ -5,14 +5,12 @@
  * @author Nikola Vasiljevski
  * 11.07.2010
  */
-//define( 'DS', DIRECTORY_SEPARATOR ); Defined in Joomla
-//define('PLUGIN_BASE_PATH', DS.'plugins'.DS.'content'.DS.'AdmirorGallery'.DS);
 define('PLUGIN_BASE_PATH', '/plugins/content/AdmirorGallery/');
 
 require_once (dirname(__FILE__).DS.'agHelper.php');
 require_once (dirname(__FILE__).DS.'agPopup.php');
 
-class agGallery extends agHelper {
+class agGallery {
     var $sitePath='';
     var $sitePhysicalPath = '';
     // Virtual path. Example: "http://www.mysite.com/plugin/content/AdmirorGallery/thumbs/"
@@ -47,9 +45,6 @@ class agGallery extends agHelper {
     private $descArray = array ();
     private $match = '';
     private $DS='/';
-
-    // relativ plugin path
-   // const PLUGIN_BASE_PATH = '/plugins/content/AdmirorGallery/';
 
     //**************************************************************************
     //Template API functions                                                  //
@@ -160,7 +155,12 @@ class agGallery extends agHelper {
 	    }
         return $html;
     }
-
+    /**
+     * Generates HTML link to album page
+     * @param <type> $default_folder_img
+     * @param <type> $thumbHeight
+     * @return string
+     */
     function writeFolderThumb($default_folder_img, $thumbHeight){
         
         // Album Support
@@ -168,9 +168,7 @@ class agGallery extends agHelper {
         if($this->params['albumUse'] && !empty($this->folders)){
             $html.= '<div class="AG_album_wrap">'."\n";
             foreach ($this->folders as $folderKey => $folderName){
-                            
                 $thumb_file = "";
-            
                 // Get Thumb URL value                
                 // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
                 $ag_pathWithStripExt=$this->imagesFolderPhysicalPath.$folderName;
@@ -179,7 +177,6 @@ class agGallery extends agHelper {
                     $ag_XML_path=$ag_pathWithStripExt.".xml";
                 }
                 if(file_exists($ag_XML_path)){// Check is descriptions file exists
-                    $ag_XML_xml = & JFactory::getXMLParser( 'simple' );
                     $ag_XML_xml = simplexml_load_file($ag_XML_path);
                     if(isset($ag_XML_xml->thumb)){
                         $thumb_file = (string)$ag_XML_xml->thumb;
@@ -210,7 +207,10 @@ class agGallery extends agHelper {
         }
         return $html;
     }
-
+    /**
+     * Pagination HTML output
+     * @return string
+     */
     function writePagination(){
         // Paggination Support
         $html = "";
@@ -348,15 +348,21 @@ class agGallery extends agHelper {
         $this->currTemplateRoot = 'templates/'.$this->params['template'].'/';
         $this->pluginPath = $this->sitePath.PLUGIN_BASE_PATH;
     }
-    // Clears obsolete thumbnail folders
+    /**
+     *  Clears obsolete thumbnail folders
+     */
     function cleanThumbsFolder(){
         $this->ag_cleanThumbsFolder($this->imagesFolderPhysicalPath, $this->thumbsFolderPhysicalPath);
     }
-    // Clears obsolete thumbnails
+    /**
+     *  Clears obsolete thumbnails
+     */
     function clearOldThumbs(){
         $this->ag_clearOldThumbs($this->imagesFolderPhysicalPath, $this->thumbsFolderPhysicalPath,$this->params['albumUse']);
     }
-    // Reads description files
+    /**
+     *  Reads description files
+     */
     private function readDescriptionFiles(){
         // Create Images Array
         unset($this->descArray);
@@ -428,7 +434,9 @@ class agGallery extends agHelper {
         $this->descArray=null;
         
     }
-    // Loads images array, sorted as defined bu parametar.
+    /**
+     *  Loads images array, sorted as defined bu parametar.
+     */
     private function loadImageFiles(){
         $this->images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath);
         if (!empty($this->images)) {
@@ -453,13 +461,18 @@ class agGallery extends agHelper {
 	        $this->images = $paginImages;
         }
     }
-    private function loadFolders(){ 
+    /**
+     * Loads folder array, sorted as defined bu parametar.
+     */
+    private function loadFolders(){
         $this->folders = agHelper::ag_foldersArrayFromFolder($this->imagesFolderPhysicalPath);
         if (!empty($this->folders)) { 
             $this->folders = agHelper::array_sorting($this->folders, $this->imagesFolderPhysicalPath);            
         }
     }
-    //Generates thumbs, check for settings change and recreates thumbs if it needs to
+    /**
+     * Generates thumbs, check for settings change and recreates thumbs if it needs to
+     */
     function generateThumbs(){
         if(($this->params['thumbWidth']==0) || ($this->params['thumbHeight']==0))
         {
@@ -505,9 +518,10 @@ class agGallery extends agHelper {
                 }
         }
 	}
-    }
-    
-    //Generates Album Thumbs
+    }   
+    /**
+     * Generates Album Thumbs
+     */
     function Album_generateThumb($AG_parent_folder, $AG_img){
         if(($this->params['thumbWidth']==0) || ($this->params['thumbHeight']==0))
         {
@@ -552,7 +566,7 @@ class agGallery extends agHelper {
             $this->addError(JText::sprintf("Cannot read thumbnail",$thumb_file));
         }
     }
-    /*
+    /**
      * Returns error html
      */
     function writeErrors(){
@@ -572,10 +586,11 @@ class agGallery extends agHelper {
           }
 	  return $errors;
     }
-    // **************************** Breadcrump Support
-    // Written by Lee Anderson
-    // Authors e-mail: landerson@atlas-tech.com
-    //
+    /**
+     * Breadcrump Support
+     * Author: Lee Anderson
+     * Authors e-mail: landerson@atlas-tech.com
+     */
     function writeBreadcrum() {
         $folderNames = str_replace('//', '/', $this->imagesFolderName);
         $albumName = explode("/", $folderNames);
@@ -595,7 +610,9 @@ class agGallery extends agHelper {
             }
         }
     }
-     // Reads inline parametar if any or sets default values
+     /**
+      *  Reads inline parametar if any or sets default values
+      */
     function readInlineParams(){
         ////setting parametars for current gallery, if there is no inline params default params are set
         $this->params['template']= $this->ag_getParams("template",$this->match,$this->staticParams['template']);
