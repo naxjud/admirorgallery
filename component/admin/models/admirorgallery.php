@@ -7,7 +7,6 @@ jimport( 'joomla.application.component.model' );
 
 class AdmirorgalleryModelAdmirorgallery extends JModel
 {
-
     function _update() {
 	  $AG_DB_input='';
 
