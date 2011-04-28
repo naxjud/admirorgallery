@@ -102,7 +102,7 @@ class agGallery extends agHelper{
      */
     function writeImage($imageName,$cssClass=''){
         return '<img src="'.$this->imagesFolderPath.$imageName.'"
-                alt="'.strip_tags($this->descArray[$image]).'"
+                alt="'.strip_tags($this->descArray[$imageName]).'"
                 class="'.$cssClass.'">';
     }
     /**
@@ -113,7 +113,7 @@ class agGallery extends agHelper{
      */
     function writeThumb($imageName,$cssClass=''){
         return '<img src="'.$this->sitePath.PLUGIN_BASE_PATH.'thumbs/'.$this->imagesFolderName.'/'.$imageName.'"
-                alt="'.strip_tags($this->descArray[$image]).'"
+                alt="'.strip_tags($this->descArray[$imageName]).'"
                 class="'.$cssClass.'">';
     }
     /**
