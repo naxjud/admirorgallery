@@ -82,11 +82,13 @@ class plgContentAdmirorGallery extends JPlugin {
 // AG Form
 
 $row->text .= '
-<script type="text/javascript">
-function AG_form_submit_'.$AG->articleID.'(galleryIndex,paginPage,albumFolder) {
 
-var AG_Form_action="'.JURI::getInstance()->toString().'";
-AG_jQuery("body").append("<form action=\'"+AG_Form_action+"\' method=\'post\' name=\'AG_Form\' enctype=\'multipart/form-data\' id=\'AG_Form\'></form>");
+<script type="text/javascript">
+function AG_form_submit_'.$AG->articleID.'(galleryIndex,paginPage,albumFolder,linkID) {
+
+var AG_URL="'.JURI::getInstance()->toString().'";
+var split = AG_URL.split("?");
+var AG_URL = split[0]+"?";
 
 AG_jQuery(".ag_hidden_ID").each(function(index) {
 
@@ -101,15 +103,14 @@ AG_jQuery(".ag_hidden_ID").each(function(index) {
         albumInitFolders_array[galleryIndex] = albumFolder;
         albumInitFolders = albumInitFolders_array.toString();
     }
-    AG_jQuery("#AG_Form").append("<input type=\'hidden\' name=\'AG_form_paginInitPages_"+AG_jQuery(this).attr(\'id\')+"\' value=\'"+paginInitPages+"\' />");
-    AG_jQuery("#AG_Form").append("<input type=\'hidden\' name=\'AG_form_albumInitFolders_"+AG_jQuery(this).attr(\'id\')+"\' value=\'"+albumInitFolders+"\' />");
-
+    AG_URL+="AG_form_paginInitPages_"+AG_jQuery(this).attr(\'id\')+"="+paginInitPages+"&";
+    AG_URL+="AG_form_albumInitFolders_"+AG_jQuery(this).attr(\'id\')+"="+albumInitFolders+"&";
 });
 
-AG_jQuery("#AG_Form").append("<input type=\'hidden\' name=\'AG_form_scrollTop\' value=\'"+AG_jQuery(window).scrollTop()+"\' />");
-AG_jQuery("#AG_Form").append("<input type=\'hidden\' name=\'AG_form_scrollLeft\' value=\'"+AG_jQuery(window).scrollLeft()+"\' />");
+AG_URL+="AG_form_scrollTop"+"="+AG_jQuery(window).scrollTop()+"&";
+AG_URL+="AG_form_scrollLeft"+"="+AG_jQuery(window).scrollLeft()+"&";
 
-document.forms["AG_Form"].submit();
+window.open(AG_URL,"_self");
 
 }
 </script>

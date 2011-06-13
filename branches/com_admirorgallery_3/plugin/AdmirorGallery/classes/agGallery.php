@@ -227,7 +227,7 @@ class agGallery extends agHelper{
                 if($i == $this->paginInitPages[$this->index]){
                     $html.= '<span class="AG_pagin_current">'.$i.'</span>';
                 }else{
-                    $html.= '<a href="" onClick="AG_form_submit_'.$this->articleID.'('.$this->index.','.$i.',\''.$this->imagesFolderName.'\'); return false;" class="AG_pagin_link">'.$i.'</a>';
+                    $html.= '<a href="" onClick="AG_form_submit_'.$this->articleID.'('.$this->index.','.$i.',\''.$this->imagesFolderName.'\',this);return false;" class="AG_pagin_link">'.$i.'</a>';
                 }
             }
             $paginNext=($this->paginInitPages[$this->index]+1);
@@ -303,8 +303,8 @@ class agGallery extends agHelper{
         // Pagination Support
         if($this->params['paginUse'] || $this->params['albumUse']){
             $this->paginInitPages[]=1;
-	        if(!empty($_POST['AG_form_paginInitPages_'.$this->articleID])){
-	            $AG_form_paginInitPages_array=explode(",",$_POST['AG_form_paginInitPages_'.$this->articleID]);
+	        if(!empty($_GET['AG_form_paginInitPages_'.$this->articleID])){
+	            $AG_form_paginInitPages_array=explode(",",$_GET['AG_form_paginInitPages_'.$this->articleID]);
 	            $this->paginInitPages[$this->index]=$AG_form_paginInitPages_array[$this->index];
 	        }        
             $this->doc->addScriptDeclaration('var paginInitPages_'.$this->articleID.'="'.implode(",", $this->paginInitPages).'";');
@@ -313,8 +313,8 @@ class agGallery extends agHelper{
             $this->albumParentLink = '';
             $this->albumInitFolders[]="";
             $this->albumInitFolders[$this->index]=$this->imagesFolderName; // Set init folders
-            if(!empty($_POST['AG_form_albumInitFolders_'.$this->articleID])){
-                $AG_form_albumInitFolders_array=explode(",",$_POST['AG_form_albumInitFolders_'.$this->articleID]);
+            if(!empty($_GET['AG_form_albumInitFolders_'.$this->articleID])){
+                $AG_form_albumInitFolders_array=explode(",",$_GET['AG_form_albumInitFolders_'.$this->articleID]);
                 $this->albumInitFolders[$this->index] = $AG_form_albumInitFolders_array[$this->index];
                 $this->imagesFolderName = $AG_form_albumInitFolders_array[$this->index];
                 // Support for Album Parent Link
