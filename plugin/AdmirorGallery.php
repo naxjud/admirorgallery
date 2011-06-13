@@ -87,7 +87,7 @@ $row->text .= '
 function AG_form_submit_'.$AG->articleID.'(galleryIndex,paginPage,albumFolder,linkID) {
 
 var AG_URL="'.JURI::getInstance()->toString().'";
-var split = AG_URL.split("AGMARK=0");
+var split = AG_URL.split("AG_MK=0");
 if(split.length==3){
     AG_URL = split[0]+split[2];
 }
@@ -96,7 +96,7 @@ if ((char != "?") && (char != "&"))
 {
     AG_URL += (AG_URL.indexOf("?")<0) ? "?" : "&";
 }
-AG_URL+="AGMARK=0&";
+AG_URL+="AG_MK=0&";
 
 AG_jQuery(".ag_hidden_ID").each(function(index) {
 
@@ -118,7 +118,7 @@ AG_jQuery(".ag_hidden_ID").each(function(index) {
 AG_URL+="AG_form_scrollTop"+"="+AG_jQuery(window).scrollTop()+"&";
 AG_URL+="AG_form_scrollLeft"+"="+AG_jQuery(window).scrollLeft()+"&";
 
-AG_URL+="AGMARK=0";
+AG_URL+="AG_MK=0";
 
 window.open(AG_URL,"_self");
 
