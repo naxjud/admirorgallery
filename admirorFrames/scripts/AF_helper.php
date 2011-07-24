@@ -1,11 +1,6 @@
 <?php
 
-// Igor Kekeljevic, 2010.
-
-
-
-
-
+// Igor Kekeljevic, 2011.
 
 class AF_helper {
 
@@ -14,7 +9,7 @@ class AF_helper {
     var $staticParams = array();   
 
     function AF_createImg($ID) {
-         return JURI::root()."plugins/content/admirorframes/scripts/thumbnailer.php?src_file=".$this->params['templates_BASE'].$this->params['template'].DS.$ID.".png&bgcolor=".$this->params['bgcolor']."&colorize=".$this->params['colorize']."&ratio=".$this->params['ratio'];
+         return JURI::root()."plugins/content/admirorframes/scripts/thumbnailer.php?src_file=".urlencode($this->params['templates_BASE']).urlencode($this->params['template'].DS).$ID.".png&bgcolor=".$this->params['bgcolor']."&colorize=".$this->params['colorize']."&ratio=".$this->params['ratio'];
     }
         
     //Gets the atributes value by name, else returns false
