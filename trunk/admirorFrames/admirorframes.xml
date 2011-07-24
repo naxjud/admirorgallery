@@ -2,7 +2,7 @@
 <extension version="1.7" type="plugin" group="content">
     <name>Admiror Frames Plugin</name>
     <author>Igor Kekeljevic and Nikola Vasiljevski</author>
-    <creationDate>11/02/2010</creationDate>	
+    <creationDate>11/07/2011</creationDate>	
     <copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
     <authorEmail></authorEmail>
     <authorUrl>http://www.admiror-design-studio.com</authorUrl>
@@ -39,7 +39,7 @@
                 
                 <field name="af_bgcolor" type="text" default="FFFFFF" label="AF_BGCOLOR_LABEL" description="AF_BGCOLOR_DESC" />                
                 
-                <field name="af_colorize" type="text" default="" label="AF_COLORIZE_LABEL" description="AF_COLORIZE_DESC" />
+                <field name="af_colorize" type="text" default="000000" label="AF_COLORIZE_LABEL" description="AF_COLORIZE_DESC" />
 
                 <field name="af_width" type="text" default="100%" label="AF_WIDTH_LABEL" description="AF_WIDTH_DESC" />
 
