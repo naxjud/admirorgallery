@@ -8,8 +8,9 @@ class AF_helper {
     var $params =  array();
     var $staticParams = array();   
 
-    function AF_createImg($ID) {
-         return JURI::root()."plugins/content/admirorframes/scripts/thumbnailer.php?src_file=".urlencode($this->params['templates_BASE']).urlencode($this->params['template'].DS).$ID.".png&bgcolor=".$this->params['bgcolor']."&colorize=".$this->params['colorize']."&ratio=".$this->params['ratio'];
+    protected function AF_createImg($ID) {
+        $url=JURI::root()."plugins/content/admirorframes/scripts/AF_gd_stream.php?src_file=".urlencode($this->params['templates_BASE'].$this->params['template'].DS.$ID.".png")."&bgcolor=".$this->params['bgcolor']."&colorize=".$this->params['colorize']."&ratio=".$this->params['ratio'];
+        return (string)$url;
     }
         
     //Gets the atributes value by name, else returns false
@@ -22,65 +23,32 @@ class AF_helper {
         return $default;
     }
 
-    function AF_createFrame($source_html, $matchValue) { 
+    function AF_createFrame($source_html, $matchValue, $frameID) { 
     
         // ---------------------------------------------------------- GET PARAMS
-		$af_width_inline = $this->AF_getAttribute("width",$matchValue,$this->staticParams['width']);
-		if ($af_width_inline)
-			$this->params['width'] = $af_width_inline;
-		
-		$af_bgcolor_inline = $this->AF_getAttribute("bgcolor",$matchValue,$this->staticParams['bgcolor']);
-		if ($af_bgcolor_inline)
-			$this->params['bgcolor'] = $af_bgcolor_inline;
-		
-		$af_colorize_inline = $this->AF_getAttribute("colorize",$matchValue,$this->staticParams['colorize']);
-		if ($af_colorize_inline)
-			$this->params['colorize'] = $af_colorize_inline;
-		
-		$af_height_inline = $this->AF_getAttribute("height",$matchValue,$this->staticParams['height']);
-		if ($af_height_inline)
-			$this->params['height'] = $af_height_inline;
-
-		$af_ratio_inline = $this->AF_getAttribute("ratio",$matchValue,$this->staticParams['ratio']);
-		if ($af_ratio_inline)
-			$this->params['ratio'] = $af_ratio_inline;
-		
-		$af_horiAlign_inline = $this->AF_getAttribute("horiAlign",$matchValue,$this->staticParams['horiAlign']);
-		if ($af_horiAlign_inline)
-			$this->params['horiAlign'] = $af_horiAlign_inline;
-		
-		$af_vertAlign_inline = $this->AF_getAttribute("vertAlign",$matchValue,$this->staticParams['vertAlign']);
-		if ($af_vertAlign_inline)
-			$this->params['vertAlign'] = $af_vertAlign_inline;
-		
-		$af_template_inline = $this->AF_getAttribute("template",$matchValue,$this->staticParams['template']);
-		if ($af_template_inline)
-			$this->params['template'] = $af_template_inline;
-		
-		$af_float_inline = $this->AF_getAttribute("float",$matchValue,$this->staticParams['float']);
-		if ($af_float_inline)
-			$this->params['float'] = $af_float_inline;
-		
-		$af_margin_inline = $this->AF_getAttribute("margin",$matchValue,$this->staticParams['margin']);
-		if ($af_margin_inline)
-			$this->params['margin'] = $af_margin_inline;
+		$this->params['width'] = $this->AF_getAttribute("width",$matchValue,$this->staticParams['width']);
+		$this->params['bgcolor'] = $this->AF_getAttribute("bgcolor",$matchValue,$this->staticParams['bgcolor']);
+        $this->params['colorize'] = $this->AF_getAttribute("colorize",$matchValue,$this->staticParams['colorize']);
+        $this->params['height'] = $this->AF_getAttribute("height",$matchValue,$this->staticParams['height']);
+        $this->params['ratio'] = (int)$this->AF_getAttribute("ratio",$matchValue,$this->staticParams['ratio']);
+        $this->params['horiAlign'] = $this->AF_getAttribute("horiAlign",$matchValue,$this->staticParams['horiAlign']);
+        $this->params['vertAlign'] = $this->AF_getAttribute("vertAlign",$matchValue,$this->staticParams['vertAlign']);
+        $this->params['template'] = $this->AF_getAttribute("template",$matchValue,$this->staticParams['template']);
+        $this->params['float'] = $this->AF_getAttribute("float",$matchValue,$this->staticParams['float']);
+        $this->params['margin'] = (int)$this->AF_getAttribute("margin",$matchValue,$this->staticParams['margin']);
+        $this->params['padding'] = (int)$this->AF_getAttribute("padding",$matchValue,$this->staticParams['padding']);
 			
-		$af_padding_inline = $this->AF_getAttribute("padding",$matchValue,$this->staticParams['padding']);
-		if ($af_padding_inline)
-			$this->params['padding'] = $af_padding_inline;
-			
-			
-		// -------------------------------------------------------- CONVERT RATIO
 		$this->params['ratio'] = $this->params['ratio']/100;
-			
-			
+        if(empty($this->params['colorize']))$this->params['colorize'] = "disable";
+        $this->params['tableID'] = 'AF_'.$this->params['template'].'_'.$frameID;
+		
 		// -------------------------------------------------------- CREATE TABLE
 		$content="<!-- ADMIROR FRAMES -->";         
-        $content.='<table border="0" cellspacing="0" cellpadding="0" class="AF_'.$this->params['template'].'" >'."\n";
+        $content.='<table border="0" cellspacing="0" cellpadding="0" class="'.$this->params['tableID'].'" >'."\n";
         $content.='<tbody>'."\n";
-        $content.='<tr><td class="TL">&nbsp;</td><td class="T">&nbsp;</td><td class="TR">&nbsp;</td></tr>'."\n";      
-        $content.='<tr><td class="L">&nbsp;</td><td class="C">'.$source_html.'</td><td class="R">&nbsp;</td></tr>'."\n";
-        $content.='<tr><td class="BL">&nbsp;</td><td class="B">&nbsp;</td><td class="BR">&nbsp;</td></tr></tbody></table>'."\n";
+        $content.='<tr><td class="TL"></td><td class="T"></td><td class="TR"></td></tr>'."\n";      
+        $content.='<tr><td class="L"></td><td class="C">'.$source_html.'</td><td class="R"></td></tr>'."\n";
+        $content.='<tr><td class="BL"></td><td class="B"></td><td class="BR"></td></tr></tbody></table>'."\n";
         
         
         
@@ -95,12 +63,14 @@ class AF_helper {
         $BR_height = round($BR_height * $this->params['ratio']);
         if($BR_width<4)$BR_width=4;
         if($BR_height<4)$BR_height=4;
-        
+               
         $content.='
         <style type="text/css">
         ';
 
-        $content.= 'table.AF_'.$this->params['template'].'{'."\n";
+        $content.= 'table.'.$this->params['tableID'].'{
+            empty-cells:show;
+        '."\n";
             if(!empty($this->params['float']))$content.='float:'.$this->params['float'].';'."\n";
             if(!empty($this->params['margin']))$content.='margin:'.$this->params['margin'].';'."\n";
             if(!empty($this->params['width']))$content.='width:'.$this->params['width'].';'."\n";
@@ -108,29 +78,25 @@ class AF_helper {
         $content.='}'."\n";
 
         $content.=' 
-        table.AF_'.$this->params['template'].', table.AF_'.$this->params['template'].' tr, table.AF_'.$this->params['template'].' td{border:none;margin:0;padding:0;}
-        table.AF_'.$this->params['template'].' .TL{
+        table.'.$this->params['tableID'].', table.'.$this->params['tableID'].' tr, table.'.$this->params['tableID'].' td{border:none;margin:0;padding:0;}
+        table.'.$this->params['tableID'].' .TL{
             background-image:url('.$this->AF_createImg("TL").');
             width:'.$TL_width.'px;
             height:'.$TL_height.'px;
-            font-size:1px;
             }
-        table.AF_'.$this->params['template'].' .T{
+        table.'.$this->params['tableID'].' .T{
             background-image:url('.$this->AF_createImg("T").');
-            font-size:1px;
             }
-        table.AF_'.$this->params['template'].' .TR{
+        table.'.$this->params['tableID'].' .TR{
             background-image:url('.$this->AF_createImg("TR").');
             background-position:right top;
-            font-size:1px;
             }
-        table.AF_'.$this->params['template'].' .L{
+        table.'.$this->params['tableID'].' .L{
             background-image:url('.$this->AF_createImg("L").');
-            font-size:1px;
             }
         ';
 
-        $content.='table.AF_'.$this->params['template'].' .C{
+        $content.='table.'.$this->params['tableID'].' .C{
             background-image:url('.$this->AF_createImg("C").');
             '."\n";
             if(!empty($this->params['padding']))$content.='padding:'.$this->params['padding'].';'."\n";
@@ -139,25 +105,21 @@ class AF_helper {
         $content.='}'."\n";
 
         $content.='
-        table.AF_'.$this->params['template'].' .R{
+        table.'.$this->params['tableID'].' .R{
             background-image:url('.$this->AF_createImg("R").');
             background-position:right top;
-            font-size:1px;
             }
-        table.AF_'.$this->params['template'].' .BL{
+        table.'.$this->params['tableID'].' .BL{
             background-image:url('.$this->AF_createImg("BL").');
-            font-size:1px;
             }
-        table.AF_'.$this->params['template'].' .B{
+        table.'.$this->params['tableID'].' .B{
             background-image:url('.$this->AF_createImg("B").');
-            font-size:1px;
             }
-        table.AF_'.$this->params['template'].' .BR{
+        table.'.$this->params['tableID'].' .BR{
             background-image:url('.$this->AF_createImg("BR").');
             background-position:right top;
             width:'.$BR_width.'px;
             height:'.$BR_height.'px;
-            font-size:1px;
             }
         </style>
         ';    
