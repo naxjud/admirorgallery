@@ -27,6 +27,12 @@ class plgContentAdmirorframes extends JPlugin
 		return;
 	}
 	
+	//GD check
+    if (!function_exists('gd_info')) {
+        // ERROR - Invalid image
+        return JFactory::getApplication()->enqueueMessage( JText::_( 'GD support is not enabled' ), 'error' );
+    }	
+
     require_once (JPATH_BASE.DS.'plugins'.DS.'content'.DS.'admirorframes'.DS.'scripts'.DS.'AF_helper.php');
 
     $AF = new AF_helper();  
@@ -34,7 +40,7 @@ class plgContentAdmirorframes extends JPlugin
   // Default parameters
 	$AF->staticParams['template'] = $this->params->get('af_template', 'default');
 	$AF->staticParams['bgcolor'] = $this->params->get('af_bgcolor', 'white');	
-	$AF->staticParams['colorize'] = $this->params->get('af_colorize', '000000');	
+	$AF->staticParams['colorize'] = $this->params->get('af_colorize', '');	
 	$AF->staticParams['ratio'] = $this->params->get('af_ratio', '100');
 	$AF->staticParams['width'] = $this->params->get('af_width', '100%');
 	$AF->staticParams['height'] = $this->params->get('af_height', '');	
@@ -54,7 +60,7 @@ class plgContentAdmirorframes extends JPlugin
 		foreach($matches[0] as $matchKey => $matchValue)
 		{		
 		
-			$html=$AF->AF_createFrame(preg_replace("/{.+?}/", "", $matchValue), $matchValue);
+			$html=$AF->AF_createFrame(preg_replace("/{.+?}/", "", $matchValue), $matchValue, $matchKey."_".rand(0,1000000));
 			$row->text = str_replace( $matchValue, $html , $row->text);
 		  
 		}
