@@ -53,7 +53,7 @@ class plgContentAdmirorGallery extends JPlugin {
             JPlugin::loadLanguage( 'plg_content_AdmirorGallery' ,JPATH_ADMINISTRATOR);
             // Version check
             $version = new JVersion();
-            if ($version->PRODUCT == "Joomla!" && ($version->RELEASE != "1.6" || $version->RELEASE != "1.7)) {
+            if ($version->PRODUCT == "Joomla!" && ($version->RELEASE != "1.6" && $version->RELEASE != "1.7")) {
                 $AG->addError(JText::_('Admiror Designe Studio "Admiror Gallery" Plugin functions only under Joomla! 1.6 or 1.7'));
             }
             //if any image is corrupted supresses recoverable error

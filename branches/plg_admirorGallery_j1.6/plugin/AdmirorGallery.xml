@@ -13,7 +13,7 @@
  <config><fields name="params"><fieldset name="basic">
 	    <field type="spacer" default="BASIC SETTINGS" />
 
-		        <field name="rootFolder" type="text" default="/images/stories/" size="20" label="IMAGES ROOT FOLDER" description="IMAGES ROOT FOLDER DESC" />
+		        <field name="rootFolder" type="text" default="/images/sampledata/" size="20" label="IMAGES ROOT FOLDER" description="IMAGES ROOT FOLDER DESC" />
 
 	        <field name="thumbWidth" type="text" default="200" size="4" label="THUMBNAIL WIDTH" description="THUMBNAIL WIDTH DESC" />
 
