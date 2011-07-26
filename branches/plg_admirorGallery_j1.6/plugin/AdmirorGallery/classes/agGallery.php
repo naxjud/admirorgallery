@@ -5,7 +5,7 @@
  * @author Nikola Vasiljevski
  * 11.07.2010
  */
-define('PLUGIN_BASE_PATH', '/plugins/content/AdmirorGallery/');
+define('PLUGIN_BASE_PATH', '/plugins/content/AdmirorGallery/AdmirorGallery/');
 
 require_once (dirname(__FILE__).DS.'agHelper.php');
 require_once (dirname(__FILE__).DS.'agPopup.php');
@@ -269,7 +269,7 @@ class agGallery extends agHelper{
      * Initialises Popup engine. Loads popupEngine settings and scripts
      */
     function initPopup(){
-        require ('plugins'.DS.'content'.DS.'AdmirorGallery'.DS.'popups'.DS.$this->params['popupEngine'].DS.'index.php');
+        require ('plugins'.DS.'content'.DS.'AdmirorGallery'.DS.'AdmirorGallery'.DS.'popups'.DS.$this->params['popupEngine'].DS.'index.php');
         return  $this->popupEngine->initCode;
     }
     /*
@@ -660,7 +660,7 @@ class agGallery extends agHelper{
         $this->staticParams['usePopuEngine']= $globalParams->get('usePopuEngine', true);
         $this->staticParams['ignoreError']= $globalParams->get('ignoreError', true);
         $this->staticParams['ignoreAllError']= $globalParams->get('ignoreAllError', false);
-        $this->staticParams['rootFolder']= $globalParams->get('rootFolder','/images/stories/');
+        $this->staticParams['rootFolder']= $globalParams->get('rootFolder','/images/sampledata/');
         $this->staticParams['backgroundColor']= $globalParams->get('backgroundColor','ffffff');
         $this->staticParams['foregroundColor']= $globalParams->get('foregroundColor','808080');
         $this->staticParams['highliteColor']= $globalParams->get('highliteColor','fea804');

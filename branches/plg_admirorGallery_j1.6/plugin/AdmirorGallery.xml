@@ -3,11 +3,11 @@
 
 	<name>Admiror Gallery Engine</name>
 	<author>Vasiljevski and Kekeljevic</author>
-	<creationDate>01/10/2009</creationDate>	
+	<creationDate>26/07/2011</creationDate>	
 	<copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.admiror-design-studio.com</authorUrl>
-	<version>3.1.0</version>
+	<version>4.0.0</version>
 	<description>ADMIRORDESCRIPTION</description>
 	
  <config><fields name="params"><fieldset name="basic">
@@ -113,6 +113,6 @@
 		<folder>AdmirorGallery</folder>							
 	</files>
     <languages>
-            <language tag="en-GB">en-GB.plg_content_AdmirorGallery.ini</language>
+            <language tag="en-GB">en-GB.plg_content_admirorgallery.sys.ini</language>
     </languages>
 </extension>
