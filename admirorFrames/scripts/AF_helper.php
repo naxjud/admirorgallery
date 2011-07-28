@@ -6,7 +6,25 @@ class AF_helper {
 
     
     var $params =  array();
-    var $staticParams = array();   
+    var $staticParams = array();  
+    
+    function  __construct($globalParams,$templatePath,$templateRoot) { 
+    	  // Default parameters
+			$this->staticParams['template'] = $globalParams->get('af_template', 'default');
+			$this->staticParams['bgcolor'] = $globalParams->get('af_bgcolor', 'white');	
+			$this->staticParams['colorize'] = $globalParams->get('af_colorize', '');	
+			$this->staticParams['ratio'] = $globalParams->get('af_ratio', '100');
+			$this->staticParams['width'] = $globalParams->get('af_width', '100%');
+			$this->staticParams['height'] = $globalParams->get('af_height', '');	
+			$this->staticParams['margin'] = $globalParams->get('af_margin', '0');
+			$this->staticParams['padding'] = $globalParams->get('af_padding', '0');
+			$this->staticParams['horiAlign'] = $globalParams->get('af_horiAlign', 'left');
+			$this->staticParams['vertAlign'] = $globalParams->get('af_vertAlign', 'top');
+			$this->staticParams['float'] = $globalParams->get('af_float', 'none');
+			$this->staticParams['showSignature'] = $globalParams->get('af_showSignature', '1');
+			$this->params['templates_BASE'] = $templatePath;  
+			$this->params['templates_ROOT'] = $templateRoot; 
+    }
 
     protected function AF_createImg($ID) {
         $url=JURI::root()."plugins/content/admirorframes/scripts/AF_gd_stream.php?src_file=".urlencode($this->params['templates_BASE'].$this->params['template'].DS.$ID.".png")."&bgcolor=".$this->params['bgcolor']."&colorize=".$this->params['colorize']."&ratio=".$this->params['ratio'];
@@ -16,6 +34,7 @@ class AF_helper {
     //Gets the atributes value by name, else returns false
     protected function AF_getAttribute($attrib, $tag, $default) {
         //get attribute from html tag
+        $tag = str_replace("}","",$tag);
         $re = '/' . preg_quote($attrib) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
         if (preg_match($re, $tag, $match)) {
             return urldecode($match[2]);

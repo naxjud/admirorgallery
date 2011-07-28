@@ -35,25 +35,8 @@ class plgContentAdmirorframes extends JPlugin
 
     require_once (JPATH_BASE.DS.'plugins'.DS.'content'.DS.'admirorframes'.DS.'scripts'.DS.'AF_helper.php');
 
-    $AF = new AF_helper();  
-    
-  // Default parameters
-	$AF->staticParams['template'] = $this->params->get('af_template', 'default');
-	$AF->staticParams['bgcolor'] = $this->params->get('af_bgcolor', 'white');	
-	$AF->staticParams['colorize'] = $this->params->get('af_colorize', '');	
-	$AF->staticParams['ratio'] = $this->params->get('af_ratio', '100');
-	$AF->staticParams['width'] = $this->params->get('af_width', '100%');
-	$AF->staticParams['height'] = $this->params->get('af_height', '');	
-	$AF->staticParams['margin'] = $this->params->get('af_margin', '0');
-	$AF->staticParams['padding'] = $this->params->get('af_padding', '0');
-	$AF->staticParams['horiAlign'] = $this->params->get('af_horiAlign', 'left');
-	$AF->staticParams['vertAlign'] = $this->params->get('af_vertAlign', 'top');
-	$AF->staticParams['float'] = $this->params->get('af_float', 'none');
-	$AF->staticParams['showSignature'] = $this->params->get('af_showSignature', '1');
-    $AF->params['templates_BASE'] = JPATH_BASE.DS.'plugins'.DS.'content'.DS.'admirorframes'.DS.'templates'.DS;  
-    $AF->params['templates_ROOT'] = JURI::root().'plugins/content/admirorframes/templates/';  
-
-		
+    $AF = new AF_helper($this->params,JPATH_BASE.DS.'plugins'.DS.'content'.DS.'admirorframes'.DS.'templates'.DS,JURI::root().'plugins/content/admirorframes/templates/');  
+    		
 	  if (preg_match_all("#{AF[^}]*}(.*?){/AF}#s", $row->text, $matches, PREG_PATTERN_ORDER)>0)
 	  {	
 		
