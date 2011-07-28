@@ -11,9 +11,9 @@
 	<description>ADMIRORDESCRIPTION</description>
 	
  <config><fields name="params"><fieldset name="basic">
-	    <field type="spacer" default="BASIC SETTINGS" />
+	    <field type="spacer" default="BASIC_SETTINGS" />
 
-		        <field name="rootFolder" type="text" default="/images/sampledata/" size="20" label="IMAGES ROOT FOLDER" description="IMAGES ROOT FOLDER DESC" />
+		        <field name="rootFolder" type="text" default="/images/sampledata/" size="20" label="IMAGES_ROOT_FOLDER" description="IMAGES_ROOT_FOLDER_DESC" />
 
 	        <field name="thumbWidth" type="text" default="200" size="4" label="THUMBNAIL WIDTH" description="THUMBNAIL WIDTH DESC" />
 
