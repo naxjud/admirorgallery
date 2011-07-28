@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="plugin" version="1.6" group="content" method="upgrade">
+<extension type="plugin" version="1.7" group="content" method="upgrade">
 
 	<name>Admiror Gallery Engine</name>
 	<author>Vasiljevski and Kekeljevic</author>
@@ -8,14 +8,14 @@
 	<authorEmail></authorEmail>
 	<authorUrl>http://www.admiror-design-studio.com</authorUrl>
 	<version>4.0.0</version>
-	<description>ADMIRORDESCRIPTION</description>
+	<description>PLG_ADMIRORGALLERY_XML_DESCRIPTION</description>
 	
  <config><fields name="params"><fieldset name="basic">
 	    <field type="spacer" default="BASIC_SETTINGS" />
 
 		        <field name="rootFolder" type="text" default="/images/sampledata/" size="20" label="IMAGES_ROOT_FOLDER" description="IMAGES_ROOT_FOLDER_DESC" />
 
-	        <field name="thumbWidth" type="text" default="200" size="4" label="THUMBNAIL WIDTH" description="THUMBNAIL WIDTH DESC" />
+	        <field name="thumbWidth" type="text" default="200" size="4" label="THUMBNAIL_WIDTH" description="THUMBNAIL_WIDTH_DESC" />
 
 	        <field name="thumbHeight" type="text" default="120" size="4" label="THUMBNAIL HEIGHT" description="THUMBNAIL HEIGHT DESC" />
 
@@ -114,6 +114,6 @@
 	</files>
     <languages>
 	        <language tag="en-GB">en-GB.plg_content_admirorgallery.ini</language>
-            <language tag="en-GB">en-GB.plg_content_admirorgallery.sys.ini</language>
+           <language tag="en-GB">en-GB.plg_content_admirorgallery.sys.ini</language>
     </languages>
 </extension>
