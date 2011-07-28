@@ -1,7 +1,8 @@
 <?php
 /**
- *  Admiror Gallery, based on Simple Image Gallery
+ *  Admiror Gallery Plugin
  *  Author: Igor Kekeljevic & Nikola Vasiljevski, 2011.
+ *  License http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
  *  Version: 4.0
  */
 defined('_JEXEC') or die('Restricted access');
@@ -54,7 +55,7 @@ class plgContentAdmirorGallery extends JPlugin {
             // Version check
             $version = new JVersion();
             if ($version->PRODUCT == "Joomla!" && ($version->RELEASE != "1.6" && $version->RELEASE != "1.7")) {
-                $AG->addError(JText::_('Admiror Designe Studio "Admiror Gallery" Plugin functions only under Joomla! 1.6 or 1.7'));
+                $AG->addError(JText::_('AG_ADMIROR_GALLERY_PLUGIN_FUNCTIONS_ONLY_UNDER'));
             }
             //if any image is corrupted supresses recoverable error
             ini_set('gd.jpeg_ignore_warning', $AG->params['ignoreError']);
@@ -70,11 +71,11 @@ class plgContentAdmirorGallery extends JPlugin {
                 $AG->initGallery($match);// match = ;
                 // ERROR - Cannot find folder with images
                 if (!file_exists($AG->imagesFolderPhysicalPath)) {
-                    $AG->addError(JText::sprintf('Cannot find folder inside folder',$AG->imagesFolderName,$AG->imagesFolderPhysicalPath));}
+                    $AG->addError(JText::sprintf('AG_CANNOT_FIND_FOLDER_INSIDE_FOLDER',$AG->imagesFolderName,$AG->imagesFolderPhysicalPath));}
                 //Create directory in thumbs for gallery
                 JFolder::create($AG->thumbsFolderPhysicalPath, 0755);
                 if (is_writable($AG->thumbsFolderPhysicalPath)) $AG->generateThumbs();
-                else $AG->addError(JText::sprintf('Admiror Gallery cannot create thumbnails in %s <br/>Check folder permmisions!',$AG->thumbsFolderPhysicalPath));
+                else $AG->addError(JText::sprintf('AG_CANNOT_CREATE_THUMBS_PERMMISIONS_ERROR',$AG->thumbsFolderPhysicalPath));
                 include (dirname(__FILE__).'/AdmirorGallery/templates/'.$AG->params['template'].'/index.php');
 
                 $AG->clearOldThumbs();
@@ -82,7 +83,6 @@ class plgContentAdmirorGallery extends JPlugin {
             }// foreach($matches[0] as $match)
 
 // AG Form
-
 $row->text .= '
 
 <script type="text/javascript">

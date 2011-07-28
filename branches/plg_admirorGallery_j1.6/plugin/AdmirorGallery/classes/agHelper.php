@@ -330,7 +330,7 @@ class agHelper {
         //GD check
         if (!function_exists('gd_info')) {
             // ERROR - Invalid image
-            return JText::_('GD support is not enabled');
+            return JText::_('AG_GD_SUPPORT_IS_NOT_ENABLED');
         }
 
         // Create src_img
@@ -341,7 +341,7 @@ class agHelper {
         } else if (preg_match("/gif/i", $original_file)) {
             @$src_img = imagecreatefromgif($original_file);
         } else {
-            return JText::sprintf('Unsupported image type for image', $original_file);
+            return JText::sprintf('AG_UNSUPPORTED_IMAGE_TYPE_FOR_IMAGE', $original_file);
         }
 
         @$src_width = imageSX($src_img); //$src_width
@@ -396,7 +396,7 @@ class agHelper {
         } else if (preg_match("/gif/i", $original_file)) {
             @imagegif($dst_img, $thumb_file);
         } else {
-            return JText::sprintf('Could not create thumbnail file for image', $original_file);
+            return JText::sprintf('AG_COULD_NOT_CREATE_THUMBNAIL_FILE_FOR_IMAGE', $original_file);
         }
         @imagedestroy($dst_img);
         @imagedestroy($src_img);
