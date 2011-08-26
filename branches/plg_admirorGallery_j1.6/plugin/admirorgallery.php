@@ -84,7 +84,7 @@ class plgContentAdmirorGallery extends JPlugin {
             <script type="text/javascript">
             function AG_form_submit_'.$AG->articleID.'(galleryIndex,paginPage,albumFolder,linkID) {
 
-            var AG_URL="'.JURI::getInstance()->toString().'";
+            var AG_URL="'.$_SERVER['REQUEST_URI'].'";
             var split = AG_URL.split("AG_MK=0");
             if(split.length==3){
                 AG_URL = split[0]+split[2];
