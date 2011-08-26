@@ -707,7 +707,7 @@ class agGallery extends agHelper {
         $this->staticParams['paginUse'] = $globalParams->get('paginUse', true);
         $this->staticParams['paginImagesPerGallery'] = $globalParams->get('paginImagesPerGallery', 10);
     }
-    //Constructor backward compatibility with for PHP4
+    //Constructor backward compatibility with PHP4
     function agGallery($globalParams, $path, $sitePhysicalPath, $document)
     {
         $this->__construct($globalParams, $path, $sitePhysicalPath, $document);
