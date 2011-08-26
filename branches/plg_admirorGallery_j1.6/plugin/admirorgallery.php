@@ -50,7 +50,7 @@ class plgContentAdmirorGallery extends JPlugin {
             JPlugin::loadLanguage( 'plg_content_AdmirorGallery' ,JPATH_ADMINISTRATOR);
             // Version check
             $version = new JVersion();
-            if ($version->PRODUCT == "Joomla!" && ($version->RELEASE != "1.6" || $version->RELEASE != "1.7")) {
+            if ($version->PRODUCT == "Joomla!" && ($version->RELEASE != "1.6" && $version->RELEASE != "1.7")) {
                 $AG->addError(JText::_('AG_ADMIROR_GALLERY_PLUGIN_FUNCTIONS_ONLY_UNDER'));
             }
             //if any image is corrupted supresses recoverable error
