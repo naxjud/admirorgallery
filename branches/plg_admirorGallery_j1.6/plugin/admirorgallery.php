@@ -1,10 +1,14 @@
 <?php
-/**
- *  Admiror Gallery Plugin
- *  Author: Igor Kekeljevic & Nikola Vasiljevski, 2011.
- *  License http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- *  Version: 4.0
- */
+ /*------------------------------------------------------------------------
+# plg_admirorgallery - Admiror Gallery Plugin
+# ------------------------------------------------------------------------
+# author    Vasiljevski & Kekeljevic
+# copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
+# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+# Websites: http://www.admiror-design-studio.com/joomla-extensions
+# Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
+# Version: 4.0
+-------------------------------------------------------------------------*/
 defined('_JEXEC') or die('Restricted access');
 // Import library dependencies
 jimport('joomla.event.plugin');

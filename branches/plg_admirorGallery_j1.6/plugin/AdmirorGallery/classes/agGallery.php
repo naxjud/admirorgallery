@@ -1,10 +1,15 @@
 <?php
-/**
- * Description of agGallery
- * *  License http://www.gnu.org/copyleft/gpl.html GNU/GPL, see LICENSE.php
- * @author Nikola Vasiljevski
- * 11.07.2010
- */
+/*------------------------------------------------------------------------
+# plg_admirorgallery - Admiror Gallery Plugin
+# ------------------------------------------------------------------------
+# author    Vasiljevski & Kekeljevic
+# copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
+# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+# Websites: http://www.admiror-design-studio.com/joomla-extensions
+# Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
+# Version: 4.0
+-------------------------------------------------------------------------*/
+ 
 define('PLUGIN_BASE_PATH', '/plugins/content/AdmirorGallery/AdmirorGallery/');
 
 require_once (dirname(__FILE__) . DS . 'agHelper.php');
