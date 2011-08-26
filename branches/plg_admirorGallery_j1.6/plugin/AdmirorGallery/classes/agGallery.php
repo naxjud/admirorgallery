@@ -600,7 +600,7 @@ class agGallery extends agHelper {
                 $errors.='<div class="error">' . $value . ' <br/>
                         Admiror Gallery: ' . AG_VERSION . '<br/>
                         Server OS:' . $_SERVER['SERVER_SOFTWARE'] . '<br/>
-						Client OS:' . $osVersion . '<br/>
+                        Client OS:' . $osVersion . '<br/>
                         PHP:' . $phpVersion . '
                         </div>' . "\n";
             }
@@ -707,7 +707,11 @@ class agGallery extends agHelper {
         $this->staticParams['paginUse'] = $globalParams->get('paginUse', true);
         $this->staticParams['paginImagesPerGallery'] = $globalParams->get('paginImagesPerGallery', 10);
     }
-
+    //Constructor backward compatibility with for PHP4
+    function agGallery($globalParams, $path, $sitePhysicalPath, $document)
+    {
+        $this->__construct($globalParams, $path, $sitePhysicalPath, $document);
+    }
     //**************************************************************************
     // END Gallery Functions                                                  //
     //**************************************************************************

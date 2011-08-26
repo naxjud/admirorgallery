@@ -9,7 +9,7 @@
     <authorUrl>http://www.admiror-design-studio.com</authorUrl>
     <version>4.0.0</version>
     <description>PLG_ADMIRORGALLERY_XML_DESCRIPTION</description>
-	
+
     <config>
         <fields name="params">
             <fieldset name="basic">
@@ -25,8 +25,8 @@
                     <option value="width">AG_WIDTH</option>
                     <option value="height">AG_HEIGHT</option>
                     <option value="none">AG_NONE</option>
-                </field>	
-	        
+                </field>
+        
                 <field name="template" type="folderlist" default="classic" label="AG_GALLERY_TEMPLATE" description="AG_GALLERY_TEMPLATE_DESC" directory="plugins/content/AdmirorGallery/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
 
                 <field name="popupEngine" type="folderlist" default="slimbox" label="AG_POPUP_ENGINE" description="AG_POPUP_ENGINE_DESC" directory="plugins/content/AdmirorGallery/AdmirorGallery/popups" exclude="" stripext="" hide_none="true" hide_default="true" />
@@ -111,11 +111,11 @@
     </config>
 	
     <files>
-        <filename plugin="admirorgallery">admirorgallery.php</filename>		
-        <folder>AdmirorGallery</folder>							
+        <filename plugin="admirorgallery">admirorgallery.php</filename>
+        <folder>AdmirorGallery</folder>
     </files>
-    <languages>
-        <language tag="en-GB">en-GB.plg_content_admirorgallery.ini</language>
-        <language tag="en-GB">en-GB.plg_content_admirorgallery.sys.ini</language>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_content_admirorgallery.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_content_admirorgallery.sys.ini</language>
     </languages>
 </extension>
