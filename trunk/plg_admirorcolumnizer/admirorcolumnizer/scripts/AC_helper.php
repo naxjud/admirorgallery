@@ -11,19 +11,15 @@
 -------------------------------------------------------------------------*/
 
 class AC_helper {
-
-    
-var $params =  array();
-var $staticParams = array();  
-
+	var $params =  array();
+	var $staticParams = array();
 	function  __construct($globalParams) { 
 		// Default parameters
 		$this->staticParams['columns'] = $globalParams->get('ac_columns', 2);
 		$this->staticParams['spacing'] = $globalParams->get('ac_spacing', 10);
 	}
-
 	//Gets the atributes value by name, else returns false
-	protected function AC_getAttribute($attrib, $tag, $default) {
+	private function AC_getAttribute($attrib, $tag, $default) {
 		//get attribute from html tag
 		$tag = str_replace("}","",$tag);
 		$re = '/' . preg_quote($attrib) . '=([\'"])?((?(1).+?|[^\s>]+))(?(1)\1)/is';
@@ -32,9 +28,7 @@ var $staticParams = array();
 		}
 		return $default;
 	}
-
 	function AC_createColumns($source_html, $matchValue, $id, $langDirection) { 
-
 		// ---------------------------------------------------------- LANG DIRECTION RELATED PARAMS
 		if($langDirection == "ltr"){
 			$AC_langDirection="left";
@@ -43,22 +37,17 @@ var $staticParams = array();
 			$AC_langDirection="right";
 			$AC_marginSide="left";
 		}
-
 		// ---------------------------------------------------------- GET PARAMS
-		$this->params['columns'] = $this->AC_getAttribute("columns",$matchValue,$this->staticParams['columns']);
-		$this->params['spacing'] = $this->AC_getAttribute("spacing",$matchValue,$this->staticParams['spacing']);
-
+		$this->params['columns'] = $this->AC_getAttribute("columns",$matchValue,$this->staticParams['columns'],2);
+		$this->params['spacing'] = $this->AC_getAttribute("spacing",$matchValue,$this->staticParams['spacing'],10);
 
 		$html="<!-- AdmirorColumnizer -->"."\n";
 		$html.='<div class="AC_columnizer_'.$id.'"><p>'."\n";
 		$html.=$source_html."\n";
 		$html.='</p></div><div style="clear:both"></div>'."\n";
-
 		$html.="
 		<script type='text/javascript'>
-
 			AC_jQuery(function(){
-
 				var ac_cols_parent_width = AC_jQuery('.AC_columnizer_".$id."').width();
 				var ac_cols_spacing = ".$this->params['spacing'].";
 				var ac_cols_num = ".$this->params['columns'].";
@@ -75,8 +64,6 @@ var $staticParams = array();
 				})
 
 			});
-
-
 		</script>
 		<style type='text/css'>
 			.AC_columnizer_".$id." .column{ margin:0; padding:0; margin-".$AC_marginSide.": ".$this->params['spacing']."px;}
@@ -84,15 +71,8 @@ var $staticParams = array();
 			.AC_columnizer_".$id." .last.column{ margin-".$AC_marginSide.": 0; }
 		</style>
 		";
-
-
-
 		return $html;
-
 	}
-
- 
-    
 }
 
 
