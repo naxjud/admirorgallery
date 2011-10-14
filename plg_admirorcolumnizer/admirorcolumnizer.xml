@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install version="1.5" type="plugin" group="content">
+<install version="1.5" type="plugin" group="content" method="upgrade">
     <name>Content - Admiror Columnizer</name>
     <author>Igor Kekeljevic and Nikola Vasiljevski</author>
-    <creationDate>11/07/2011</creationDate>	
+    <creationDate>14/10/2011</creationDate>	
     <copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
     <authorEmail></authorEmail>
     <authorUrl>http://www.admiror-design-studio.com</authorUrl>
-    <version>0.3</version>
+    <version>0.8</version>
     <description>PLG_CONTENT_admirorcolumnizer_XML_DESCRIPTION</description>
 	
 	<params>
-                
-                <param name="ac_columns" type="text" default="2" label="AC_COLUMNS_LABEL" description="AC_COLUMNS_DESC" />  
-                <param NAME="ac_spacing" TYPE="text" DEFAULT="10" LABEL="AC_SPACING_LABEL" description="AC_SPACING_DESC" />
-         			
+		<param name="ac_columns" type="text" default="2" label="AC_COLUMNS_LABEL" description="AC_COLUMNS_DESC" />  
+		<param name="ac_spacing" type="text" default="10" label="AC_SPACING_LABEL" description="AC_SPACING_DESC" />	
 	</params>
-	
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="ac_columns" type="text" default="2" label="AC_COLUMNS_LABEL" description=""/>
+				<field name="ac_spacing" type="text" default="10" label="AC_SPACING_DESC" description=""/>
+			</fieldset>
+		</fields>
+	</config>
 	<files>
 	    <folder plugin="admirorcolumnizer">admirorcolumnizer</folder>
 	    <filename plugin="admirorcolumnizer">admirorcolumnizer.php</filename>					
 	</files>
+	
     <languages folder="lang/admin/">
             <language tag="en-GB">en-GB.plg_content_admirorcolumnizer.ini</language>
     </languages>
