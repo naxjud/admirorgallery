@@ -28,7 +28,9 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 	//Joomla 1.5
 	public function onPrepareContent( &$row, &$params, $limitstart = 0 )
 	{
-		$row->text = $this->textToColumns($row->text);
+		if (preg_match("#{AC[^}]*}(.*?){/AC}|{ac[^}]*}(.*?){/ac}#s", strtoupper($row->text)) ) {
+			$row->text = $this->textToColumns($row->text);
+		}
 	}
 	//Joomla 1.6 and > function 
 	public function onContentPrepare($context, &$row, &$params, $page = 0)
@@ -36,16 +38,15 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 		if(is_object($row)) {
 			return $this->onPrepareContent($row, $params, $page);
 		} else {
-			$row = $this->textToColumns($row);
+			if (preg_match("#{AC[^}]*}(.*?){/AC}|{ac[^}]*}(.*?){/ac}#s", strtoupper($row)) ) {
+				$row = $this->textToColumns($row);
+			}
 		}
 		return true;
 	}
 	//This does all the work :)
 	private function textToColumns($text)
-	{
-		if ( !preg_match("#{AC[^}]*}(.*?){/AC}|{ac[^}]*}(.*?){/ac}#s", strtoupper(($text))) ) {
-			return;
-		}	
+	{	
 		require_once (dirname(__FILE__).'/admirorcolumnizer/scripts/AC_helper.php');
 
 		$AC = new AC_helper($this->params);  
