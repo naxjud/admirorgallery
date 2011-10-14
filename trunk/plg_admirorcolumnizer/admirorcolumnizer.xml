@@ -7,7 +7,7 @@
     <authorEmail></authorEmail>
     <authorUrl>http://www.admiror-design-studio.com</authorUrl>
     <version>0.8</version>
-    <description>PLG_CONTENT_admirorcolumnizer_XML_DESCRIPTION</description>
+    <description>PLG_CONTENT_ADMIRORCOLUMNIZER_XML_DESCRIPTION</description>
 	
 	<params>
 		<param name="ac_columns" type="text" default="2" label="AC_COLUMNS_LABEL" description="AC_COLUMNS_DESC" />  
@@ -16,8 +16,8 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="ac_columns" type="text" default="2" label="AC_COLUMNS_LABEL" description=""/>
-				<field name="ac_spacing" type="text" default="10" label="AC_SPACING_DESC" description=""/>
+				<field name="ac_columns" type="text" default="2" label="AC_COLUMNS_LABEL" description="AC_COLUMNS_DESC"/>
+				<field name="ac_spacing" type="text" default="10" label="AC_SPACING_DESC" description="AC_SPACING_DESC"/>
 			</fieldset>
 		</fields>
 	</config>
