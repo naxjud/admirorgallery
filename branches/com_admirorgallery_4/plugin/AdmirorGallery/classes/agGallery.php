@@ -10,7 +10,7 @@
 # Version: 4.0
 -------------------------------------------------------------------------*/
  
-define('PLUGIN_BASE_PATH', '/plugins/content/AdmirorGallery/AdmirorGallery/');
+define('PLUGIN_BASE_PATH', '/plugins/content/admirorgallery/AdmirorGallery/');
 
 require_once (dirname(__FILE__) . DS . 'agHelper.php');
 require_once (dirname(__FILE__) . DS . 'agPopup.php');
@@ -19,9 +19,9 @@ class agGallery extends agHelper {
 
     var $sitePath = '';
     var $sitePhysicalPath = '';
-    // Virtual path. Example: "http://www.mysite.com/plugin/content/AdmirorGallery/thumbs/"
+    // Virtual path. Example: "http://www.mysite.com/plugin/content/admirorgallery/thumbs/"
     var $thumbsFolderPath = '';
-    // Physical path on the server. Example: "E:\php\www\joomla/plugin/content/AdmirorGallery/thumbs/"
+    // Physical path on the server. Example: "E:\php\www\joomla/plugin/content/admirorgallery/thumbs/"
     var $thumbsFolderPhysicalPath = '';
     // Gallery name. Example: food
     var $imagesFolderName = '';
@@ -38,7 +38,7 @@ class agGallery extends agHelper {
     var $popupEngine;
     var $currPopupRoot = '';
     var $currTemplateRoot = '';
-    // Virtual path. Example: "http://www.mysite.com/plugins/content/AdmirorGallery/"
+    // Virtual path. Example: "http://www.mysite.com/plugins/content/admirorgallery/"
     var $pluginPath = '';
     var $squareImage = false;
     var $paginInitPages = array();
@@ -288,7 +288,7 @@ class agGallery extends agHelper {
      */
 
     function initPopup() {
-        require ('plugins' . DS . 'content' . DS . 'AdmirorGallery' . DS . 'AdmirorGallery' . DS . 'popups' . DS . $this->params['popupEngine'] . DS . 'index.php');
+        require ('plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'AdmirorGallery' . DS . 'popups' . DS . $this->params['popupEngine'] . DS . 'index.php');
         return $this->popupEngine->initCode;
     }
 

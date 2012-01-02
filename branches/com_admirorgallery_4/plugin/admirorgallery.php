@@ -32,7 +32,7 @@ class plgContentAdmirorGallery extends JPlugin {
         //check for PHP version, 5.0.0 and above are accepted
         if (strnatcmp(phpversion(),'5.0.0') <= 0)
         {
-            $doc->addStyleSheet('plugins/content/AdmirorGallery/AdmirorGallery/AdmirorGallery.css');
+            $doc->addStyleSheet('plugins/content/admirorgallery/AdmirorGallery/AdmirorGallery.css');
              $html = '<div class="error">Admiror Gallery requires PHP version 5.0.0 or greater!</div>'."\n";
                      if ((preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER)> 0) || (preg_match_all("#{AG[^}]*}(.*?){/AG}#s", $row->text, $matches, PREG_PATTERN_ORDER)> 0) ){
                  foreach ($matches[0] as $match) {
