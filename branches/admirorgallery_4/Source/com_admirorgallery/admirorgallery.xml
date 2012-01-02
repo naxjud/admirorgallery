@@ -77,7 +77,8 @@
 			      <file>AdmirorGallery.xml</file>
 		    </files>
 		    <languages folder="plugin">
-			      <language tag="en-GB">lang/admin/en-GB.plg_content_AdmirorGallery.ini</language>
+			      <language tag="en-GB">language/en-GB/en-GB.plg_content_admirorgallery.ini</language>
+                              <language tag="en-GB">language/en-GB/en-GB.plg_content_admirorgallery.sys.ini</language>
 		    </languages>
 		    <media/>
 	       </plugin>

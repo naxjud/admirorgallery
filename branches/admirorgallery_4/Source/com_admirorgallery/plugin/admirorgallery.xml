@@ -2,7 +2,7 @@
 <extension type="plugin" version="1.7" group="content" method="upgrade">
 
     <name>Admiror Gallery Engine</name>
-    <author>Vasiljevski and Kekeljevic</author>
+    <author>Igor Kekeljevic and Nikola Vasiljevski</author>
     <creationDate>26/07/2011</creationDate>	
     <copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
     <authorEmail></authorEmail>
@@ -13,7 +13,7 @@
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field type="spacer" default="AG_BASIC_SETTINGS" />
+                <field type="spacer" class="text" label="AG_BASIC_SETTINGS" />
 
                 <field name="rootFolder" type="text" default="/images/sampledata/" size="20" label="AG_IMAGES_ROOT_FOLDER" description="AG_IMAGES_ROOT_FOLDER_DESC" />
 
@@ -38,8 +38,8 @@
                 </field>
 
 
-                <field name="@spacer" type="spacer" default="" label="" description="" />
-                <field type="spacer" default="AG_GALLERY_COLORS" />
+                <field type="spacer" hr="true" />
+                <field type="spacer" class="text" label="AG_GALLERY_COLORS" />
               
                 <field name="backgroundColor" type="text" default="ffffff" size="6" label="AG_GALLERY_BACKGROUND_COLOR" description="AG_GALLERY_BACKGROUND_COLOR_DESC" />
 
@@ -48,14 +48,14 @@
                 <field name="highliteColor" type="text" default="fea804" size="6" label="AG_GALLERY_HIGHLITE_COLOR" description="AG_GALLERY_HIGHLITE_COLOR_DESC" />
 
 
-                <field name="@spacer" type="spacer" default="" label="" description="" />
-                <field type="spacer" default="AG_GALLERY_FRAME_SIZE" />	
+                <field type="spacer" hr="true" />
+                <field type="spacer" class="text" label="AG_GALLERY_FRAME_SIZE" />	
 
                 <field name="frame_width" type="text" default="500" size="5" label="AG_GALLERY_FRAME_WIDTH" description="AG_GALLERY_FRAME_WIDTH_DESC" />
                 <field name="frame_height" type="text" default="300" size="5" label="AG_GALLERY_FRAME_HEIGHT" description="AG_GALLERY_FRAME_HEIGHT_DESC" />
 
-                <field name="@spacer" type="spacer" default="" label="" description="" />
-                <field type="spacer" default="AG_NEW_IMAGES_SETTINGS" />
+                <field name="spacer1" type="spacer" hr="true" />
+                <field type="spacer" class="text" label="AG_NEW_IMAGES_SETTINGS" />
 	        
                 <field name="newImageTag" type="radio" default="1" label="AG_MARK_NEW_IMAGES" description="AG_MARK_NEW_IMAGES_DESC">
                     <option value="1">AG_YES</option>
@@ -65,8 +65,8 @@
                 <field name="newImageTag_days" type="text" default="7" size="5" label="AG_NEW_IMAGE_DAYS_LIMIT" description="AG_NEW_IMAGE_DAYS_LIMIT_DESC" />
 
 
-                <field name="@spacer" type="spacer" default="" label="" description="" />
-                <field type="spacer" default="AG_PAGINATION_SETTINGS" />	
+                <field type="spacer" hr="true" />
+                <field type="spacer" class="text" label="AG_PAGINATION_SETTINGS" />	
 	        
                 <field name="paginUse" type="radio" default="1" label="AG_USE_PAGINATION" description="AG_USE_PAGINATION_DESC" >
                     <option value="1">AG_YES</option>
@@ -75,8 +75,8 @@
                 <field name="paginImagesPerGallery" type="text" default="10" size="6" label="AG_IMAGES_PER_GALLERY" description="AG_IMAGES_PER_GALLERY_DESC" />
 
 
-                <field name="@spacer" type="spacer" default="" label="" description="" />
-                <field type="spacer" default="AG_ALBUMS_SETTINGS" />	
+                <field type="spacer" hr="true" />
+                <field type="spacer" class="text" label="AG_ALBUMS_SETTINGS" />	
 	        
                 <field name="albumUse" type="radio" default="1" label="AG_USE_ALBUMS" description="AG_USE_ALBUMS_DESC" >
                     <option value="1">AG_YES</option>
@@ -84,8 +84,8 @@
                 </field>
 	        
 
-                <field name="@spacer" type="spacer" default="" label="" description="" />
-                <field type="spacer" default="AG_ADDITIONAL_SETTINGS" />	
+                <field type="spacer" hr="true" />
+                <field type="spacer" class="text" label="AG_ADDITIONAL_SETTINGS" />	
 	        
                 <field name="showSignature" type="radio" default="1" label="AG_SHOW_SIGNATURE" description="AG_SHOW_SIGNATURE_DESC" >
                     <option value="1">AG_YES</option>
