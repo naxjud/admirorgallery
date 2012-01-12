@@ -10,12 +10,15 @@
 # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
 -------------------------------------------------------------------------*/
 
+// no direct access
+defined('_JEXEC') or die('Restricted access');
+
 class AC_helper {
 	var $params =  array();
 	var $staticParams = array();
 	function  __construct($globalParams) { 
 		// Default parameters
-		$this->staticParams['columns'] = $globalParams->get('ac_columns', 2);
+		$this->staticParams['columnsWidth'] = $globalParams->get('ac_columnsWidth', 2);
 		$this->staticParams['spacing'] = $globalParams->get('ac_spacing', 10);
 	}
 	//Gets the atributes value by name, else returns false
@@ -28,49 +31,35 @@ class AC_helper {
 		}
 		return $default;
 	}
-	function AC_createColumns($source_html, $matchValue, $id, $langDirection) { 
-		// ---------------------------------------------------------- LANG DIRECTION RELATED PARAMS
-		if($langDirection == "ltr"){
-			$AC_langDirection="left";
-			$AC_marginSide="right";
-		}else{
-			$AC_langDirection="right";
-			$AC_marginSide="left";
-		}
-		// ---------------------------------------------------------- GET PARAMS
-		$this->params['columns'] = $this->AC_getAttribute("columns",$matchValue,$this->staticParams['columns'],2);
+	function AC_createColumns($source_html, $matchValue, $id, $langDirection) {
+		
+		$this->params['columnsWidth'] = $this->AC_getAttribute("columnsWidth",$matchValue,$this->staticParams['columnsWidth'],200);
 		$this->params['spacing'] = $this->AC_getAttribute("spacing",$matchValue,$this->staticParams['spacing'],10);
 
-		$html="<!-- AdmirorColumnizer -->"."\n";
-		$html.='<div class="AC_columnizer_'.$id.'"><p>'."\n";
-		$html.=$source_html."\n";
-		$html.='</p></div><div style="clear:both"></div>'."\n";
-		$html.="
-		<script type='text/javascript'>
-			AC_jQuery(function(){
-				var ac_cols_parent_width = AC_jQuery('.AC_columnizer_".$id."').width();
-				var ac_cols_spacing = ".$this->params['spacing'].";
-				var ac_cols_num = ".$this->params['columns'].";
-				var ac_cols_width = Math.floor((ac_cols_parent_width-((ac_cols_num-1)*ac_cols_spacing)-1)/ac_cols_num);
+		$html="";
 
-				AC_jQuery('.AC_columnizer_".$id."').columnize({
-					width : (ac_cols_width-ac_cols_spacing),
-					columns : ".$this->params['columns'].",
-					float: '".$AC_langDirection."',
-					lastNeverTallest: 'true',
-					doneFunc : function(){
-						AC_jQuery('.AC_columnizer_".$id." .column').width(ac_cols_width);
-					}
-				})
+		// Change style to lang direction
+		if($langDirection == "ltr"){
+			$AC_landDirectionStyles="text-align:left; float:left; margin:0 ".$this->params['spacing']."px ".$this->params['spacing']."px 0;";
+		}else{
+			$AC_landDirectionStyles="text-align:right; float:right; margin:0 0 ".$this->params['spacing']."px ".$this->params['spacing']."px;";
+		}
 
-			});
-		</script>
-		<style type='text/css'>
-			.AC_columnizer_".$id." .column{ margin:0; padding:0; margin-".$AC_marginSide.": ".$this->params['spacing']."px;}
-			.AC_columnizer_".$id." .column p{ text-align:".$AC_langDirection.";}
-			.AC_columnizer_".$id." .last.column{ margin-".$AC_marginSide.": 0; }
-		</style>
-		";
+		// Split string at separators
+		$columnsArray=explode("ACBR",$source_html);
+		foreach($columnsArray as $key => $value){
+			$AC_margin=$this->params['spacing'];
+			if(count($columnsArray)-1 == $key){// Check is last
+				if($langDirection == "ltr"){// Check lang
+					$AC_landDirectionStyles.="margin-right:0;";
+				}else{
+					$AC_landDirectionStyles.="margin-left:0;";
+				}
+			}
+			$html.='<div style="display:inline-block; width:'.$this->params['columnsWidth'].'px; '.$AC_landDirectionStyles.'">'.$value.'</div>';
+		}
+		$html.='<br style="clear:both;" />';
+
 		return $html;
 	}
 }

@@ -10,6 +10,7 @@
 # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
 -------------------------------------------------------------------------*/
 
+// no direct access
 defined('_JEXEC') or die('Restricted access');
 
 // Import library dependencies
@@ -53,11 +54,9 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 
 		$doc = &JFactory::getDocument();
 		if(version_compare(JVERSION,'1.6.0') >= 0) {
-			$doc->addScript(JURI::root().'plugins/content/admirorcolumnizer/admirorcolumnizer/scripts/AC_jQuery.js');
-			$doc->addScript(JURI::root().'plugins/content/admirorcolumnizer/admirorcolumnizer/scripts/autocolumn.min.js');
+
 		} else {
-			$doc->addScript(JURI::root().'plugins/content/admirorcolumnizer/scripts/AC_jQuery.js');
-			$doc->addScript(JURI::root().'plugins/content/admirorcolumnizer/scripts/autocolumn.min.js');
+
 		}
 		
 
@@ -68,6 +67,7 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 			{	
 				$html=$AC->AC_createColumns(preg_replace("/{.+?}/", "", $matchValue), $matchValue, $matchKey."_".rand(0,1000000), $doc->direction);
 				$text = str_replace( $matchValue, $html , $text);
+
 			}
 		}
 		return $text;

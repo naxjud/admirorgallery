@@ -6,11 +6,11 @@
     <copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
     <authorEmail></authorEmail>
     <authorUrl>http://www.admiror-design-studio.com</authorUrl>
-    <version>0.8</version>
+    <version>2.1</version>
     <description>PLG_CONTENT_ADMIRORCOLUMNIZER_XML_DESCRIPTION</description>
 	
 	<params>
-		<param name="ac_columns" type="text" default="2" label="AC_COLUMNS_LABEL" description="AC_COLUMNS_DESC" />  
+		<param name="ac_columnsWidth" type="text" default="200" label="Columns width" description="Default is 200." />  
 		<param name="ac_spacing" type="text" default="10" label="AC_SPACING_LABEL" description="AC_SPACING_DESC" />	
 	</params>
 	<config>
