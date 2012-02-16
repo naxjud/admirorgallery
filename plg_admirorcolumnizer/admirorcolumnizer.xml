@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install version="1.5" type="plugin" group="content" method="upgrade">
-    <name>Content - Admiror Columnizer</name>
+    <name>PLG_CONTENT_ADMIRORCOLUMNIZER</name>
     <author>Igor Kekeljevic and Nikola Vasiljevski</author>
     <creationDate>15/02/2012</creationDate>	
     <copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
     <authorEmail></authorEmail>
     <authorUrl>http://www.admiror-design-studio.com</authorUrl>
     <version>3.1</version>
-    <description>PLG_CONTENT_ADMIRORCOLUMNIZER_XML_DESCRIPTION</description>
+    <description>PLG_CONTENT_ADMIRORCOLUMNIZER_DESCRIPTION</description>
 	
 	<params>  
 
@@ -54,10 +54,10 @@
 	</files>
 	<!-- Site Main Media File Copy Section -->
     <media destination="plg_admirorcolumnizer">
-        <filename>logo.jpg</filename>
-        <filename>support-projects.jpg</filename>
+        <filename>media/logo.jpg</filename>
+        <filename>media/support-projects.jpg</filename>
     </media>
-    <languages folder="lang/admin/">
+    <languages folder="lang/en-GB/">
             <language tag="en-GB">en-GB.plg_content_admirorcolumnizer.ini</language>
             <language tag="en-GB">en-GB.plg_content_admirorcolumnizer.sys.ini</language>
     </languages>
