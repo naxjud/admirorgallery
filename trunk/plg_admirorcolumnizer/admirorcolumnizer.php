@@ -62,7 +62,12 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 				$text= str_replace( $matchValue, $html , $text);
 			}
 			if($AC->params['hyphenator']){
-				$doc->addScript( 'plugins/content/admirorcolumnizer/scripts/Hyphenator.js' );
+				$version = new JVersion();
+				if($version->RELEASE=="1.5"){
+					$doc->addScript( JURI::root().'plugins'.DS .'content'.DS .'admirorcolumnizer'.DS.'scripts'.DS.'Hyphenator.js' );
+				}else{
+					$doc->addScript( JURI::root().'plugins'.DS .'content'.DS .'admirorcolumnizer'.DS .'admirorcolumnizer'.DS.'scripts'.DS.'Hyphenator.js' );
+				}				
 				$text.= '
 				<!-- AdmirorColumnizer 3 -->
 				<script type="text/javascript">
