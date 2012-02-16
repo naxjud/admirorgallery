@@ -2,22 +2,48 @@
 <install version="1.5" type="plugin" group="content" method="upgrade">
     <name>Content - Admiror Columnizer</name>
     <author>Igor Kekeljevic and Nikola Vasiljevski</author>
-    <creationDate>14/10/2011</creationDate>	
+    <creationDate>15/02/2012</creationDate>	
     <copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
     <authorEmail></authorEmail>
     <authorUrl>http://www.admiror-design-studio.com</authorUrl>
-    <version>2.1</version>
+    <version>3.1</version>
     <description>PLG_CONTENT_ADMIRORCOLUMNIZER_XML_DESCRIPTION</description>
 	
-	<params>
-		<param name="ac_columnsWidth" type="text" default="200" label="Columns width" description="Default is 200." />  
+	<params>  
+
+		<param name="ac_textAlign" type="list" default="justify" label="AC_TEXTALIGN_LABEL" description="AC_TEXTALIGN_DESC">
+			<option value="left">left</option>
+			<option value="right">right</option>
+			<option value="center">center</option>
+			<option value="justify">justify</option>
+		</param>
+
 		<param name="ac_spacing" type="text" default="10" label="AC_SPACING_LABEL" description="AC_SPACING_DESC" />	
+
+		<param name="ac_hyphenator" type="list" default="1" label="AC_HYPHENATOR_LABEL" description="AC_HYPHENATOR_DESC">
+			<option value="0">Off</option>
+			<option value="1">On</option>
+		</param>
+
 	</params>
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
-				<field name="ac_columns" type="text" default="2" label="AC_COLUMNS_LABEL" description="AC_COLUMNS_DESC"/>
+
+				<field name="ac_textAlign" type="list" default="left" label="AC_TEXTALIGN_LABEL" description="AC_TEXTALIGN_DESC">
+					<option value="left">left</option>
+					<option value="right">right</option>
+					<option value="center">center</option>
+					<option value="justify">justify</option>
+				</field>
+
 				<field name="ac_spacing" type="text" default="10" label="AC_SPACING_DESC" description="AC_SPACING_DESC"/>
+
+				<field name="ac_hyphenator" type="list" default="left" label="AC_HYPHENATOR_LABEL" description="AC_HYPHENATOR_DESC">
+					<option value="0">Off</option>
+					<option value="1">On</option>
+				</field>
+
 			</fieldset>
 		</fields>
 	</config>

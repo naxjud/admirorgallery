@@ -18,8 +18,9 @@ class AC_helper {
 	var $staticParams = array();
 	function  __construct($globalParams) { 
 		// Default parameters
-		$this->staticParams['columnsWidth'] = $globalParams->get('ac_columnsWidth', 2);
+		$this->staticParams['textAlign'] = $globalParams->get('ac_textAlign', 'left');
 		$this->staticParams['spacing'] = $globalParams->get('ac_spacing', 10);
+		$this->staticParams['hyphenator'] = $globalParams->get('ac_hyphenator', 1);
 	}
 	//Gets the atributes value by name, else returns false
 	private function AC_getAttribute($attrib, $tag, $default) {
@@ -33,31 +34,30 @@ class AC_helper {
 	}
 	function AC_createColumns($source_html, $matchValue, $id, $langDirection) {
 		
-		$this->params['columnsWidth'] = $this->AC_getAttribute("columnsWidth",$matchValue,$this->staticParams['columnsWidth'],200);
+		$this->params['textAlign'] = $this->AC_getAttribute("textAlign",$matchValue,$this->staticParams['textAlign'],'left');
 		$this->params['spacing'] = $this->AC_getAttribute("spacing",$matchValue,$this->staticParams['spacing'],10);
+		$this->params['hyphenator'] = $this->AC_getAttribute("hyphenator",$matchValue,$this->staticParams['hyphenator'],10);
 
 		$html="";
 
 		// Change style to lang direction
 		if($langDirection == "ltr"){
-			$AC_landDirectionStyles="text-align:left; float:left; margin:0 ".$this->params['spacing']."px ".$this->params['spacing']."px 0;";
-		}else{
-			$AC_landDirectionStyles="text-align:right; float:right; margin:0 0 ".$this->params['spacing']."px ".$this->params['spacing']."px;";
+
 		}
 
 		// Split string at separators
 		$columnsArray=explode("ACBR",$source_html);
+		$html.='<table border="0" cellspacing="0" cellpadding="0" width="100%" class="AC_table">'."\n";
 		foreach($columnsArray as $key => $value){
-			$AC_margin=$this->params['spacing'];
-			if(count($columnsArray)-1 == $key){// Check is last
-				if($langDirection == "ltr"){// Check lang
-					$AC_landDirectionStyles.="margin-right:0;";
-				}else{
-					$AC_landDirectionStyles.="margin-left:0;";
-				}
-			}
-			$html.='<div style="display:inline-block; width:'.$this->params['columnsWidth'].'px; '.$AC_landDirectionStyles.'">'.$value.'</div>';
+
+			// Add content		
+			$html.='<td width="'.floor(100/count($columnsArray)).'%" style="text-align:'.$this->params['textAlign'].'" class="hyphenate">'.$value.'</td>'."\n";	
+
+			if(count($columnsArray)-1 != $key){// Check is last
+				$html.='<td><div style="display:block; width:'.$this->params['spacing'].'px">&nbsp;</div></td>'."\n";	
+			}			
 		}
+		$html.='</table>'."\n";
 		$html.='<br style="clear:both;" />';
 
 		return $html;

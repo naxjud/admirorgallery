@@ -61,13 +61,23 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 		
 
 		if (preg_match_all("#{AC[^}]*}(.*?){/AC}|{ac[^}]*}(.*?){/ac}#s", $text, $matches, PREG_PATTERN_ORDER)>0)
-		{	
+		{
+
+			$doc->addScript( 'plugins/content/admirorcolumnizer/scripts/Hyphenator.js' );
+	
 			$html="";
 			foreach($matches[0] as $matchKey => $matchValue)
 			{	
 				$html=$AC->AC_createColumns(preg_replace("/{.+?}/", "", $matchValue), $matchValue, $matchKey."_".rand(0,1000000), $doc->direction);
-				$text = str_replace( $matchValue, $html , $text);
-
+				$text= str_replace( $matchValue, $html , $text);
+			}
+			if($AC->params['hyphenator']==1){
+				$text.= '
+				<!-- AdmirorColumnizer 3 -->
+				<script type="text/javascript">
+					Hyphenator.run();
+				</script>
+				';
 			}
 		}
 		return $text;
