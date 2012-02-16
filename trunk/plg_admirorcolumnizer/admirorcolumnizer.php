@@ -61,7 +61,7 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 				$html=$AC->AC_createColumns(preg_replace("/{.+?}/", "", $matchValue), $matchValue, $matchKey."_".rand(0,1000000), $doc->direction);
 				$text= str_replace( $matchValue, $html , $text);
 			}
-			if($AC->params['hyphenator']==1){
+			if($AC->params['hyphenator']){
 				$doc->addScript( 'plugins/content/admirorcolumnizer/scripts/Hyphenator.js' );
 				$text.= '
 				<!-- AdmirorColumnizer 3 -->

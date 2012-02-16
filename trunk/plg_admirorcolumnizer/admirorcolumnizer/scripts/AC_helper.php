@@ -21,6 +21,7 @@ class AC_helper {
 		$this->staticParams['textAlign'] = $globalParams->get('ac_textAlign', 'left');
 		$this->staticParams['spacing'] = $globalParams->get('ac_spacing', 10);
 		$this->staticParams['hyphenator'] = $globalParams->get('ac_hyphenator', 1);
+		$this->staticParams['brake_code'] = $globalParams->get('ac_brake_code', "ACBR");
 	}
 	//Gets the atributes value by name, else returns false
 	private function AC_getAttribute($attrib, $tag, $default) {
@@ -37,7 +38,7 @@ class AC_helper {
 		$this->params['textAlign'] = $this->AC_getAttribute("textAlign",$matchValue,$this->staticParams['textAlign'],'left');
 		$this->params['spacing'] = $this->AC_getAttribute("spacing",$matchValue,$this->staticParams['spacing'],10);
 		$this->params['hyphenator'] = $this->AC_getAttribute("hyphenator",$matchValue,$this->staticParams['hyphenator'],10);
-
+		$this->params['brake_code'] = $this->AC_getAttribute("brake_code",$matchValue,$this->staticParams['brake_code'],"ACBR");
 		$html="";
 		
 		// Split string at separators
