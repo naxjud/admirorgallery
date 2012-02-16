@@ -24,6 +24,7 @@
 			<option value="0">Off</option>
 			<option value="1">On</option>
 		</param>
+		<param name="ac_brake_code" type="text" default="ACBR" label="AC_BRAKE_CODE" description="AC_BRAKE_CODE_DESC" />
 
 	</params>
 	<config>
@@ -43,7 +44,7 @@
 					<option value="0">Off</option>
 					<option value="1">On</option>
 				</field>
-
+				<field name="ac_brake_code" type="text" default="ACBR" label="AC_BRAKE_CODE" description="AC_BRAKE_CODE_DESC" />
 			</fieldset>
 		</fields>
 	</config>
@@ -51,8 +52,13 @@
 	    <folder plugin="admirorcolumnizer">admirorcolumnizer</folder>
 	    <filename plugin="admirorcolumnizer">admirorcolumnizer.php</filename>					
 	</files>
-	
+	<!-- Site Main Media File Copy Section -->
+    <media destination="plg_admirorcolumnizer">
+        <filename>logo.jpg</filename>
+        <filename>support-projects.jpg</filename>
+    </media>
     <languages folder="lang/admin/">
             <language tag="en-GB">en-GB.plg_content_admirorcolumnizer.ini</language>
+            <language tag="en-GB">en-GB.plg_content_admirorcolumnizer.sys.ini</language>
     </languages>
 </install>
