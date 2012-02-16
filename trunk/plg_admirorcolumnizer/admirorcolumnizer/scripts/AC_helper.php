@@ -39,25 +39,19 @@ class AC_helper {
 		$this->params['hyphenator'] = $this->AC_getAttribute("hyphenator",$matchValue,$this->staticParams['hyphenator'],10);
 
 		$html="";
-
-		// Change style to lang direction
-		if($langDirection == "ltr"){
-
-		}
-
+		
 		// Split string at separators
 		$columnsArray=explode("ACBR",$source_html);
-		$html.='<table border="0" cellspacing="0" cellpadding="0" width="100%" class="AC_table">'."\n";
+		$html.='<table border="0" cellspacing="0" cellpadding="0" width="100%" class="AC_table"><tbody><tr style="border-style: none;">';
 		foreach($columnsArray as $key => $value){
-
 			// Add content		
-			$html.='<td width="'.floor(100/count($columnsArray)).'%" style="text-align:'.$this->params['textAlign'].'" class="hyphenate">'.$value.'</td>'."\n";	
+			$html.='<td width="'.floor(100/count($columnsArray)).'%" style="border-style: none;text-align:'.$this->params['textAlign'].'" class="hyphenate">'.$value.'</td>';	
 
 			if(count($columnsArray)-1 != $key){// Check is last
-				$html.='<td><div style="display:block; width:'.$this->params['spacing'].'px">&nbsp;</div></td>'."\n";	
+				$html.='<td style="border-style: none;"><div style="display:block; width:'.$this->params['spacing'].'px">&nbsp;</div></td>';	
 			}			
 		}
-		$html.='</table>'."\n";
+		$html.='</tr></tbody></table>'."\n";
 		$html.='<br style="clear:both;" />';
 
 		return $html;

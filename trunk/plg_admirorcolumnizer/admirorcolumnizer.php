@@ -25,11 +25,13 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 		jimport('joomla.html.parameter');
         $this->plugin = JPluginHelper::getPlugin('content', 'admirorcolumnizer');
         $this->params = new JParameter($this->plugin->params);
+		// load current language
+        $this->loadLanguage();
     }
 	//Joomla 1.5
 	public function onPrepareContent( &$row, &$params, $limitstart = 0 )
 	{
-		if (preg_match("#{AC[^}]*}(.*?){/AC}|{ac[^}]*}(.*?){/ac}#s", strtoupper($row->text)) ) {
+		if (preg_match("#{AC[^}]*}(.*?){/AC}#s", strtoupper($row->text)) ) {
 			$row->text = $this->textToColumns($row->text);
 		}
 	}
@@ -39,7 +41,7 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 		if(is_object($row)) {
 			return $this->onPrepareContent($row, $params, $page);
 		} else {
-			if (preg_match("#{AC[^}]*}(.*?){/AC}|{ac[^}]*}(.*?){/ac}#s", strtoupper($row)) ) {
+			if (preg_match("#{AC[^}]*}(.*?){/AC}#s", strtoupper($row)) ) {
 				$row = $this->textToColumns($row);
 			}
 		}
@@ -48,23 +50,11 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 	//This does all the work :)
 	private function textToColumns($text)
 	{	
-		require_once (dirname(__FILE__).'/admirorcolumnizer/scripts/AC_helper.php');
-
-		$AC = new AC_helper($this->params);  
-
-		$doc = &JFactory::getDocument();
-		if(version_compare(JVERSION,'1.6.0') >= 0) {
-
-		} else {
-
-		}
-		
-
 		if (preg_match_all("#{AC[^}]*}(.*?){/AC}|{ac[^}]*}(.*?){/ac}#s", $text, $matches, PREG_PATTERN_ORDER)>0)
 		{
-
-			$doc->addScript( 'plugins/content/admirorcolumnizer/scripts/Hyphenator.js' );
-	
+			require_once (dirname(__FILE__).'/admirorcolumnizer/scripts/AC_helper.php');
+			$AC = new AC_helper($this->params);  
+			$doc = &JFactory::getDocument();
 			$html="";
 			foreach($matches[0] as $matchKey => $matchValue)
 			{	
@@ -72,6 +62,7 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 				$text= str_replace( $matchValue, $html , $text);
 			}
 			if($AC->params['hyphenator']==1){
+				$doc->addScript( 'plugins/content/admirorcolumnizer/scripts/Hyphenator.js' );
 				$text.= '
 				<!-- AdmirorColumnizer 3 -->
 				<script type="text/javascript">
