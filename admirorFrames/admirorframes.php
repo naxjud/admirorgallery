@@ -58,7 +58,14 @@ class plgContentAdmirorframes extends JPlugin
 		{
 			foreach($matches[0] as $matchKey => $matchValue)
 			{
-				$html=$AF->AF_createFrame(preg_replace("/{.+?}/", "", $matchValue), $matchValue, $matchKey."_".rand(0,1000000));
+				//print_r($matchValue);
+				$patterns = array();
+				$patterns[0] = '|{AF[^}]*}|i';
+				$patterns[1] = '|{/AF}|i';
+				$replacements = array();
+				$replacements[0] = '';
+				$replacements[1] = '';
+				$html=$AF->AF_createFrame(preg_replace($patterns, $replacements, $matchValue), $matchValue, $matchKey."_".rand(0,1000000));
 				$row = str_replace( $matchValue, $html , $row);
 			}
 			$row .='<div style="clear:both"></div>';
