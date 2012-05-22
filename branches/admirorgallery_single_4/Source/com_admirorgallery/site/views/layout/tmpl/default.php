@@ -26,16 +26,14 @@ $ag_inlineParams.=' albumUse="'.$this->albumUse.'"';
 $ag_inlineParams.=' paginUse="'.$this->paginUse.'"';
 $ag_inlineParams.=' paginImagesPerGallery="'.$this->paginImagesPerGallery.'"';
 
-JPluginHelper::importPlugin( 'content','AdmirorGallery' );
-
-global $mainframe, $context;
+JPluginHelper::importPlugin( 'content' );
 
 $article = new JObject();
 $article->text = '{AG '.$ag_inlineParams.' }'.$this->galleryName.'{/AG}';
 $article->id = 0;
 $limitstart = 0;
 $dispatcher =& JDispatcher::getInstance();
-$results = $dispatcher->trigger('onPrepareContent', array ( &$article, & $params, $limitstart));
+$results = $dispatcher->trigger('onContentPrepare', array ( &$context, &$article, & $params, $limitstart));
 echo $article->text;
 
 ?>

@@ -1,101 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <metadata>
-	<layout title="AG_LAYOUT">
-		<message>
+    <layout title="AG_LAYOUT">
+        <message>
 			<![CDATA[AG_LAYOUT_DESC]]>
-		</message>
-	</layout>
-	<state>
-		<name>AG_LAYOUT</name>
-		<description>AG_LAYOUT_DESC</description>
+        </message>
+    </layout>
+    <fields name="params">
 
+		<!-- Basic options. -->
+        <fieldset name="params" >
 
+            <field addPath="/components/com_admirorgallery/elements" name="galleryName" />
 
-
-		<params addPath="/components/com_admirorgallery/elements">
-
-	        <param name="galleryName" type="galleryName" default="" label="Enter gallery name" description="" size="20" />
+            <field name="galleryName" type="galleryName" default="" label="Enter gallery name" description="" size="20" />
 		      
-	    <param type="spacer" label="AG_BASIC_SETTINGS" />
+            <field type="spacer" class="text" label="AG_BASIC_SETTINGS" />
 
-	        <param name="th_width" type="text" default="200" size="4" label="THUMBNAIL WIDTH" description="THUMBNAIL WIDTH DESC" />
+            <field name="rootFolder" type="text" default="/images/sampledata/" size="20" label="AG_IMAGES_ROOT_FOLDER" description="AG_IMAGES_ROOT_FOLDER_DESC" />
 
-	        <param name="th_height" type="text" default="120" size="4" label="THUMBNAIL HEIGHT" description="THUMBNAIL HEIGHT DESC" />
+            <field name="thumbWidth" type="text" default="200" size="4" label="AG_THUMBNAIL_WIDTH" description="AG_THUMBNAIL_WIDTH_DESC" />
 
-	        <param name="th_autoSize" type="radio" default="none" label="THUMBNAIL AUTO SIZE" description="THUMBNAIL AUTO SIZE DESC">
-		        <option value="width">WIDTH</option>
-		        <option value="height">HEIGHT</option>
-		        <option value="none">NONE</option>
-	        </param>	
-	        
-	        <param name="template" type="folderlist" default="classic" label="GALLERY TEMPLATE" description="GALLERY TEMPLATE DESC" directory="plugins/content/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
+            <field name="thumbHeight" type="text" default="120" size="4" label="AG_THUMBNAIL_HEIGHT" description="AG_THUMBNAIL_HEIGHT_DESC" />
 
-	        <param name="popupEngine" type="folderlist" default="slimbox" label="POPUP ENGINE" description="POPUP ENGINE DESC" directory="plugins/content/AdmirorGallery/popups" exclude="" stripext="" hide_none="true" hide_default="true" />
+            <field name="thumbAutoSize" type="radio" default="none" label="AG_THUMBNAIL_AUTO_SIZE" description="AG_THUMBNAIL_AUTO_SIZE_DESC">
+                <option value="width">AG_WIDTH</option>
+                <option value="height">AG_HEIGHT</option>
+                <option value="none">AG_NONE</option>
+            </field>
+        
+            <field name="template" type="folderlist" default="classic" label="AG_GALLERY_TEMPLATE" description="AG_GALLERY_TEMPLATE_DESC" directory="plugins/content/admirorgallery/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
 
-	        <param name="arrange" type="radio" default="priority" label="ARRANGE IMAGES BY" description="ARRANGE IMAGES BY DESC">
-		        <option value="priority">PRIORITY</option>
-		        <option value="date">DATE</option>
-		        <option value="name">NAME</option>
-	        </param>
+            <field name="popupEngine" type="folderlist" default="slimbox" label="AG_POPUP_ENGINE" description="AG_POPUP_ENGINE_DESC" directory="plugins/content/admirorgallery/AdmirorGallery/popups" exclude="" stripext="" hide_none="true" hide_default="true" />
+
+            <field name="arrange" type="radio" default="priority" label="AG_ARRANGE_IMAGES_BY" description="AG_ARRANGE_IMAGES_BY_DESC">
+                <option value="priority">AG_PRIORITY</option>
+                <option value="date">AG_DATE</option>
+                <option value="name">AG_NAME</option>
+            </field>
 
 
-	    <param name="@spacer" type="spacer" default="" label="" description="" />
-	    <param type="spacer" default="GALLERY COLORS" />
+            <field type="spacer" hr="true" />
+            <field type="spacer" class="text" label="AG_GALLERY_COLORS" />
               
-	        <param name="backgroundColor" type="text" default="ffffff" size="6" label="GALLERY BACKGROUND COLOR" description="GALLERY BACKGROUND COLOR DESC" />
+            <field name="backgroundColor" type="text" default="ffffff" size="6" label="AG_GALLERY_BACKGROUND_COLOR" description="AG_GALLERY_BACKGROUND_COLOR_DESC" />
 
-	        <param name="foregroundColor" type="text" default="808080" size="6" label="GALLERY FOREGROUND COLOR" description="GALLERY FOREGROUND COLOR DESC" />
+            <field name="foregroundColor" type="text" default="808080" size="6" label="AG_GALLERY_FOREGROUND_COLOR" description="AG_GALLERY_FOREGROUND_COLOR_DESC" />
 	        
-	        <param name="highliteColor" type="text" default="fea804" size="6" label="GALLERY HIGHLITE COLOR" description="GALLERY HIGHLITE COLOR DESC" />
+            <field name="highliteColor" type="text" default="fea804" size="6" label="AG_GALLERY_HIGHLITE_COLOR" description="AG_GALLERY_HIGHLITE_COLOR_DESC" />
 
 
-	    <param name="@spacer" type="spacer" default="" label="" description="" />
-	    <param type="spacer" default="GALLERY FRAME SIZE" />	
+            <field type="spacer" hr="true" />
+            <field type="spacer" class="text" label="AG_GALLERY_FRAME_SIZE" />	
 
-	        <param name="frame_width" type="text" default="500" size="5" label="GALLERY FRAME WIDTH" description="GALLERY FRAME WIDTH DESC" />
-	        <param name="frame_height" type="text" default="300" size="5" label="GALLERY FRAME HEIGHT" description="GALLERY FRAME HEIGHT DESC" />
+            <field name="frame_width" type="text" default="500" size="5" label="AG_GALLERY_FRAME_WIDTH" description="AG_GALLERY_FRAME_WIDTH_DESC" />
+            <field name="frame_height" type="text" default="300" size="5" label="AG_GALLERY_FRAME_HEIGHT" description="AG_GALLERY_FRAME_HEIGHT_DESC" />
 
-	        <param name="@spacer" type="spacer" default="" label="" description="" />
-	        <param type="spacer" default="NEW IMAGES SETTINGS" />
+            <field name="spacer1" type="spacer" hr="true" />
+            <field type="spacer" class="text" label="AG_NEW_IMAGES_SETTINGS" />
 	        
-	        <param name="newImageTag" type="radio" default="1" label="MARK NEW IMAGES" description="MARK NEW IMAGES DESC">
-		        <option value="1">YES</option>
-		        <option value="0">NO</option>
-	        </param>		
+            <field name="newImageTag" type="radio" default="1" label="AG_MARK_NEW_IMAGES" description="AG_MARK_NEW_IMAGES_DESC">
+                <option value="1">AG_YES</option>
+                <option value="0">AG_NO</option>
+            </field>		
 	        
-	        <param name="newImageTag_days" type="text" default="7" size="5" label="NEW IMAGE DAYS LIMIT" description="NEW IMAGE DAYS LIMIT DESC" />
+            <field name="newImageTag_days" type="text" default="7" size="5" label="AG_NEW_IMAGE_DAYS_LIMIT" description="AG_NEW_IMAGE_DAYS_LIMIT_DESC" />
 
-	    <param name="@spacer" type="spacer" default="" label="" description="" />
-	    <param type="spacer" default="PAGINATION SETTINGS" />	
+
+            <field type="spacer" hr="true" />
+            <field type="spacer" class="text" label="AG_PAGINATION_SETTINGS" />	
 	        
-	        <param name="paginUse" type="radio" default="1" label="USE PAGINATION" description="USE PAGINATION DESC" >
-		        <option value="1">YES</option>
-		        <option value="0">NO</option>
-	        </param>
-	        <param name="paginImagesPerGallery" type="text" default="10" size="6" label="IMAGES PER GALLERY" description="IMAGES PER GALLERY DESC" />
+            <field name="paginUse" type="radio" default="1" label="AG_USE_PAGINATION" description="AG_USE_PAGINATION_DESC" >
+                <option value="1">AG_YES</option>
+                <option value="0">AG_NO</option>
+            </field>
+            <field name="paginImagesPerGallery" type="text" default="10" size="6" label="AG_IMAGES_PER_GALLERY" description="AG_IMAGES_PER_GALLERY_DESC" />
 
 
-	    <param name="@spacer" type="spacer" default="" label="" description="" />
-	    <param type="spacer" default="ALBUMS SETTINGS" />	
+            <field type="spacer" hr="true" />
+            <field type="spacer" class="text" label="AG_ALBUMS_SETTINGS" />	
 	        
-	        <param name="albumUse" type="radio" default="1" label="USE ALBUMS" description="USE ALBUMS DESC" >
-		        <option value="1">YES</option>
-		        <option value="0">NO</option>
-	        </param>
+            <field name="albumUse" type="radio" default="1" label="AG_USE_ALBUMS" description="AG_USE_ALBUMS_DESC" >
+                <option value="1">AG_YES</option>
+                <option value="0">AG_NO</option>
+            </field>
+	        
 
-	    <param name="@spacer" type="spacer" default="" label="" description="" />
-	    <param type="spacer" default="ADDITIONAL SETTINGS" />	
-			      
-	        <param name="showSignature" type="radio" default="1" label="SHOW SIGNATURE" description="SHOW SIGNATURE DESC" >
-		        <option value="1">YES</option>
-		        <option value="0">NO</option>
-	        </param>
-		
-	       <param name="plainTextCaptions" type="radio" default="1" label="USE PLAIN TEXT CAPTIONS" description="USE PLAIN TEXT CAPTIONS DESC" >
-		        <option value="1">YES</option>
-		        <option value="0">NO</option>
-	        </param>
-		
-		</params>
-	</state>
+            <field type="spacer" hr="true" />
+            <field type="spacer" class="text" label="AG_ADDITIONAL_SETTINGS" />	
+	        
+            <field name="showSignature" type="radio" default="1" label="AG_SHOW_SIGNATURE" description="AG_SHOW_SIGNATURE_DESC" >
+                <option value="1">AG_YES</option>
+                <option value="0">AG_NO</option>
+            </field>
+	        
+            <field name="plainTextCaptions" type="radio" default="1" label="AG_USE_PLAIN_TEXT_CAPTIONS" description="AG_USE_PLAIN_TEXT_CAPTIONS_DESC" >
+                <option value="1">AG_YES</option>
+                <option value="0">AG_NO</option>
+            </field>
+        </fieldset>
+    </fields>
 </metadata>

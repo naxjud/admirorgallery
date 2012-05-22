@@ -16,7 +16,6 @@ $doc->addScript(JURI::root().'plugins/content/admirorgallery/AdmirorGallery/AG_j
 $doc->addScript(JURI::root().'administrator/components/com_admirorgallery/scripts/jquery.hotkeys-0.7.9.min.js');
 $doc->addStyleSheet(JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_template.'/css/template.css');
 $doc->addStyleSheet(JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_template.'/css/toolbar.css');
-
 // Require the base controller
 require_once( JPATH_COMPONENT.DS.'controller.php' );
  

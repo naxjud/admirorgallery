@@ -11,14 +11,14 @@ class AdmirorgalleryViewLayout extends JView
     function display($tpl = null)
     {
 
-	$mainframe = &JFactory::getApplication();
+	$mainframe = &JFactory::getApplication('site');
 	$params = &$mainframe->getParams();
 
 	$this->assignRef( 'galleryName', $params->get( 'galleryName' ) );
 	$this->assignRef( 'template', $params->get( 'template' ) );
-	$this->assignRef( 'thumbWidth', $params->get( 'th_width' ) );
-	$this->assignRef( 'thumbHeight', $params->get( 'th_height' ) );
-	$this->assignRef( 'thumbAutoSize', $params->get( 'th_autoSize' ) );
+	$this->assignRef( 'thumbWidth', $params->get( 'thumbWidth' ) );
+	$this->assignRef( 'thumbHeight', $params->get( 'thumbHeight' ) );
+	$this->assignRef( 'thumbAutoSize', $params->get( 'thumbAutoSize' ) );
 	$this->assignRef( 'arrange', $params->get( 'arrange' ) );
 	$this->assignRef( 'newImageTag', $params->get( 'newImageTag' ) );
 	$this->assignRef( 'newImageDays', $params->get( 'newImageTag_days' ) );
