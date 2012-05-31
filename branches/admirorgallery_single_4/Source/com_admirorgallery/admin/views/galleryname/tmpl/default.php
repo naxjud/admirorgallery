@@ -12,7 +12,7 @@ if (isset ($plugin->params)){
 else {
      $pluginParams= new JParameter(null);
 }
-$ag_rootFolder = $pluginParams->get('rootFolder','/images/stories/');
+$ag_rootFolder = $pluginParams->get('rootFolder','/images/sampledata/');
 $ag_init_itemURL=$ag_rootFolder;
 
  ?>

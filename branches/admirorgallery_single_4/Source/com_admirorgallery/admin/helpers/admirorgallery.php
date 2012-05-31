@@ -12,15 +12,15 @@ abstract class AdmirorGalleryHelper
 	 */
 	public static function addSubmenu($submenu) 
 	{
-		JSubMenuHelper::addEntry(JText::_('AG_ADMIRORGALLERY_CONTROL_PANEL'),
+		JSubMenuHelper::addEntry(JText::_('COM_ADMIRORGALLERY_CONTROL_PANEL'),
 		                         'index.php?option=com_admirorgallery&amp;controller=admirorgallery', $submenu == 'control_panel');
-		JSubMenuHelper::addEntry(JText::_('AG_ADMIRORGALLERY_TEMPLATES'),
+		JSubMenuHelper::addEntry(JText::_('COM_ADMIRORGALLERY_TEMPLATES'),
 		                         'index.php?option=com_admirorgallery&amp;view=resourcemanager&amp;AG_resourceType=templates',
 		                         $submenu == 'templates');
-		JSubMenuHelper::addEntry(JText::_('AG_ADMIRORGALLERY_POPUPS'),
+		JSubMenuHelper::addEntry(JText::_('COM_ADMIRORGALLERY_POPUPS'),
 		                         'index.php?option=com_admirorgallery&amp;view=resourcemanager&amp;AG_resourceType=popups',
 		                         $submenu == 'popups');
-		JSubMenuHelper::addEntry(JText::_('AG_ADMIRORGALLERY_IMAGE_MANAGER'),
+		JSubMenuHelper::addEntry(JText::_('COM_ADMIRORGALLERY_IMAGE_MANAGER'),
 		                         'index.php?option=com_admirorgallery&amp;view=imagemanager',
 		                         $submenu == 'image_manager');
 	}
