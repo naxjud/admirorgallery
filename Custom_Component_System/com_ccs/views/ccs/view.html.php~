@@ -1,0 +1,108 @@
+<?php
+/**
+ * @package    Joomla.Tutorials
+ * @subpackage Components
+ * @link http://docs.joomla.org/Developing_a_Model-View-Controller_Component_-_Part_1
+ * @license    GNU/GPL
+*/
+ 
+// no direct access
+ 
+defined( '_JEXEC' ) or die( 'Restricted access' );
+ 
+jimport( 'joomla.application.component.view');
+ 
+/**
+ * HTML View class for the HelloWorld Component
+ *
+ * @package    HelloWorld
+ */
+ 
+class SportorgViewSportorg extends JView
+{
+
+    // Declare vars
+   protected $doc;
+	protected $items;
+	protected $fields;	
+	protected $row;
+	protected $pagination;
+	protected $state;
+	protected $listDirn;
+	protected $listOrder;
+	protected $task;	
+	protected $alias;// Used for current_db_name
+	protected $dbChildren;	
+	protected $menuItems;
+	protected $showFields;
+	protected $specialFields;
+        
+    function display($tpl = null)
+    {
+        
+        // Add CSS
+        $this->doc = &JFactory::getDocument();   
+        $this->doc->addStyleSheet(JURI::root().'administrator/components/com_sportorg/assets/template.css');
+        
+        $this->alias=$this->get('Alias');
+        
+        // Update vars        
+        $this->task         = JRequest::getVar( 'task' );
+        switch(true) {
+			case JRequest::getVar( 'layout' )=='' || JRequest::getVar( 'layout' )=='default':
+			    $this->items        = $this->get('Items');
+             $this->fields       = $this->get('Fields');
+             $this->pagination	= $this->get('Pagination');        
+             $this->state		    = $this->get('State');        
+             $this->listDirn     = $this->state->get('filter_order_Dir');
+             $this->listOrder    = $this->state->get('filter_order');
+			    $this->dbChildren   = $this->get('Children');
+			    $this->menuItems   = $this->get('MenuItems');
+				 $this->showFields   = $this->get('ShowFields');
+			break;	
+			case JRequest::getVar( 'layout' )=='add':
+			    $this->fields       = $this->get('Fields');	
+				 $this->showFields   = $this->get('ShowFields');
+				 $this->specialFields   = $this->get('SpecialFields');				
+			break;		
+			case JRequest::getVar( 'layout' )=='edit' || JRequest::getVar( 'layout' )=='duplicate':	
+			    $this->row          = $this->get('Row');
+			    $this->fields       = $this->get('Fields');		
+				 $this->showFields   = $this->get('ShowFields');
+				 $this->specialFields   = $this->get('SpecialFields');				
+			break;				
+		}
+		
+        // Render toolbar & view
+        $this->addToolbar();              
+        parent::display($tpl);
+        
+    }
+
+	protected function addToolbar()
+	{
+	
+	    // Add title
+	    if(JRequest::getVar( 'layout' )=='' || JRequest::getVar( 'layout' )=='default'){
+            JToolBarHelper::title( JText::_( 'COM_SPORTORG' ), 'sportorg_default' ); 
+        }else{ 
+		    JToolBarHelper::title( JText::_( 'COM_SPORTORG' )." : ".JText::_( 'COM_SPORTORG_'.strtoupper(JRequest::getVar( 'layout' )) ), 'sportorg_default' );
+		}
+        
+        // Add buttons
+        switch(true) {
+			case $this->task == 'add' || $this->task == 'edit' || $this->task == 'duplicate':
+			        JToolBarHelper::custom('save', 'sportorg_save', 'sportorg_save', JText::_( 'COM_SPORTORG_SAVE' ), false, false );
+			        JToolBarHelper::custom('cancel', 'sportorg_cancel', 'sportorg_cancel', JText::_( 'COM_SPORTORG_CANCEL' ), false, false );
+			    break;
+			default:
+			        JToolBarHelper::custom('add', 'sportorg_add', 'sportorg_add', JText::_( 'COM_SPORTORG_ADD' ), false, false );
+                    JToolBarHelper::custom('duplicate', 'sportorg_duplicate', 'sportorg_duplicate', JText::_( 'COM_SPORTORG_DUPLICATE' ), false, false );  
+                    JToolBarHelper::custom('edit', 'sportorg_edit', 'sportorg_edit', JText::_( 'COM_SPORTORG_EDIT' ), false, false );
+                    JToolBarHelper::custom('delete', 'sportorg_delete', 'sportorg_delete', JText::_( 'COM_SPORTORG_DELETE' ), false, false );  
+                    JToolBarHelper::divider();
+                    JToolBarHelper::custom('refresh', 'sportorg_refresh', 'sportorg_refresh', JText::_( 'COM_SPORTORG_REFRESH' ), false, false );
+		}            
+		
+	}
+}
