@@ -1,0 +1,280 @@
+<?php
+/**
+ * Hello Model for Hello World Component
+ * 
+ * @package    Joomla.Tutorials
+ * @subpackage Components
+ * @link http://docs.joomla.org/Developing_a_Model-View-Controller_Component_-_Part_2
+ * @license    GNU/GPL
+ */
+ 
+// No direct access
+ 
+defined( '_JEXEC' ) or die( 'Restricted access' );
+ 
+jimport( 'joomla.application.component.modellist' );
+ 
+/**
+ * Hello Model
+ *
+ * @package    Joomla.Tutorials
+ * @subpackage Components
+ */
+class SportorgModelSportorg extends JModelList
+{
+
+    public $current_alias;
+    public $current_db_name;// Database Identifier
+    public $list_of_db;// List of Databases Identifier
+    public $showFields;
+    public $fields;
+    public $db_prefix;
+    
+    function __construct()
+	{
+	    parent::__construct();
+		 $conf = JFactory::getConfig();
+	    $this->current_alias=JRequest::getVar( 'alias', 'sportorg_ljudski_resursi' );
+	    $this->current_db_name="#__".$this->current_alias;
+	    $this->list_of_db="#__sportorg_databases";
+	    $this->db_prefix=$conf->get('dbprefix');
+	} 
+	
+	function getSpecialFields() {
+	   
+		$db = JFactory::getDBO();
+		
+		// Update Show Fields var
+		$query = $db->getQuery(true);
+		$query->select($db->nameQuote('special_fields'));
+		$query->from($db->nameQuote($this->list_of_db));
+		$query->where($db->nameQuote('db_alias').' = '.$db->Quote($this->db_prefix.$this->current_alias));
+		$db->setQuery($query);
+		$queryResult = $db->loadResult();
+		$fieldsArray = explode("\n", $queryResult);
+		$fieldsList = Array();
+		if(!empty($fieldsArray)){
+			foreach($fieldsArray as $field){
+				$fieldArray = explode("=", $field);
+				$fieldsList[] = Array("field"=>$fieldArray[0],"type"=>$fieldArray[1],"params"=>$fieldArray[2]);		
+			}
+		}
+		return $fieldsList;	
+	}
+	
+	function getShowFields() {
+		
+	   $conf = JFactory::getConfig();
+		$db = JFactory::getDBO();
+		
+		// Update Show Fields var
+		$query = $db->getQuery(true);
+		$query->select($db->nameQuote('show_fields'));
+		$query->from($db->nameQuote($this->list_of_db));
+		$query->where($db->nameQuote('db_alias').' = '.$db->Quote($this->db_prefix.$this->current_alias));
+		$db->setQuery($query);
+		$queryResult = $db->loadResult();
+		if(!empty($queryResult)){			
+			$fields=explode(",", $queryResult);	
+		   $this->showFields=Array();
+			foreach($fields as $field){				
+				$this->showFields[$field]=$this->fields[$field];
+			}
+		}else{
+			$this->showFields=$this->fields;
+		}
+			
+		return $this->showFields;
+	}
+	
+	function getAlias()
+	{
+	    return $this->current_alias;
+	}   
+   
+	protected function getListQuery()
+	{
+
+		$db = JFactory::getDBO();
+	   $query = $db->getQuery(true);
+
+
+		$query->select('*');
+		$query->from($db->nameQuote($this->current_db_name));
+			
+		// Filter Order
+		$order = $this->getState('filter_order');
+		if(!empty($order))
+		{
+            $query->order($db->getEscaped($order.' '.$this->getState('filter_order_Dir', 'DESC')));
+        }
+        
+      // Filter Search
+      $search_column = $this->getState('filter_search_column');
+		$search_value = $this->getState('filter_search_value');
+		if (!empty($search_value))
+		{
+			$query->where($db->nameQuote($search_column)." LIKE ".$db->Quote($search_value));
+		}
+		
+		return $query;
+	}
+	
+	function getChildren()
+	{	    
+		$conf = JFactory::getConfig();
+		
+		$db = JFactory::getDBO();
+				
+	   $query = $db->getQuery(true);
+		$query->select($db->nameQuote('id'));
+		$query->from($db->nameQuote($this->list_of_db));
+		$query->where($db->nameQuote('db_alias').' = '.$db->Quote($this->db_prefix.$this->current_alias));
+		$db->setQuery($query);
+		$taget_id = $db->loadResult();
+		
+		$query = $db->getQuery(true);
+		$query->select($db->nameQuote('db_alias'));
+		$query->select($db->nameQuote('db_name'));
+		$query->from($db->nameQuote($this->list_of_db));
+		$query->where($db->nameQuote('parent_id').' = '.(int)$taget_id);
+		$db->setQuery($query);
+			
+      return $db->loadAssocList();
+	}
+	
+	function getFields()
+	{
+		$db = JFactory::getDBO();
+	    $query = $db->getQuery(true);
+	    $fields = $db->getTableFields($this->current_db_name);
+	    $this->fields = $fields[$this->current_db_name];
+	    return $this->fields;
+	}	
+	
+	function getRow()
+	{
+	    $cids = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$db = JFactory::getDBO();
+	    $query = $db->getQuery(true);
+	    $query->select('*');
+		$query->from($db->nameQuote($this->current_db_name));
+	    $query->where($db->nameQuote('id').'='.(int)$cids[0]); 
+	    $db->setQuery($query);
+	    $db->loadRow();
+	    $db->query();
+	    $row = $db->loadAssoc();
+	    return $row;
+	}
+		
+    function populateState() {		
+    
+		// Filter Order
+        $filter_order = JRequest::getCmd('filter_order');
+        $filter_order_Dir = JRequest::getCmd('filter_order_Dir');
+        $this->setState('filter_order', $filter_order);
+        $this->setState('filter_order_Dir', $filter_order_Dir);        
+        
+        // Filter Search
+		$search_column = JRequest::getCmd('filter_search_column');
+		$this->setState('filter_search_column', $search_column);
+		$search_value = JRequest::getCmd('filter_search_value');
+		$this->setState('filter_search_value', $search_value);
+        
+        parent::populateState();
+    }
+       
+    function store()
+    {    
+            $fields = $this->getFields();
+            $db =& JFactory::getDBO();
+            $query = $db->getQuery(true);
+            $query->insert($db->nameQuote($this->current_db_name));
+            foreach ($fields as $field_value => $field_type)
+            {
+                if($field_type != "int unsigned"){
+                    $curr_field_value = JRequest::getVar( $field_value, null );
+                    switch($field_type){
+                        case 'int':
+                            $query->set($db->nameQuote($field_value).'='.(int)$curr_field_value);
+                        break;
+                        case 'tinyint':
+                            $query->set($db->nameQuote($field_value).'='.(int)$curr_field_value);
+                        break;
+                        default:
+                            $query->set($db->nameQuote($field_value).'='.$db->Quote($curr_field_value));
+                    }
+                }
+            }
+            $db->setQuery( $query );
+            $db->query();
+    }
+    
+    function replace()
+    {    
+            $fields = $this->getFields();
+            $db =& JFactory::getDBO();
+            $query = $db->getQuery(true);
+            $query->update($db->nameQuote($this->current_db_name));
+            $query->where($db->nameQuote('id').'='.(int)JRequest::getVar( 'id', null ));
+            foreach ($fields as $field_value => $field_type)
+            {
+                $curr_field_value = JRequest::getVar( $field_value, null, 'post' , 'STRING', JREQUEST_ALLOWRAW );
+                switch($field_type){
+                    case 'int':
+                        $query->set($db->nameQuote($field_value).'='.(int)$curr_field_value);
+                    break;
+                    case 'tinyint':
+                        $query->set($db->nameQuote($field_value).'='.(int)$curr_field_value);
+                    break;
+                    default:
+                        $query->set($db->nameQuote($field_value).'='.$db->Quote($curr_field_value));
+                }
+            }   
+            //JFactory::getApplication()->enqueueMessage($query, 'message');
+            $db->setQuery( $query );
+            $db->query();
+    }
+    
+    function delete()
+    {
+        $cids = JRequest::getVar( 'cid', array(), 'post', 'array' );
+        $db = JFactory::getDBO();
+        foreach($cids as $cid) {              
+            $query = $db->getQuery(true);
+            $query->delete(); 
+            $query->from($db->nameQuote($this->current_db_name));     
+            $query->where($db->nameQuote('id').'='.(int)$cid);  
+            $db->setQuery($query); 
+            if($db->query())
+            {
+                JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTORG_OK_DELETE').": ".$cid, 'message');
+            }else{
+                JFactory::getApplication()->enqueueMessage(JText::_('COM_SPORTORG_ERROR_DELETE').": ".$cid, 'error');
+            }
+        }
+    }
+    
+    function getMenuItems(){
+    
+		$conf = JFactory::getConfig();
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+		$query->select($db->nameQuote('id'));
+		$query->select($db->nameQuote('default'));
+		$query->select($db->nameQuote('db_alias'));
+		$query->select($db->nameQuote('db_name'));
+		$query->select($db->nameQuote('db_image'));
+		$query->select($db->nameQuote('parent_id'));
+		$query->from($db->nameQuote($this->list_of_db));
+		$db->setQuery($query);
+		$result = $db->loadRowList();
+		foreach($result as $key => $value){
+			$result[$key][2]=substr($value, strlen($this->db_prefix),strlen($value[2]));
+		}
+		return $result;
+
+    }
+	
+    
+}

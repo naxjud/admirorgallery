@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension
+	type="module"
+	version="2.5"
+	client="site"
+	method="upgrade">
+	<name>mod_ccs</name>
+	<author>Igor Kekeljevc</author>
+	<creationDate>Sep 2012</creationDate>
+	<copyright>Copyright (C) 2012, Igor Kekeljevic. All rights reserved.</copyright>
+	<license></license>
+	<authorEmail>Igor.Kekeljevic@gmail.com</authorEmail>
+	<authorUrl></authorUrl>
+	<version>0.1</version>
+	<description>MOD_CCS_XML_DESCRIPTION</description>
+	<files>
+
+	</files>
+	<languages>
+
+	</languages>
+	<help />
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+
+	            <field name="MOD_CCS_LAYOUT_DATABASE_ID" type="text" default="0" size="20" label="MOD_CCS_LAYOUT_DATABASE_ID" description="MOD_CCS_LAYOUT_DATABASE_ID_DESC" />
+	            <field name="MOD_CCS_LAYOUT_TEMPLATE_TABLE" type="filelist" default="" label="MOD_CCS_LAYOUT_TEMPLATE_TABLE" description="MOD_CCS_LAYOUT_TEMPLATE_TABLE_DESC" directory="modules/mod_ccs/templates" filter="php" exclude="" stripext="" />
+	            <field name="MOD_CCS_LAYOUT_TEMPLATE_ROW" type="filelist" default="" label="MOD_CCS_LAYOUT_TEMPLATE_ROW" description="MOD_CCS_LAYOUT_TEMPLATE_ROW_DESC" directory="modules/mod_ccs/templates" filter="php" exclude="" stripext="" />
+
+			</fieldset>
+		</fields>
+	</config>
+</extension>

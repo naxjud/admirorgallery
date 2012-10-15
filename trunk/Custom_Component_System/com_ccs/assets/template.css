@@ -1,0 +1,703 @@
+.icon-48-CCS_default
+{
+    background-image: url('images/icon-48-ccs.png');
+}
+.icon-32-CCS_add
+{
+    background-image: url('images/icon-32-add.png');
+}
+.icon-32-CCS_duplicate
+{
+    background-image: url('images/icon-32-duplicate.png');
+}
+.icon-32-CCS_edit
+{
+    background-image: url('images/icon-32-edit.png');
+}
+.icon-32-CCS_delete
+{
+    background-image: url('images/icon-32-delete.png');
+}
+.icon-32-CCS_refresh
+{
+    background-image: url('images/icon-32-refresh.png');
+}
+.icon-32-CCS_save
+{
+    background-image: url('images/icon-32-save.png');
+}
+.icon-32-CCS_save_and_new
+{
+    background-image: url('images/icon-32-save-and-new.png');
+}
+.icon-32-CCS_apply
+{
+    background-image: url('images/icon-32-apply.png');
+}
+.icon-32-CCS_cancel
+{
+    background-image: url('images/icon-32-cancel.png');
+}
+
+
+/* ------------------------ BOOLEAN */
+a.button_16
+{
+    display:block;
+    width: 16px;
+    height: 16px;
+    font-size: 1px;
+    text-decoration: none;
+}
+a.button_16:hover
+{
+    text-decoration: none;
+}
+.icon_16_true
+{
+    background-image: url('images/icon-16-true.png');
+}
+.icon_16_false
+{
+    background-image: url('images/icon-16-false.png');
+}
+span.ccs_admin_tbl_field_img
+{
+    display: block;
+    height:50px;
+    width:50px;
+    background-position:center center;
+    background-repeat:no-repeat;
+}
+
+
+.CCS_btn_edit_24, .CCS_btn_delete_24
+{
+    display: block;
+    width: 24px;
+    height: 24px;
+    font-size: 1px;
+    text-decoration: none;
+    }
+a.CCS_btn_edit_24:hover, a.CCS_btn_delete_24:hover
+{
+    text-decoration: none;
+    }   
+.CCS_btn_edit_24
+{
+    background-image: url('images/icon-24-edit.png');
+    }   
+.CCS_btn_delete_24
+{
+    background-image: url('images/icon-24-delete.png');
+    }
+
+td.CCS_sidePanel, td.CCS_tableView
+{
+    vertical-align:top;
+    text-align:left;
+    padding:10px 10px 10px 0;
+}
+
+td.CCS_sidePanel
+{
+    width:200px;
+    padding-left: 10px;
+}
+
+td.CCS_sidePanel input#breadcrumbMenu_input
+{
+    margin-bottom: 5px;
+    padding: 4px 0;
+}
+
+td.CCS_sidePanel ul
+{
+    margin:0;
+    padding:0;
+    list-style:none;
+}
+
+li.breadcrumbMenu_linkRow_parent table
+, li.breadcrumbMenu_linkRow_child table
+{
+    width: 100%;
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+li.breadcrumbMenu_linkRow_parent table td
+, li.breadcrumbMenu_linkRow_child table td
+{
+    padding:0;
+    margin:0;
+    text-align: left;
+    vertical-align: top;
+}
+
+li.breadcrumbMenu_linkRow_parent
+, li.breadcrumbMenu_linkRow_child
+{
+    margin:0 0 2px;
+}
+
+li.breadcrumbMenu_linkRow_parent
+{
+    padding-bottom:10px;
+    background-image: url('images/downArrow.png');
+    background-repeat:no-repeat;
+    background-position:center bottom;
+}
+
+
+li.breadcrumbMenu_linkRow_parent a
+, li.breadcrumbMenu_linkRow_child a
+{
+    display:block;
+    text-decoration:none;
+    padding: 4px;
+    margin:0;
+    text-align:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#323a44;
+    background-color:#FFF;
+    
+    moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+
+    
+    cursor: pointer;
+}
+
+li.breadcrumbMenu_linkRow_parent a:hover, li.breadcrumbMenu_linkRow_child a:hover
+, li.breadcrumbMenu_linkRow_parent a.breadcrumbMenu_link_active, li.breadcrumbMenu_linkRow_child a.breadcrumbMenu_link_active
+{
+    background-color:#98c5cc;
+    text-decoration: none;
+}
+
+td.breadcrumbMenu_link_arrowWrap
+{
+    width:30px;
+}
+
+td.breadcrumbMenu_link_arrowWrap a
+{
+    margin-left: 1px; 
+    font-size: 8px;
+    padding: 0;
+}
+
+li.breadcrumbMenu_linkRow_parent a img, li.breadcrumbMenu_linkRow_child a img
+{
+    display: block;
+    clear: both;
+    margin: auto; 
+    height: 64px;
+    width: 64px;
+}
+
+li.breadcrumbMenu_linkRow_parent a.breadcrumbMenu_link_active, li.breadcrumbMenu_linkRow_child a.breadcrumbMenu_link_active
+{
+    
+}
+
+
+
+/*====================================================== ADMIN LIST*/
+
+ul.adminformlist, ul.adminformlist li
+{
+    clear: both;
+}
+
+ul.adminformlist .inlineValue
+{
+    float: left;
+    margin:5px 5px 5px 0;   
+}
+
+.mceEditor, .mce_editable, .toggle-editor
+{
+    display:block;
+    clear:both;
+}
+
+.mceEditor
+{
+    margin-bottom:5px;
+}
+
+div.CCS_table_wrap
+{
+    overflow-x:auto;
+}
+
+div.CCS_pagination_wrap
+{
+    margin-top: 10px;   
+    display: block;
+    height: 24px;
+    background-color:white;
+    padding:5px;
+}
+
+fieldset#filter-bar
+{
+    padding: 0;
+    margin:0;
+}
+
+table.adminlist tr.active td
+{
+    background-color: #dddddd;
+}
+
+table.adminlist tr.hover td
+{
+    background-color: #137baf;
+    color: white;
+}
+
+table.adminlist
+{
+    empty-cells:show;
+    color:#323a44 !important;
+    font-size: 13px;
+}
+
+/*-----------------------------------------autocompleter-choices*/
+ul.autocompleter-choices
+{ 
+    position:absolute;
+    padding:0;
+    list-style:none;
+    z-index:50;
+    background:white;
+    border:1px solid #CCC;
+    top:0;
+
+    -moz-box-shadow: 0 2px 4px #000;
+    -webkit-box-shadow: 0 2px 4px #000;
+    box-shadow: 0 2px 4px #000;
+}
+ul.autocompleter-choices li 
+{
+    margin:0;
+    list-style:none;
+    padding:5px;
+    cursor:pointer;
+    font-weight:normal;
+    white-space:nowrap;
+    color:#000;
+}
+ul.autocompleter-choices li:hover
+{
+    background:#137baf;
+    color:white;
+}
+.search-working {
+    background:url(images/indicator_blue_small.gif) 200px 7px no-repeat;
+}
+
+table#org_clone
+{
+    background-color: white;
+    border:1px solid gray;
+}
+
+table.adminlist tbody tr td.adminlist_dropTarget
+{
+    height:6px;
+    font-size:1px;
+    padding:0;
+    background-color: #137BAF;
+}
+
+
+fieldset
+{  
+  padding:0 !important; 
+  margin:0 !important;
+  border:none !important;
+}
+
+fieldset div.form_items
+{
+    padding: 0 4px;
+    margin:0 auto !important;
+    width: 410px !important;
+}
+
+fieldset div.form_items1
+{
+    height:52px;
+}
+
+fieldset div.form_items2
+{
+    height:136px;
+}
+
+fieldset div.form_items3
+{
+    height:250px;
+}
+
+fieldset div.form_items input
+,fieldset div.form_items textarea
+,.imgFld_img_wrapp
+{
+    width:400px !important;
+}
+
+fieldset div.form_items .width_auto
+{
+    width:auto !important;
+}
+
+fieldset div.form_items textarea
+{
+    height:100px !important;
+}
+
+table#tmp_tb td.tmp_col
+{
+    vertical-align:top;
+    padding:0 !important;
+    margin:0 !important;
+    border-left: 1px solid #98C5CC;
+}
+
+table#tmp_tb hr, hr
+{
+    border: 0;
+    width: 100%;
+    color: #98C5CC;
+    background-color: #98C5CC;
+    height: 1px;   
+    padding:0;
+    margin:0;
+}
+
+div#element-box h2
+{
+   display:block;
+   text-align:center; 
+   color:#323a44;
+   background-color:#98c5cc;
+   margin:0px;
+   padding:0 0 3px;
+   font-size:12px;
+   text-transform:uppercase;
+   font-weight:bold;
+}
+
+
+/* ================================================================ OVERIDES */
+
+div.pagetitle h2
+{
+    color:#323a44 !important;
+}
+
+table, table td
+{
+    border-spacing: 0 !important;
+}
+
+div.m
+{
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    border-radius: 3px !important;
+    border:3px solid #98c5cc !important;
+    padding:0px !important;
+    background-color: #e3e4f6 !important;
+}
+
+fieldset input.required
+{
+    background-color: #FFF !important;
+}
+
+
+label,
+fieldset input,
+fieldset textarea,
+fieldset select,
+fieldset img,
+fieldset button {
+    float: none !important;
+    margin: 5px 5px 5px 0 !important;
+    clear:both !important;
+}
+
+label
+{
+    font-weight: bold !important;
+    font-size:11px !important;
+    color:#323a44 !important;
+    display: block;
+    width: auto;
+}
+
+fieldset input,
+fieldset textarea,
+fieldset select,
+fieldset img,
+fieldset button
+,span.varcharLimited
+,input
+,.imgFld_img_wrapp
+,div.toggle-editor a
+{
+    font-size:13px !important;
+    font-weight: normal !important;
+    padding:2px !important;
+    margin:0 5px 5px 0 !important;
+    border:2px solid #98c5cc !important;
+    color:#323a44 !important;
+    
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    border-radius: 3px !important;
+}
+
+input
+, select
+,div.toggle-editor a
+{
+    background: #fff !important;
+}
+
+div.toggle-editor
+,div.toggle-editor div
+{
+    background: none !important;
+}
+
+button, a, .pointer
+{
+    cursor: pointer !important;
+}
+
+
+td.CCS_sidePanel input#breadcrumbMenu_input
+{
+    width:170px;
+    margin:0 0 5px 0 !important;
+}
+
+div.varcharLimited
+{
+    margin:0 5px 5px 0 !important;
+}
+
+div.varcharLimited span
+{
+    font-size:13px !important;
+    font-weight: normal !important;
+    padding:2px 0px !important;
+    border:2px solid #98c5cc !important;
+    color:#323a44 !important;
+    
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    border-radius: 3px !important;
+}
+
+div.varcharLimited span input
+{
+    margin-right:0 !important;
+    border:none !important;
+    -webkit-border-radius: 0 !important;
+    -moz-border-radius: 0 !important;
+    border-radius: 0 !important;
+    border-right:1px solid #d5d8d1 !important;
+    width:1em !important;
+    margin:0 !important;
+}
+
+span.inlineValue
+{
+    font-size:13px !important;
+    font-weight: normal !important;
+}
+
+div#toolbar-box div.m
+{
+    border:none !important;   
+    background:none !important;
+    margin:0 !important;
+    padding:0 !important;
+}
+
+
+div#toolbar-box div.pagetitle
+{
+    border:none !important;   
+    margin:0 !important;
+    padding:0 0 0 50px !important;
+}
+
+div.CCS_table_wrap, div.CCS_pagination_wrap
+{
+    border:2px solid #98c5cc !important;
+    color:#323a44 !important;
+    
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    border-radius: 3px !important;
+}
+
+table#adminlist th, table#adminlist td
+{
+    border-left:1px solid #d5d8d1 !important;    
+    border-top:1px solid #d5d8d1 !important;
+}
+
+table#adminlist th a
+{
+    font-size: 11px;
+}
+
+.adminlist_target
+{
+    display: block;
+    position: absolute;
+    background-image: url('images/adminlist_target_background.png');
+    background-repeat: no-repeat;
+}
+
+#adminlist_clone
+{
+    border:2px solid #98c5cc !important;
+    color:#323a44 !important;
+    
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    border-radius: 3px !important;
+}
+
+#adminlist_clone td
+{
+    background-color: white;
+    padding: 4px;
+    font-size:13px;    
+    border:1px solid #d5d8d1 !important;    
+}
+
+.imgFld_img_wrapp
+{
+    height:155px;
+    overflow: hidden;
+    display: block;
+    border:2px solid #98c5cc !important;
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    border-radius: 3px !important;
+}
+
+.imgFld_img_wrapp img
+{
+    border:none !important;
+}
+
+div.quickIcon
+{
+    display:block;
+    float:left;   
+    text-align:center; 
+    margin:0 10px 10px 0;
+}
+
+div.quickIcon a
+{
+    display:block;
+    text-align:center;
+    font-size:11px;
+    font-weight:bold;
+    color:#323a44; 
+    padding:10px 5px;
+    moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+    border-radius: 5px;
+    text-decoration:none;
+    background-color:white;
+}
+
+div.quickIcon a:hover
+{
+    background-color:#98c5cc;
+}
+
+div.quickIcon img
+{
+    width:64px;
+    height:64px;
+}
+
+div.quickIcon span
+{
+    display:block;
+    margin:5px auto 0;    
+}
+
+.number
+{
+    text-align: right;
+}
+
+/* ############################################################################################ */
+.ccs_databases table,
+.ccs_admin_fields table
+{
+    background-color: #ececec !important;
+}
+
+.ccs_databases h2,
+.ccs_databases li.breadcrumbMenu_linkRow_parent a:hover,
+.ccs_databases li.breadcrumbMenu_linkRow_child a:hover,
+.ccs_databases li.breadcrumbMenu_linkRow_parent a.breadcrumbMenu_link_active,
+.ccs_databases li.breadcrumbMenu_linkRow_child a.breadcrumbMenu_link_active,
+.ccs_admin_fields h2,
+.ccs_admin_fields li.breadcrumbMenu_linkRow_parent a:hover,
+.ccs_admin_fields li.breadcrumbMenu_linkRow_child a:hover,
+.ccs_admin_fields li.breadcrumbMenu_linkRow_parent a.breadcrumbMenu_link_active,
+.ccs_admin_fields li.breadcrumbMenu_linkRow_child a.breadcrumbMenu_link_active
+{
+    background-color: #c44444 !important;
+    color:white !important;
+}
+
+.ccs_databases fieldset input,
+.ccs_databases fieldset textarea,
+.ccs_databases fieldset select,
+.ccs_databases fieldset img,
+.ccs_databases fieldset button,
+.ccs_databases span.varcharLimited,
+.ccs_databases input,
+.ccs_databases .imgFld_img_wrapp,
+.ccs_databases div.toggle-editor a,
+.ccs_databases div.CCS_table_wrap,
+.ccs_databases div.CCS_pagination_wrap,
+.ccs_admin_fields fieldset input,
+.ccs_admin_fields fieldset textarea,
+.ccs_admin_fields fieldset select,
+.ccs_admin_fields fieldset img,
+.ccs_admin_fields fieldset button,
+.ccs_admin_fields span.varcharLimited,
+.ccs_admin_fields input,
+.ccs_admin_fields .imgFld_img_wrapp,
+.ccs_admin_fields div.toggle-editor a,
+.ccs_admin_fields div.CCS_table_wrap,
+.ccs_admin_fields div.CCS_pagination_wrap
+{
+    border-color: #cf9999 !important;
+    color:#3f3f3f !important;
+}
