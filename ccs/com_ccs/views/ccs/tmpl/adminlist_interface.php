@@ -142,6 +142,17 @@ window.addEvent("domready", function(){
 	rows = document.id("adminlist").getElements("tr");
 	isDragging = false;
 
+	$$("#adminlist").setStyles({
+	    "-webkit-user-select": "none",
+	    "-khtml-user-select": "none",
+	    "-moz-user-select": "none",
+	    "-o-user-select": "none",
+	    "user-select": "none",
+	    "cursor": "pointer"
+    });
+
+	$$("#adminlist img").set("draggable","false");
+
 	// Detect keystroke, left click, right click and double click
 	document.addEvents({
 		"keydown": function(event){
