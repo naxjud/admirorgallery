@@ -1,6 +1,6 @@
 <?php
 
-echo '<span 
+echo '<img 
 class="ccs_admin_tbl_field_img" 
-style="background-image:url(\''.JURI::root().$field_value.'\');" 
->&nbsp;</span>';
+src="'.JURI::root().$field_value.'" 
+/ >';

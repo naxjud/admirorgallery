@@ -61,13 +61,10 @@ a.button_16:hover
 {
     background-image: url('images/icon-16-false.png');
 }
-span.ccs_admin_tbl_field_img
+
+img.ccs_admin_tbl_field_img
 {
-    display: block;
     height:50px;
-    width:50px;
-    background-position:center center;
-    background-repeat:no-repeat;
 }
 
 

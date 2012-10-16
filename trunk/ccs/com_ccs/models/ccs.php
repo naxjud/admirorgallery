@@ -122,7 +122,7 @@ class CcsModelCcs extends JModelList
 		$query = $db->getQuery(true);
 		$query->select($db->nameQuote('db_alias'));
 		$query->from($db->nameQuote($this->db_prefix.$this->CCS_Database_Config));
-		$query->where($db->nameQuote('parent_db_alias').' = '.$this->db_prefix.$this->current_alias);
+		$query->where($db->nameQuote('parent_db_alias').' = '.$db->Quote($this->current_alias));
 		$db->setQuery($query);
 			
       return $db->loadAssocList();
