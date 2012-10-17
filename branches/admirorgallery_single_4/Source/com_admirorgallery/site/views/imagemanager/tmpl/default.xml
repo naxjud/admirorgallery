@@ -13,7 +13,7 @@
 
             <field addPath="/components/com_admirorgallery/elements" name="galleryName" />
 
-            <field name="galleryName" type="galleryName" default="" label="Enter gallery name" description="" size="20" />
+            <field name="galleryName" type="galleryName" default="" label="AG_ENTER_GALLERY_NAME" description="AG_ENTER_GALLERY_NAME_DESC" size="20" />
         </fieldset>
     </fields>
 </metadata>

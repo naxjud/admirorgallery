@@ -10,7 +10,7 @@
 		<!-- Basic options. -->
         <fieldset name="basic" >
 
-            <field name="galleryName" type="galleryName" default="" label="Enter gallery name" description="" size="20" />
+            <field name="galleryName" type="galleryName" default="" label="AG_ENTER_GALLERY_NAME" description="AG_ENTER_GALLERY_NAME_DESC" size="20" />
 		      
             <field type="spacer" class="text" label="AG_BASIC_SETTINGS" />
 

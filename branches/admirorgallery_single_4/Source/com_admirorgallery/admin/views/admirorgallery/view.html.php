@@ -7,8 +7,16 @@ jimport( 'joomla.application.component.view');
  
 class AdmirorgalleryViewAdmirorgallery extends JView
 {
+    protected $item;
+    protected $form;
+    protected $state;
+    
     function display($tpl = null)
     {
+            $this->state	= $this->get('State');
+            $this->item		= $this->get('Item');
+            $this->form		= $this->get('Form');
+            
             JToolBarHelper::title( JText::_( 'COM_ADMIRORGALLERY_CONTROL_PANEL'), 'controlpanel' );
             JToolBarHelper :: custom( 'AG_apply', 'AG_apply','AG_apply', JText::_( 'COM_ADMIRORGALLERY_APPLY_DESC' ), false, false );
             JToolBarHelper :: custom( 'AG_reset', 'AG_reset','AG_reset', JText::_( 'COM_ADMIRORGALLERY_RESET_DESC' ), false, false );

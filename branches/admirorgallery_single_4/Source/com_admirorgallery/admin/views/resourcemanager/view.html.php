@@ -11,8 +11,8 @@ class AdmirorgalleryViewResourcemanager extends JView
     function display($tpl = null)
     {
 	  JToolBarHelper::title( JText::_( 'AG_POPUPS' ), 'popups' );
-	  JToolBarHelper :: custom( 'AG_apply', 'AG_apply','AG_apply', JText::_( 'AG_APPLY_DESC' ), false, false );
-	  JToolBarHelper :: custom( 'AG_reset', 'AG_reset','AG_reset', JText::_( 'AG_RESET_DESC' ), false, false );
+	  JToolBarHelper :: custom( 'AG_apply', 'AG_apply','AG_apply', JText::_( 'COM_ADMIRORGALLERY_APPLY_DESC' ), false, false );
+	  JToolBarHelper :: custom( 'AG_reset', 'AG_reset','AG_reset', JText::_( 'COM_ADMIRORGALLERY_RESET_DESC' ), false, false );
 	  $doc = &JFactory::getDocument();
 	  $doc->addScriptDeclaration('
 	       AG_jQuery(function(){
