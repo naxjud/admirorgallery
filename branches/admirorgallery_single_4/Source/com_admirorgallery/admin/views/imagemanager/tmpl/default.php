@@ -1,7 +1,8 @@
 <?php
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
+//Check if plugin is installed, othervise don't show view
+if(!is_dir(JURI::root().'plugins/content/admirorgallery/')){ return;}
 jimport('joomla.filesystem.file');	  
 jimport('joomla.filesystem.folder');
 jimport('joomla.language.language');

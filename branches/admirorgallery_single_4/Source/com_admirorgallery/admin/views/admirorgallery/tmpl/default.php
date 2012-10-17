@@ -1,6 +1,7 @@
 <?php
 defined('_JEXEC') or die('Restricted access');
-
+//Check if plugin is installed, othervise don't show view
+if(!is_dir(JURI::root().'plugins/content/admirorgallery/')){ return;}
 jimport('joomla.filesystem.file');
 
 $AG_templateID = JRequest::getVar('AG_template'); // Current template for AG Component
