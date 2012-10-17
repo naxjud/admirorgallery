@@ -11,7 +11,7 @@ class AdmirorgalleryController extends JController
     function display( )
     {
         require_once JPATH_COMPONENT.'/helpers/admirorgallery.php';
-        if(!is_dir(JURI::root().'plugins/content/admirorgallery/'))
+        if(!is_dir(JPATH_SITE.'/plugins/content/admirorgallery/'))
         {
             JError::raiseWarning('2', JText::_('COM_PLUGIN_NOT_INSTALLED'));
         }
