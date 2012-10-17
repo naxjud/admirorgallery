@@ -11,6 +11,9 @@ JHTML::_('behavior.modal');// Modal Libriries (SqueezeBox)
 
 $document = JFactory::getDocument();
 
+$this->doc->addScript(JURI::root().'administrator'.DS.'components'.DS.'com_ccs'.DS.'assets'.DS.'js'.DS.'mootools-more-1.4-full.js');
+
+
 $calendar_js='
     // Calendar support
 	function calendarInit(){
@@ -206,10 +209,12 @@ $document->addScriptDeclaration($JS_imageFieldType);
 $document->addScriptDeclaration($JS);
 
 ?>
+
 <div class="<?php echo $this->alias;?>">
 <form enctype="multipart/form-data" action="index.php" method="post" name="adminForm" class="form-validate">
 
 <fieldset class="adminform form-validate">
+
 <h2><?php echo JText::_( strtoupper($this->alias) )." | ".JText::_( strtoupper("COM_CCS_".$this->task) );?></h2>
 
 <?php 
@@ -253,7 +258,59 @@ if($field_alias!="id"){
 
 ?>
 
+
+
 </fieldset>
+
+<?php 
+// ############################################### PERSONAL NOTES
+
+echo '
+<hr />
+<div id="CCS_notes_widthSetter" style="padding:10px;">
+<fieldset>
+<label>
+'.JText::_("CCS_NOTES").'
+</label>
+<textarea spellcheck="false" style="display:block; resize: none !important; overflow:hidden;" id="ccs_notes">'.$_COOKIE["CCS_NOTES"].'</textarea>
+<div id="ccs_notes_wrap" style="white-space: pre-wrap; word-wrap: break-word; position:absolute; left:99999px"></div>
+'.JText::_("CCS_NOTES_DESC").'
+<br style="clear:both;" /><br style="clear:both;" />
+</fieldset>
+</div>
+';
+
+$CCS_NOTES_JS='
+
+function ccs_notes_update(){
+    var content = ""+$$("#ccs_notes").get("value");
+    $$("#ccs_notes_wrap").set("html",content.replace(/\n/g, "<br />")+"<br /><br />");
+    Cookie.write(\'CCS_NOTES\', content, {duration: 99999});
+    $$("#ccs_notes").setStyle("height",$$("#ccs_notes_wrap").getStyle("height"));
+}
+
+window.addEvent("domready", function(){
+
+    // Update widths
+    var css_nodes_width = $("CCS_notes_widthSetter").getComputedSize().width-20;
+    $$("#ccs_notes").setStyle("width",css_nodes_width+"px");
+    $$("#ccs_notes_wrap").setStyle("width",css_nodes_width+"px");
+
+    ccs_notes_update();
+
+    $$("#ccs_notes").addEvents({
+        "keyup": function(e){
+            ccs_notes_update();
+        }
+    });
+
+});
+';
+$this->doc->addScriptDeclaration($CCS_NOTES_JS);
+
+// ############################################### PERSONAL NOTES
+?>
+
 
 <input type="hidden" name="option" value="com_ccs" />
 <input type="hidden" name="task" value="<?php echo $this->task; ?>" />
@@ -267,4 +324,7 @@ if($field_alias!="id"){
 <input type="hidden" name="filter_search_column" value="<?php echo JRequest::getVar( 'filter_search_column' );?>" />
 
 </form>
+
 </div>
+
+
