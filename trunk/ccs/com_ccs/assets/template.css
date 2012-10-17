@@ -427,7 +427,9 @@ fieldset input,
 fieldset textarea,
 fieldset select,
 fieldset img,
-fieldset button {
+fieldset button
+,#ccs_notes_wrap
+ {
     float: none !important;
     margin: 5px 5px 5px 0 !important;
     clear:both !important;
@@ -451,6 +453,7 @@ fieldset button
 ,input
 ,.imgFld_img_wrapp
 ,div.toggle-editor a
+,#ccs_notes_wrap
 {
     font-size:13px !important;
     font-weight: normal !important;
@@ -650,7 +653,16 @@ div.quickIcon span
     text-align: right;
 }
 
-/* ############################################################################################ */
+#ccs_notes
+,#ccs_notes_wrap
+{
+    background-color: #FFA;
+    border: 1px solid #DC3 !important;  
+    padding-top:7px !important;
+    padding-bottom:7px !important;
+}
+
+/* ############################################################################################ CUSTOM STYLE VARIATIONS */
 .ccs_databases table,
 .ccs_admin_fields table
 {
