@@ -90,8 +90,6 @@ echo '
 </fieldset>
 ';
 
-echo "a"."/n";
-
 $CCS_NOTES_JS='
 
 function ccs_notes_update(){
