@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+ <extension type="package" version="1.6">
+ <name>Custom Component System</name>
+ <author>Custom Component System Team</author>
+ <creationDate>October 2012</creationDate>
+ <packagename>ccs</packagename>
+ <version>1.0.0</version>
+ <url>http://www.admiror-design-studio.com/</url>
+ <packager>Custom Component System Team</packager>
+ <packagerurl>http://www.admiror-design-studio.com/</packagerurl>
+ <description>Custom Component System package</description>
+ <files>
+   <file type="component" id="ccs" >com_ccs.zip</file>
+   <file type="module" id="ccs" client="site">mod_ccs.zip</file>
+ </files>
+ </extension>
