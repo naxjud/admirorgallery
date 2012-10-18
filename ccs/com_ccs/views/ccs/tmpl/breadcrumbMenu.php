@@ -240,9 +240,9 @@ window.addEvent("domready", function(){
 
 ';
 
-$this->doc->addScript(JURI::root().'administrator'.DS.'components'.DS.'com_ccs'.DS.'assets'.DS.'js'.DS.'Observer.js');
-$this->doc->addScript(JURI::root().'administrator'.DS.'components'.DS.'com_ccs'.DS.'assets'.DS.'js'.DS.'Autocompleter.js');
-$this->doc->addScript(JURI::root().'administrator'.DS.'components'.DS.'com_ccs'.DS.'assets'.DS.'js'.DS.'Autocompleter.Local.js');
+$this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/Observer.js');
+$this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/Autocompleter.js');
+$this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/Autocompleter.Local.js');
 $this->doc->addScriptDeclaration($JS_breadcrumbMenu_script);
 
 $JS_breadcrumbMenu_items = 'var breadcrumbMenu_items_default="COM_CCS_HOME";'."\n";

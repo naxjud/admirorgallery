@@ -25,7 +25,7 @@ echo '<div class="imgFld_img_wrapp"
 if($field_value!=""){
 	$imgFld_src=JURI::root().$field_value;	
 }else{
-	$imgFld_src=JURI::root().'administrator'.DS.'components'.DS.'com_ccs'.DS.'assets'.DS.'images'.DS.'no-image.png';
+	$imgFld_src=JURI::root().'administrator/components/com_ccs/assets/images/no-image.png';
 }
 echo '<img src="'.$imgFld_src.'" id="img_'.$field_alias.'" />';	
 echo "</div>";

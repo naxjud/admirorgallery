@@ -10,7 +10,7 @@
  <packagerurl>http://www.admiror-design-studio.com/</packagerurl>
  <description>Custom Component System package</description>
  <files>
-   <file type="component" id="ccs" >com_ccs.zip</file>
-   <file type="module" id="ccs" client="site">mod_ccs.zip</file>
+   <file type="component" id="com_ccs" >com_ccs.zip</file>
+   <file type="module" id="mod_ccs" client="site">mod_ccs.zip</file>
  </files>
  </extension>

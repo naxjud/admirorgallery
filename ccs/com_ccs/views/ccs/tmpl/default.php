@@ -12,7 +12,7 @@ $breadcrumbmenuState = $this->escape($this->state->get('breadcrumbmenuState'));
 $app = JFactory::getApplication();
 $prefix = $app->getCfg('dbprefix');
 
-$this->doc->addScript(JURI::root().'administrator'.DS.'components'.DS.'com_ccs'.DS.'assets'.DS.'js'.DS.'mootools-more-1.4-full.js');
+$this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
 
 
 ?>    
@@ -48,7 +48,7 @@ foreach ($this->quickIcons as $icon) {
 if( @GetImageSize(JURI::root().$icon["db_image"]) ){
 	$icon_image=JURI::root().$icon["db_image"];
 }else{
-	$icon_image=JURI::root().'administrator'.DS.'components'.DS.'com_ccs'.DS.'assets'.DS.'images'.DS.'icon-64-ccs.png';
+	$icon_image=JURI::root().'administrator/components/com_ccs/assets/images/icon-64-ccs.png';
 }
 	
 echo '
