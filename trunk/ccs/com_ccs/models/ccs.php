@@ -246,7 +246,7 @@ class CcsModelCcs extends JModelList
 		// Registered 2 
 		// Manager 6
 		// Super User 8
-		$user = JFactory::getUser($userid);    
+		$user = JFactory::getUser();    
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select($db->nameQuote('id'));
@@ -318,7 +318,7 @@ class CcsModelCcs extends JModelList
 
 	function getQuickIcons(){
 
-		$user = JFactory::getUser($userid);
+		$user = JFactory::getUser();
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select($db->nameQuote('id'));
