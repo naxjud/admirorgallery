@@ -7,11 +7,6 @@ JHtml::_('behavior.multiselect');// Select/Deselect all
 jimport( 'joomla.html.html.grid' );
 jimport('joomla.filesystem.file');
 
-$breadcrumbmenuState = $this->escape($this->state->get('breadcrumbmenuState'));
-
-$app = JFactory::getApplication();
-$prefix = $app->getCfg('dbprefix');
-
 $this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
 
 
@@ -98,9 +93,9 @@ require_once('personal_notes.php');
 <input type="hidden" name="layout" id="layout" value="default" />
 <input type="hidden" name="task" id="task" value="" />
 <input type="hidden" name="alias" id="alias" value="home" />
-<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $listOrder; ?>" />
-<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-<input type="hidden" name="breadcrumbmenuState" id="breadcrumbmenuState" value="<?php echo $breadcrumbmenuState; ?>" />
+<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->listOrder; ?>" />
+<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->listDirn; ?>" />
+<input type="hidden" name="breadcrumbmenuState" id="breadcrumbmenuState" value="<?php echo $this->breadcrumbmenuState; ?>" />
 <input type="hidden" name="filter_search_value" id="filter_search_value" value="" />
 <input type="hidden" name="filter_search_column" id="filter_search_column" value="" />
 

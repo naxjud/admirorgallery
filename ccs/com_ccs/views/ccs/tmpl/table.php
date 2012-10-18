@@ -13,9 +13,6 @@ $listOrder = $this->escape($this->state->get('filter_order'));
 $listDirn  = $this->escape($this->state->get('filter_order_Dir'));
 $breadcrumbmenuState = $this->escape($this->state->get('breadcrumbmenuState'));
 
-$app = JFactory::getApplication();
-$prefix = $app->getCfg('dbprefix');
-
 $this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
 
 require_once('adminlist_interface.php');
@@ -104,7 +101,8 @@ require_once("breadcrumbMenu.php");
  foreach ($this->items as $i => $item){
 
     echo '<tr id="row'.$i.'">';
-    echo '<td  style="display:none;'.$float.'">';
+    //echo '<td  style="display:none;'.$float.'">';
+    echo '<td  style="display:none;">';
     echo '<input type="checkbox" name="cid[]" id="cb'.$i.'" value="'.$item->id.'" style="display:none" />'; 
     echo '</td>'; 
 

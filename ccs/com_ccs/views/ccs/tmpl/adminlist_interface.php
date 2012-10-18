@@ -103,7 +103,7 @@ function adminlist_drag_end(){
 	$$("#adminlist_clone").destroy();
 	if(dropTarget==""){return;}
 	if($("filter_order").get("value")!="ordering" || $("filter_order_Dir").get("value")!="asc"){
-		var filter_order_confirm = confirm("'.JText::_(COM_CCS_CHANGE_ORDERING_NOTICE).'");
+		var filter_order_confirm = confirm("'.JText::_("COM_CCS_CHANGE_ORDERING_NOTICE").'");
 		if(filter_order_confirm){
 			Joomla.tableOrdering(\'ordering\',\'asc\',\'\');
 			return;
