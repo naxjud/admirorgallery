@@ -42,7 +42,7 @@ class CcsViewCcs extends JView
     	
         // Add CSS
         $this->doc = &JFactory::getDocument(); 
-        $this->doc->addStyleSheet(JURI::root().'administrator'.DS.'components'.DS.'com_ccs'.DS.'assets'.DS.'template.css');
+		$this->doc->addStyleSheet(JURI::root().'administrator/components/com_ccs/assets/template.css');
         
         $this->alias=$this->get('Alias');
         
