@@ -16,7 +16,7 @@ $breadcrumbmenuState = $this->escape($this->state->get('breadcrumbmenuState'));
 $app = JFactory::getApplication();
 $prefix = $app->getCfg('dbprefix');
 
-$this->doc->addScript(JURI::root().'administrator'.DS.'components'.DS.'com_ccs'.DS.'assets'.DS.'js'.DS.'mootools-more-1.4-full.js');
+$this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
 
 require_once('adminlist_interface.php');
 

@@ -11,7 +11,7 @@ JHTML::_('behavior.modal');// Modal Libriries (SqueezeBox)
 
 $document = JFactory::getDocument();
 
-$this->doc->addScript(JURI::root().'administrator'.DS.'components'.DS.'com_ccs'.DS.'assets'.DS.'js'.DS.'mootools-more-1.4-full.js');
+$this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
 
 
 $calendar_js='
@@ -90,7 +90,7 @@ function imgFld_refresh(){
 	if(imgFld_url!=""){
 		$("img_"+imgFld_id).set("src","'.JURI::root().'"+imgFld_url);	
 	}else{
-		$("img_"+imgFld_id).set("src","'.JURI::root().'administrator'.DS.'components'.DS.'com_ccs'.DS.'assets'.DS.'images'.DS.'no-image.png");
+		$("img_"+imgFld_id).set("src","'.JURI::root().'administrator/components/com_ccs/assets/images/no-image.png");
 	}
 }
  
