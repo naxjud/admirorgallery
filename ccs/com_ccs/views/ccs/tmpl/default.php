@@ -7,6 +7,9 @@ jimport('joomla.html.html.grid');
 jimport('joomla.filesystem.file');
 
 $this->doc->addScript(JURI::root() . 'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
+
+require_once("forcedStyles.php");
+
 ?>    
 <div class="<?php echo $this->alias; ?>">
     <h2><?php echo JText::_(strtoupper($this->alias)); ?></h2>
@@ -40,12 +43,12 @@ $this->doc->addScript(JURI::root() . 'administrator/components/com_ccs/assets/js
 <div class="quickIcon">
 <a href="#" onclick="
 parentID = breadcrumbMenu_getParentID(\'' . $icon["id"] . '\');
-document.id(\'breadcrumbmenuState\').value=parentID;
-document.id(\'layout\').value=breadcrumbMenu_items[\'' . $icon["id"] . '\'][\'layout\'];
-document.id(\'filter_order\').value=\'\';
-document.id(\'filter_order_Dir\').value=\'\';
-document.id(\'alias\').value=breadcrumbMenu_items[\'' . $icon["id"] . '\'][\'alias\'];
-document.id(\'adminForm\').submit();
+$(\'breadcrumbmenuState\').value=parentID;
+$(\'layout\').value=breadcrumbMenu_items[\'' . $icon["id"] . '\'][\'layout\'];
+$(\'filter_order\').value=\'\';
+$(\'filter_order_Dir\').value=\'\';
+$(\'alias\').value=breadcrumbMenu_items[\'' . $icon["id"] . '\'][\'alias\'];
+$(\'adminForm\').submit();
 return false;
 ">
 <img src="' . $icon_image . '" alt="">

@@ -7,8 +7,6 @@ JHTML::_('behavior.formvalidation'); // Form Validation Libraries
 JHTML::_('behavior.calendar'); // Callendar Libraries
 JHTML::_('behavior.modal'); // Modal Libriries (SqueezeBox)
 
-$document = JFactory::getDocument();
-
 $this->doc->addScript(JURI::root() . 'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
 
 
@@ -196,15 +194,16 @@ window.addEvent("domready", function(){
 
 	tmp_init();
 
-
 });
 ';
 
-$document->addScriptDeclaration($calendar_js);
-$document->addScriptDeclaration($JS_validation);
-$document->addScriptDeclaration($JS_varcharLimited);
-$document->addScriptDeclaration($JS_imageFieldType);
-$document->addScriptDeclaration($JS);
+require_once("forcedStyles.php");
+
+$this->doc->addScriptDeclaration($calendar_js);
+$this->doc->addScriptDeclaration($JS_validation);
+$this->doc->addScriptDeclaration($JS_varcharLimited);
+$this->doc->addScriptDeclaration($JS_imageFieldType);
+$this->doc->addScriptDeclaration($JS);
 ?>
 
 <div class="<?php echo $this->alias; ?>">
