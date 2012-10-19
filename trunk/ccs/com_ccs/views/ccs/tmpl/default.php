@@ -93,8 +93,8 @@ require_once('personal_notes.php');
 <input type="hidden" name="layout" id="layout" value="default" />
 <input type="hidden" name="task" id="task" value="" />
 <input type="hidden" name="alias" id="alias" value="home" />
-<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->listOrder; ?>" />
-<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->listDirn; ?>" />
+<input type="hidden" name="filter_order" id="filter_order" value="" />
+<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="" />
 <input type="hidden" name="breadcrumbmenuState" id="breadcrumbmenuState" value="<?php echo $this->breadcrumbmenuState; ?>" />
 <input type="hidden" name="filter_search_value" id="filter_search_value" value="" />
 <input type="hidden" name="filter_search_column" id="filter_search_column" value="" />

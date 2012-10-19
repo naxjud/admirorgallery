@@ -5,6 +5,10 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+if( isset( $_COOKIE['CCS_NOTES'] ) ){
+    $ccs_notes_content=$_COOKIE['CCS_NOTES'];
+}
+
 echo '
 <hr />
 <div id="CCS_notes_widthSetter" style="padding:5px;">
@@ -12,7 +16,7 @@ echo '
 <label>
 '.JText::_("CCS_NOTES").'
 </label>
-<textarea spellcheck="false" style="display:block; resize: none !important; overflow:hidden;" id="ccs_notes">'.$_COOKIE["CCS_NOTES"].'</textarea>
+<textarea spellcheck="false" style="display:block; resize: none !important; overflow:hidden;" id="ccs_notes">'.$ccs_notes_content.'</textarea>
 <div id="ccs_notes_wrap" style="white-space: pre-wrap; word-wrap: break-word; position:absolute; left:99999px"></div>
 '.JText::_("CCS_NOTES_DESC").'
 </fieldset>
