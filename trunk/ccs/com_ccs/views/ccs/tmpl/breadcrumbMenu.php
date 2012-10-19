@@ -4,7 +4,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 $JS_breadcrumbMenu_script = '
-console.log("hello");
 // Declare global vars
 var breadcrumbMenu_wrap,newInput,newDIV,newSPAN,newUL,newLI,newH1,newIMG,newA,newBR,newTABLE,newTR,newTD,cache_array,cache_boolean,cache_str,cache_int,cache_obj,newSPAN;
 
@@ -15,12 +14,12 @@ function breadcrumbMenu_render_item(wrapperID,menuItemID,hasChildren,isParent)//
 {
 
 		newLI = document.createElement("li");
-		document.id(wrapperID).appendChild(newLI).set("id", "breadcrumbMenu_linkRow_"+menuItemID);
+		$(wrapperID).appendChild(newLI).set("id", "breadcrumbMenu_linkRow_"+menuItemID);
 
 		if(isParent){
-			document.id("breadcrumbMenu_linkRow_"+menuItemID).set("class","breadcrumbMenu_linkRow_parent");
+			$("breadcrumbMenu_linkRow_"+menuItemID).set("class","breadcrumbMenu_linkRow_parent");
 		}else{
-			document.id("breadcrumbMenu_linkRow_"+menuItemID).set("class","breadcrumbMenu_linkRow_child");
+			$("breadcrumbMenu_linkRow_"+menuItemID).set("class","breadcrumbMenu_linkRow_child");
 		}
 
 		// Prepare table wrapping structure
@@ -29,7 +28,7 @@ function breadcrumbMenu_render_item(wrapperID,menuItemID,hasChildren,isParent)//
 		newTR = document.createElement("tr");
 		newTD = document.createElement("td");
 		newA = document.createElement("a");
-		document.id("breadcrumbMenu_linkRow_"+menuItemID).appendChild(newTABLE)
+		$("breadcrumbMenu_linkRow_"+menuItemID).appendChild(newTABLE)
 														 .appendChild(newTR)
 														 .appendChild(newTD)
 														 .appendChild(newA)
@@ -37,40 +36,40 @@ function breadcrumbMenu_render_item(wrapperID,menuItemID,hasChildren,isParent)//
 														 .set("id","breadcrumbMenu_link_"+menuItemID)
 														 .addEvents({ 
 															"click": function(){ 
-																document.id(\'layout\').value=breadcrumbMenu_items[menuItemID]["layout"];
-																document.id(\'filter_order\').value=\'\';
-																document.id(\'filter_order_Dir\').value=\'\';
-																document.id(\'filter_search_value\').value=\'\';
-																document.id(\'filter_order_Dir\').value=\'\';
-																document.id(\'alias\').value=breadcrumbMenu_items[menuItemID]["alias"];
-																document.id(\'adminForm\').submit();
+																$(\'layout\').value=breadcrumbMenu_items[menuItemID]["layout"];
+																$(\'filter_order\').value=\'\';
+																$(\'filter_order_Dir\').value=\'\';
+																$(\'filter_search_value\').value=\'\';
+																$(\'filter_order_Dir\').value=\'\';
+																$(\'alias\').value=breadcrumbMenu_items[menuItemID]["alias"];
+																$(\'adminForm\').submit();
 															}
 														 });  
 
 		if(menuItemID == breadcrumbMenu_items_activeItem){
-			document.id("breadcrumbMenu_link_"+menuItemID).set("class", "breadcrumbMenu_link_active");
+			$("breadcrumbMenu_link_"+menuItemID).set("class", "breadcrumbMenu_link_active");
 			if(breadcrumbMenu_items[menuItemID]["image"]!=""){				
 				newIMG = document.createElement("img");
-				document.id("breadcrumbMenu_link_"+menuItemID).appendChild(newIMG)
+				$("breadcrumbMenu_link_"+menuItemID).appendChild(newIMG)
 															  .set("src","' . JURI::root() . '"+breadcrumbMenu_items[menuItemID]["image"])
 															  .set("width","64");
 			}
 		}
 
-		document.id("breadcrumbMenu_link_"+menuItemID).appendText(breadcrumbMenu_items[menuItemID]["name"]);
+		$("breadcrumbMenu_link_"+menuItemID).appendText(breadcrumbMenu_items[menuItemID]["name"]);
 				
 		if(hasChildren){
    		    newTD = document.createElement("td");
 			newA = document.createElement("a");
-			document.id("breadcrumbMenu_linkRow_"+menuItemID).getElements("tr")[0].appendChild(newTD)
+			$("breadcrumbMenu_linkRow_"+menuItemID).getElements("tr")[0].appendChild(newTD)
 																			   .set("class","breadcrumbMenu_link_arrowWrap")
 																			   .appendChild(newA)
 																			   .set("id","breadcrumbMenu_link_arrowWrap_"+menuItemID)
 																			   .set("href","#")
-																			   .set("onClick", "document.id(\'breadcrumbmenuState\').value=\'"+menuItemID+"\'; breadcrumbMenu_render(\'"+menuItemID+"\',true);return false;")
+																			   .set("onClick", "$(\'breadcrumbmenuState\').value=\'"+menuItemID+"\'; breadcrumbMenu_render(\'"+menuItemID+"\',true);return false;")
 																			   .appendText("◄");
-			cache_obj = document.id("breadcrumbMenu_link_"+menuItemID).getSize();
-			document.id("breadcrumbMenu_link_arrowWrap_"+menuItemID).setStyle("line-height",cache_obj.y+"px");
+			cache_obj = $("breadcrumbMenu_link_"+menuItemID).getSize();
+			$("breadcrumbMenu_link_arrowWrap_"+menuItemID).setStyle("line-height",cache_obj.y+"px");
 		}
 
 
@@ -86,10 +85,6 @@ function breadcrumbMenu_getChildren(currItem){
 	    {
 		    currChildren.push(i);
 	    }
-	}
-	if(currChildren.length==0)// Children not found
-	{
-		console.log("Children not found for "+currItem);
 	}
 	return currChildren;	
 }
@@ -119,57 +114,63 @@ function breadcrumbMenu_getParents(currItem)
 function breadcrumbMenu_render(currItem,useAnim)
 {
 
-console.log("Call Function: breadcrumbMenu_render"+"("+currItem+","+useAnim+")");
-console.log("Notice: "+currItem+" = "+breadcrumbMenu_items[currItem]["alias"]);
+	var i=0;
+	currParents = breadcrumbMenu_getParents(currItem);
+	currChildren = breadcrumbMenu_getChildren(currItem);
 
-var i=0;
-currParents = breadcrumbMenu_getParents(currItem);
-currChildren = breadcrumbMenu_getChildren(currItem);
+	// Prepare
+	$("breadcrumbMenu_input").set("value","");
+	$("breadcrumbMenu_input").setAttribute("tabIndex", 0);
+	$("breadcrumbMenu_input").focus();
+	breadcrumbMenu_wrap = $("breadcrumbMenu");
+	breadcrumbMenu_wrap.empty();
 
-// Prepare
-document.id("breadcrumbMenu_input").set("value","");
-document.id("breadcrumbMenu_input").setAttribute("tabIndex", 0);
-document.id("breadcrumbMenu_input").focus();
-breadcrumbMenu_wrap = document.id("breadcrumbMenu");
-breadcrumbMenu_wrap.empty();
+	// -------------------------------------------------------------------------------- Render Parents
+	for(i=0; i<currParents.length; i++)
+	{
+		cache_str=currParents[i];	
+		breadcrumbMenu_render_item("breadcrumbMenu",currParents[i],true,true);
+	}
 
-// -------------------------------------------------------------------------------- Render Parents
-for(i=0; i<currParents.length; i++)
-{
-	cache_str=currParents[i];	
-	breadcrumbMenu_render_item("breadcrumbMenu",currParents[i],true,true);
-}
-
-// -------------------------------------------------------------------------------- Render Current
-cache_boolean=true;
-cache_array=breadcrumbMenu_getChildren(currItem);
-if(cache_array.length==0)// Children not found
-{
-	cache_boolean=false;
-}
-breadcrumbMenu_render_item("breadcrumbMenu",currItem,cache_boolean,cache_boolean);
-
-// -------------------------------------------------------------------------------- Render Children
-for(i=0; i<currChildren.length; i++)
-{
+	// -------------------------------------------------------------------------------- Render Current
 	cache_boolean=true;
-	cache_array=breadcrumbMenu_getChildren(currChildren[i]);
+	cache_array=breadcrumbMenu_getChildren(currItem);
 	if(cache_array.length==0)// Children not found
 	{
 		cache_boolean=false;
 	}
-	breadcrumbMenu_render_item("breadcrumbMenu",currChildren[i],cache_boolean,false);
-}
+	breadcrumbMenu_render_item("breadcrumbMenu",currItem,cache_boolean,cache_boolean);
 
-// Slide In Menu Animation for navigation
-if(useAnim)
-{
-	var myFx = new Fx.Slide(breadcrumbMenu_wrap, {
-		duration: 440,
-		transition: Fx.Transitions.Back.easeOut
+	// -------------------------------------------------------------------------------- Render Children
+	for(i=0; i<currChildren.length; i++)
+	{
+		cache_boolean=true;
+		cache_array=breadcrumbMenu_getChildren(currChildren[i]);
+		if(cache_array.length==0)// Children not found
+		{
+			cache_boolean=false;
+		}
+		breadcrumbMenu_render_item("breadcrumbMenu",currChildren[i],cache_boolean,false);
+	}
+
+	// Slide In Menu Animation for navigation
+	if(useAnim)
+	{
+		var myFx = new Fx.Slide(breadcrumbMenu_wrap, {
+			duration: 440,
+			transition: Fx.Transitions.Back.easeOut
+		});
+		myFx.hide().slideIn();
+	}
+
+	css_addButtonStyles( $$("#breadcrumbMenu a") );
+
+	$$("td.breadcrumbMenu_link_arrowWrap a").each(function(item){
+		item.setStyles({
+			"line-height": item.getParent().getParent().getElement("td:nth-child(first) a").getComputedSize().height+"px",
+			"padding": "0px"
+		});
 	});
-	myFx.hide().slideIn();
-}
 	
 }
 
@@ -204,7 +205,7 @@ function breadcrumbMenu_filter(){
 		"multiple": false // Tag support, by default comma separated
 	});
 
-	document.id("breadcrumbMenu_input").addEvent("keydown", function(event)
+	$("breadcrumbMenu_input").addEvent("keydown", function(event)
 	{
 		if(event.key=="enter")
 		{
@@ -214,12 +215,12 @@ function breadcrumbMenu_filter(){
 				{
 					
 					parentID = breadcrumbMenu_getParentID(i);
-					document.id(\'breadcrumbmenuState\').value=parentID;
-					document.id(\'layout\').value=breadcrumbMenu_items[i][\'layout\'];
-					document.id(\'filter_order\').value=\'\';
-					document.id(\'filter_order_Dir\').value=\'\';
-					document.id(\'alias\').value=breadcrumbMenu_items[i][\'alias\'];
-					document.id(\'adminForm\').submit();
+					$(\'breadcrumbmenuState\').value=parentID;
+					$(\'layout\').value=breadcrumbMenu_items[i][\'layout\'];
+					$(\'filter_order\').value=\'\';
+					$(\'filter_order_Dir\').value=\'\';
+					$(\'alias\').value=breadcrumbMenu_items[i][\'alias\'];
+					$(\'adminForm\').submit();
 
 				}
 			}
@@ -230,7 +231,7 @@ function breadcrumbMenu_filter(){
 window.addEvent("domready", function(){ 
 
 	breadcrumbMenu_filter();
-	var currItem = document.id("breadcrumbmenuState").value;
+	var currItem = $("breadcrumbmenuState").value;
 	if(breadcrumbMenu_items_valid_ids.indexOf(currItem)==-1){
 		currItem=breadcrumbMenu_items_default ;
 	}

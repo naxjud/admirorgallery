@@ -6,8 +6,6 @@ JHtml::_('behavior.multiselect'); // Select/Deselect all
 jimport('joomla.html.html.grid');
 jimport('joomla.filesystem.file');
 
-$document = JFactory::getDocument();
-
 $this->doc->addScript(JURI::root() . 'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
 
 require_once('adminlist_interface.php');
@@ -20,12 +18,12 @@ function tblEdit(tblEdit_id,tblEdit_alias,tblEdit_value){
     $$("#tblEdit_value").set("value", tblEdit_value);
     document.adminForm.submit();
 }
-
-window.addEvent("domready", function(){ 
-
-});
 ';
-$document->addScriptDeclaration($JS);
+
+$this->doc->addScriptDeclaration($JS);
+
+require_once("forcedStyles.php");
+
 ?>    
 <div class="<?php echo $this->alias; ?>">
     <h2><?php echo JText::_(strtoupper($this->alias)); ?></h2>

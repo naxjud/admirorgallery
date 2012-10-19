@@ -8,37 +8,37 @@ $adminlist_interface = '
 var rows, cbs, rowID, cbID, keystroke, newDIV, dropTarget, myDrag, myEvent, isDragging;
 
 function rowEdit(){
-	document.id("task").value = "edit";
+	$("task").value = "edit";
 	document.adminForm.submit();
 }
 
 function rowSort(){
-	document.id("adminListSorting").value = dropTarget;
-	document.id("task").value = "adminListSorting";
+	$("adminListSorting").value = dropTarget;
+	$("task").value = "adminListSorting";
 	document.adminForm.submit();
 }
 
 function adminlist_select(){
-	document.id(cbID).checked = true;
-	document.id(rowID).addClass("active");
+	$(cbID).checked = true;
+	$(rowID).addClass("active");
 }
 
 function adminlist_deselect(){
-	document.id(cbID).checked = false;
-	document.id(rowID).removeClass("active");
+	$(cbID).checked = false;
+	$(rowID).removeClass("active");
 }
 
 function adminlist_deselect_all(){
 	for(var i=0; i<cbs.length; i++) {
-		document.id("cb"+i).checked = false;
-		document.id("row"+i).removeClass("active");
+		$("cb"+i).checked = false;
+		$("row"+i).removeClass("active");
 	}
 }
 
 function adminlist_drag_create_target(index,target_pos){
 	// Get the Dimensions of a row
-	var row_position = document.id("row"+index).getPosition();
-	var row_dimensions = document.id("row"+index).getDimensions();
+	var row_position = $("row"+index).getPosition();
+	var row_dimensions = $("row"+index).getDimensions();
 
 	if(target_pos=="bef"){
 		target_pos_y = row_position.y-(row_dimensions.height/2);
@@ -49,7 +49,7 @@ function adminlist_drag_create_target(index,target_pos){
 	newDIV = document.createElement("div");
 	document.body.appendChild(newDIV)
 				 .set("class","adminlist_target")
-				 .set("id",target_pos+document.id("cb"+index).get("value"))
+				 .set("id",target_pos+$("cb"+index).get("value"))
 				 .setStyles({
 				 	top: target_pos_y+"px",
 				 	left: row_position.x+"px",
@@ -87,7 +87,7 @@ function adminlist_drag_init(){
 			 	"left": myEvent.page.x+7+"px"
 			})
 		 .inject(document.body);
-	document.id(rowID).clone().inject(document.id("adminlist_clone"));
+	$(rowID).clone().inject($("adminlist_clone"));
 	myDrag = new Drag("adminlist_clone", {
 	});
 	myDrag.start(myEvent);
@@ -138,7 +138,7 @@ function adminlist_mouseleave(){
 window.addEvent("domready", function(){
 
 	cbs = document.getElementsByName("cid[]");
-	rows = document.id("adminlist").getElements("tr");
+	rows = $("adminlist").getElements("tr");
 	isDragging = false;
 
 	$$("#adminlist").setStyles({
@@ -161,7 +161,7 @@ window.addEvent("domready", function(){
 			keystroke="";
 		},
 		"mouseup": function(event){	
-			document.id(rowID).removeEvent("mouseleave",adminlist_mouseleave);		
+			$(rowID).removeEvent("mouseleave",adminlist_mouseleave);		
 			if(isDragging){
 				adminlist_drag_end();
 			}
@@ -169,7 +169,7 @@ window.addEvent("domready", function(){
 		}
 	});
 
-	document.id("adminlist").getElement("tbody").getElements("tr").addEvents({
+	$("adminlist").getElement("tbody").getElements("tr").addEvents({
 		"mousedown": function(e){
 
 			prev_rowID = rowID;
@@ -201,7 +201,7 @@ window.addEvent("domready", function(){
 				break;
 				case "control":
 					console.log("control is used");
-					if(document.id(cbID).get("checked")){
+					if($(cbID).get("checked")){
 						adminlist_deselect();
 					}else{
 						adminlist_select();
@@ -213,7 +213,7 @@ window.addEvent("domready", function(){
 			}
 
 			myEvent = e;
-			document.id(rowID).addEvent("mouseleave",adminlist_mouseleave);
+			$(rowID).addEvent("mouseleave",adminlist_mouseleave);
 		},
 		"dblclick": function(){
         	rowEdit();

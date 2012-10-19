@@ -151,28 +151,21 @@ li.breadcrumbMenu_linkRow_parent a
 , li.breadcrumbMenu_linkRow_child a
 {
     display:block;
-    text-decoration:none;
-    padding: 4px;
-    margin:0;
     text-align:center;
-    font-size:11px;
-    font-weight:bold;
-    color:#323a44;
-    background-color:#FFF;
-    
-    moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    border-radius: 5px;
-
-    
-    cursor: pointer;
 }
 
-li.breadcrumbMenu_linkRow_parent a:hover, li.breadcrumbMenu_linkRow_child a:hover
-, li.breadcrumbMenu_linkRow_parent a.breadcrumbMenu_link_active, li.breadcrumbMenu_linkRow_child a.breadcrumbMenu_link_active
+.breadcrumbMenu_linkRow_parent a
+, .breadcrumbMenu_linkRow_child a
+,.breadcrumbMenu_link_arrowWrap a
 {
-    background-color:#98c5cc;
+    padding:4px;
+    text-decoration: none;
+}
+
+.breadcrumbMenu_linkRow_parent a:hover
+, .breadcrumbMenu_linkRow_child a:hover
+,.breadcrumbMenu_link_arrowWrap a:hover
+{
     text-decoration: none;
 }
 
@@ -184,8 +177,6 @@ td.breadcrumbMenu_link_arrowWrap
 td.breadcrumbMenu_link_arrowWrap a
 {
     margin-left: 1px; 
-    font-size: 8px;
-    padding: 0;
 }
 
 li.breadcrumbMenu_linkRow_parent a img, li.breadcrumbMenu_linkRow_child a img
@@ -196,14 +187,6 @@ li.breadcrumbMenu_linkRow_parent a img, li.breadcrumbMenu_linkRow_child a img
     height: 64px;
     width: 64px;
 }
-
-li.breadcrumbMenu_linkRow_parent a.breadcrumbMenu_link_active, li.breadcrumbMenu_linkRow_child a.breadcrumbMenu_link_active
-{
-    
-}
-
-
-
 /*====================================================== ADMIN LIST*/
 
 ul.adminformlist, ul.adminformlist li
@@ -250,7 +233,7 @@ fieldset#filter-bar
 
 table.adminlist tr.active td
 {
-    background-color: #dddddd;
+    background-color: #ffeacd;
 }
 
 table.adminlist tr.hover td
@@ -422,12 +405,12 @@ fieldset input.required
 }
 
 
-label,
-fieldset input,
-fieldset textarea,
-fieldset select,
-fieldset img,
-fieldset button
+label
+,fieldset button
+,fieldset input
+,fieldset textarea
+,fieldset select
+,fieldset img
 ,#ccs_notes_wrap
  {
     float: none !important;
@@ -444,34 +427,25 @@ label
     width: auto;
 }
 
-fieldset input,
-fieldset textarea,
-fieldset select,
-fieldset img,
-fieldset button
+fieldset input
+,fieldset textarea
+,fieldset select
+,fieldset img
 ,span.varcharLimited
 ,input
 ,.imgFld_img_wrapp
-,div.toggle-editor a
 ,#ccs_notes_wrap
 {
     font-size:13px !important;
     font-weight: normal !important;
     padding:2px !important;
     margin:0 5px 5px 0 !important;
-    border:2px solid #98c5cc !important;
-    color:#323a44 !important;
-    
-    -webkit-border-radius: 3px !important;
-    -moz-border-radius: 3px !important;
-    border-radius: 3px !important;
 }
 
 input
 , select
-,div.toggle-editor a
 {
-    background: #fff !important;
+    background: #fff;
 }
 
 div.toggle-editor
@@ -619,21 +593,12 @@ div.quickIcon a
 {
     display:block;
     text-align:center;
-    font-size:11px;
-    font-weight:bold;
-    color:#323a44; 
-    padding:10px 5px;
-    moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -khtml-border-radius: 5px;
-    border-radius: 5px;
+    padding:10px 5px !important;
     text-decoration:none;
-    background-color:white;
 }
 
 div.quickIcon a:hover
 {
-    background-color:#98c5cc;
 }
 
 div.quickIcon img
@@ -653,6 +618,21 @@ div.quickIcon span
     text-align: right;
 }
 
+
+fieldset input.required
+{
+    background-color: white !important;
+}
+input:focus
+, select:focus
+, textarea:focus
+,input.required:focus
+, select.required:focus
+, textarea.required:focus
+{
+    background-color: #ffeacd !important;
+}
+
 #ccs_notes
 ,#ccs_notes_wrap
 {
@@ -662,11 +642,77 @@ div.quickIcon span
     padding-bottom:7px !important;
 }
 
+.ccs_button
+{
+    cursor: pointer;
+    text-decoration: none;
+
+    border:1px solid #ddd !important;
+    
+    color:#323a44 !important;
+    font-size: 13px !important;
+
+    padding:3px 5px !important;
+    margin:0 2px 2px 0 !important;
+    
+    moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px;
+
+    -moz-box-shadow: 0 1px 3px #8a9c9f;
+    -webkit-box-shadow: 0 1px 3px #8a9c9f;
+    box-shadow: 0 1px 3px #8a9c9f;
+
+    background: #fff !important; /* for non-css3 browsers */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dddddd') !important; /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#fff), to(#ddd)) !important; /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #fff,  #ddd) !important; /* for firefox 3.6+ */
+}
+
+.ccs_buttonOver
+,a.breadcrumbMenu_link_active
+{
+    text-decoration: none;
+
+    border:1px solid #ecd4b3 !important;
+
+    background: #ffeacd !important; /* for non-css3 browsers */   
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffeacd', endColorstr='#ecd4b3') !important; /* for IE */
+    background: -webkit-gradient(linear, left top, left bottom, from(#ffeacd), to(#ecd4b3)) !important; /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #ffeacd,  #ecd4b3) !important; /* for firefox 3.6+ */
+}
+
+.ccs_insetShadow
+{
+    moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -khtml-border-radius: 3px;
+
+    -moz-box-shadow: 0px 2px 6px #8a9c9f inset;
+    -webkit-box-shadow: 0px 2px 6px #8a9c9f inset;
+    box-shadow: 0px 2px 6px #8a9c9f inset;
+}
+
+.ccs_border2
+{
+    border:2px solid #98c5cc !important;
+}
+
+.toggle-editor{
+    margin-bottom: 10px !important;    
+}
+
+select#limit
+{
+    font-size: 9px !important;
+}
+
+
 /* ############################################################################################ CUSTOM STYLE VARIATIONS */
 .ccs_databases table,
 .ccs_admin_fields table
 {
-    background-color: #ececec !important;
+
 }
 
 .ccs_databases h2,
@@ -680,15 +726,13 @@ div.quickIcon span
 .ccs_admin_fields li.breadcrumbMenu_linkRow_parent a.breadcrumbMenu_link_active,
 .ccs_admin_fields li.breadcrumbMenu_linkRow_child a.breadcrumbMenu_link_active
 {
-    background-color: #c44444 !important;
-    color:white !important;
+
 }
 
 .ccs_databases fieldset input,
 .ccs_databases fieldset textarea,
 .ccs_databases fieldset select,
 .ccs_databases fieldset img,
-.ccs_databases fieldset button,
 .ccs_databases span.varcharLimited,
 .ccs_databases input,
 .ccs_databases .imgFld_img_wrapp,
@@ -699,7 +743,6 @@ div.quickIcon span
 .ccs_admin_fields fieldset textarea,
 .ccs_admin_fields fieldset select,
 .ccs_admin_fields fieldset img,
-.ccs_admin_fields fieldset button,
 .ccs_admin_fields span.varcharLimited,
 .ccs_admin_fields input,
 .ccs_admin_fields .imgFld_img_wrapp,
@@ -707,6 +750,5 @@ div.quickIcon span
 .ccs_admin_fields div.CCS_table_wrap,
 .ccs_admin_fields div.CCS_pagination_wrap
 {
-    border-color: #cf9999 !important;
-    color:#3f3f3f !important;
+
 }
