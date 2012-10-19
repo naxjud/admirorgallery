@@ -9,7 +9,7 @@ if (isset($_COOKIE['CCS_NOTES'])) {
 }
 
 echo '
-<hr />
+<hr style="clear:both;" />
 <div id="CCS_notes_widthSetter" style="padding:5px;">
 <fieldset>
 <label>
