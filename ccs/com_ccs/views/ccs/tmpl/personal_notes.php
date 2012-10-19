@@ -1,12 +1,11 @@
 <?php
+
 // Author: Igor Kekeljevic, 2012.
-
-
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-
-if( isset( $_COOKIE['CCS_NOTES'] ) ){
-    $ccs_notes_content=$_COOKIE['CCS_NOTES'];
+$ccs_notes_content = '';
+if (isset($_COOKIE['CCS_NOTES'])) {
+    $ccs_notes_content = $_COOKIE['CCS_NOTES'];
 }
 
 echo '
@@ -14,17 +13,17 @@ echo '
 <div id="CCS_notes_widthSetter" style="padding:5px;">
 <fieldset>
 <label>
-'.JText::_("CCS_NOTES").'
+' . JText::_("CCS_NOTES") . '
 </label>
-<textarea spellcheck="false" style="display:block; resize: none !important; overflow:hidden;" id="ccs_notes">'.$ccs_notes_content.'</textarea>
+<textarea spellcheck="false" style="display:block; resize: none !important; overflow:hidden;" id="ccs_notes">' . $ccs_notes_content . '</textarea>
 <div id="ccs_notes_wrap" style="white-space: pre-wrap; word-wrap: break-word; position:absolute; left:99999px"></div>
-'.JText::_("CCS_NOTES_DESC").'
+' . JText::_("CCS_NOTES_DESC") . '
 </fieldset>
 </div>
 <br />
 ';
 
-$CCS_NOTES_JS='
+$CCS_NOTES_JS = '
 
 function ccs_notes_update(){
     var content = ""+$$("#ccs_notes").get("value");

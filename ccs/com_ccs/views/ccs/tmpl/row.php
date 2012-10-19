@@ -1,20 +1,18 @@
 <?php
 // Author: Igor Kekeljevic, 2012.
-
-
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHTML::_('behavior.formvalidation');// Form Validation Libraries
-JHTML::_('behavior.calendar');// Callendar Libraries
-JHTML::_('behavior.modal');// Modal Libriries (SqueezeBox)
+JHTML::_('behavior.formvalidation'); // Form Validation Libraries
+JHTML::_('behavior.calendar'); // Callendar Libraries
+JHTML::_('behavior.modal'); // Modal Libriries (SqueezeBox)
 
 $document = JFactory::getDocument();
 
-$this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
+$this->doc->addScript(JURI::root() . 'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
 
 
-$calendar_js='
+$calendar_js = '
     // Calendar support
 	function calendarInit(){
 		Calendar.setup({
@@ -28,7 +26,7 @@ $calendar_js='
 }
 ';
 
-$JS_validation='
+$JS_validation = '
     // Validation support
     Joomla.submitbutton = function(task){
     if(task=="cancel"){
@@ -38,7 +36,7 @@ $JS_validation='
         if (document.formvalidator.isValid(f)) {
             Joomla.submitform(task);
         }else{
-				var answer = confirm("'.JText::_( "COM_CCS_TABLE_FIELDS_ERROR").'");
+				var answer = confirm("' . JText::_("COM_CCS_TABLE_FIELDS_ERROR") . '");
 				if (answer){
 					Joomla.submitform(task);
 				}
@@ -48,7 +46,7 @@ $JS_validation='
     }
 ';
 
-$JS_varcharLimited='
+$JS_varcharLimited = '
 // varcharLimited_array
 var varcharLimited_array=new Array();
 
@@ -82,15 +80,15 @@ console.log(item_alias);
 }
 ';
 
-$JS_imageFieldType='
+$JS_imageFieldType = '
 var imgFld_id, imgFld_url;
 
 function imgFld_refresh(){
 	$(imgFld_id).value=imgFld_url;
 	if(imgFld_url!=""){
-		$("img_"+imgFld_id).set("src","'.JURI::root().'"+imgFld_url);	
+		$("img_"+imgFld_id).set("src","' . JURI::root() . '"+imgFld_url);	
 	}else{
-		$("img_"+imgFld_id).set("src","'.JURI::root().'administrator/components/com_ccs/assets/images/no-image.png");
+		$("img_"+imgFld_id).set("src","' . JURI::root() . 'administrator/components/com_ccs/assets/images/no-image.png");
 	}
 }
  
@@ -100,7 +98,7 @@ function jInsertFieldValue(url_value){
 }
 ';
 
-$JS='
+$JS = '
 var newTABLE,newTR,newTD,newHR;
 
 // Form Template
@@ -207,78 +205,71 @@ $document->addScriptDeclaration($JS_validation);
 $document->addScriptDeclaration($JS_varcharLimited);
 $document->addScriptDeclaration($JS_imageFieldType);
 $document->addScriptDeclaration($JS);
-
 ?>
 
-<div class="<?php echo $this->alias;?>">
-<form enctype="multipart/form-data" action="index.php" method="post" name="adminForm" class="form-validate">
+<div class="<?php echo $this->alias; ?>">
+    <form enctype="multipart/form-data" action="index.php" method="post" name="adminForm" class="form-validate">
 
-<fieldset class="adminform form-validate">
+        <fieldset class="adminform form-validate">
 
-<h2><?php echo JText::_( strtoupper($this->alias) )." | ".JText::_( strtoupper("COM_CCS_".$this->task) );?></h2>
+            <h2><?php echo JText::_(strtoupper($this->alias)) . " | " . JText::_(strtoupper("COM_CCS_" . $this->task)); ?></h2>
 
-<?php 
-
-if($this->row["id"] && $this->task!="duplicate"){// Patch for add and duplicate	
-	echo '<input type="hidden" name="id" value="'.$this->row["id"].'" />';
-	echo '<input type="hidden" name="cid[]" value="'.$this->row["id"].'" />';
+<?php
+if ($this->row["id"] && $this->task != "duplicate") {// Patch for add and duplicate	
+    echo '<input type="hidden" name="id" value="' . $this->row["id"] . '" />';
+    echo '<input type="hidden" name="cid[]" value="' . $this->row["id"] . '" />';
 }
 
-$tabIndex=0;
+$tabIndex = 0;
 
-foreach ($this->fields as $field)// Loop through Show Fields
-{
+foreach ($this->fields as $field) {// Loop through Show Fields
 
-$field_alias = $field["fld_alias"];	
-$field_params = $field["fld_params"];
-$field_type = $field["fld_type"];	
+    $field_alias = $field["fld_alias"];
+    $field_params = $field["fld_params"];
+    $field_type = $field["fld_type"];
 
-if($field_alias!="id"){
+    if ($field_alias != "id") {
 
-	$field_value = $this->row[$field_alias];
-	
-	$tabIndex++;
+        $field_value = $this->row[$field_alias];
 
-	// SET DEFAULT FIELD TEMPLATE
-	$fld_types_file = JPATH_COMPONENT.DS."views".DS."ccs".DS."tmpl".DS."fld_types".DS."row".DS."default.php";
+        $tabIndex++;
 
-	if($field_type){
-		$fld_types_file_test = JPATH_COMPONENT.DS."views".DS."ccs".DS."tmpl".DS."fld_types".DS."row".DS.$field_type.".php";
-		if(file_exists($fld_types_file_test)) {
-			$fld_types_file = $fld_types_file_test;
-		}
-	}
-	
-	require($fld_types_file);// Load template file
-    
-}//IF != ID
+        // SET DEFAULT FIELD TEMPLATE
+        $fld_types_file = JPATH_COMPONENT . DS . "views" . DS . "ccs" . DS . "tmpl" . DS . "fld_types" . DS . "row" . DS . "default.php";
 
+        if ($field_type) {
+            $fld_types_file_test = JPATH_COMPONENT . DS . "views" . DS . "ccs" . DS . "tmpl" . DS . "fld_types" . DS . "row" . DS . $field_type . ".php";
+            if (file_exists($fld_types_file_test)) {
+                $fld_types_file = $fld_types_file_test;
+            }
+        }
+
+        require($fld_types_file); // Load template file
+    }//IF != ID
 }//foreach ($this->fields as $field)
-
-
 ?>
 
 
 
-</fieldset>
+        </fieldset>
 
-<?php 
-require_once('personal_notes.php');
-?>
+            <?php
+            require_once('personal_notes.php');
+            ?>
 
 
-<input type="hidden" name="option" value="com_ccs" />
-<input type="hidden" name="task" value="<?php echo $this->task; ?>" />
-<input type="hidden" name="layout" value="row" />
-<input type="hidden" name="controller" value="ccs" />
-<input type="hidden" name="alias" value="<?php echo $this->alias; ?>" />
-<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->listOrder;?>" />
-<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->listDirn;?>" />
-<input type="hidden" name="breadcrumbmenuState" id="breadcrumbmenuState" value="<?php echo $this->breadcrumbmenuState;?>" />
-<input type="hidden" name="filter_search_value" value="<?php echo JRequest::getVar( 'filter_search_value' );?>" />
-<input type="hidden" name="filter_search_column" value="<?php echo JRequest::getVar( 'filter_search_column' );?>" />
+        <input type="hidden" name="option" value="com_ccs" />
+        <input type="hidden" name="task" value="<?php echo $this->task; ?>" />
+        <input type="hidden" name="layout" value="row" />
+        <input type="hidden" name="controller" value="ccs" />
+        <input type="hidden" name="alias" value="<?php echo $this->alias; ?>" />
+        <input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->listOrder; ?>" />
+        <input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->listDirn; ?>" />
+        <input type="hidden" name="breadcrumbmenuState" id="breadcrumbmenuState" value="<?php echo $this->breadcrumbmenuState; ?>" />
+        <input type="hidden" name="filter_search_value" value="<?php echo JRequest::getVar('filter_search_value'); ?>" />
+        <input type="hidden" name="filter_search_column" value="<?php echo JRequest::getVar('filter_search_column'); ?>" />
 
-</form>
+    </form>
 
 </div>
 
