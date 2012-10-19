@@ -9,10 +9,6 @@ jimport('joomla.filesystem.file');
 
 $document = JFactory::getDocument();
 
-$listOrder = $this->escape($this->state->get('filter_order'));
-$listDirn  = $this->escape($this->state->get('filter_order_Dir'));
-$breadcrumbmenuState = $this->escape($this->state->get('breadcrumbmenuState'));
-
 $this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
 
 require_once('adminlist_interface.php');
@@ -90,7 +86,7 @@ require_once("breadcrumbMenu.php");
  echo '</th>';
  foreach ($this->fields as $field){
      echo '<th>';
-     echo JHtml::_('grid.sort', JText::_(strtoupper($field["fld_alias"])), $field["fld_alias"], $listDirn, $listOrder);
+     echo JHtml::_('grid.sort', JText::_(strtoupper($field["fld_alias"])), $field["fld_alias"], $this->listDirn, $this->listOrder);
      echo '</th>';
  }
 	 echo '</tr>';
@@ -169,9 +165,9 @@ require_once('personal_notes.php');
 <input type="hidden" name="task" id="task" value="" />
 <input type="hidden" name="controller" value="ccs" />
 <input type="hidden" name="alias" id="alias" value="<?php echo $this->alias; ?>" />
-<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $listOrder; ?>" />
-<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $listDirn; ?>" />
-<input type="hidden" name="breadcrumbmenuState" id="breadcrumbmenuState" value="<?php echo $breadcrumbmenuState; ?>" />
+<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->listOrder; ?>" />
+<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->listDirn; ?>" />
+<input type="hidden" name="breadcrumbmenuState" id="breadcrumbmenuState" value="<?php echo $this->breadcrumbmenuState; ?>" />
 <input type="hidden" name="adminListSorting" id="adminListSorting" value="" />
 
 <input type="hidden" name="id" id="id" value="" />

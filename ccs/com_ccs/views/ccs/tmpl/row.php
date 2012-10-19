@@ -272,9 +272,9 @@ require_once('personal_notes.php');
 <input type="hidden" name="layout" value="row" />
 <input type="hidden" name="controller" value="ccs" />
 <input type="hidden" name="alias" value="<?php echo $this->alias; ?>" />
-<input type="hidden" name="filter_order" id="filter_order" value="<?php echo JRequest::getVar( 'filter_order' );?>" />
-<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo JRequest::getVar( 'filter_order_Dir' );?>" />
-<input type="hidden" name="breadcrumbmenuState" id="breadcrumbmenuState" value="<?php echo JRequest::getVar( 'breadcrumbmenuState' );?>" />
+<input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->listOrder;?>" />
+<input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->listDirn;?>" />
+<input type="hidden" name="breadcrumbmenuState" id="breadcrumbmenuState" value="<?php echo $this->breadcrumbmenuState;?>" />
 <input type="hidden" name="filter_search_value" value="<?php echo JRequest::getVar( 'filter_search_value' );?>" />
 <input type="hidden" name="filter_search_column" value="<?php echo JRequest::getVar( 'filter_search_column' );?>" />
 
