@@ -3,7 +3,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-$JS_breadcrumbMenu_script='
+$JS_breadcrumbMenu_script = '
 console.log("hello");
 // Declare global vars
 var breadcrumbMenu_wrap,newInput,newDIV,newSPAN,newUL,newLI,newH1,newIMG,newA,newBR,newTABLE,newTR,newTD,cache_array,cache_boolean,cache_str,cache_int,cache_obj,newSPAN;
@@ -52,7 +52,7 @@ function breadcrumbMenu_render_item(wrapperID,menuItemID,hasChildren,isParent)//
 			if(breadcrumbMenu_items[menuItemID]["image"]!=""){				
 				newIMG = document.createElement("img");
 				document.id("breadcrumbMenu_link_"+menuItemID).appendChild(newIMG)
-															  .set("src","'.JURI::root().'"+breadcrumbMenu_items[menuItemID]["image"])
+															  .set("src","' . JURI::root() . '"+breadcrumbMenu_items[menuItemID]["image"])
 															  .set("width","64");
 			}
 		}
@@ -240,44 +240,43 @@ window.addEvent("domready", function(){
 
 ';
 
-$this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/Observer.js');
-$this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/Autocompleter.js');
-$this->doc->addScript(JURI::root().'administrator/components/com_ccs/assets/js/Autocompleter.Local.js');
+$this->doc->addScript(JURI::root() . 'administrator/components/com_ccs/assets/js/Observer.js');
+$this->doc->addScript(JURI::root() . 'administrator/components/com_ccs/assets/js/Autocompleter.js');
+$this->doc->addScript(JURI::root() . 'administrator/components/com_ccs/assets/js/Autocompleter.Local.js');
 $this->doc->addScriptDeclaration($JS_breadcrumbMenu_script);
 
-$JS_breadcrumbMenu_items = 'var breadcrumbMenu_items_default="COM_CCS_HOME";'."\n";
-$JS_breadcrumbMenu_items.= 'var breadcrumbMenu_items_valid_ids = new Array();'."\n";
-$JS_breadcrumbMenu_items.= 'var breadcrumbMenu_items = new Object();'."\n";
-$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"] = new Object();'."\n";
-$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"]["alias"]="COM_CCS_HOME";'."\n";	
-$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"]["name"]="'.JText::_("COM_CCS_HOME").'";'."\n";
-$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"]["image"]="";'."\n";
-$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"]["parent_alias"]="";'."\n";
-$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"]["layout"]="default";'."\n";
+$JS_breadcrumbMenu_items = 'var breadcrumbMenu_items_default="COM_CCS_HOME";' . "\n";
+$JS_breadcrumbMenu_items.= 'var breadcrumbMenu_items_valid_ids = new Array();' . "\n";
+$JS_breadcrumbMenu_items.= 'var breadcrumbMenu_items = new Object();' . "\n";
+$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"] = new Object();' . "\n";
+$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"]["alias"]="COM_CCS_HOME";' . "\n";
+$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"]["name"]="' . JText::_("COM_CCS_HOME") . '";' . "\n";
+$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"]["image"]="";' . "\n";
+$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"]["parent_alias"]="";' . "\n";
+$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["COM_CCS_HOME"]["layout"]="default";' . "\n";
 
-$JS_breadcrumbMenu_items.= 'var breadcrumbMenu_items_activeItem="COM_CCS_HOME";'."\n";
+$JS_breadcrumbMenu_items.= 'var breadcrumbMenu_items_activeItem="COM_CCS_HOME";' . "\n";
 
-foreach($this->menuItems as $menuItem)
-{
-	if($this->alias == $menuItem["db_alias"]){// Set Active Item
-		$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items_activeItem="'.$menuItem["id"].'";'."\n";
-	}
-	$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items_valid_ids.push("'.$menuItem["id"].'");'."\n";
+foreach ($this->menuItems as $menuItem) {
+    if ($this->alias == $menuItem["db_alias"]) {// Set Active Item
+        $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items_activeItem="' . $menuItem["id"] . '";' . "\n";
+    }
+    $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items_valid_ids.push("' . $menuItem["id"] . '");' . "\n";
 
-	// Create JS Array from PHP Menu List Array
-	$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["'.$menuItem["id"].'"] = new Object();'."\n";
-	$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["'.$menuItem["id"].'"]["alias"]="'.$menuItem["db_alias"].'";'."\n";	
-	$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["'.$menuItem["id"].'"]["name"]="'.JText::_($menuItem["db_alias"]).'";'."\n";
-	if( @GetImageSize(JURI::root().$menuItem["db_image"]) ){
-		$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["'.$menuItem["id"].'"]["image"]="'.$menuItem["db_image"].'";'."\n";
-	}else{
-		$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["'.$menuItem["id"].'"]["image"]="";'."\n";
-	}
-	$parent_alias=$menuItem["parent_db_alias"];
-	if(empty($parent_alias)){
-		$parent_alias="COM_CCS_HOME";
-	}
-	$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["'.$menuItem["id"].'"]["parent_alias"]="'.$parent_alias.'";'."\n";
-	$JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["'.$menuItem["id"].'"]["layout"]="table";'."\n";
+    // Create JS Array from PHP Menu List Array
+    $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"] = new Object();' . "\n";
+    $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"]["alias"]="' . $menuItem["db_alias"] . '";' . "\n";
+    $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"]["name"]="' . JText::_($menuItem["db_alias"]) . '";' . "\n";
+    if (@GetImageSize(JURI::root() . $menuItem["db_image"])) {
+        $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"]["image"]="' . $menuItem["db_image"] . '";' . "\n";
+    } else {
+        $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"]["image"]="";' . "\n";
+    }
+    $parent_alias = $menuItem["parent_db_alias"];
+    if (empty($parent_alias)) {
+        $parent_alias = "COM_CCS_HOME";
+    }
+    $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"]["parent_alias"]="' . $parent_alias . '";' . "\n";
+    $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"]["layout"]="table";' . "\n";
 }
 $this->doc->addScriptDeclaration($JS_breadcrumbMenu_items);
