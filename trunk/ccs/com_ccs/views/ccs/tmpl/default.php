@@ -8,8 +8,6 @@ jimport('joomla.filesystem.file');
 
 $this->doc->addScript(JURI::root() . 'administrator/components/com_ccs/assets/js/mootools-more-1.4-full.js');
 
-require_once("forcedStyles.php");
-
 ?>    
 <div class="<?php echo $this->alias; ?>">
     <h2><?php echo JText::_(strtoupper($this->alias)); ?></h2>
@@ -80,3 +78,7 @@ return false;
 
     </form>
 </div>
+
+<?php
+    require_once("forcedStyles.php");
+?>

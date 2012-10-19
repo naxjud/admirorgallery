@@ -22,8 +22,6 @@ function tblEdit(tblEdit_id,tblEdit_alias,tblEdit_value){
 
 $this->doc->addScriptDeclaration($JS);
 
-require_once("forcedStyles.php");
-
 ?>    
 <div class="<?php echo $this->alias; ?>">
     <h2><?php echo JText::_(strtoupper($this->alias)); ?></h2>
@@ -169,3 +167,6 @@ require_once("forcedStyles.php");
     </form>
 </div>
 
+<?php
+    require_once("forcedStyles.php");
+?>

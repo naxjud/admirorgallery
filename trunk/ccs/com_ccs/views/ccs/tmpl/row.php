@@ -197,8 +197,6 @@ window.addEvent("domready", function(){
 });
 ';
 
-require_once("forcedStyles.php");
-
 $this->doc->addScriptDeclaration($calendar_js);
 $this->doc->addScriptDeclaration($JS_validation);
 $this->doc->addScriptDeclaration($JS_varcharLimited);
@@ -272,4 +270,7 @@ foreach ($this->fields as $field) {// Loop through Show Fields
 
 </div>
 
+<?php
+    require_once("forcedStyles.php");
+?>
 
