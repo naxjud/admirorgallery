@@ -633,15 +633,6 @@ input:focus
     background-color: #ffeacd !important;
 }
 
-#ccs_notes
-,#ccs_notes_wrap
-{
-    background-color: #FFA;
-    border: 1px solid #DC3 !important;  
-    padding-top:7px !important;
-    padding-bottom:7px !important;
-}
-
 .ccs_button
 {
     cursor: pointer;
@@ -751,4 +742,18 @@ select#limit
 .ccs_admin_fields div.CCS_pagination_wrap
 {
 
+}
+
+#ccs_notes
+,#ccs_notes_wrap
+{
+    padding-top:7px !important;
+    padding-bottom:7px !important;
+    background-image:url("images/notes_background.png");
+
+     moz-border-radius: 10px;
+    -webkit-border-radius: 5px;
+    -khtml-border-radius: 5px;
+
+    color: #524F7B;
 }
