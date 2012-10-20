@@ -15,18 +15,15 @@ class CcsModelCcs extends JModelList {
     private $current_alias;
     private $ccs_database_config; // List of Databases Identifier
     private $ccs_fields_config; // List of Databases Identifier
-    private $dbPrefix;
     private $dbObject;
     private $fields;
     private $user;
 
     function __construct() {
         parent::__construct();
-        $conf = JFactory::getConfig();
         $this->current_alias = JRequest::getVar('alias', 'com_ccs_home');
         $this->ccs_database_config = "#__ccs_databases";
         $this->ccs_fields_config = "#__ccs_admin_fields";
-        $this->db_prefix = $conf->get('dbprefix');
         $this->dbObject = JFactory::getDBO();
         $this->user = JFactory::getUser();
         $this->fields = $this->loadVisibleFields();
@@ -65,7 +62,7 @@ class CcsModelCcs extends JModelList {
             $query->select($this->dbObject->nameQuote($field['fld_alias']));
         }
 
-        $query->from($this->dbObject->nameQuote($this->db_prefix . $this->current_alias));
+        $query->from($this->dbObject->nameQuote('#__' . $this->current_alias));
 
         // Filter Order
         $order = $this->getState('filter_order');
@@ -111,7 +108,7 @@ class CcsModelCcs extends JModelList {
         $cids = JRequest::getVar('cid', array(), 'post', 'array');
         $query = $this->dbObject->getQuery(true);
         $query->select('*');
-        $query->from($this->dbObject->nameQuote($this->db_prefix . $this->current_alias));
+        $query->from($this->dbObject->nameQuote('#__' . $this->current_alias));
         $query->where($this->dbObject->nameQuote('id') . '=' . (int) $cids[0]);
         $this->dbObject->setQuery($query);
         $this->dbObject->loadRow();
@@ -146,7 +143,7 @@ class CcsModelCcs extends JModelList {
 
     function store() {
         $query = $this->dbObject->getQuery(true);
-        $query->insert($this->dbObject->nameQuote($this->db_prefix . $this->current_alias));
+        $query->insert($this->dbObject->nameQuote('#__' . $this->current_alias));
 
         foreach ($this->fields as $field) {
             if ($field["fld_alias"] != "id") {
@@ -165,7 +162,7 @@ class CcsModelCcs extends JModelList {
 
     function replace($rowID) {
         $query = $this->dbObject->getQuery(true);
-        $query->update($this->dbObject->nameQuote($this->db_prefix . $this->current_alias));
+        $query->update($this->dbObject->nameQuote('#__' . $this->current_alias));
         $query->where($this->dbObject->nameQuote('id') . '=' . (int) $rowID);
 
         $tblEdit_alias = JRequest::getVar("tblEdit_alias", null, 'post', 'STRING', JREQUEST_ALLOWRAW);
@@ -192,7 +189,7 @@ class CcsModelCcs extends JModelList {
         foreach ($cids as $cid) {
             $query = $this->dbObject->getQuery(true);
             $query->delete();
-            $query->from($this->dbObject->nameQuote($this->db_prefix . $this->current_alias));
+            $query->from($this->dbObject->nameQuote('#__' . $this->current_alias));
             $query->where($this->dbObject->nameQuote('id') . '=' . (int) $cid);
             $this->dbObject->setQuery($query);
             if ($this->dbObject->query()) {
@@ -236,7 +233,7 @@ class CcsModelCcs extends JModelList {
         $query = $this->dbObject->getQuery(true);
         $query->select($this->dbObject->nameQuote('id'));
         $query->select($this->dbObject->nameQuote('ordering'));
-        $query->from($this->dbObject->nameQuote($this->db_prefix . $this->current_alias));
+        $query->from($this->dbObject->nameQuote('#__' . $this->current_alias));
         $query->order($this->dbObject->getEscaped('ordering' . ' ' . 'ASC'));
         $this->dbObject->setQuery($query);
         $ROWs = $this->dbObject->loadAssocList(); // <---------------------- Get ROWs
@@ -265,7 +262,7 @@ class CcsModelCcs extends JModelList {
         // Loop through rows and update orderings
         foreach ($newROWs as $i => $ROW) {
             $query = $this->dbObject->getQuery(true);
-            $query->update($this->dbObject->nameQuote($this->db_prefix . $this->current_alias));
+            $query->update($this->dbObject->nameQuote('#__' . $this->current_alias));
             $query->where($this->dbObject->nameQuote('id') . '=' . $ROW["id"]);
             $query->set($this->dbObject->nameQuote('ordering') . '=' . $i);
             $this->dbObject->setQuery($query);

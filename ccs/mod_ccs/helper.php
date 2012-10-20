@@ -27,9 +27,9 @@ class CCS {
     public $layout;
 
     function __construct($moduleID, $tableID, $tmpTable, $tmpRow) {
-        $this->CCS_Fields_Config = "ccs_admin_fields";
+        $this->ccs_fields_config = "ccs_admin_fields";
         $this->templatesFolder = JPATH_ROOT . DS . 'modules' . DS . 'mod_ccs' . DS . 'templates' . DS;
-        $this->dbConfig = 'ccs_databases';
+        $this->dbConfig = '#__ccs_databases';
         $this->dbObject = JFactory::getDBO();
         $this->moduleID = $moduleID;
         $this->tableID = $tableID;
@@ -68,7 +68,7 @@ class CCS {
     protected function getTableAlias() {
         $query = $this->dbObject->getQuery(true);
         $query->select($this->dbObject->nameQuote('db_alias'));
-        $query->from($this->dbObject->nameQuote('#__' . $this->dbConfig));
+        $query->from($this->dbObject->nameQuote($this->dbConfig));
         $query->where($this->dbObject->nameQuote('id') . '=' . (int) $this->tableID);
         $this->dbObject->setQuery($query);
         return $this->dbObject->loadResult();

@@ -15,8 +15,8 @@ echo '
 <label>
 ' . JText::_("CCS_NOTES") . '
 </label>
+<div id="ccs_notes_wrap" style="white-space: pre-wrap; word-wrap: break-word; position:absolute;z-index:-1"></div>
 <textarea spellcheck="false" style="display:block; resize: none !important; overflow:hidden;" id="ccs_notes">' . $ccs_notes_content . '</textarea>
-<div id="ccs_notes_wrap" style="white-space: pre-wrap; word-wrap: break-word; position:absolute; left:99999px"></div>
 ' . JText::_("CCS_NOTES_DESC") . '
 </fieldset>
 </div>

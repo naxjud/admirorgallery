@@ -268,7 +268,7 @@ foreach ($this->menuItems as $menuItem) {
     $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"] = new Object();' . "\n";
     $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"]["alias"]="' . $menuItem["db_alias"] . '";' . "\n";
     $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"]["name"]="' . JText::_($menuItem["db_alias"]) . '";' . "\n";
-    if (@GetImageSize(JURI::root() . $menuItem["db_image"])) {
+    if (!empty($menuItem["db_image"])) {
         $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"]["image"]="' . $menuItem["db_image"] . '";' . "\n";
     } else {
         $JS_breadcrumbMenu_items.= 'breadcrumbMenu_items["' . $menuItem["id"] . '"]["image"]="";' . "\n";
