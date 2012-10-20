@@ -31,7 +31,7 @@ $this->doc->addScript(JURI::root() . 'administrator/components/com_ccs/assets/js
                             foreach ($this->quickIcons as $icon) {
 
 // Is image exists
-                                if (@GetImageSize(JURI::root() . $icon["db_image"])) {
+                                if (!empty ($icon["db_image"])) {
                                     $icon_image = JURI::root() . $icon["db_image"];
                                 } else {
                                     $icon_image = JURI::root() . 'administrator/components/com_ccs/assets/images/icon-64-ccs.png';
