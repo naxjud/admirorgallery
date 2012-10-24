@@ -24,3 +24,5 @@ echo '<input tabindex="'.$tabIndex.'" id="'.$field_alias.'_'.$i.'" type="text" o
 echo '</span></div>'."\n";
 
 echo '</div>';
+
+$this->doc->addScriptDeclaration($varcharLimited_array);

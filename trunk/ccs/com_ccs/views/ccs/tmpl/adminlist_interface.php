@@ -7,6 +7,8 @@ defined('_JEXEC') or die('Restricted access');
 $adminlist_interface = '
 var rows, cbs, rowID, cbID, keystroke, newDIV, dropTarget, myDrag, myEvent, isDragging;
 
+rowID="row0";
+
 function rowEdit(){
 	$("task").value = "edit";
 	document.adminForm.submit();
@@ -176,7 +178,6 @@ window.addEvent("domready", function(){
 			prev_cbID = cbID;
 			rowID = this.get("id");
 			cbID = "cb"+rowID.substring(3, rowID.length);		
-			console.log("Left Click on: "+rowID);
 			
 			switch(keystroke){
 				case "shift":					
@@ -200,7 +201,6 @@ window.addEvent("domready", function(){
 					}
 				break;
 				case "control":
-					console.log("control is used");
 					if($(cbID).get("checked")){
 						adminlist_deselect();
 					}else{
@@ -220,6 +220,12 @@ window.addEvent("domready", function(){
     	},
     	"contextmenu": function(e){
 			e.stop();
+		},
+		mouseover: function(){
+		    $(this).addClass("hover");
+		},
+		mouseleave: function(){
+		    $(this).removeClass("hover");
 		}
 	});
 

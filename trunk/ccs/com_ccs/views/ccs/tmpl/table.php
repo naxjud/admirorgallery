@@ -26,7 +26,7 @@ $this->doc->addScriptDeclaration($JS);
 <div class="<?php echo $this->alias; ?>">
     <h2><?php echo JText::_(strtoupper($this->alias)); ?></h2>
     <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="adminForm" id="adminForm">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%" style="table-layout:fixed">
+        <table cellpadding="0" cellspacing="0" border="0" width="100%">
             <tbody>
                 <tr>
                     <td class="CCS_sidePanel">

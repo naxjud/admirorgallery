@@ -120,7 +120,6 @@ function breadcrumbMenu_render(currItem,useAnim)
 
 	// Prepare
 	$("breadcrumbMenu_input").set("value","");
-	$("breadcrumbMenu_input").setAttribute("tabIndex", 0);
 	$("breadcrumbMenu_input").focus();
 	breadcrumbMenu_wrap = $("breadcrumbMenu");
 	breadcrumbMenu_wrap.empty();
@@ -153,6 +152,9 @@ function breadcrumbMenu_render(currItem,useAnim)
 		breadcrumbMenu_render_item("breadcrumbMenu",currChildren[i],cache_boolean,false);
 	}
 
+
+	css_addButtonStyles( $$("#breadcrumbMenu a") );
+
 	// Slide In Menu Animation for navigation
 	if(useAnim)
 	{
@@ -162,8 +164,6 @@ function breadcrumbMenu_render(currItem,useAnim)
 		});
 		myFx.hide().slideIn();
 	}
-
-	css_addButtonStyles( $$("#breadcrumbMenu a") );
 
 	$$("td.breadcrumbMenu_link_arrowWrap a").each(function(item){
 		item.setStyles({
