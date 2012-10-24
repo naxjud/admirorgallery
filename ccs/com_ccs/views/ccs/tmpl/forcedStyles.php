@@ -18,16 +18,35 @@ function css_addButtonStyles(item){
 
 window.addEvent("domready", function(){ 
 
-    $$("input[type=text]").addClass("ccs_insetShadow");
+    $$("input[type=text]").addClass("ccs_input");
+    $$("textarea").addClass("ccs_input");
 
-    $$("input[type=text]").addClass("ccs_border2");
-    $$("select").addClass("ccs_border2");
+    $$("select").each(function(item){
+
+        var selectWrap = new Element("div.ccs_selectWrap");
+
+        css_addButtonStyles(selectWrap);
+
+        selectWrap.wraps(item)
+                  .setStyles({
+                        "display":"block",
+                        "overflow":"hidden",
+                        "width":item.getComputedSize().totalWidth+"px",
+                        "height":item.getComputedSize().totalHeight+"px",
+                        "padding":"0px !important"
+                    });
+
+        item.setStyles({
+                        "width":item.getComputedSize().totalWidth+28+"px"
+                    });
+        item.set("onChange","this.blur()");
+
+    });
 
     css_addButtonStyles($$("input[type=button]"));
     css_addButtonStyles($$("button"));
     css_addButtonStyles($$(".toggle-editor a"));
     css_addButtonStyles($$("a.toolbar"));
-    css_addButtonStyles($$("select"));
     css_addButtonStyles($$(".quickIcon a"));
 
 });

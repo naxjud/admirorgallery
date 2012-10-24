@@ -50,7 +50,6 @@ var varcharLimited_array=new Array();
 
 // varcharLimited
 function varcharLimited_validator(event,item_alias, item_id, item_value){
-console.log(item_alias);
 	if(event.keyCode==9){// Ignore TAB
 		return;
 	}
@@ -106,19 +105,16 @@ var tmp_curr_col = -1;
 var tmp_col_heigths = new Array();
 
 function tmp_select_col(ii){
-	console.log("Column "+tmp_curr_col+" height "+tmp_col_heigths[tmp_curr_col]+". Item "+ii+" height "+tmp_item_height+".");
 	if(tmp_curr_col==tmp_num_of_cols){
 		tmp_curr_col=0;
 	}
 	if(tmp_curr_col>0){// BACKWARD CORRECTION
-		console.log("Previous height "+tmp_col_heigths[tmp_curr_col-1]+" .");
 		if(tmp_col_heigths[tmp_curr_col]+tmp_item_height>tmp_col_heigths[tmp_curr_col-1]){
 			tmp_curr_col--;
 			tmp_select_col(ii);
 		}
 	}
 	if(tmp_curr_col<(tmp_num_of_cols-1)){// FORWARD CORRECTION
-		console.log("Next height is"+tmp_col_heigths[tmp_curr_col+1]+" .");
 		if(tmp_col_heigths[tmp_curr_col]>tmp_col_heigths[tmp_curr_col+1]+tmp_item_height){
 			tmp_curr_col++;
 			tmp_select_col(ii);
@@ -175,8 +171,6 @@ function cxb_change(field_alias){
 		cxb_array[i]=cxbs[i].get("value");
 	}
 	document.id(field_alias).value = cxb_array.join(",");
-	console.log(cxb_array.join(","));
-
 }
 
 window.addEvent("domready", function(){ 

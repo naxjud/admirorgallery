@@ -9,17 +9,18 @@ if (isset($_COOKIE['CCS_NOTES'])) {
 }
 
 echo '
-<hr style="clear:both;" />
-<div id="CCS_notes_widthSetter" style="padding:5px;">
-<fieldset>
+<hr style="clear:both;" id="CCS_notes_widthSetter" />
+<br />
+<div style="margin-left:5px">
+<fieldset class="adminform">
 <label>
 ' . JText::_("CCS_NOTES") . '
 </label>
-<div id="ccs_notes_wrap" style="white-space: pre-wrap; word-wrap: break-word; position:absolute;z-index:-1"></div>
+<div id="ccs_notes_wrap" style="display:block; white-space: pre-wrap; word-wrap: break-word; position:absolute;z-index:-1"></div>
 <textarea spellcheck="false" style="display:block; resize: none !important; overflow:hidden;" id="ccs_notes">' . $ccs_notes_content . '</textarea>
 ' . JText::_("CCS_NOTES_DESC") . '
 </fieldset>
-</div>
+<div>
 <br />
 ';
 
@@ -35,7 +36,7 @@ function ccs_notes_update(){
 window.addEvent("domready", function(){
 
     // Update widths
-    var css_nodes_width = $("CCS_notes_widthSetter").getComputedSize().width-10;
+    var css_nodes_width = $("CCS_notes_widthSetter").getComputedSize().totalWidth-20;
     $$("#ccs_notes").setStyle("width",css_nodes_width+"px");
     $$("#ccs_notes_wrap").setStyle("width",css_nodes_width+"px");
 
