@@ -41,5 +41,5 @@ INSERT INTO `#__ccs_admin_fields` (`id`, `ordering`, `db_alias`, `fld_alias`, `f
 (31, 22, 'ccs_databases', 'quick_icon', 'boolean', '');
 
 INSERT INTO `#__ccs_databases` (`id`, `ordering`, `db_alias`, `access`, `db_image`, `parent_db_alias`, `quick_icon`) VALUES
-(23, 3, 'ccs_admin_fields', 8, 'administrator/components/com_ccs/assets/images/icon-ccs-48.png', '', 1),
-(24, 2, 'ccs_databases', 8, 'administrator/components/com_ccs/assets/images/icon-ccs-48.png', '', 1);
+(23, 3, 'ccs_admin_fields', 8, 'administrator/components/com_ccs/assets/images/icon-48-ccs.png', '', 1),
+(24, 2, 'ccs_databases', 8, 'administrator/components/com_ccs/assets/images/icon-48-ccs.png', '', 1);
