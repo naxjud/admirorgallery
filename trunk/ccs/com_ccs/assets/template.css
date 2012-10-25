@@ -547,7 +547,7 @@ div.varcharLimited
 div.varcharLimited span input
 {
     width:1em !important;
-    margin:0 !important;
+    margin:0 0 5px 0 !important;
 }
 
 
