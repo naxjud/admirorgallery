@@ -160,13 +160,7 @@ class agGallery extends agHelper {
             $html = str_replace("{newImageTag}", $this->writeNewImageTag($image), $html);
             $html = str_replace("{thumbImagePath}", $this->sitePath . PLUGIN_BASE_PATH . 'thumbs/' . $this->imagesFolderName . '/' . $image, $html);
         } else {
-            $html.='
-            <a href="' . $this->imagesFolderPath . $image . '" title="' . htmlspecialchars($this->descArray[$image], ENT_QUOTES, "UTF-8") . '" class="' . $this->popupEngine->className . '" rel="' . $this->popupEngine->rel . '" ' . $this->popupEngine->customAttr . ' target="_blank">
-            ' . $this->writeNewImageTag($image) . '
-	        <img src="' . $this->sitePath . PLUGIN_BASE_PATH . 'thumbs/' . $this->imagesFolderName . '/' . $image . '
-		    " alt="' . strip_tags($this->descArray[$image]) . '" class="ag_imageThumb">
-		    </a>
-		    ';
+            $html.='<a href="' . $this->imagesFolderPath . $image . '" title="' . htmlspecialchars($this->descArray[$image], ENT_QUOTES, "UTF-8") . '" class="' . $this->popupEngine->className . '" rel="' . $this->popupEngine->rel . '" ' . $this->popupEngine->customAttr . ' target="_blank">' . $this->writeNewImageTag($image) . '<img src="' . $this->sitePath . PLUGIN_BASE_PATH . 'thumbs/' . $this->imagesFolderName . '/' . $image . '" alt="' . strip_tags($this->descArray[$image]) . '" class="ag_imageThumb"></a>';
         }
         return $html;
     }

@@ -16,8 +16,8 @@ class AdmirorgalleryHelperToolbar extends JObject
 	      // The third parameter is the text to display on the button.
 	      // The fourth is the task to set. When the button is pressed the javascript submitButton function is called and the hidden field 'task' is set to this value. We will see this later in our template file.
 	      // The fifth states whether a selection must be made from an admin list before continuing.
-	      $bar->appendButton( 'Standard','AG_apply',JText::_( 'AG_APPLY_DESC' ),'AG_apply', false);
-	      $bar->appendButton( 'Standard','AG_reset',JText::_( 'AG_RESET_DESC' ),'AG_reset', false);
+	      $bar->appendButton( 'Standard','AG_apply',JText::_( 'COM_ADMIRORGALLERY_APPLY_DESC' ),'AG_apply', false);
+	      $bar->appendButton( 'Standard','AG_reset',JText::_( 'COM_ADMIRORGALLERY_RESET_DESC' ),'AG_reset', false);
 			
 	      return $bar->render();
 
