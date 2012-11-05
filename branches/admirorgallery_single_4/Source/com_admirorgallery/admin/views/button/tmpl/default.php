@@ -3,12 +3,8 @@ defined('_JEXEC') or die('Restricted access');
 
 $AG_template = JRequest::getVar('AG_template'); // Current template for AG Component
 // GET ROOT FOLDER
-$plugin = & JPluginHelper::getPlugin('content', 'admirorgallery');
-if (isset($plugin->params)) {
-    $pluginParams = new JParameter($plugin->params);
-} else {
-    $pluginParams = new JParameter(null);
-}
+$plugin = JPluginHelper::getPlugin('content', 'admirorgallery');
+$pluginParams = new JRegistry($plugin->params);
 $ag_rootFolder = $pluginParams->get('rootFolder', '/images/sampledata/');
 $ag_init_itemURL = $ag_rootFolder;
 ?>
@@ -45,8 +41,8 @@ if (!empty($ag_folders)) {
         <h2><input type="CHECKBOX" id="AG_form_insertParams" name="AG_form_insertParams" /> <?php echo JText::_("AG_PARAMETERS"); ?></h2>
         <div id="AG_form_params" style="display:none;">
 <?php
-$db = & JFactory::getDBO();
-$query = "SELECT * FROM #__extensions WHERE element LIKE '%admirorgallery%'";
+$db = JFactory::getDBO();
+$query = "SELECT * FROM #__extensions WHERE (element = 'admirorgallery') AND (type = 'plugin')";
 $db->setQuery($query);
 $row = $db->loadAssoc();
 

@@ -50,7 +50,7 @@ $AG_templateID = JRequest::getVar('AG_template'); // Current template for AG Com
 
 ' . "\n";
     $db = JFactory::getDBO();
-    $query = "SELECT * FROM #__extensions WHERE element LIKE 'admirorgallery'";
+    $query = "SELECT * FROM #__extensions WHERE (element = 'admirorgallery') AND (type = 'plugin')";
     $db->setQuery($query);
     $row = $db->loadAssoc();
 //print_r($paramsdata);

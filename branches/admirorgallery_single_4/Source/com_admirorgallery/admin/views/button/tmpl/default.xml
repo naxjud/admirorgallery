@@ -4,7 +4,7 @@
             <fieldset name="basic">
                 <field type="spacer" class="text" label="AG_BASIC_SETTINGS" />
 
-                <field name="rootFolder" type="text" default="/images/sampledata/" size="20" label="AG_IMAGES_ROOT_FOLDER" description="AG_IMAGES_ROOT_FOLDER_DESC" />
+                <field name="rootFolder" type="text" default="/images/sampledata/" size="30" label="AG_IMAGES_ROOT_FOLDER" description="AG_IMAGES_ROOT_FOLDER_DESC" />
 
                 <field name="thumbWidth" type="text" default="200" size="4" label="AG_THUMBNAIL_WIDTH" description="AG_THUMBNAIL_WIDTH_DESC" />
 
