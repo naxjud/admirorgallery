@@ -11,9 +11,9 @@
     <files>
         <filename plugin="admirorbutton">admirorbutton.php</filename>
     </files>
-    <languages>
-            <language tag="en-GB">en-GB.plg_editors-xtd_admirorbutton.ini</language>
-            <language tag="en-GB">en-GB.plg_editors-xtd_admirorbutton.sys.ini</language>
+    <languages folder="language">
+            <language tag="en-GB">en-GB/en-GB.plg_editors-xtd_admirorbutton.ini</language>
+            <language tag="en-GB">en-GB/en-GB.plg_editors-xtd_admirorbutton.sys.ini</language>
     </languages>
     <params />
 </install>
