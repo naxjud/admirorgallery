@@ -8,7 +8,7 @@ $ag_itemURL = $ag_init_itemURL;
 
 $ag_folderName = dirname($ag_itemURL);
 $ag_fileName = basename($ag_itemURL);
-$AG_imgInfo = AG_Helper::_imageInfo(JPATH_SITE.$ag_itemURL);
+$AG_imgInfo = agHelper::ag_imageInfo(JPATH_SITE.$ag_itemURL);
 
 require_once (JPATH_SITE.DS.'plugins'.DS.'content'.DS.'admirorgallery'.DS.'AdmirorGallery'.DS.'classes'.DS.'agHelper.php');
 
@@ -35,9 +35,9 @@ if(file_exists(JPATH_SITE."/plugins/content/admirorgallery/AdmirorGallery/thumbs
 
 if(file_exists($ag_imgXML_path)){
      $ag_hasXML='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png" class="ag_hasXML" />';
-     $ag_imgXML_xml = & JFactory::getXMLParser( 'simple' );
+     $ag_imgXML_xml = JFactory::getXMLParser( 'simple' );
      $ag_imgXML_xml->loadFile($ag_imgXML_path);
-     $ag_imgXML_captions =& $ag_imgXML_xml->document->captions[0];
+     $ag_imgXML_captions = $ag_imgXML_xml->document->captions[0];
 }
 
 $ag_preview_content='';
@@ -72,7 +72,7 @@ $ag_preview_content.='<hr />';
 $ag_preview_content.='
 <h1>'.JText::_( 'AG_IMAGE_DETAILS_FOR_FILE' ).'</h1>
 <div class="AG_border_color AG_border_width AG_margin_bottom AG_breadcrumbs_wrapper">
-'.AG_helper::_renderBreadcrumb($AG_itemURL, $ag_rootFolder, $ag_folderName, $ag_fileName).'
+'.$this->_renderBreadcrumb($AG_itemURL, $ag_rootFolder, $ag_folderName, $ag_fileName).'
 </div>
 ';
 

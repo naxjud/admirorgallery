@@ -8,7 +8,7 @@ jimport('joomla.html.parameter');
 
 class AdmirorgalleryController extends JController {
 
-    function display() {
+    function display($cachable = false, $urlparams = false) {
         require_once JPATH_COMPONENT . '/helpers/admirorgallery.php';
         if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
             JError::raiseWarning('2', JText::_('COM_PLUGIN_NOT_INSTALLED'));
@@ -17,7 +17,7 @@ class AdmirorgalleryController extends JController {
 
         JToolBarHelper :: custom('AG_apply', 'AG_apply', 'AG_apply', 'COM_ADMIRORGALLERY_APPLY_DESC', false, false);
         JToolBarHelper :: custom('AG_reset', 'AG_reset', 'AG_reset', 'COM_ADMIRORGALLERY_RESET_DESC', false, false);
-        $doc = &JFactory::getDocument();
+        $doc = JFactory::getDocument();
         $doc->addScriptDeclaration('
 	       AG_jQuery(function(){
 

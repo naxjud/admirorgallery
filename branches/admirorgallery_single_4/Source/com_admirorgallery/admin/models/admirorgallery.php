@@ -15,7 +15,7 @@ class AdmirorgalleryModelAdmirorgallery extends JModel
 	  }
           $AG_DB_input = substr_replace($AG_DB_input ,'}',-1,1);
 
-	  $db =& JFactory::getDBO();
+	  $db = JFactory::getDBO();
 	  $query = "UPDATE #__extensions SET params='".$AG_DB_input."' WHERE element LIKE 'admirorgallery'"; // This change value
 	  $db->setQuery($query);
 	  if($db->query()){

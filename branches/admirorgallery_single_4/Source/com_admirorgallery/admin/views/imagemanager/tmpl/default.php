@@ -13,13 +13,8 @@ $AG_itemURL = JRequest::getVar( 'AG_itemURL' );
 $AG_frontEnd = JRequest::getVar( 'AG_frontEnd' );// Current template for AG Component
 
 // GET ROOT FOLDER
-$plugin =& JPluginHelper::getPlugin('content', 'AdmirorGallery');
-if (isset ($plugin->params)){
-     $pluginParams = new JParameter( $plugin->params );
-}
-else {
-     $pluginParams= new JParameter(null);
-}
+$plugin = JPluginHelper::getPlugin('content', 'admirorgallery');
+$pluginParams = new JRegistry($plugin->params);
 $ag_rootFolder = $pluginParams->get('rootFolder','/images/sampledata/');
 
 if(!empty($AG_itemURL)){
@@ -31,8 +26,6 @@ if(!empty($AG_itemURL)){
 	  $ag_init_itemURL = $ag_rootFolder;
      }
 }
-
-require_once (JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'scripts'.DS.'AG_helper.php');
 
 ?>
 
@@ -55,11 +48,13 @@ if(file_exists(JPATH_SITE.$ag_init_itemURL)){
      require_once (JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'views'.DS.'imagemanager'.DS.'scripts'.DS.'imgManager-render-'.$ag_init_itemType.'.php');
 }else{
      $ag_error[] = Array (JText::_('AG_FOLDER_OR_IMAGE_NOT_FOUND'), $ag_init_itemURL);
+     JError::raiseWarning('3', JText::_('AG_FOLDER_OR_IMAGE_NOT_FOUND').'<br>'.$ag_init_itemURL);
 $ag_preview_content='
 <div class="ag_screenSection_title">
      '.$ag_init_itemURL.'
 </div>
 ';
+return;
 }
 
 
@@ -207,7 +202,7 @@ echo '
 		    '."\n";
 
 $bookmarkPath = JPATH_SITE.'/administrator/components/com_admirorgallery/assets/bookmarks.xml';
-$ag_bookmarks_xml =& JFactory::getXMLParser( 'simple' );
+$ag_bookmarks_xml = JFactory::getXMLParser( 'simple' );
 $ag_bookmarks_xml->loadFile( $bookmarkPath );
 if(isset($ag_bookmarks_xml->document->bookmark)){
     foreach($ag_bookmarks_xml->document->bookmark as $key => $value){
@@ -219,7 +214,7 @@ if(isset($ag_bookmarks_xml->document->bookmark)){
 <td>
 <a href="'.$ag_bookmarks_xml->document->bookmark[$key]->data().'"  class="AG_folderLink AG_common_button" title="'.$ag_bookmarks_xml->document->bookmark[$key]->data().'">
 <span><span>
-          '.AG_helper::_shrinkString(basename($ag_bookmarks_xml->document->bookmark[$key]->data()),20,true).'
+          '.agHelper::ag_shrinkString(basename($ag_bookmarks_xml->document->bookmark[$key]->data()),20,'...').'
 </span></span>
 </a>
 </td>

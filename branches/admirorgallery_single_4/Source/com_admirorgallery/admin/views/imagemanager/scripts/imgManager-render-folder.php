@@ -10,8 +10,6 @@ $ag_XML_thumb = "";
 $ag_folderName = dirname($ag_itemURL);
 $ag_fileName = basename($ag_itemURL);
 
-require_once (JPATH_SITE . DS . 'plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'AdmirorGallery' . DS . 'classes' . DS . 'agHelper.php');
-
 $thumbsFolderPhysicalPath = JPATH_SITE . DS . 'administrator' . DS . 'components' . DS . 'com_admirorgallery' . DS . 'assets' . DS . 'thumbs';
 
 agHelper::ag_sureRemoveDir($thumbsFolderPhysicalPath, true);
@@ -38,7 +36,7 @@ $ag_preview_content.='
 <h1>' . JText::_('AG_CURRENT_FOLDER') . '</h1>
 
 <div class="AG_breadcrumbs_wrapper">
-     ' . AG_helper::_renderBreadcrumb($AG_itemURL, $ag_rootFolder, $ag_folderName, $ag_fileName) . '
+     ' . $this->_renderBreadcrumb($AG_itemURL, $ag_rootFolder, $ag_folderName, $ag_fileName) . '
 </div>
 <hr />
 
@@ -72,7 +70,7 @@ $ag_preview_content.='
 <table cellspacing="0" cellpadding="0" border="0" class="AG_fieldset">
      <tbody>
      <tr>
-	  <td><img src="' . JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $AG_templateID . '/images/upload.png" style="float:left;" /></td><td>&nbsp;' . JText::_('AG_UPLOAD_IMAGES_JPG_JPEG_GIF_PNG_OR_ZIP') . '&nbsp;[ <b>' . JText::_('AG_MAX') . '&nbsp;' . (JComponentHelper::getParams('com_media')->get('upload_maxsize') / 1000000) . 'M</b> ]:&nbsp;</td><td><input type="file" name="AG_fileUpload" /></td>
+	  <td><img src="' . JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $AG_templateID . '/images/upload.png" style="float:left;" /></td><td>&nbsp;' . JText::_('AG_UPLOAD_IMAGES_JPG_JPEG_GIF_PNG_OR_ZIP') . '&nbsp;[ <b>' . JText::_('AG_MAX') . '&nbsp;' . (JComponentHelper::getParams('com_media')->get('upload_maxsize',0)).' MB</b> ]:&nbsp;</td><td><input type="file" name="AG_fileUpload" /></td>
      </tr>
      </tbody>
 </table>
@@ -113,7 +111,7 @@ if (JFIle::exists($ag_pathWithStripExt . ".xml")) {
 
 // Load if XML exists
 if (file_exists($ag_XML_path)) {
-    $ag_XML_xml = & JFactory::getXMLParser('simple');
+    $ag_XML_xml =  JFactory::getXMLParser('simple');
     $ag_XML_xml->loadFile($ag_XML_path);
     if ($ag_XML_xml->document->thumb[0]) {
         $ag_XML_thumb = & $ag_XML_xml->document->thumb[0]->data();
@@ -193,7 +191,7 @@ if (!empty($ag_files)) {
             $ag_XML_path = $ag_pathWithStripExt . ".xml";
         }
         if (file_exists($ag_XML_path)) {
-            $ag_XML_xml = & JFactory::getXMLParser('simple');
+            $ag_XML_xml =  JFactory::getXMLParser('simple');
             $ag_XML_xml->loadFile($ag_XML_path);
             $ag_XML_priority = & $ag_XML_xml->document->priority[0]->data();
         }
@@ -237,7 +235,7 @@ if (!empty($ag_folders)) {
         $ag_XML_priority = "";
         if (file_exists($ag_XML_path)) {
             $ag_hasXML = '<img src="' . JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $AG_templateID . '/images/icon-hasXML.png"  class="ag_hasXML" />';
-            $ag_XML_xml = & JFactory::getXMLParser('simple');
+            $ag_XML_xml = JFactory::getXMLParser('simple');
             $ag_XML_xml = simplexml_load_file($ag_XML_path);
             if (isset($ag_XML_xml->priority)) {
                 $ag_XML_priority = $ag_XML_xml->priority;
@@ -295,9 +293,9 @@ if (!empty($ag_files)) {
                 $ag_XML_path = $ag_pathWithStripExt . ".xml";
             }
             if (file_exists($ag_XML_path)) {
-                $ag_XML_xml = & JFactory::getXMLParser('simple');
+                $ag_XML_xml = JFactory::getXMLParser('simple');
                 $ag_XML_xml->loadFile($ag_XML_path);
-                $ag_XML_priority = & $ag_XML_xml->document->priority[0]->data();
+                $ag_XML_priority = $ag_XML_xml->document->priority[0]->data();
             }
 
             if (!empty($ag_XML_priority) && file_exists($ag_XML_path)) {
@@ -341,7 +339,7 @@ if (!empty($ag_images)) {
         $ag_XML_priority = "";
         if (file_exists($ag_XML_path)) {
             $ag_hasXML = '<img src="' . JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $AG_templateID . '/images/icon-hasXML.png"  class="ag_hasXML" />';
-            $ag_XML_xml = & JFactory::getXMLParser('simple');
+            $ag_XML_xml = JFactory::getXMLParser('simple');
             $ag_XML_xml = simplexml_load_file($ag_XML_path);
             if (isset($ag_XML_xml->priority)) {
                 $ag_XML_priority = $ag_XML_xml->priority;

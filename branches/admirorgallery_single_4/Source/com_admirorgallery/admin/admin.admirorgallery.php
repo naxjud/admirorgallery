@@ -11,7 +11,7 @@ $AG_template = "default"; // Set template to default
 JRequest::setVar('AG_template', $AG_template);
 
 // Shared scripts for all views
-$doc = &JFactory::getDocument();
+$doc = JFactory::getDocument();
 $doc->addScript(JURI::root() . 'plugins/content/admirorgallery/AdmirorGallery/AG_jQuery.js');
 $doc->addScript(JURI::root() . 'administrator/components/com_admirorgallery/scripts/jquery.hotkeys-0.7.9.min.js');
 $doc->addStyleSheet(JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $AG_template . '/css/template.css');

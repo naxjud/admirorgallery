@@ -77,7 +77,7 @@ echo '
 <script type="text/javascript">AG_jQuery("#ag_screenWrapper").remove();</script>
 <div id="ag_screenWrapper">
 <form action="index.php?option=com_admirorgallery&task='.$AG_resourceType.'" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
-'.JText::_('AG_SELECT_TEMPLATE_TO_INSTALL').'&nbsp;[ <b>'.JText::_( 'AG_MAX' ).'&nbsp;'.(JComponentHelper::getParams('com_media')->get('upload_maxsize') / 1000000).'M</b> ]:&nbsp;<input type="file" name="AG_fileUpload" size="50" />
+'.JText::_('AG_SELECT_TEMPLATE_TO_INSTALL').'&nbsp;[ <b>'.JText::_( 'AG_MAX' ).'&nbsp;'.(JComponentHelper::getParams('com_media')->get('upload_maxsize',0)).' MB</b> ]:&nbsp;<input type="file" name="AG_fileUpload" size="50" />
 <br /><br />
 ';
 
@@ -120,7 +120,7 @@ foreach ($ag_resourceManager_installed as $ag_resourceManager_Key => $ag_resourc
 		$ag_resourceManager_description = JText::_( "AG_NO_DESCRITION");
 
 		if(JFIle::exists(JPATH_SITE.'/plugins/content/admirorgallery/AdmirorGallery/'.$AG_resourceType.'/'.$ag_resourceManager_id.'/details.xml')){// N U
-			$ag_resourceManager_xml =& JFactory::getXMLParser( 'simple' );
+			$ag_resourceManager_xml =JFactory::getXMLParser( 'simple' );
 			$ag_resourceManager_xml->loadFile( JPATH_SITE.'/plugins/content/admirorgallery/AdmirorGallery/'.$AG_resourceType.'/'.$ag_resourceManager_id.'/details.xml' );// N U
 			$ag_resourceManager_name = $ag_resourceManager_xml->document->name[0]->data();
 			$ag_resourceManager_creationDate = $ag_resourceManager_xml->document->creationDate[0]->data();
