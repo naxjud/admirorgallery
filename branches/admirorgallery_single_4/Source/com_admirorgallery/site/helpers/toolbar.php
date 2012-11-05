@@ -6,7 +6,7 @@ jimport('joomla.html.toolbar');
 
 class AdmirorgalleryHelperToolbar extends JObject
 {
-      function getToolbar() {
+      public static function getToolbar() {
 
 
 	      $bar = new JToolBar( 'toolbar' );

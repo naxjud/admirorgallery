@@ -32,7 +32,7 @@ $article = new JObject();
 $article->text = '{AG '.$ag_inlineParams.' }'.$this->galleryName.'{/AG}';
 $article->id = 0;
 $limitstart = 0;
-$dispatcher =& JDispatcher::getInstance();
+$dispatcher = JDispatcher::getInstance();
 $results = $dispatcher->trigger('onContentPrepare', array ( &$context, &$article, & $params, $limitstart));
 echo $article->text;
 

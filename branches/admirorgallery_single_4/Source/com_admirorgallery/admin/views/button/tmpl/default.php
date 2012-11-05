@@ -46,12 +46,15 @@ $query = "SELECT * FROM #__extensions WHERE (element = 'admirorgallery') AND (ty
 $db->setQuery($query);
 $row = $db->loadAssoc();
 
-$paramsdata = $row['params'];
+print_r($row['params']);
 
 $paramsdefs = JPATH_COMPONENT_ADMINISTRATOR . DS . 'views' . DS . 'button' . DS . 'tmpl' . DS . 'default.xml';
 $myparams = JForm::getInstance('AG_Settings', $paramsdefs);
 
-$fieldSets = $myparams->getFieldsets('params');
+$values = array('params' => json_decode($row['params']));
+$myparams->bind($values);
+
+$fieldSets = $myparams->getFieldsets();
 
 foreach ($fieldSets as $name => $fieldSet) :
     $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_PLUGINS_' . $name . '_FIELDSET_LABEL';

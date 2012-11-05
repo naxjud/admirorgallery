@@ -11,7 +11,6 @@ class AdmirorgalleryViewImagemanager extends JView
     function display($tpl = null)
     {
 	  JToolBarHelper::title( JText::_( 'COM_ADMIRORGALLERY_IMAGE_MANAGER' ), 'imagemanager' );
-          require_once (JPATH_SITE . DS . 'plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'AdmirorGallery' . DS . 'classes' . DS . 'agHelper.php');
 	  parent::display($tpl);
     }
     

@@ -16,7 +16,7 @@ class agHelper {
      * @param <type> $array
      * @return <type>
      */
-    public static function array_sorting($array,$targetFolder) {     
+    public static function array_sorting($array,$targetFolder,$arrange) {     
         $ag_array_data = Array();
         // READS XML DATA AND GENERATES ARRAYS
         foreach ($array as $key => $value) {
@@ -46,7 +46,7 @@ class agHelper {
             $ag_array_data[] = $ag_xml_value;    
         }
         $sort_by= 'priority';
-        switch ($this->params['arrange']) {
+        switch ($arrange) {
             case "date":
                 $sort_by = 'date';
             break;
@@ -490,8 +490,8 @@ class agHelper {
      */
     public static function ag_shrinkString($string,$stringLength,$add=''){
         if(strlen($string)>$stringLength){
-          $string = substr($string,0,$stringLength);
-          $string.="...";
+              $string = substr($string,0,$stringLength);
+              $string.="...";
         }
         return $string;
     }

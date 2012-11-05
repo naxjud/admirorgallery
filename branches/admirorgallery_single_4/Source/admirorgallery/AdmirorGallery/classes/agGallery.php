@@ -195,7 +195,7 @@ class agGallery extends agHelper {
                 if (empty($thumb_file)) {
                     $images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath . $folderName);
                     if (!empty($images)) {
-                        $images = agHelper::array_sorting($images, $this->imagesFolderPhysicalPath . $folderName . DS);
+                        $images = agHelper::array_sorting($images, $this->imagesFolderPhysicalPath . $folderName . DS, $this->params['arrange']);
                         $thumb_file = $images[0]; // Get First image in folder as thumb 
                     }
                 }
@@ -457,7 +457,7 @@ class agGallery extends agHelper {
     private function loadImageFiles() {
         $this->images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath);
         if (!empty($this->images)) {
-            $this->images = agHelper::array_sorting($this->images, $this->imagesFolderPhysicalPath);
+            $this->images = agHelper::array_sorting($this->images, $this->imagesFolderPhysicalPath,$this->params['arrange']);
         }
 
         // Paginations Support
@@ -485,7 +485,7 @@ class agGallery extends agHelper {
     private function loadFolders() {
         $this->folders = agHelper::ag_foldersArrayFromFolder($this->imagesFolderPhysicalPath);
         if (!empty($this->folders)) {
-            $this->folders = agHelper::array_sorting($this->folders, $this->imagesFolderPhysicalPath);
+            $this->folders = agHelper::array_sorting($this->folders, $this->imagesFolderPhysicalPath,$this->params['arrange']);
         }
     }
 

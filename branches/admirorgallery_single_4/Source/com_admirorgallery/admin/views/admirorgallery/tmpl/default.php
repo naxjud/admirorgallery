@@ -57,6 +57,7 @@ $AG_templateID = JRequest::getVar('AG_template'); // Current template for AG Com
     $paramsdefs = JPATH_SITE . '/administrator/components/com_admirorgallery/config.xml';
 //$paramsdefs = JPATH_SITE.'/plugins/content/admirorgallery/admirorgallery.xml';
     $myparams = JForm::getInstance('AG_Settings', $paramsdefs);
+    
     $values = array('params' => json_decode($row['params']));
     $myparams->bind($values);
 

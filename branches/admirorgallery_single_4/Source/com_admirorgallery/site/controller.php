@@ -8,7 +8,7 @@ jimport('joomla.html.parameter');
 
 class AdmirorgalleryController extends JController
 {
-    function display( )
+    function display($cachable = false, $urlparams = false)
     {
         parent::display();
     }

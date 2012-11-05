@@ -3,6 +3,8 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
+require_once (JPATH_SITE . DS . 'plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'AdmirorGallery' . DS . 'classes' . DS . 'agHelper.php');
+
 $ag_itemURL = $ag_init_itemURL;
 
 $ag_XML_thumb = "";
