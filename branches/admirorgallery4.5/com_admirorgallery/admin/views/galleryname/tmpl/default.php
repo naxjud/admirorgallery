@@ -51,7 +51,7 @@ if (!empty($ag_folders)) {
         });
         function AG_getGalleryName(){
 
-            window.parent.document.getElementById('galleryName').value = AG_jQuery('input[name="AG_form_folderName"]:checked').val();
+            window.parent.document.getElementById('jform_params_galleryName').value = AG_jQuery('input[name="AG_form_folderName"]:checked').val();
         }
     </script>
 </form>

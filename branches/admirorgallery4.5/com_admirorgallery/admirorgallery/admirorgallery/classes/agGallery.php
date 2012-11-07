@@ -414,10 +414,10 @@ class agGallery extends agHelper {
                     }
 
                     if (file_exists($descriptionFileApsolutePath)) {// Check is descriptions file exists
-                        $ag_imgXML_xml = & JFactory::getXMLParser('simple');
+                        $ag_imgXML_xml = JFactory::getXMLParser('simple');
                         $ag_imgXML_xml->loadFile($descriptionFileApsolutePath);
-                        $ag_imgXML_captions = & $ag_imgXML_xml->document->captions[0];
-                        $lang = & JFactory::getLanguage();
+                        $ag_imgXML_captions = $ag_imgXML_xml->document->captions[0];
+                        $lang = JFactory::getLanguage();
                         $langTag = strtolower($lang->getTag());
 
                         // GET DEFAULT LABEL
@@ -624,9 +624,9 @@ class agGallery extends agHelper {
             if ($albumName[$i] != '' && $i != 0) {
                 $this->events['name'] = $albumName[$i];
                 $link = 'Javascript: AG_form_submit_' . $this->articleID . '(' . $this->index . ',1,\'' . $linkFolderName . '\');';
-                $mainframe = &JFactory::getApplication();
-                $document = &JFactory::getDocument();
-                $pathway = & $mainframe->getPathway();
+                $mainframe = JFactory::getApplication();
+                $document = JFactory::getDocument();
+                $pathway = $mainframe->getPathway();
                 $document->setTitle($this->events['name']);
                 $pathway->addItem($this->events['name'], $link);
             }
