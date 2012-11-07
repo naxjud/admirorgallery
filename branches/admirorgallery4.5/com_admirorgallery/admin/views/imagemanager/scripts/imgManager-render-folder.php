@@ -12,7 +12,7 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-require_once (JPATH_SITE . DS . 'plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'AdmirorGallery' . DS . 'classes' . DS . 'agHelper.php');
+require_once (JPATH_SITE . DS . 'plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'admirorgallery' . DS . 'classes' . DS . 'agHelper.php');
 
 $ag_itemURL = $ag_init_itemURL;
 
@@ -362,7 +362,7 @@ if (!empty($ag_images)) {
             }
         }
 
-        if (file_exists(JPATH_SITE . "/plugins/content/admirorgallery/AdmirorGallery/thumbs/" . basename($ag_folderName) . "/" . basename($value))) {
+        if (file_exists(JPATH_SITE . "/plugins/content/admirorgallery/admirorgallery/thumbs/" . basename($ag_folderName) . "/" . basename($value))) {
             $ag_hasThumb = '<img src="' . JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $AG_templateID . '/images/icon-hasThumb.png"  class="ag_hasThumb" />';
         }
 

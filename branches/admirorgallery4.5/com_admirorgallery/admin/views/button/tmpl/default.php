@@ -18,7 +18,7 @@ $pluginParams = new JRegistry($plugin->params);
 $ag_rootFolder = $pluginParams->get('rootFolder', '/images/sampledata/');
 $ag_init_itemURL = $ag_rootFolder;
 ?>
-<script type="text/javascript" src="<?php echo JURI::root() . 'plugins/content/admirorgallery/AdmirorGallery/AG_jQuery.js'; ?>"></script>
+<script type="text/javascript" src="<?php echo JURI::root() . 'plugins/content/admirorgallery/admirorgallery/AG_jQuery.js'; ?>"></script>
 <link rel="stylesheet" href="<?php echo JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $AG_template . '/css/add-trigger.css'; ?>" type="text/css" />
 
 <div style="display:block" class="AG_margin_medium">

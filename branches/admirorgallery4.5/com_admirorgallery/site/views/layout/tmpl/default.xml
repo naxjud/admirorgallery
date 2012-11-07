@@ -24,9 +24,9 @@
                 <option value="none">AG_NONE</option>
             </field>
         
-            <field name="template" type="folderlist" default="classic" label="AG_GALLERY_TEMPLATE" description="AG_GALLERY_TEMPLATE_DESC" directory="plugins/content/admirorgallery/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
+            <field name="template" type="folderlist" default="classic" label="AG_GALLERY_TEMPLATE" description="AG_GALLERY_TEMPLATE_DESC" directory="plugins/content/admirorgallery/admirorgallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
 
-            <field name="popupEngine" type="folderlist" default="slimbox" label="AG_POPUP_ENGINE" description="AG_POPUP_ENGINE_DESC" directory="plugins/content/admirorgallery/AdmirorGallery/popups" exclude="" stripext="" hide_none="true" hide_default="true" />
+            <field name="popupEngine" type="folderlist" default="slimbox" label="AG_POPUP_ENGINE" description="AG_POPUP_ENGINE_DESC" directory="plugins/content/admirorgallery/admirorgallery/popups" exclude="" stripext="" hide_none="true" hide_default="true" />
 
             <field name="arrange" type="radio" default="priority" label="AG_ARRANGE_IMAGES_BY" description="AG_ARRANGE_IMAGES_BY_DESC">
                 <option value="priority">AG_PRIORITY</option>

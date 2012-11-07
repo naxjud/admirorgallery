@@ -78,7 +78,7 @@ AG_jQuery(function(){
 '."\n";
 
 // Read folder with gallery templates
-$ag_resourceManager_installed = JFolder::folders(JPATH_SITE.'/plugins/content/admirorgallery/AdmirorGallery/'.$AG_resourceType);// N U
+$ag_resourceManager_installed = JFolder::folders(JPATH_SITE.'/plugins/content/admirorgallery/admirorgallery/'.$AG_resourceType);// N U
 sort($ag_resourceManager_installed);
 
 // Rendering the form and table grid
@@ -128,9 +128,9 @@ foreach ($ag_resourceManager_installed as $ag_resourceManager_Key => $ag_resourc
 		$ag_resourceManager_version = JText::_( "AG_UNKNOWN_VERSION");
 		$ag_resourceManager_description = JText::_( "AG_NO_DESCRITION");
 
-		if(JFIle::exists(JPATH_SITE.'/plugins/content/admirorgallery/AdmirorGallery/'.$AG_resourceType.'/'.$ag_resourceManager_id.'/details.xml')){// N U
+		if(JFIle::exists(JPATH_SITE.'/plugins/content/admirorgallery/admirorgallery/'.$AG_resourceType.'/'.$ag_resourceManager_id.'/details.xml')){// N U
 			$ag_resourceManager_xml =JFactory::getXMLParser( 'simple' );
-			$ag_resourceManager_xml->loadFile( JPATH_SITE.'/plugins/content/admirorgallery/AdmirorGallery/'.$AG_resourceType.'/'.$ag_resourceManager_id.'/details.xml' );// N U
+			$ag_resourceManager_xml->loadFile( JPATH_SITE.'/plugins/content/admirorgallery/admirorgallery/'.$AG_resourceType.'/'.$ag_resourceManager_id.'/details.xml' );// N U
 			$ag_resourceManager_name = $ag_resourceManager_xml->document->name[0]->data();
 			$ag_resourceManager_creationDate = $ag_resourceManager_xml->document->creationDate[0]->data();
 			$ag_resourceManager_author = $ag_resourceManager_xml->document->author[0]->data();
@@ -157,7 +157,7 @@ foreach ($ag_resourceManager_installed as $ag_resourceManager_Key => $ag_resourc
 		</td>
 		<td style="white-space:nowrap;">
 
-		<span class="editlinktip hasTip" title="'.$ag_resourceManager_name.'::<img border=&quot;1&quot; src=&quot;'.JURI::root().'plugins/content/admirorgallery/AdmirorGallery/'.$AG_resourceType.'/'.$ag_resourceManager_id.'/preview.jpg'.'&quot; name=&quot;imagelib&quot; alt=&quot;&quot; width=&quot;206&quot; height=&quot;145&quot; />">
+		<span class="editlinktip hasTip" title="'.$ag_resourceManager_name.'::<img border=&quot;1&quot; src=&quot;'.JURI::root().'plugins/content/admirorgallery/admirorgallery/'.$AG_resourceType.'/'.$ag_resourceManager_id.'/preview.jpg'.'&quot; name=&quot;imagelib&quot; alt=&quot;&quot; width=&quot;206&quot; height=&quot;145&quot; />">
 		<a href="#" class="ag_title_link">
 		'.$ag_resourceManager_name.'
 		</a>

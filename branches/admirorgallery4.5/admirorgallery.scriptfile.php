@@ -231,8 +231,8 @@ class com_admirorgalleryInstallerScript {
                                 </tr>
                         </tbody>
                 </table>';
+            echo $html;
         }
-        echo $html;
     }
 
 }

@@ -13,7 +13,7 @@
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-require_once (JPATH_SITE . DS . 'plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'AdmirorGallery' . DS . 'classes' . DS . 'agHelper.php');
+require_once (JPATH_SITE . DS . 'plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'admirorgallery' . DS . 'classes' . DS . 'agHelper.php');
 
 $ag_itemURL = $ag_init_itemURL;
 
@@ -21,7 +21,7 @@ $ag_folderName = dirname($ag_itemURL);
 $ag_fileName = basename($ag_itemURL);
 $AG_imgInfo = agHelper::ag_imageInfo(JPATH_SITE.$ag_itemURL);
 
-require_once (JPATH_SITE.DS.'plugins'.DS.'content'.DS.'admirorgallery'.DS.'AdmirorGallery'.DS.'classes'.DS.'agHelper.php');
+require_once (JPATH_SITE.DS.'plugins'.DS.'content'.DS.'admirorgallery'.DS.'admirorgallery'.DS.'classes'.DS.'agHelper.php');
 
 $thumbsFolderPhysicalPath = JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'assets'.DS.'thumbs';
 
@@ -40,7 +40,7 @@ if(JFIle::exists($ag_pathWithStripExt.".xml")){
     $ag_imgXML_path=$ag_pathWithStripExt.".xml";
 }
 
-if(file_exists(JPATH_SITE."/plugins/content/admirorgallery/AdmirorGallery/thumbs/".basename($ag_folderName)."/".basename($ag_fileName))){
+if(file_exists(JPATH_SITE."/plugins/content/admirorgallery/admirorgallery/thumbs/".basename($ag_folderName)."/".basename($ag_fileName))){
      $ag_hasThumb='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasThumb.png" class="ag_hasThumb" />';
 }
 
