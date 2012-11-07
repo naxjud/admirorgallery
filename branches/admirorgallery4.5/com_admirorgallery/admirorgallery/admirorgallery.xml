@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="plugin" version="1.7" group="content" method="upgrade">
-
+<extension type="plugin" version="2.5" group="content" method="upgrade">
     <name>PLG_CONTENT_ADMIRORGALLERY</name>
     <author>Igor Kekeljevic and Nikola Vasiljevski</author>
     <creationDate>26/07/2011</creationDate>	
     <copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
     <authorEmail></authorEmail>
     <authorUrl>http://www.admiror-design-studio.com</authorUrl>
-    <version>4.1.1</version>
+    <version>4.5.0</version>
     <description>PLG_ADMIRORGALLERY_XML_DESCRIPTION</description>
-
     <config>
         <fields name="params">
             <fieldset name="basic">
@@ -27,9 +25,9 @@
                     <option value="none">AG_NONE</option>
                 </field>
         
-                <field name="template" type="folderlist" default="classic" label="AG_GALLERY_TEMPLATE" description="AG_GALLERY_TEMPLATE_DESC" directory="plugins/content/admirorgallery/AdmirorGallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
+                <field name="template" type="folderlist" default="classic" label="AG_GALLERY_TEMPLATE" description="AG_GALLERY_TEMPLATE_DESC" directory="plugins/content/admirorgallery/admirorgallery/templates" exclude="" stripext="" hide_none="true" hide_default="true" />
 
-                <field name="popupEngine" type="folderlist" default="slimbox" label="AG_POPUP_ENGINE" description="AG_POPUP_ENGINE_DESC" directory="plugins/content/admirorgallery/AdmirorGallery/popups" exclude="" stripext="" hide_none="true" hide_default="true" />
+                <field name="popupEngine" type="folderlist" default="slimbox" label="AG_POPUP_ENGINE" description="AG_POPUP_ENGINE_DESC" directory="plugins/content/admirorgallery/admirorgallery/popups" exclude="" stripext="" hide_none="true" hide_default="true" />
 
                 <field name="arrange" type="radio" default="priority" label="AG_ARRANGE_IMAGES_BY" description="AG_ARRANGE_IMAGES_BY_DESC">
                     <option value="priority">AG_PRIORITY</option>
@@ -112,7 +110,8 @@
 	
     <files>
         <filename plugin="admirorgallery">admirorgallery.php</filename>
-        <folder>AdmirorGallery</folder>
+        <filename>index.html</filename>
+        <folder>admirorgallery</folder>
     </files>
     <languages folder="language">
         <language tag="en-GB">en-GB/en-GB.plg_content_admirorgallery.ini</language>

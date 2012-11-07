@@ -1,21 +1,20 @@
 <?php
-
 /* ------------------------------------------------------------------------
-  # plg_admirorgallery - Admiror Gallery Plugin
+  # admirorgallery - Admiror Gallery Plugin
   # ------------------------------------------------------------------------
   # author   Igor Kekeljevic & Nikola Vasiljevski
   # copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
   # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
   # Websites: http://www.admiror-design-studio.com/joomla-extensions
   # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
-  # Version: 4.1.1
+  # Version: 4.5.0
   ------------------------------------------------------------------------- */
 defined('_JEXEC') or die('Restricted access');
 // Import library dependencies
 jimport('joomla.event.plugin');
 jimport('joomla.plugin.plugin');
 
-define('AG_VERSION', '4.1.1');
+define('AG_VERSION', '4.5.0');
 
 class plgContentAdmirorGallery extends JPlugin {
 
@@ -34,7 +33,7 @@ class plgContentAdmirorGallery extends JPlugin {
         $doc = JFactory::getDocument();
         //check for PHP version, 5.0.0 and above are accepted
         if (strnatcmp(phpversion(), '5.0.0') <= 0) {
-            $doc->addStyleSheet('plugins/content/admirorgallery/AdmirorGallery/AdmirorGallery.css');
+            $doc->addStyleSheet('plugins/content/admirorgallery/admirorgallery/AdmirorGallery.css');
             $html = '<div class="error">Admiror Gallery requires PHP version 5.0.0 or greater!</div>' . "\n";
             if ((preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER) > 0) || (preg_match_all("#{AG[^}]*}(.*?){/AG}#s", $row->text, $matches, PREG_PATTERN_ORDER) > 0)) {
                 foreach ($matches[0] as $match) {
@@ -46,14 +45,13 @@ class plgContentAdmirorGallery extends JPlugin {
         }
 
         // Load gallery class php script
-        require_once (dirname(__FILE__) . '/AdmirorGallery/classes/agGallery.php');
-        require_once (dirname(__FILE__) . '/AdmirorGallery/classes/jquery.scroll.js.php');
+        require_once (dirname(__FILE__) . '/admirorgallery/classes/agGallery.php');
+        require_once (dirname(__FILE__) . '/admirorgallery/classes/jquery.scroll.js.php');
         //CreateGallerys
         if (preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}|{AG[^}]*}(.*?){/AG}#s", $row->text, $matches, PREG_PATTERN_ORDER) > 0) {
-            //$plugin = &JPluginHelper::getPlugin('content', 'AdmirorGallery');
             $AG = new agGallery($this->params, JURI::base(), JPATH_SITE, $doc);
             //Load current language
-            JPlugin::loadLanguage('plg_content_AdmirorGallery', JPATH_ADMINISTRATOR);
+            JPlugin::loadLanguage('plg_content_admirorgallery', JPATH_ADMINISTRATOR);
             // Version check
             $version = new JVersion();
             if ($version->PRODUCT == "Joomla!" && ($version->RELEASE == "1.5")) {
@@ -81,7 +79,7 @@ class plgContentAdmirorGallery extends JPlugin {
                     $AG->generateThumbs();
                 else
                     $AG->addError(JText::sprintf('AG_CANNOT_CREATE_THUMBS_PERMMISIONS_ERROR', $AG->thumbsFolderPhysicalPath));
-                include (dirname(__FILE__) . '/AdmirorGallery/templates/' . $AG->params['template'] . '/index.php');
+                include (dirname(__FILE__) . '/admirorgallery/templates/' . $AG->params['template'] . '/index.php');
 
                 $AG->clearOldThumbs();
                 $row->text = $AG->writeErrors() . preg_replace("#{AdmirorGallery[^}]*}" . $AG->imagesFolderNameOriginal . "{/AdmirorGallery}|{AG[^}]*}" . $AG->imagesFolderNameOriginal . "{/AG}#s", "<div style='clear:both'></div>" . $html, $row->text, 1);

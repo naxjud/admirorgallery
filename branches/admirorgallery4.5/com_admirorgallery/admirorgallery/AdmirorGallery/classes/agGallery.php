@@ -1,16 +1,16 @@
 <?php
  /*------------------------------------------------------------------------
-# plg_admirorgallery - Admiror Gallery Plugin
+# admirorgallery - Admiror Gallery Plugin
 # ------------------------------------------------------------------------
 # author   Igor Kekeljevic & Nikola Vasiljevski
 # copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Websites: http://www.admiror-design-studio.com/joomla-extensions
 # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
-# Version: 4.1.1
+# Version: 4.5.0
 -------------------------------------------------------------------------*/
  
-define('PLUGIN_BASE_PATH', '/plugins/content/admirorgallery/AdmirorGallery/');
+define('PLUGIN_BASE_PATH', '/plugins/content/admirorgallery/admirorgallery/');
 
 require_once (dirname(__FILE__) . DS . 'agHelper.php');
 require_once (dirname(__FILE__) . DS . 'agPopup.php');
@@ -282,7 +282,7 @@ class agGallery extends agHelper {
      */
 
     function initPopup() {
-        require ('plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'AdmirorGallery' . DS . 'popups' . DS . $this->params['popupEngine'] . DS . 'index.php');
+        require ('plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'admirorgallery' . DS . 'popups' . DS . $this->params['popupEngine'] . DS . 'index.php');
         return $this->popupEngine->initCode;
     }
 
