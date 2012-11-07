@@ -60,9 +60,10 @@
     <plugins>
         <plugin plugin="admirorgallery" group="content" folder="com_admirorgallery">
             <files folder="com_admirorgallery/admirorgallery">
-                <folder>AdmirorGallery</folder>
+                <folder>admirorgallery</folder>
                 <file>admirorgallery.php</file>
                 <file>admirorgallery.xml</file>
+                <filename>index.html</filename>
             </files>
             <languages folder="com_admirorgallery/admirorgallery/language">
                 <language tag="en-GB">en-GB/en-GB.plg_content_admirorgallery.ini</language>
@@ -74,6 +75,7 @@
             <files folder="com_admirorgallery/admirorbutton">
                 <filename>admirorbutton.php</filename>
                 <filename>admirorbutton.xml</filename>
+                <filename>index.html</filename>
             </files>
             <languages folder="com_admirorgallery/admirorbutton/language">
                 <language tag="en-GB">en-GB/en-GB.plg_editors-xtd_admirorbutton.ini</language>
