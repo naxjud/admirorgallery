@@ -83,7 +83,7 @@ $ag_preview_content.='<hr />';
 $ag_preview_content.='
 <h1>'.JText::_( 'AG_IMAGE_DETAILS_FOR_FILE' ).'</h1>
 <div class="AG_border_color AG_border_width AG_margin_bottom AG_breadcrumbs_wrapper">
-'.$this->_renderBreadcrumb($AG_itemURL, $ag_rootFolder, $ag_folderName, $ag_fileName).'
+'.$this->_renderBreadcrumb($ag_itemURL, $ag_rootFolder, $ag_folderName, $ag_fileName).'
 </div>
 ';
 
