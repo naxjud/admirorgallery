@@ -25,6 +25,9 @@ $AG_frontEnd = JRequest::getVar( 'AG_frontEnd' );// Current template for AG Comp
 $plugin = JPluginHelper::getPlugin('content', 'admirorgallery');
 $pluginParams = new JRegistry($plugin->params);
 $ag_rootFolder = $pluginParams->get('rootFolder','/images/sampledata/');
+if($AG_frontEnd=='true'){
+    $ag_starting_folder = $pluginParams->get('rootFolder','/images/sampledata/').$this->galleryName.'/';
+}
 
 if(!empty($AG_itemURL)){
     $ag_init_itemURL = $AG_itemURL;

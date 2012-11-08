@@ -153,6 +153,10 @@
     color:#dd0b50;
 }
 
+.AG_body_wrapper h1
+{
+    border:0 !important;
+}
 .AG_breadcrumbs_wrapper
 {
     font-weight:bold;
@@ -217,6 +221,11 @@
 .AG_legend td
 {
     padding:0 10px 10px 0;
+    border: 0;
+}
+.AG_legend tr
+{
+    border: 0;
 }
 
 .AG_item_wrapper
@@ -351,6 +360,13 @@ a.AG_common_button:hover span span
 .AG_thumbAndInfo_wrapper td
 {
     padding:0 5px;
+    border: 0px solid #DDDDDD;
+}
+
+.AG_thumbAndInfo_wrapper tr
+{
+    padding:0 5px;
+    border: 0px solid #DDDDDD;;
 }
 
 .AG_thumbAndInfo_wrapper td div
@@ -367,16 +383,6 @@ a.AG_common_button:hover span span
     background-color:#ddd;
     border-width:0px;
 }
-
-
-
-
-
-
-
-
-
-
 
 /* ================================================== */
 /* <custom> */

@@ -16,15 +16,53 @@
 .icon-48-imagemanager{
         background-image: url(../images/toolbar/icon-48-imagemanager.png); 
 }
-
 .icon-32-AG_apply    { 
-        background-image: url(../images/toolbar/icon-32-AG_apply.png);  
+        background-image: url(../images/toolbar/icon-32-AG_apply.png); 
+        display:block;  
+        height:32px;
+        width:32px;
+    
 }
 
 .icon-32-AG_reset    { 
-        background-image: url(../images/toolbar/icon-32-AG_reset.png);  
+        background-image: url(../images/toolbar/icon-32-AG_reset.png);    
+        display:block;  
+        height:32px;
+        width:32px;        
+
 }
 
+.toolbar-list  {
+     text-align:right;
+}
+
+.toolbar-list ul li a span {
+    margin:0 auto;
+}
+
+.toolbar-list ul {
+    display:inline-block;
+    zoom:1;
+    
+}
+
+.toolbar-list ul li {
+    display:inline-block;
+    zoom:1;
+}
+
+
+.toolbar-list ul li a {
+    text-decoration:none;
+    color:#444;
+    display:inline-block;
+    zoom:1;
+    padding: 5px 5px 0px 5px;
+}
+
+.clr {
+    clear:both;
+}
 
 /* toolbar */
 
