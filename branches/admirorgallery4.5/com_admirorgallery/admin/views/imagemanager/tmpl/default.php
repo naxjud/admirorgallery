@@ -27,6 +27,8 @@ $pluginParams = new JRegistry($plugin->params);
 $ag_rootFolder = $pluginParams->get('rootFolder','/images/sampledata/');
 if($AG_frontEnd=='true'){
     $ag_starting_folder = $pluginParams->get('rootFolder','/images/sampledata/').$this->galleryName.'/';
+}else{
+    $ag_starting_folder = $ag_rootFolder;
 }
 
 if(!empty($AG_itemURL)){
