@@ -10,7 +10,7 @@
 # Version: 4.5.0
 -------------------------------------------------------------------------*/
 defined('_JEXEC') or die('Restricted access');
-
+jimport( 'joomla.filesystem.folder' );
 $AG_template = JRequest::getVar('AG_template'); // Current template for AG Component
 // GET ROOT FOLDER
 $plugin = JPluginHelper::getPlugin('content', 'admirorgallery');
