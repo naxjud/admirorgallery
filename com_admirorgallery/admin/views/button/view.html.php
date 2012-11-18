@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  
 jimport( 'joomla.application.component.view');
  
-class AdmirorgalleryViewButton extends JView
+class AdmirorgalleryViewButton extends JViewLegacy
 {
 
     function display($tpl = null)

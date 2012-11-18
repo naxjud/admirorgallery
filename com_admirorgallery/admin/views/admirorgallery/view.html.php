@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
-class AdmirorgalleryViewAdmirorgallery extends JView
+class AdmirorgalleryViewAdmirorgallery extends JViewLegacy
 {
     protected $item;
     protected $form;

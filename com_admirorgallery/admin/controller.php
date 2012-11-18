@@ -15,7 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controller');
 jimport('joomla.html.parameter');
 
-class AdmirorgalleryController extends JController {
+class AdmirorgalleryController extends JControllerLegacy {
 
     function display($cachable = false, $urlparams = false) {
         require_once JPATH_COMPONENT . '/helpers/admirorgallery.php';

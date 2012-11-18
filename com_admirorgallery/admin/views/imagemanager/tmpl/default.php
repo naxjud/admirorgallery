@@ -59,7 +59,7 @@ if(file_exists(JPATH_SITE.$ag_init_itemURL)){
      }else{
 	  $ag_init_itemType="file";
      }
-     require_once (JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'views'.DS.'imagemanager'.DS.'scripts'.DS.'imgManager-render-'.$ag_init_itemType.'.php');
+     require_once (JPATH_ROOT.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_admirorgallery'.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'imagemanager'.DIRECTORY_SEPARATOR.'scripts'.DIRECTORY_SEPARATOR.'imgManager-render-'.$ag_init_itemType.'.php');
 }else{
      $ag_error[] = Array (JText::_('AG_FOLDER_OR_IMAGE_NOT_FOUND'), $ag_init_itemURL);
      JError::raiseWarning('3', JText::_('AG_FOLDER_OR_IMAGE_NOT_FOUND').'<br>'.$ag_init_itemURL);
@@ -193,7 +193,7 @@ echo '
 // FORMAT FORM
 
 if($AG_frontEnd=='true'){
-require_once( JPATH_COMPONENT.DS.'helpers'.DS.'toolbar.php' );
+require_once( JPATH_COMPONENT.DIRECTORY_SEPARATOR.'helpers'.DIRECTORY_SEPARATOR.'toolbar.php' );
 echo '
 <div class="AG_border_color AG_border_width AG_background_color AG_toolbar">
 '.AdmirorgalleryHelperToolbar::getToolbar().'
@@ -216,19 +216,22 @@ echo '
 		    '."\n";
 
 $bookmarkPath = JPATH_SITE.'/administrator/components/com_admirorgallery/assets/bookmarks.xml';
-$ag_bookmarks_xml = JFactory::getXMLParser( 'simple' );
-$ag_bookmarks_xml->loadFile( $bookmarkPath );
+$ag_bookmarks_xml = JFactory::getXML( $bookmarkPath );
+//if($ag_bookmarks_xml)
+//{
+    //$ag_bookmarks_xml->loadFile( $bookmarkPath );
+//}
 if(isset($ag_bookmarks_xml->document->bookmark)){
     foreach($ag_bookmarks_xml->document->bookmark as $key => $value){
         echo '
 <table border="0" cellspacing="0" cellpadding="0"><tbody><tr>
 <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/bookmarkRemove.png" style="float:left;" /></td>
-<td><input type="checkbox" value="'.$ag_bookmarks_xml->document->bookmark[$key]->data().'" name="AG_cbox_bookmarkRemove[]"></td>
+<td><input type="checkbox" value="'.$ag_bookmarks_xml->document->bookmark[$key].'" name="AG_cbox_bookmarkRemove[]"></td>
 <td><span class="AG_border_color AG_border_width AG_separator">&nbsp;</span></td>
 <td>
-<a href="'.$ag_bookmarks_xml->document->bookmark[$key]->data().'"  class="AG_folderLink AG_common_button" title="'.$ag_bookmarks_xml->document->bookmark[$key]->data().'">
+<a href="'.$ag_bookmarks_xml->document->bookmark[$key].'"  class="AG_folderLink AG_common_button" title="'.$ag_bookmarks_xml->document->bookmark[$key].'">
 <span><span>
-          '.agHelper::ag_shrinkString(basename($ag_bookmarks_xml->document->bookmark[$key]->data()),20,'...').'
+          '.agHelper::ag_shrinkString(basename($ag_bookmarks_xml->document->bookmark[$key]),20,'...').'
 </span></span>
 </a>
 </td>

@@ -414,7 +414,7 @@ class agGallery extends agHelper {
                     }
 
                     if (file_exists($descriptionFileApsolutePath)) {// Check is descriptions file exists
-                        $ag_imgXML_xml = JFactory::getXMLParser('simple');
+                        $ag_imgXML_xml = JFactory::getXML('simple');
                         $ag_imgXML_xml->loadFile($descriptionFileApsolutePath);
                         $ag_imgXML_captions = $ag_imgXML_xml->document->captions[0];
                         $lang = JFactory::getLanguage();

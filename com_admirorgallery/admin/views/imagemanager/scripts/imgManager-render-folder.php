@@ -12,7 +12,7 @@
 /** ensure this file is being included by a parent file */
 defined('_JEXEC') or die('Restricted access');
 
-require_once (JPATH_SITE . DS . 'plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'admirorgallery' . DS . 'classes' . DS . 'agHelper.php');
+require_once (JPATH_SITE . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'admirorgallery' . DIRECTORY_SEPARATOR . 'admirorgallery' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'agHelper.php');
 
 $ag_itemURL = $ag_init_itemURL;
 
@@ -21,7 +21,7 @@ $ag_XML_thumb = "";
 $ag_folderName = dirname($ag_itemURL);
 $ag_fileName = basename($ag_itemURL);
 
-$thumbsFolderPhysicalPath = JPATH_SITE . DS . 'administrator' . DS . 'components' . DS . 'com_admirorgallery' . DS . 'assets' . DS . 'thumbs';
+$thumbsFolderPhysicalPath = JPATH_SITE . DIRECTORY_SEPARATOR . 'administrator' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_admirorgallery' . DIRECTORY_SEPARATOR . 'assets' . DIRECTORY_SEPARATOR . 'thumbs';
 
 agHelper::ag_sureRemoveDir($thumbsFolderPhysicalPath, true);
 if (!JFolder::create($thumbsFolderPhysicalPath, 0755)) {
@@ -122,13 +122,13 @@ if (JFIle::exists($ag_pathWithStripExt . ".xml")) {
 
 // Load if XML exists
 if (file_exists($ag_XML_path)) {
-    $ag_XML_xml =  JFactory::getXMLParser('simple');
-    $ag_XML_xml->loadFile($ag_XML_path);
-    if ($ag_XML_xml->document->thumb[0]) {
-        $ag_XML_thumb = & $ag_XML_xml->document->thumb[0]->data();
+    $ag_XML_xml =  JFactory::getXML($ag_XML_path);
+    //$ag_XML_xml->loadFile($ag_XML_path);
+    if ($ag_XML_xml->document->thumb) {
+        $ag_XML_thumb = & $ag_XML_xml->document->thumb;
     }
-    if ($ag_XML_xml->document->captions[0]) {
-        $ag_XML_captions = & $ag_XML_xml->document->captions[0];
+    if ($ag_XML_xml->document->captions) {
+        $ag_XML_captions = & $ag_XML_xml->document->captions;
     }
 }
 
@@ -202,9 +202,9 @@ if (!empty($ag_files)) {
             $ag_XML_path = $ag_pathWithStripExt . ".xml";
         }
         if (file_exists($ag_XML_path)) {
-            $ag_XML_xml =  JFactory::getXMLParser('simple');
-            $ag_XML_xml->loadFile($ag_XML_path);
-            $ag_XML_priority = & $ag_XML_xml->document->priority[0]->data();
+            $ag_XML_xml =  JFactory::getXML($ag_XML_path);
+            //$ag_XML_xml->loadFile($ag_XML_path);
+            $ag_XML_priority = & $ag_XML_xml->document->priority;
         }
 
         if (!empty($ag_XML_priority) && file_exists($ag_XML_path)) {
@@ -246,13 +246,13 @@ if (!empty($ag_folders)) {
         $ag_XML_priority = "";
         if (file_exists($ag_XML_path)) {
             $ag_hasXML = '<img src="' . JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $AG_templateID . '/images/icon-hasXML.png"  class="ag_hasXML" />';
-            $ag_XML_xml = JFactory::getXMLParser('simple');
-            $ag_XML_xml = simplexml_load_file($ag_XML_path);
-            if (isset($ag_XML_xml->priority)) {
-                $ag_XML_priority = $ag_XML_xml->priority;
+            $ag_XML_xml = JFactory::getXML($ag_XML_path);
+            //$ag_XML_xml = simplexml_load_file($ag_XML_path);
+            if (isset($ag_XML_xml->document->priority)) {
+                $ag_XML_priority = $ag_XML_xml->document->priority;
             }
-            if (isset($ag_XML_xml->visible)) {
-                if ((string) $ag_XML_xml->visible == "false") {
+            if (isset($ag_XML_xml->document->visible)) {
+                if ((string) $ag_XML_xml->document->visible == "false") {
                     $ag_XML_visible = "AG_HIDDEN";
                 }
             }
@@ -304,9 +304,9 @@ if (!empty($ag_files)) {
                 $ag_XML_path = $ag_pathWithStripExt . ".xml";
             }
             if (file_exists($ag_XML_path)) {
-                $ag_XML_xml = JFactory::getXMLParser('simple');
-                $ag_XML_xml->loadFile($ag_XML_path);
-                $ag_XML_priority = $ag_XML_xml->document->priority[0]->data();
+                $ag_XML_xml = JFactory::getXML($ag_XML_path);
+                //$ag_XML_xml->loadFile($ag_XML_path);
+                $ag_XML_priority = $ag_XML_xml->document->priority;
             }
 
             if (!empty($ag_XML_priority) && file_exists($ag_XML_path)) {
@@ -350,13 +350,13 @@ if (!empty($ag_images)) {
         $ag_XML_priority = "";
         if (file_exists($ag_XML_path)) {
             $ag_hasXML = '<img src="' . JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $AG_templateID . '/images/icon-hasXML.png"  class="ag_hasXML" />';
-            $ag_XML_xml = JFactory::getXMLParser('simple');
-            $ag_XML_xml = simplexml_load_file($ag_XML_path);
-            if (isset($ag_XML_xml->priority)) {
-                $ag_XML_priority = $ag_XML_xml->priority;
+            $ag_XML_xml = JFactory::getXML($ag_XML_path);
+            //$ag_XML_xml = simplexml_load_file($ag_XML_path);
+            if (isset($ag_XML_xml->document->priority)) {
+                $ag_XML_priority = $ag_XML_xml->document->priority;
             }
-            if (isset($ag_XML_xml->visible)) {
-                if ((string) $ag_XML_xml->visible == "false") {
+            if (isset($ag_XML_xml->document->visible)) {
+                if ((string) $ag_XML_xml->document->visible == "false") {
                     $ag_XML_visible = "AG_HIDDEN";
                 }
             }
@@ -368,7 +368,7 @@ if (!empty($ag_images)) {
 
 
 
-        agHelper::ag_createThumb(JPATH_SITE . $ag_itemURL . $value, $thumbsFolderPhysicalPath . DS . $value, 145, 80, "none");
+        agHelper::ag_createThumb(JPATH_SITE . $ag_itemURL . $value, $thumbsFolderPhysicalPath . DIRECTORY_SEPARATOR . $value, 145, 80, "none");
 
         $AG_thumb_checked = "";
         if ($ag_XML_thumb == $value) {

@@ -13,7 +13,7 @@
 /** ensure this file is being included by a parent file */
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-require_once (JPATH_SITE . DS . 'plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'admirorgallery' . DS . 'classes' . DS . 'agHelper.php');
+require_once (JPATH_SITE . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'admirorgallery' . DIRECTORY_SEPARATOR . 'admirorgallery' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'agHelper.php');
 
 $ag_itemURL = $ag_init_itemURL;
 
@@ -21,9 +21,9 @@ $ag_folderName = dirname($ag_itemURL);
 $ag_fileName = basename($ag_itemURL);
 $AG_imgInfo = agHelper::ag_imageInfo(JPATH_SITE.$ag_itemURL);
 
-require_once (JPATH_SITE.DS.'plugins'.DS.'content'.DS.'admirorgallery'.DS.'admirorgallery'.DS.'classes'.DS.'agHelper.php');
+require_once (JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.'agHelper.php');
 
-$thumbsFolderPhysicalPath = JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'assets'.DS.'thumbs';
+$thumbsFolderPhysicalPath = JPATH_SITE.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_admirorgallery'.DIRECTORY_SEPARATOR.'assets'.DIRECTORY_SEPARATOR.'thumbs';
 
 agHelper::ag_sureRemoveDir($thumbsFolderPhysicalPath,true);
 if(!JFolder::create($thumbsFolderPhysicalPath,0755)){
@@ -46,9 +46,9 @@ if(file_exists(JPATH_SITE."/plugins/content/admirorgallery/admirorgallery/thumbs
 
 if(file_exists($ag_imgXML_path)){
      $ag_hasXML='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png" class="ag_hasXML" />';
-     $ag_imgXML_xml = JFactory::getXMLParser( 'simple' );
-     $ag_imgXML_xml->loadFile($ag_imgXML_path);
-     $ag_imgXML_captions = $ag_imgXML_xml->document->captions[0];
+     $ag_imgXML_xml = JFactory::getXML( $ag_imgXML_path );
+     //$ag_imgXML_xml->loadFile($ag_imgXML_path);
+     $ag_imgXML_captions = $ag_imgXML_xml->document->captions;
 }
 
 $ag_preview_content='';
@@ -87,7 +87,7 @@ $ag_preview_content.='
 </div>
 ';
 
-agHelper::ag_createThumb(JPATH_SITE.$ag_itemURL, $thumbsFolderPhysicalPath.DS.basename($ag_itemURL), 145, 80, "none");
+agHelper::ag_createThumb(JPATH_SITE.$ag_itemURL, $thumbsFolderPhysicalPath.DIRECTORY_SEPARATOR.basename($ag_itemURL), 145, 80, "none");
 
 $ag_preview_content.='
 <div class="AG_margin_bottom AG_thumbAndInfo_wrapper">
@@ -113,7 +113,7 @@ $ag_preview_content.='
 ';
 
 
-require_once (JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_admirorgallery'.DS.'slimbox'.DS.'index.php');
+require_once (JPATH_ROOT.DIRECTORY_SEPARATOR.'administrator'.DIRECTORY_SEPARATOR.'components'.DIRECTORY_SEPARATOR.'com_admirorgallery'.DIRECTORY_SEPARATOR.'slimbox'.DIRECTORY_SEPARATOR.'index.php');
 
 
 function ag_render_caption($ag_lang_name, $ag_lang_tag, $ag_lang_content){

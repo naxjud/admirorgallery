@@ -14,7 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
-class AdmirorgalleryViewImagemanager extends JView
+class AdmirorgalleryViewImagemanager extends JViewLegacy
 {
 
     function display($tpl = null)
