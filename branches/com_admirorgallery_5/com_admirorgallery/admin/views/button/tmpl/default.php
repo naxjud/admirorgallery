@@ -56,7 +56,7 @@ $ag_init_itemURL = $ag_rootFolder;
             $db->setQuery($query);
             $row = $db->loadAssoc();
 
-            $paramsdefs = JPATH_COMPONENT_ADMINISTRATOR . DS . 'views' . DS . 'button' . DS . 'tmpl' . DS . 'default.xml';
+            $paramsdefs = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'button' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default.xml';
             $myparams = JForm::getInstance('AG_Settings', $paramsdefs);
 
             $values = array('params' => json_decode($row['params']));
@@ -65,7 +65,7 @@ $ag_init_itemURL = $ag_rootFolder;
             $fieldSets = $myparams->getFieldsets();
 
             foreach ($fieldSets as $name => $fieldSet) :
-                $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_PLUGINS_' . $name . '_FIELDSET_LABEL';
+                $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_PLUGINS_' . $name . '_FIELDIRECTORY_SEPARATORET_LABEL';
                 //echo JHtml::_('sliders.panel', JText::_($label), $name.'-options');
                 if (isset($fieldSet->description) && trim($fieldSet->description)) :
                 //echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';

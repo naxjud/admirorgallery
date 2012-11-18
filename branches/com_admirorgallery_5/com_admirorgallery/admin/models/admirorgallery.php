@@ -14,7 +14,7 @@ defined('_JEXEC') or die();
  
 jimport( 'joomla.application.component.model' );
 
-class AdmirorgalleryModelAdmirorgallery extends JModel
+class AdmirorgalleryModelAdmirorgallery extends JModelLegacy
 {
     function _update() {
 	  $AG_DB_input='{';

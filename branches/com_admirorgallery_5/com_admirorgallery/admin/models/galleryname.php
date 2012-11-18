@@ -14,7 +14,7 @@ defined('_JEXEC') or die();
  
 jimport( 'joomla.application.component.model' );
 
-class AdmirorgalleryModelGalleryname extends JModel
+class AdmirorgalleryModelGalleryname extends JModelLegacy
 {
 
 

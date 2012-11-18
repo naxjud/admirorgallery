@@ -14,76 +14,47 @@ defined('_JEXEC') or die();
 
 jimport('joomla.application.component.model');
 
-class AdmirorgalleryModelImagemanager extends JModel {
+class AdmirorgalleryModelImagemanager extends JModelLegacy {
 
     public $webSafe = Array("/", " ", ":", ".", "+", "&");
+    private $ag_bookmark_path;
+    
+    function __construct($config = array()) {
+        $this->ag_bookmark_path = JPATH_SITE . '/administrator/components/com_admirorgallery/assets/bookmarks.xml';
+        parent::__construct($config);
+    }
 
-    // ========================= THIS SAVES XML
-    //
-    function _saveXML($ag_itemURL, $ag_XML_path, $ag_XML_content) {
-        if (!empty($ag_XML_content)) {
-            $handle = fopen($ag_XML_path, "w") or die(JText::_("AG_CANNOT_WRITE_DESCRIPTION_FILE"));
-            if (fwrite($handle, $ag_XML_content)) {
-                JFactory::getApplication()->enqueueMessage(JText::_("AG_DESCRIPTION_FILE_CREATED") . "&nbsp;" . basename($ag_itemURL), 'message');
-            } else {
-                JFactory::getApplication()->enqueueMessage(JText::_("AG_CANNOT_WRITE_DESCRIPTION_FILE") . "&nbsp;" . basename($ag_itemURL), 'error');
-            }
-            fclose($handle);
+    private function saveXML($simple_xml_object,$value) {
+        if ($simple_xml_object->asXML($this->ag_bookmark_path)) {
+            JFactory::getApplication()->enqueueMessage(JText::_("AG_BOOKMARK_CHANGES_SAVED") . "&nbsp;" . $value, 'message');
+        } else {
+            JFactory::getApplication()->enqueueMessage(JText::_("AG_CANNOT_WRITE_GALLERY_LISTING") . "&nbsp;" . $value, 'error');
         }
     }
 
-    function _bookmarkRename($AG_originalPath, $AG_newPath) {
-        $AG_bookmark_ID = $AG_originalPath . '/';
-        $ag_bookmarkFile = JPATH_SITE . '/administrator/components/com_admirorgallery/assets/bookmarks.xml';
-
-        $ag_bookmarks_xml = & JFactory::getXMLParser('simple');
-        $ag_bookmarks_xml->loadFile($ag_bookmarkFile);
-        if (isset($ag_bookmarks_xml->document->bookmark)) {
-            $ag_bookmarks_array = $ag_bookmarks_xml->document->bookmark;
-        }
-
+    private function bookmark_rename($AG_originalPath, $AG_newPath) {
+        $ag_old_bookmark = $AG_originalPath . '/';
+        $ag_new_bookmark = $AG_newPath . '/';
+        $ag_bookmarks_xml = JFactory::getXML($this->ag_bookmark_path);
         // CHECK IF BOOKMARK ALREADY EXISTS
         $bookmarkCheck = false;
-        if (!empty($ag_bookmarks_array)) {
-            foreach ($ag_bookmarks_array as $ag_bookmarks_key => $ag_bookmarks_value) {
-                if ($ag_bookmarks_value->data() == $AG_bookmark_ID) {
-                    $bookmarkCheck = true;
+        if (isset($ag_bookmarks_xml->bookmark)) {
+            foreach ((array)$ag_bookmarks_xml->bookmark as $ag_bookmarks_key => $ag_bookmarks_value) {
+                if ($ag_bookmarks_value == $ag_old_bookmark) {
+                    $ag_bookmarks_value = $ag_new_bookmark;
+                    $this->saveXML($ag_bookmarks_xml,$ag_new_bookmark);
+                    break;
                 }
-            }
-        }
-
-        if ($bookmarkCheck == true) {
-            // WRITE NEW BOOKMARK XML
-            $ag_content = "";
-            $ag_content.="<bookmarks>" . "\n";
-            if (!empty($ag_bookmarks_array)) {
-                foreach ($ag_bookmarks_array as $ag_bookmarks_key => $ag_bookmarks_value) {
-                    if ($ag_bookmarks_value->data() == $AG_bookmark_ID) {
-                        $ag_content.='  <bookmark>' . $AG_newPath . '/</bookmark>' . "\n";
-                    } else {
-                        $ag_content.='  <bookmark>' . $ag_bookmarks_value->data() . '</bookmark>' . "\n";
-                    }
-                }
-            }
-
-            $ag_content.="</bookmarks>" . "\n";
-
-            if (!empty($ag_content)) {
-                $handle = fopen($ag_bookmarkFile, "w") or die(JText::_("AG_CANNOT_WRITE_GALLERY_LISTING"));
-                if (!fwrite($handle, $ag_content)) {
-                    JFactory::getApplication()->enqueueMessage(JText::_("AG_CANNOT_WRITE_GALLERY_LISTING") . "&nbsp;" . $AG_bookmark_ID, 'error');
-                }
-                fclose($handle);
             }
         }
     }
 
-    function _bookmarkRemove($AG_cbox_bookmarkRemove) {
+    private function bookmark_remove($AG_cbox_bookmarkRemove) {
         foreach ($AG_cbox_bookmarkRemove as $key => $AG_bookmark_ID) {
             $ag_bookmarkFile = JPATH_SITE . '/administrator/components/com_admirorgallery/assets/bookmarks.xml';
 
-            $ag_bookmarks_xml = & JFactory::getXMLParser('simple');
-            $ag_bookmarks_xml->loadFile($ag_bookmarkFile);
+            $ag_bookmarks_xml = & JFactory::getXML($ag_bookmarkFile);
+            //$ag_bookmarks_xml->loadFile($ag_bookmarkFile);
             if (isset($ag_bookmarks_xml->document->bookmark)) {
                 $ag_bookmarks_array = $ag_bookmarks_xml->document->bookmark;
             }
@@ -125,60 +96,33 @@ class AdmirorgalleryModelImagemanager extends JModel {
         }
     }
 
-    function _bookmarkAdd($AG_cbox_bookmarkAdd) {
+    private function bookmark_add($AG_cbox_bookmarkAdd) {
         foreach ($AG_cbox_bookmarkAdd as $key => $value) {
-
-            if (!empty($value) && is_dir(JPATH_SITE . $value)) {
-
-                $ag_bookmarkFile = JPATH_SITE . '/administrator/components/com_admirorgallery/assets/bookmarks.xml';
-
-                $bookmarkCheck = false;
-                $ag_bookmarks_xml = & JFactory::getXMLParser('simple');
-                $ag_bookmarks_xml->loadFile($ag_bookmarkFile);
-
-                if (isset($ag_bookmarks_xml->document->bookmark)) {
-                    $ag_bookmarks_array = $ag_bookmarks_xml->document->bookmark;
-                    // CHECK IS BOOKMARK ALREADY EXISTS
-                    $bookmarkCheck = false;
-                    if (!empty($ag_bookmarks_array)) {
-                        foreach ($ag_bookmarks_array as $key2 => $value2) {
-                            if ($value2->data() == $value) {
-                                $bookmarkCheck = true;
-                            }
+            if (is_dir(JPATH_SITE . $value)) {
+                $ag_bookmarks_xml = simplexml_load_file($this->ag_bookmark_path);
+                $addBookmark = true;
+                if (isset($ag_bookmarks_xml->bookmark)) {
+                    // Check if bookmark already exists
+                    foreach ((array)$ag_bookmarks_xml->bookmark as $bookmark => $path) {
+                        if ($path == $value) {
+                            $addBookmark = false;
+                            break;
                         }
                     }
                 }
-
-                if ($bookmarkCheck == false) {
-
-                    // WRITE NEW BOOKMARK XML
-                    $ag_content = "";
-                    $ag_content.="<bookmarks>" . "\n";
-                    if (!empty($ag_bookmarks_array)) {
-                        foreach ($ag_bookmarks_array as $key2 => $value2) {
-                            if (!empty($value2)) {
-                                $ag_content.='  <bookmark>' . $value2->data() . '</bookmark>' . "\n";
-                            }
-                        }
-                    }
-                    $ag_content.='  <bookmark>' . $value . '</bookmark>' . "\n";
-
-                    $ag_content.="</bookmarks>" . "\n";
-
-                    if (!empty($ag_content)) {
-                        $handle = fopen($ag_bookmarkFile, "w") or die(JText::_("AG_CANNOT_WRITE_GALLERY_LISTING"));
-                        if (fwrite($handle, $ag_content)) {
-                            JFactory::getApplication()->enqueueMessage(JText::_("AG_GALLERY_ADDED") . "&nbsp;" . $value, 'message');
-                        } else {
-                            JFactory::getApplication()->enqueueMessage(JText::_("AG_CANNOT_WRITE_GALLERY_LISTING") . "&nbsp;" . $value, 'error');
-                        }
-                        fclose($handle);
-                    }
-                } else {
-                    JFactory::getApplication()->enqueueMessage(JText::_("AG_GALLERY_ALREADY_EXISTS") . "&nbsp;" . $value, 'error');
+                if ($addBookmark) {
+                    // Add a new bookmark
+                    $ag_bookmarks_xml->addChild('bookmark',$value);
+                    JFactory::getApplication()->enqueueMessage(JText::_("AG_GALLERY_ADDED") . "&nbsp;" . $value, 'message');
+                }else {
+                    JFactory::getApplication()->enqueueMessage(JText::_("AG_GALLERY_ALREADY_EXISTS") . "&nbsp;" . $value, 'notice');
+                    return true;
                 }
+            }else{
+                JFactory::getApplication()->enqueueMessage(JText::_("AG_GALLERY_NOT_A_FOLDER") . "&nbsp;" . $value, 'error');
             }
         }
+        $this->saveXML($ag_bookmarks_xml,'');
     }
 
     function _cbox_priority($ag_preview_checked_array) {
@@ -202,9 +146,9 @@ class AdmirorgalleryModelImagemanager extends JModel {
 
                 $ag_XML_priority = "";
                 if (file_exists($ag_XML_path)) {
-                    $ag_XML_xml = & JFactory::getXMLParser('simple');
-                    $ag_XML_xml->loadFile($ag_XML_path);
-                    $ag_XML_priority = & $ag_XML_xml->document->priority[0]->data();
+                    $ag_XML_xml = & JFactory::getXML($ag_XML_path);
+                    //$ag_XML_xml->loadFile($ag_XML_path);
+                    $ag_XML_priority = & $ag_XML_xml->document->priority;
                 }
 
                 if ($ag_XML_priority != $ag_priority) {
@@ -281,20 +225,20 @@ class AdmirorgalleryModelImagemanager extends JModel {
         $ag_file_ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
         $src = $file['tmp_name'];
-        $dest = $tmp_dest . DS . $filename;
+        $dest = $tmp_dest . DIRECTORY_SEPARATOR . $filename;
 
         // FILTER EXTENSION
         $ag_ext_check = array_search($ag_file_ext, $ag_ext_valid);
         if (is_numeric($ag_ext_check)) {
             if (JFile::upload($src, $dest)) {
                 if ($ag_file_ext == "zip") {
-                    if (JArchive::extract($tmp_dest . DS . $filename, JPATH_SITE . $AG_itemURL)) {
-                        JFile::delete($tmp_dest . DS . $filename);
+                    if (JArchive::extract($tmp_dest . DIRECTORY_SEPARATOR . $filename, JPATH_SITE . $AG_itemURL)) {
+                        JFile::delete($tmp_dest . DIRECTORY_SEPARATOR . $filename);
                         JFactory::getApplication()->enqueueMessage(JText::_('AG_ZIP_PACKAGE_IS_UPLOADED_AND_EXTRACTED') . "&nbsp;" . $filename, 'message');
                     }
                 } else {
-                    if (JFile::copy($tmp_dest . DS . $filename, JPATH_SITE . $AG_itemURL . $filename)) {
-                        JFile::delete($tmp_dest . DS . $filename);
+                    if (JFile::copy($tmp_dest . DIRECTORY_SEPARATOR . $filename, JPATH_SITE . $AG_itemURL . $filename)) {
+                        JFile::delete($tmp_dest . DIRECTORY_SEPARATOR . $filename);
                         JFactory::getApplication()->enqueueMessage(JText::_('AG_IMAGE_IS_UPLOADED') . "&nbsp;" . $filename, 'message');
                     }
                 }
@@ -341,19 +285,19 @@ class AdmirorgalleryModelImagemanager extends JModel {
             if (JFIle::exists($AG_pathWithStripExt . ".xml")) {
                 $ag_XML_path = $AG_pathWithStripExt . ".xml";
             }
-            if (is_dir(JPATH_SITE . DS . $value)) {
-                if (JFolder::copy(JPATH_SITE . DS . $value, JPATH_SITE . DS . $AG_operations_targetFolder . DS . basename($value))) {
+            if (is_dir(JPATH_SITE . DIRECTORY_SEPARATOR . $value)) {
+                if (JFolder::copy(JPATH_SITE . DIRECTORY_SEPARATOR . $value, JPATH_SITE . DIRECTORY_SEPARATOR . $AG_operations_targetFolder . DIRECTORY_SEPARATOR . basename($value))) {
                     if (JFIle::exists($ag_XML_path)) {
-                        JFile::copy($ag_XML_path, JPATH_SITE . DS . $AG_operations_targetFolder . DS . basename($ag_XML_path));
+                        JFile::copy($ag_XML_path, JPATH_SITE . DIRECTORY_SEPARATOR . $AG_operations_targetFolder . DIRECTORY_SEPARATOR . basename($ag_XML_path));
                     }
                     JFactory::getApplication()->enqueueMessage(JText::_('AG_ITEM_COPIED') . "&nbsp;" . $value, 'message');
                 } else {
                     JFactory::getApplication()->enqueueMessage(JText::_('AG_CANNOT_COPY_ITEM') . "&nbsp;" . $value, 'error');
                 }
             } else {
-                if (JFile::copy(JPATH_SITE . DS . $value, JPATH_SITE . DS . $AG_operations_targetFolder . DS . basename($value))) {
+                if (JFile::copy(JPATH_SITE . DIRECTORY_SEPARATOR . $value, JPATH_SITE . DIRECTORY_SEPARATOR . $AG_operations_targetFolder . DIRECTORY_SEPARATOR . basename($value))) {
                     if (JFIle::exists($ag_XML_path)) {
-                        JFile::copy($ag_XML_path, JPATH_SITE . DS . $AG_operations_targetFolder . DS . basename($ag_XML_path));
+                        JFile::copy($ag_XML_path, JPATH_SITE . DIRECTORY_SEPARATOR . $AG_operations_targetFolder . DIRECTORY_SEPARATOR . basename($ag_XML_path));
                     }
                     JFactory::getApplication()->enqueueMessage(JText::_('AG_ITEM_COPIED') . "&nbsp;" . $value, 'message');
                 } else {
@@ -373,20 +317,20 @@ class AdmirorgalleryModelImagemanager extends JModel {
             if (JFIle::exists($AG_pathWithStripExt . ".xml")) {
                 $ag_XML_path = $AG_pathWithStripExt . ".xml";
             }
-            if (is_dir(JPATH_SITE . DS . $value)) {
-                if (JFolder::move(JPATH_SITE . DS . $value, JPATH_SITE . DS . $AG_operations_targetFolder . DS . basename($value))) {
+            if (is_dir(JPATH_SITE . DIRECTORY_SEPARATOR . $value)) {
+                if (JFolder::move(JPATH_SITE . DIRECTORY_SEPARATOR . $value, JPATH_SITE . DIRECTORY_SEPARATOR . $AG_operations_targetFolder . DIRECTORY_SEPARATOR . basename($value))) {
                     $this->_bookmarkRemove(array($value));
                     if (JFIle::exists($ag_XML_path)) {
-                        JFile::move($ag_XML_path, JPATH_SITE . DS . $AG_operations_targetFolder . DS . basename($ag_XML_path));
+                        JFile::move($ag_XML_path, JPATH_SITE . DIRECTORY_SEPARATOR . $AG_operations_targetFolder . DIRECTORY_SEPARATOR . basename($ag_XML_path));
                     }
                     JFactory::getApplication()->enqueueMessage(JText::_('AG_ITEM_MOVED') . "&nbsp;" . $value, 'message');
                 } else {
                     JFactory::getApplication()->enqueueMessage(JText::_('AG_CANNOT_MOVED_ITEM') . "&nbsp;" . $value, 'error');
                 }
             } else {
-                if (JFile::move(JPATH_SITE . DS . $value, JPATH_SITE . DS . $AG_operations_targetFolder . DS . basename($value))) {
+                if (JFile::move(JPATH_SITE . DIRECTORY_SEPARATOR . $value, JPATH_SITE . DIRECTORY_SEPARATOR . $AG_operations_targetFolder . DIRECTORY_SEPARATOR . basename($value))) {
                     if (JFIle::exists($ag_XML_path)) {
-                        JFile::move($ag_XML_path, JPATH_SITE . DS . $AG_operations_targetFolder . DS . basename($ag_XML_path));
+                        JFile::move($ag_XML_path, JPATH_SITE . DIRECTORY_SEPARATOR . $AG_operations_targetFolder . DIRECTORY_SEPARATOR . basename($ag_XML_path));
                     }
                     JFactory::getApplication()->enqueueMessage(JText::_('AG_ITEM_MOVED') . "&nbsp;" . $value, 'message');
                 } else {
@@ -406,9 +350,9 @@ class AdmirorgalleryModelImagemanager extends JModel {
                 $ag_XML_path = $AG_pathWithStripExt . ".xml";
             }
             // DELETE
-            if (is_dir(JPATH_SITE . DS . $value)) {
-                if (JFolder::delete(JPATH_SITE . DS . $value)) {
-                    $this->_bookmarkRemove(array($value));
+            if (is_dir(JPATH_SITE . DIRECTORY_SEPARATOR . $value)) {
+                if (JFolder::delete(JPATH_SITE . DIRECTORY_SEPARATOR . $value)) {
+                    $this->bookmark_remove(array($value));
                     if (file_exists($ag_XML_path)) {
                         JFile::delete($ag_XML_path);
                     }
@@ -417,7 +361,7 @@ class AdmirorgalleryModelImagemanager extends JModel {
                     JFactory::getApplication()->enqueueMessage(JText::_('AG_CANNOT_DELETE_ITEM') . "&nbsp;" . $value, 'error');
                 }
             } else {
-                if (JFile::delete(JPATH_SITE . DS . $value)) {
+                if (JFile::delete(JPATH_SITE . DIRECTORY_SEPARATOR . $value)) {
                     if (file_exists($ag_XML_path)) {
                         JFile::delete($ag_XML_path);
                     }
@@ -440,7 +384,7 @@ class AdmirorgalleryModelImagemanager extends JModel {
             }
         }
         // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
-        $ag_pathWithStripExt = JPATH_SITE . $AG_folderName . DS . JFile::stripExt($AG_originalName);
+        $ag_pathWithStripExt = JPATH_SITE . $AG_folderName . DIRECTORY_SEPARATOR . JFile::stripExt($AG_originalName);
         $ag_XML_path = $ag_pathWithStripExt . ".XML";
         if (JFIle::exists($ag_pathWithStripExt . ".xml")) {
             $ag_XML_path = $ag_pathWithStripExt . ".xml";
@@ -449,11 +393,11 @@ class AdmirorgalleryModelImagemanager extends JModel {
         if (!is_dir(JPATH_SITE . $AG_originalPath)) {
 
             $ag_file_ext = JFile::getExt($AG_originalName);
-            $ag_file_new_name = $AG_folderName . DS . $AG_newName . '.' . $ag_file_ext;
+            $ag_file_new_name = $AG_folderName . DIRECTORY_SEPARATOR . $AG_newName . '.' . $ag_file_ext;
             if (!file_exists(JPATH_SITE . $ag_file_new_name)) {
                 if (rename(JPATH_SITE . $AG_originalPath, JPATH_SITE . $ag_file_new_name)) {
                     if (file_exists($ag_XML_path)) {
-                        rename($ag_XML_path, JPATH_SITE . $AG_folderName . DS . $AG_newName . '.xml');
+                        rename($ag_XML_path, JPATH_SITE . $AG_folderName . DIRECTORY_SEPARATOR . $AG_newName . '.xml');
                     }
                     JFactory::getApplication()->enqueueMessage(JText::_("AG_IMAGE_RENAMED") . "&nbsp;" . $AG_originalName, 'message');
                 } else {
@@ -463,11 +407,11 @@ class AdmirorgalleryModelImagemanager extends JModel {
                 JFactory::getApplication()->enqueueMessage(JText::_("AG_FOLDER_WITH_THE_SAME_NAME_ALREADY_EXISTS"), 'error');
             }
         } else {
-            if (!file_exists(JPATH_SITE . $AG_folderName . DS . $AG_newName)) {
-                if (rename(JPATH_SITE . $AG_originalPath, JPATH_SITE . $AG_folderName . DS . $AG_newName)) {
-                    $this->_bookmarkRename($AG_originalPath, $AG_folderName . DS . $AG_newName);
+            if (!file_exists(JPATH_SITE . $AG_folderName . DIRECTORY_SEPARATOR . $AG_newName)) {
+                if (rename(JPATH_SITE . $AG_originalPath, JPATH_SITE . $AG_folderName . DIRECTORY_SEPARATOR . $AG_newName)) {
+                    $this->bookmark_rename($AG_originalPath, $AG_folderName . DIRECTORY_SEPARATOR . $AG_newName);
                     if (file_exists($ag_XML_path)) {
-                        rename($ag_XML_path, JPATH_SITE . $AG_folderName . DS . $AG_newName . '.xml');
+                        rename($ag_XML_path, JPATH_SITE . $AG_folderName . DIRECTORY_SEPARATOR . $AG_newName . '.xml');
                     }
                     JFactory::getApplication()->enqueueMessage(JText::_("AG_FOLDER_RENAMED") . "&nbsp;" . $AG_originalName, 'message');
                 } else {
@@ -485,7 +429,7 @@ class AdmirorgalleryModelImagemanager extends JModel {
         $ag_folderName = dirname($ag_itemURL);
 
         // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
-        $ag_pathWithStripExt = JPATH_SITE . $ag_folderName . DS . JFile::stripExt(basename($ag_itemURL));
+        $ag_pathWithStripExt = JPATH_SITE . $ag_folderName . DIRECTORY_SEPARATOR . JFile::stripExt(basename($ag_itemURL));
         $ag_XML_path = $ag_pathWithStripExt . ".xml";
         if (JFIle::exists($ag_pathWithStripExt . ".XML")) {
             $ag_XML_path = $ag_pathWithStripExt . ".XML";
@@ -535,7 +479,7 @@ class AdmirorgalleryModelImagemanager extends JModel {
         $ag_folderName = dirname($ag_itemURL);
 
         // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
-        $ag_pathWithStripExt = JPATH_SITE . $ag_folderName . DS . JFile::stripExt(basename($ag_itemURL));
+        $ag_pathWithStripExt = JPATH_SITE . $ag_folderName . DIRECTORY_SEPARATOR . JFile::stripExt(basename($ag_itemURL));
         $ag_XML_path = $ag_pathWithStripExt . ".xml";
         if (JFIle::exists($ag_pathWithStripExt . ".XML")) {
             $ag_XML_path = $ag_pathWithStripExt . ".XML";
