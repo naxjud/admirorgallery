@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 // Import library dependencies
 jimport('joomla.event.plugin');
 jimport('joomla.plugin.plugin');
-
+jimport( 'joomla.filesystem.folder' );
 define('AG_VERSION', '4.5.0');
 
 class plgContentAdmirorGallery extends JPlugin {

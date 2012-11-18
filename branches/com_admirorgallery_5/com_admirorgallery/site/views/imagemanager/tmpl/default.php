@@ -13,6 +13,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 JRequest::setVar( 'AG_frontEnd', 'true' );
 
-require_once (JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'imagemanager'.DS.'tmpl'.DS.'default.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'imagemanager'.DIRECTORY_SEPARATOR.'tmpl'.DIRECTORY_SEPARATOR.'default.php');
 
 ?>
