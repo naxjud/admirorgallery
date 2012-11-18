@@ -12,4 +12,4 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'views'.DS.'button'.DS.'view.html.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'button'.DIRECTORY_SEPARATOR.'view.html.php');
