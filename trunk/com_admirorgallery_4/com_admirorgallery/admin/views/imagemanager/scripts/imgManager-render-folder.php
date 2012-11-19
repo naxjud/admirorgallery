@@ -125,10 +125,10 @@ if (file_exists($ag_XML_path)) {
     $ag_XML_xml =  JFactory::getXMLParser('simple');
     $ag_XML_xml->loadFile($ag_XML_path);
     if ($ag_XML_xml->document->thumb[0]) {
-        $ag_XML_thumb = & $ag_XML_xml->document->thumb[0]->data();
+        $ag_XML_thumb = $ag_XML_xml->document->thumb[0]->data();
     }
     if ($ag_XML_xml->document->captions[0]) {
-        $ag_XML_captions = & $ag_XML_xml->document->captions[0];
+        $ag_XML_captions = $ag_XML_xml->document->captions[0];
     }
 }
 
@@ -204,7 +204,7 @@ if (!empty($ag_files)) {
         if (file_exists($ag_XML_path)) {
             $ag_XML_xml =  JFactory::getXMLParser('simple');
             $ag_XML_xml->loadFile($ag_XML_path);
-            $ag_XML_priority = & $ag_XML_xml->document->priority[0]->data();
+            $ag_XML_priority = $ag_XML_xml->document->priority[0]->data();
         }
 
         if (!empty($ag_XML_priority) && file_exists($ag_XML_path)) {

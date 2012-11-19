@@ -36,7 +36,7 @@ class AdmirorgalleryModelImagemanager extends JModel {
         $AG_bookmark_ID = $AG_originalPath . '/';
         $ag_bookmarkFile = JPATH_SITE . '/administrator/components/com_admirorgallery/assets/bookmarks.xml';
 
-        $ag_bookmarks_xml = & JFactory::getXMLParser('simple');
+        $ag_bookmarks_xml = JFactory::getXMLParser('simple');
         $ag_bookmarks_xml->loadFile($ag_bookmarkFile);
         if (isset($ag_bookmarks_xml->document->bookmark)) {
             $ag_bookmarks_array = $ag_bookmarks_xml->document->bookmark;
@@ -82,7 +82,7 @@ class AdmirorgalleryModelImagemanager extends JModel {
         foreach ($AG_cbox_bookmarkRemove as $key => $AG_bookmark_ID) {
             $ag_bookmarkFile = JPATH_SITE . '/administrator/components/com_admirorgallery/assets/bookmarks.xml';
 
-            $ag_bookmarks_xml = & JFactory::getXMLParser('simple');
+            $ag_bookmarks_xml = JFactory::getXMLParser('simple');
             $ag_bookmarks_xml->loadFile($ag_bookmarkFile);
             if (isset($ag_bookmarks_xml->document->bookmark)) {
                 $ag_bookmarks_array = $ag_bookmarks_xml->document->bookmark;
@@ -133,7 +133,7 @@ class AdmirorgalleryModelImagemanager extends JModel {
                 $ag_bookmarkFile = JPATH_SITE . '/administrator/components/com_admirorgallery/assets/bookmarks.xml';
 
                 $bookmarkCheck = false;
-                $ag_bookmarks_xml = & JFactory::getXMLParser('simple');
+                $ag_bookmarks_xml = JFactory::getXMLParser('simple');
                 $ag_bookmarks_xml->loadFile($ag_bookmarkFile);
 
                 if (isset($ag_bookmarks_xml->document->bookmark)) {
@@ -202,9 +202,9 @@ class AdmirorgalleryModelImagemanager extends JModel {
 
                 $ag_XML_priority = "";
                 if (file_exists($ag_XML_path)) {
-                    $ag_XML_xml = & JFactory::getXMLParser('simple');
+                    $ag_XML_xml = JFactory::getXMLParser('simple');
                     $ag_XML_xml->loadFile($ag_XML_path);
-                    $ag_XML_priority = & $ag_XML_xml->document->priority[0]->data();
+                    $ag_XML_priority = $ag_XML_xml->document->priority[0]->data();
                 }
 
                 if ($ag_XML_priority != $ag_priority) {
@@ -272,7 +272,7 @@ class AdmirorgalleryModelImagemanager extends JModel {
     }
 
     function _fileUpload($AG_itemURL, $file) {
-        $config = & JFactory::getConfig();
+        $config = JFactory::getConfig();
         $tmp_dest = $config->getValue('config.tmp_path');
         $ag_ext_valid = array("jpg", "jpeg", "gif", "png", "zip");
 
