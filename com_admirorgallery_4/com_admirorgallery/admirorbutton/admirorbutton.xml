@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<install version="2.5" type="plugin" group="editors-xtd" method="upgrade">
-    <name>plg_editors-xtd_admirorButton</name>
+<extension version="2.5" type="plugin" group="editors-xtd" method="upgrade">
+    <name>plg_editors-xtd_admirorbutton</name>
     <author>Igor Kekeljevic and Nikola Vasiljevski</author>
     <creationDate>05/05/2012</creationDate>	
     <copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
@@ -17,4 +17,4 @@
             <language tag="en-GB">en-GB/en-GB.plg_editors-xtd_admirorbutton.sys.ini</language>
     </languages>
     <params />
-</install>
+</extension>

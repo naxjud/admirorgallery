@@ -19,7 +19,7 @@ class AdmirorgalleryModelResourcemanager extends JModel
     function _install($file) {
 
 	  $AG_resourceType = JRequest::getVar( 'AG_resourceType' );// Current resource type
-	  $config =& JFactory::getConfig();
+	  $config =JFactory::getConfig();
 	  $tmp_dest = $config->getValue('config.tmp_path');
 	  $resourceType = substr($AG_resourceType,0,strlen($AG_resourceType)-1);	
 
@@ -43,7 +43,7 @@ class AdmirorgalleryModelResourcemanager extends JModel
 
 			      // TEMPLATE DETAILS PARSING
 			      if(JFIle::exists(JPATH_SITE.DS.'plugins'.DS.'content'.DS.'admirorgallery'.DS.'admirorgallery'.DS.$AG_resourceType.DS.JFile::stripExt($filename).DS.'details.xml')){
-				   $ag_resourceManager_xml =& JFactory::getXMLParser( 'simple' );
+				   $ag_resourceManager_xml = JFactory::getXMLParser( 'simple' );
 				   $ag_resourceManager_xml->loadFile(JPATH_SITE.DS.'plugins'.DS.'content'.DS.'admirorgallery'.DS.'admirorgallery'.DS.$AG_resourceType.DS.JFile::stripExt($filename).DS.'details.xml');
 				   if(isset($ag_resourceManager_xml->document->type[0])){
 					$ag_resourceManager_type = $ag_resourceManager_xml->document->type[0]->data();	
