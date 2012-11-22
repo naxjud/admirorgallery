@@ -15,6 +15,7 @@ if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
     return;
 }
 jimport('joomla.filesystem.file');
+jimport('joomla.form.form');
 
 $AG_templateID = JRequest::getVar('AG_template'); // Current template for AG Component
 ?>
