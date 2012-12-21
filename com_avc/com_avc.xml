@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension version="2.5" type="component" method="upgrade">
+	<name>COM_AVC</name>
+	<author>Kekeljevic, Igor and Nikola Vasiljevski</author>
+	<authorEmail>Igor.Kekeljevic@gmail.com</authorEmail>
+	<authorUrl>http://www.admiror-design-studio.com</authorUrl>
+	<copyright>(C) 2012 All rights reserved.</copyright>
+	<license></license>
+	<version>0.0.2</version>
+	<creationDate>Oct 17, 2012</creationDate>
+	<description>COM_AVC_XML_DESCRIPTION</description>
+
+	<!-- SQL Files -->
+	<!-- Note: The Joomla! 1.0 query method is not supported in 1.6 -->
+	<install> <!-- Runs on install -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+	<uninstall> <!-- Runs on uninstall -->
+		<sql>
+			<file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+	<update> <!-- Runs on update; New in 1.6 -->
+		<schemas>
+			<schemapath type="mysql">sql/updates/mysql</schemapath>
+		</schemas>
+	</update>
+
+	<administration>
+		<!-- Administrator Menu -->
+		<menu img="components/com_ccs/assets/images/icon-16-ccs.png">COM_AVC</menu>
+		<!-- Administrator file and language specification;
+			Note: administrator doesn't have media -->
+		<files>
+			<folder>assets</folder>
+			<folder>controllers</folder>
+			<folder>models</folder>
+			<folder>sql</folder>
+			<folder>views</folder>
+			<filename>ccs.php</filename>
+			<filename>controller.php</filename>
+			<filename>index.html</filename>
+		</files>
+
+		<!-- Legacy 1.5 Language Support -->
+		<!-- Note: Replace this with the actual path to the language file -->
+ 		<languages folder="languages">
+			<language tag="en-GB">en-GB/en-GB.com_avc.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_avc.sys.ini</language>
+		</languages>
+
+	</administration>
+
+	<!-- Extension Update Specification -->
+	<!--<updateservers>
+		<server type="extension" priority="1" name="Extension Update Site">http://jsitepoint.com/update/components/com_alpha/extension.xml</server>  useful for single extensions
+		<server type="collection" priority="2" name="Collection Update Site">http://jsitepoint.com/update/update.xml</server>useful for collections of extensions
+	</updateservers> -->
+
+</extension>
