@@ -3,6 +3,51 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+JHTML::_('behavior.calendar'); // Callendar Libraries
+
+$JS_FIELD_JSON = '
+
+///////////////////////////////////////////
+// FIELD JSON
+///////////////////////////////////////////
+
+function avc_json_update(FIELD_NAME){
+	
+	var field_labels = $(FIELD_NAME+"_frame").getElements("select");
+	var field_values = $(FIELD_NAME+"_frame").getElements("input");
+	var output = new Array();
+
+	field_labels.each(function(el,i){
+		output.push(\'"\'+field_labels[i].get("value")+\'":"\'+field_values[i].get("value")+\'"\');
+	});
+
+
+	$(FIELD_NAME).set("value","{"+output.join()+"}");
+
+}
+
+function avc_json_add(FIELD_NAME){
+
+	$(FIELD_NAME+"_clone").clone()
+						  .inject($(FIELD_NAME+"_frame"))
+						  .setStyles({
+								"position":"relative",
+								"left":"0"
+							});
+
+}
+
+function avc_json_remove(item,FIELD_NAME){
+
+	$(item).getParent("div").destroy();
+	avc_json_update(FIELD_NAME);
+
+}
+
+
+';
+$this->doc->addScriptDeclaration($JS_FIELD_JSON);
+
 
 $JS_FIELD_AVC_VARLIMIT = '
 
