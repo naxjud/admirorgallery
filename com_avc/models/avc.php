@@ -87,10 +87,10 @@ class AvcModelAvc extends JModelList {
         // Filter Order
         $filter_order = JRequest::getCmd('filter_order');
         $filter_order_Dir = JRequest::getCmd('filter_order_Dir');
-        if (empty($filter_order)) {
-            $filter_order = 'ordering';
-            $filter_order_Dir = 'asc';
-        }
+        // if (empty($filter_order)) {
+        //     $filter_order = 'ordering';
+        //     $filter_order_Dir = 'asc';
+        // }
         $this->setState('filter_order', $filter_order);
         $this->setState('filter_order_Dir', $filter_order_Dir);
 
@@ -170,9 +170,10 @@ class AvcModelAvc extends JModelList {
                     $query->insert( $this->dbObject->nameQuote($this->curr_view_row["name"]) );
                     foreach ($this->viewFields as $viewField) {
                         if($viewField["name"]!=$this->curr_view_row["key_field_name"]){ // DON'T TOUCH PRIMARY KEY
-                            $value = JRequest::getVar( $viewField["id"], null, 'post', 'STRING', JREQUEST_ALLOWRAW );
+                            $value = JRequest::getVar( $viewField["name"], null, 'post', 'STRING', JREQUEST_ALLOWRAW );
                             if(!is_numeric($value)){$value = $this->dbObject->Quote($value);}
                             $query->set( $this->dbObject->nameQuote($viewField["name"])."=".$value );
+                            //JFactory::getApplication()->enqueueMessage($this->dbObject->nameQuote($viewField["name"])."=".$value, 'message');
                         }
                     }
                     $this->dbObject->setQuery($query);
@@ -191,6 +192,7 @@ class AvcModelAvc extends JModelList {
                         if(isset($_POST[$viewField["name"]])){ // REPLACE ONLY NEW VALUES
                             if($viewField["name"]!=$this->curr_view_row["key_field_name"]){ // DON'T TOUCH PRIMARY KEY
                                 $value = JRequest::getVar( $viewField["name"], null, 'post', 'STRING', JREQUEST_ALLOWRAW );
+                                //$this->dbObject->isQuoted Proveriti da li moze ovo da se koristi
                                 if(!is_numeric($value)){$value = $this->dbObject->Quote($value);}
                                 $query->set( $this->dbObject->nameQuote($viewField["name"])."=".$value );
                             }
