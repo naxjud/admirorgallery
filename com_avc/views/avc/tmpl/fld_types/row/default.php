@@ -9,7 +9,7 @@ echo '
 		tabindex="' . $TABINDEX . '"
 		type="text"
 		name="' . $FIELD_NAME . '"
-		value="' . $FIELD_VALUE . '"
+		value="' . htmlspecialchars($FIELD_VALUE) . '"
 		class=""
 		title="' . JText::_('COM_AVC_TOOLTIPS_VARCHAR') . '"
 	/>
