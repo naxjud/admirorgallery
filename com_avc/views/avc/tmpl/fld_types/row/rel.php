@@ -61,7 +61,7 @@ echo '
 
 
 echo '
-<div class="form_items">
+<div class="form_items form_items2">
 ';
 
 
