@@ -7,7 +7,7 @@
 $dbObject = JFactory::getDBO();
 $query = $dbObject->getQuery(true);
 $query->select('*');
-$query->order($dbObject->getEscaped($FIELD_REL->key.' ASC'));
+$query->order($dbObject->getEscaped($FIELD_PARAMS->label.' ASC'));
 $query->from($dbObject->nameQuote($FIELD_REL->table));
 $dbObject->setQuery($query);
 $ROWS = $dbObject->loadAssocList();
