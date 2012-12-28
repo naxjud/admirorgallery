@@ -7,6 +7,8 @@ JHtml::_('behavior.multiselect'); // Select/Deselect all
 jimport('joomla.html.html.grid');
 jimport('joomla.filesystem.file');
 
+$VIEW_PARAMS = json_decode($this->view['params']);
+
 ?>
 
 <div>
@@ -32,7 +34,10 @@ jimport('joomla.filesystem.file');
 
 
 <fieldset id="filter-bar">
-<div class="filter-search fltlft">        
+
+
+<div class="fltlft">      
+
     <label class="filter-search-lbl" for="filter_search"><?php echo JText::_('COM_AVC_FILTER'); ?>&nbsp;&nbsp;</label>
 
     <?php
@@ -42,7 +47,7 @@ jimport('joomla.filesystem.file');
         if ($this->escape($this->state->get('filter_search_column')) == $view_field["name"]) {
             $selected = ' SELECTED';
         }
-        echo '<option value="' . $view_field["name"] . '"' . $selected . '>' . JText::_(strtoupper($view_field["name"])) . '</option>';
+        echo '<option value="' . $view_field["name"] . '"' . $selected . '>' . JText::_(strtoupper($view_field["title"])) . '</option>';
     }
     echo '</select>';
     ?>  
@@ -51,10 +56,97 @@ jimport('joomla.filesystem.file');
     <button type="submit"><?php echo JText::_('COM_AVC_SEARCH'); ?></button>
     <button type="button" onclick="document.id('filter_search_value').value='';this.form.submit();"><?php echo JText::_('COM_AVC_CLEAR'); ?></button>
 </div>
-<div class="filter-select fltrt"> 
+<div class="fltrt">
+<?php
+
+
+$FILTER_TYPES = explode(",", $VIEW_PARAMS->filters);
+if(!empty($FILTER_TYPES[0])){
+foreach ($FILTER_TYPES as $SELECT_FIELD) {
+
+    // Get field title
+    foreach ($this->view_fields as $view_field) {
+        if($view_field["name"]==$SELECT_FIELD)
+        {
+            $SELECT_FIELD_CONF = $view_field;
+        }
+    }
+
+    // Get current entries
+    $dbObject = JFactory::getDBO();
+    $query = $dbObject->getQuery(true);
+    $query->select( $dbObject->nameQuote( $SELECT_FIELD ) );
+    $query->from( $dbObject->nameQuote( $this->view["name"] ) );
+    $dbObject->setQuery($query);
+    $AssocList = $dbObject->loadAssocList();
+
+    // Populate options
+    $OPTION = array();
+    foreach($AssocList as $AssocList_value)
+    {
+        if($AssocList_value[$SELECT_FIELD]!=""){
+            $OPTION[]=$AssocList_value[$SELECT_FIELD];
+        }
+    }
+    $OPTION = array_unique($OPTION);
+    $SELECT_FIELD_OPTIONS = array(); 
+    foreach($OPTION as $value){
+
+    $FIELD_VALUE = $value;
+
+    if($SELECT_FIELD_CONF["type"]=="rel"){
+        
+        $FIELD_TYPE = $SELECT_FIELD_CONF["type"];
+        $FIELD_PARAMS = json_decode($SELECT_FIELD_CONF['params']);
+        $FIELD_REL = json_decode($SELECT_FIELD_CONF['relationship']);
+
+        $dbObject = JFactory::getDBO();
+        $query = $dbObject->getQuery(true);
+        $query->select('*');
+        $query->order($dbObject->getEscaped($FIELD_REL->key.' ASC'));
+        $query->from($dbObject->nameQuote($FIELD_REL->table));
+        $query->where($dbObject->nameQuote($FIELD_REL->key)."=".$dbObject->Quote($FIELD_VALUE));
+        $dbObject->setQuery($query);
+        $ROW = $dbObject->loadAssocList();
+
+        if($FIELD_VALUE!=""){   
+            $FIELD_VALUE = $ROW[0][$FIELD_PARAMS->label] . " (" . $FIELD_VALUE . ")";
+        }
+
+    }
+
+
+
+
+        if($this->escape($this->state->get('filter_search_column')) == $SELECT_FIELD && $this->escape($this->state->get('filter_search_value')) == $value)
+        {            
+            $SELECT_FIELD_OPTIONS[] = JHTML::_('select.option', $value, $FIELD_VALUE, true);
+        }else{
+            $SELECT_FIELD_OPTIONS[] = JHTML::_('select.option', $value, $FIELD_VALUE);
+        }
+    }
+
+    // Create select
+    echo
+    '
+    <div style="float:left !important">
+    <label style="">' . JText::_( strtoupper( $SELECT_FIELD_CONF["title"] ) ) . '</label>
+    <select onchange="document.id(\'filter_search_column\').value=\'' . $SELECT_FIELD . '\'; document.id(\'filter_search_value\').value=this.value; this.form.submit();">
+        <option value="">' . JText::_('COM_AVC_SELECT') . '</option>
+        ' . JHtml::_('select.options', $SELECT_FIELD_OPTIONS) . '
+    </select>
+    </div>
+    ';
+
+}
+}
+
+?>
+
 </div>
 
 </fieldset>
+<div class="clr"> </div>
 
 <div class="AVC_table_wrap">
     <table id="adminlist" class="adminlist" cellspacing="0" cellpadding="0" border="0" width="100%">
