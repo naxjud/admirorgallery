@@ -7,14 +7,14 @@
 $dbObject = JFactory::getDBO();
 $query = $dbObject->getQuery(true);
 $query->select('*');
-$query->order($dbObject->getEscaped($FIELD_PARAMS->label.' ASC'));
+$query->order($dbObject->getEscaped($FIELD_PARAMS->value.' ASC'));
 $query->from($dbObject->nameQuote($FIELD_REL->table));
 $dbObject->setQuery($query);
 $ROWS = $dbObject->loadAssocList();
 
 echo '
 <div style="display:none;">
-<div id="hello">
+<div id="' . $FIELD_NAME . '_wrap">
 <h1>' . JText::_($FIELD_NAME) . '</h1>
 <ul>
 ';
@@ -106,7 +106,7 @@ echo
 '
 <input type="button" class="pointer width_auto" value="'.JText::_('COM_AVC_SELECT').'"
 	onclick="
-		SqueezeBox.fromElement($(\'hello\'), {
+		SqueezeBox.fromElement($(\'' . $FIELD_NAME . '_wrap\'), {
 			handler:\'clone\',
 			size: {
 				x: 400,

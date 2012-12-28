@@ -217,11 +217,12 @@ function tmp_init(){
 		tmp_curr_col++;
 		tmp_select_col(ii);
 
-		tmp_col_heigths[tmp_curr_col]+=tmp_item_height;
-		tmp_item.clone(true,true).inject(document.id("tmp_col_"+tmp_curr_col));
-
+		
 		newHR = document.createElement("hr");
 		document.id("tmp_col_"+tmp_curr_col).appendChild(newHR);
+
+		tmp_col_heigths[tmp_curr_col]+=tmp_item_height;
+		tmp_item.clone(true,true).inject(document.id("tmp_col_"+tmp_curr_col));
 
 		tmp_item.destroy();
 	}
