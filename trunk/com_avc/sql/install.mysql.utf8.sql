@@ -1,45 +1,85 @@
 --
--- Table structure for table `ccs_ccs_databases`
+-- Table structure for table `#__avc_field`
 --
 
-CREATE TABLE IF NOT EXISTS `#__ccs_databases` (
+CREATE TABLE IF NOT EXISTS `#__avc_field` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `type` varchar(255) NOT NULL,
+  `params` varchar(1024) NOT NULL,
+  `relationship` varchar(255) NOT NULL,
+  `access_level` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
-  `db_alias` varchar(255) NOT NULL,
-  `access` int(11) NOT NULL DEFAULT '1',
-  `db_image` varchar(255) NOT NULL,
-  `parent_db_alias` varchar(255) NOT NULL,
-  `quick_icon` tinyint(1) NOT NULL DEFAULT '0',
+  `published` tinyint(4) NOT NULL DEFAULT '1',
+  `system` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+
+
+INSERT INTO `#__avc_field` (`id`, `title`, `name`, `type`, `params`, `relationship`, `access_level`, `ordering`, `published`, `system`) VALUES
+(9, 'Prezime', 'last_name', '', '', '', 0, 1, 1, 0),
+(10, 'Ime', 'first_name', '', '', '', 0, 2, 1, 0),
+(11, 'Telefon', 'phone', 'json', '{"0":"home","1":"work","2":"mobile","3":"fax","4":"other"}', '', 0, 3, 1, 0),
+(12, 'Mejl', 'e_mail', 'json', '{"0":"home","1":"work","2":"mobile","3":"fax","4":"other"}', '', 0, 4, 1, 0),
+(13, 'Naziv', 'title', '', '', '', 0, 1, 1, 0),
+(14, 'Naselje', 'town', '', '', '', 0, 3, 1, 0),
+(15, 'Ulica', 'address', '', '', '', 0, 4, 1, 0),
+(16, 'Mejl', 'e_mail', '', '', '', 0, 6, 1, 0),
+(17, 'Sajt', 'web', '', '', '', 0, 7, 1, 0),
+(18, 'Telefon', 'phone', 'json', '{"0":"home","1":"work","2":"mobile","3":"fax","4":"other"}', '', 0, 5, 1, 0),
+(19, 'Datum osnivanja', 'established', 'date', '', '', 0, 8, 1, 0),
+(20, 'Vazeca', 'active', 'boolean', '', '', 0, 9, 1, 0),
+(21, 'Zemlja', 'country', 'rel', '{"value":"country_code","label":"country"}', '{"table":"#__skfs_zemlje","key":"country_code"}', 0, 2, 1, 0),
+(22, 'Regija', 'region', 'rel', '{"value":"id","label":"region"}', '{"table":"#__skfs_regije","key":"id"}', 0, 3, 1, 0);
 
 --
--- Table structure for table `ccs_ccs_admin_fields`
+-- Table structure for table `#__avc_view`
 --
 
-CREATE TABLE IF NOT EXISTS `#__ccs_admin_fields` (
-  `id` int(10) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `#__avc_view` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `icon_path` varchar(1024) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `sort_field_name` varchar(255) NOT NULL,
+  `sort_order` varchar(5) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `key_field_name` varchar(255) NOT NULL,
+  `params` varchar(255) NOT NULL,
+  `access_level` int(11) NOT NULL,
   `ordering` int(11) NOT NULL,
-  `db_alias` varchar(255) NOT NULL,
-  `fld_alias` varchar(255) NOT NULL,
-  `fld_type` varchar(255) NOT NULL,
-  `fld_params` text NOT NULL,
+  `published` tinyint(4) NOT NULL DEFAULT '1',
+  `system` tinyint(4) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=45 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
 
-INSERT INTO `#__ccs_admin_fields` (`id`, `ordering`, `db_alias`, `fld_alias`, `fld_type`, `fld_params`) VALUES
-(4, 21, 'ccs_databases', 'parent_db_alias', 'dbFieldList', 'ccs_databases,db_alias'),
-(6, 19, 'ccs_databases', 'db_alias', 'dbFieldList', ''),
-(7, 14, 'ccs_admin_fields', 'db_alias', 'dbFieldList', ''),
-(9, 18, 'ccs_databases', 'access', 'droplist', '1,Public\r\n2,Registered \r\n6,Manager\r\n7,Administrator\r\n8,Super User\r\n999,None'),
-(10, 20, 'ccs_databases', 'db_image', 'img', ''),
-(12, 12, 'ccs_admin_fields', 'fld_alias', '', ''),
-(13, 16, 'ccs_admin_fields', 'fld_params', 'plainText', ''),
-(14, 13, 'ccs_admin_fields', 'ordering', '', ''),
-(25, 15, 'ccs_admin_fields', 'fld_type', 'droplist', 'dbFieldList,dbFieldList\r\nfileList,fileList\r\nimg,img\r\ndroplist,droplist\r\ncheckbox,checkbox\r\nradio,radio\r\nbutton,button\r\nmodal,modal\r\nplainText,plainText\r\nrichText,richText\r\nlimitVarChar,limitVarChar\r\ndate,date\r\nboolean,boolean'),
-(26, 17, 'ccs_databases', 'ordering', '', ''),
-(31, 22, 'ccs_databases', 'quick_icon', 'boolean', '');
+INSERT INTO `#__avc_view` (`id`, `icon_path`, `title`, `sort_field_name`, `sort_order`, `name`, `key_field_name`, `params`, `access_level`, `ordering`, `published`, `system`) VALUES
+(3, 'images/icons_64/members_icon.png', 'Ljudski Resursi', '', '', '#__skfs_ljudski_resursi', 'id', '', 0, 0, 1, 0),
+(4, 'images/icons_64/institution.png', 'Organizacije', '', '', '#__skfs_organizacije', 'id', '', 0, 0, 1, 0);
 
-INSERT INTO `#__ccs_databases` (`id`, `ordering`, `db_alias`, `access`, `db_image`, `parent_db_alias`, `quick_icon`) VALUES
-(23, 3, 'ccs_admin_fields', 8, 'administrator/components/com_ccs/assets/images/icon-48-ccs.png', '', 1),
-(24, 2, 'ccs_databases', 8, 'administrator/components/com_ccs/assets/images/icon-48-ccs.png', '', 1);
+--
+-- Table structure for table `#__avc_view_fields`
+--
+
+CREATE TABLE IF NOT EXISTS `#__avc_view_fields` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `view_id` int(11) NOT NULL,
+  `field_id` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=23 ;
+
+INSERT INTO `#__avc_view_fields` (`id`, `view_id`, `field_id`) VALUES
+(9, 3, 9),
+(10, 3, 10),
+(11, 3, 11),
+(12, 3, 12),
+(13, 4, 13),
+(14, 4, 14),
+(15, 4, 15),
+(16, 4, 16),
+(17, 4, 17),
+(18, 4, 18),
+(19, 4, 19),
+(20, 4, 20),
+(21, 4, 21),
+(22, 4, 22);
