@@ -282,7 +282,7 @@ class agGallery extends agHelper {
      */
 
     function initPopup() {
-        require ('plugins' . DS . 'content' . DS . 'admirorgallery' . DS . 'admirorgallery' . DS . 'popups' . DS . $this->params['popupEngine'] . DS . 'index.php');
+        require (dirname(dirname(__FILE__)). DS . 'popups' . DS . $this->params['popupEngine'] . DS . 'index.php');
         return $this->popupEngine->initCode;
     }
 
