@@ -23,6 +23,7 @@ class AvcViewAvc extends JView {
     protected $doc;
     protected $views;
     protected $curr_view_id;  
+    protected $curr_row_id;
     protected $view;  
     protected $view_fields;
     protected $listDirn;
@@ -42,6 +43,13 @@ class AvcViewAvc extends JView {
         $this->views = $this->get('Views');
         $this->curr_view_id = $this->get('CurrViewId');
 
+        // Track outputs in debug mode
+        if(JDEBUG){
+            echo "VIEWS:<br />";
+            var_dump($this->views);
+            echo "<hr />";
+        }
+
         switch ($this->layout) {
 
             case 'table':
@@ -49,19 +57,15 @@ class AvcViewAvc extends JView {
                 // Update vars
                 $this->state = $this->get('State');   
                 $this->listDirn = $this->state->get('filter_order_Dir');
-                $this->listOrder = $this->state->get('filter_order');         
-                $this->view = $this->get('View');
-                $this->view_fields = $this->get('ViewFields');
+                $this->listOrder = $this->state->get('filter_order');
                 $this->items = $this->get('Items');
                 $this->pagination = $this->get('Pagination');
 
                 // Track outputs in debug mode
                 if(JDEBUG){
-                    echo "<b>this->view_fields</b><br />";
-                    var_dump($this->view_fields);
-                    echo "<hr />";
-                    echo "<b>this->items</b><br />";
+                    echo "ITEMS:<br />";
                     var_dump($this->items);
+                    echo "<hr />";
                 }
 
             break;
@@ -71,19 +75,14 @@ class AvcViewAvc extends JView {
                 // Update vars
                 $this->state = $this->get('State');   
                 $this->listDirn = $this->state->get('filter_order_Dir');
-                $this->listOrder = $this->state->get('filter_order');      
-                $this->view = $this->get('View');
-                $this->view_fields = $this->get('ViewFields');
-                $this->itemsRow = $this->get('ItemsRow');
-                $this->curr_row_id = $this->get('CurrRowId');
+                $this->listOrder = $this->state->get('filter_order');
+                $this->items = $this->get('Items');    
+                $this->curr_row_id = $this->get('CurrRowId');  
 
                 // Track outputs in debug mode
-                if(JDEBUG){
-                    echo "<b>this->view_fields</b><br />";
-                    var_dump($this->view_fields);
-                    echo "<hr />";
-                    echo "<b>this->itemsRow</b><br />";
-                    var_dump($this->itemsRow);
+                if(JDEBUG){ 
+                    echo "ITEMS:<br />";                   
+                    var_dump($this->items);
                     echo "<hr />";
                 }
                 

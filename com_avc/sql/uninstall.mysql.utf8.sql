@@ -1,3 +1,2 @@
-DROP TABLE IF EXISTS `#__avc_view_fields`;
-DROP TABLE IF EXISTS `#__avc_view`;
-DROP TABLE IF EXISTS `#__avc_field`;
+DROP TABLE IF EXISTS `#__ccs_databases`;
+DROP TABLE IF EXISTS `#__ccs_admin_fields`;

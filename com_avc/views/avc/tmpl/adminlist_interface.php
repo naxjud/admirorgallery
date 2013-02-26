@@ -4,12 +4,27 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+
 $adminlist_interface = '
 // DECLARE VARS
-var keystroke,cb_lastClicked,myEvent,myDrag;
+var keystroke,cb_lastClicked,myEvent,myDrag,ordering;
 
+ordering = false;
+';
+
+foreach ($this->items[0] as $key => $value) {
+	if($key == "ordering"){
+		$adminlist_interface.= '
+			ordering = true;
+		';
+	}
+}
+
+
+
+$adminlist_interface.= '
 //////////////////////////////
-// DECLARE FUNCTIONS
+// ADMIMLIST DECLARE FUNCTIONS
 //////////////////////////////
 
 function adminlist_select(rowID){
@@ -37,6 +52,12 @@ function adminlist_deselect_all(){
 // DECLARE FUNCTIONS FOR DRAG AND DROP
 
 function adminlist_mouseleave(){
+	if(ordering==false){
+		alert("' . JText::_("COM_AVC_CANNOT_ORDERING_NOTICE") . '");
+		$(cb_lastClicked).removeEvent("mouseleave",adminlist_mouseleave);
+		return;
+	}
+
 	// CHECK IS COLUMN SORTED BY ORDERING
 	if($("filter_order").get("value")!="ordering" || $("filter_order_Dir").get("value")!="asc"){
 		var filter_order_confirm = confirm("' . JText::_("COM_AVC_CHANGE_ORDERING_NOTICE") . '");
@@ -133,7 +154,7 @@ function adminlist_drag_end(){
 }
 
 //////////////////////////////
-// DECLARE DOM READY
+// ADMIMLIST DECLARE DOM READY
 //////////////////////////////
 
 window.addEvent("domready", function(){

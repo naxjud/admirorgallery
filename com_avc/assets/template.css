@@ -309,13 +309,14 @@ td.AVC_sidePanel, td.AVC_tableView
 {
     vertical-align:top;
     text-align:left;
-    padding:10px 10px 10px 0;
+    padding:10px;
 }
 
 td.AVC_sidePanel
 {
     width:10px;
     padding-left: 10px;
+    border-right: 1px dotted #383838;
 }
 
 table#org_clone
@@ -398,14 +399,6 @@ div.AVC_pagination_wrap div
 /* AVC MENU */
 /* ########################################################################################## */
 
-input#AVC_menu_input
-{
-    padding: 4px 0;
-    margin:0 0 5px 0 !important;
-    width: 200px;
-    float:none;
-}
-
 td.AVC_sidePanel ul
 {
     margin:0;
@@ -429,6 +422,37 @@ td.AVC_sidePanel ul li a img
     height: 64px;
     width: 64px;
     margin-bottom:10px;
+}
+
+li.AVC_menu_group_wrap
+{
+    margin-bottom: 10px;
+    width: 200px;
+    padding:4px 4px 1px;
+    background-color:#383838;
+    
+    -webkit-border-radius: 3px !important;
+    -moz-border-radius: 3px !important;
+    border-radius: 3px !important;
+}
+
+li.AVC_menu_group_wrap h1
+{
+    background-color:#383838;
+    margin:0;
+    padding:0 4px 4px;
+    
+    text-align:center;
+    text-transform:uppercase;    
+    font-family: 'Homenaje', sans-serif !important;
+    font-size: 16px !important;
+    text-shadow: 0px 1px 3px #000;
+}
+
+a.AVC_menu_current
+{
+    background: #da6304 !important; 
+    border:1px solid #e27309 !important;  
 }
 
 /* AVC MENU */

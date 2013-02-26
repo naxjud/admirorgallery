@@ -1,12 +1,12 @@
 <?php
 
-echo '<div class="form_items form_items2">';
+echo '<div class="form_items">';
 
 // Create Form Field Label
 echo '<label id="jform_enabled-lbl" for="jform_enabled">';
-echo JText::_( strtoupper($field_alias));
+echo JText::_( strtoupper($FIELD_ALIAS));
 echo '</label>';
 
-echo '<textarea tabindex="'.$tabIndex.'" wrap="off" name="'.$field_alias.'" rows="6" class="required validate-text editlinktip">'.$field_value.'</textarea>';
+echo '<textarea tabindex="'.$TABINDEX.'" wrap="off" name="'.$FIELD_ALIAS.'" rows="6" class="required validate-text editlinktip">'.$FIELD_VALUE.'</textarea>';
 
 echo '</div>';

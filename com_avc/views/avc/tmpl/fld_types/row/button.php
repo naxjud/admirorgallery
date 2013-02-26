@@ -4,10 +4,10 @@ echo '<div class="form_items form_items1">';
 
 // Create Form Field Label
 echo '<label id="jform_enabled-lbl" for="jform_enabled">';
-echo JText::_(strtoupper($field_alias));
+echo JText::_(strtoupper($FIELD_ALIAS));
 echo '</label>';
 
-$javascript__label = explode("|", $field_params);
+$javascript__label = explode("|", $FIELD_PARAMS);
 echo '<input type="button" class="pointer width_auto" onclick="' . $javascript__label[0] . '" value="' . JText::_($javascript__label[1]) . '" />';
 
 echo '</div>';

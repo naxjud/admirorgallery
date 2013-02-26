@@ -15,35 +15,30 @@ JHTML::_('behavior.modal'); // Modal Libriries (SqueezeBox)
 
         <?php
 
-
         $TABINDEX = 0;
 
-        foreach ($this->view_fields as $view_field) {// Loop through Show Fields
+        foreach ($this->items[0] as $FIELD_ALIAS => $FIELD_VALUE) {// Loop through Show Fields
 
-            if ($view_field['name'] != $this->view["key_field_name"]) {
+            $FIELD_TYPE = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"]; 
+            $FIELD_PARAMS = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"]; 
+            $FIELD_TITLE = $FIELD_ALIAS; 
 
-                // VAR DEFINITIONS
-                $TABINDEX++;
-                $FIELD_NAME = $view_field['name'];
-                $FIELD_TITLE = $view_field['title'];
-                $FIELD_VALUE = $this->itemsRow[$view_field['name']];
-                $FIELD_TYPE = $view_field['type'];
-                $FIELD_PARAMS = json_decode($view_field['params']);
-                $FIELD_REL = json_decode($view_field['relationship']);
+            if( $FIELD_ALIAS == "id" ){$FIELD_TYPE = "key";}
 
-                //////////////////////////////
-                // LOAD FIELD TEMPLATE
-                //////////////////////////////
-                $fld_types_file = JPATH_COMPONENT . DS . "views" . DS . "avc" . DS . "tmpl" . DS . "fld_types" . DS . "row" . DS . "default.php";
-                if ($FIELD_TYPE) {
-                    $fld_types_file_test = JPATH_COMPONENT . DS . "views" . DS . "avc" . DS . "tmpl" . DS . "fld_types" . DS . "row" . DS . $FIELD_TYPE . ".php";
-                    if (file_exists($fld_types_file_test)) {
-                        $fld_types_file = $fld_types_file_test;
-                    }
+            // VAR DEFINITIONS
+            $TABINDEX++;
+
+            //////////////////////////////
+            // LOAD FIELD TEMPLATE
+            //////////////////////////////
+            $fld_types_file = JPATH_COMPONENT . DS . "views" . DS . "avc" . DS . "tmpl" . DS . "fld_types" . DS . "row" . DS . "default.php";
+            if ($FIELD_TYPE) {
+                $fld_types_file_test = JPATH_COMPONENT . DS . "views" . DS . "avc" . DS . "tmpl" . DS . "fld_types" . DS . "row" . DS . $FIELD_TYPE . ".php";
+                if (file_exists($fld_types_file_test)) {
+                    $fld_types_file = $fld_types_file_test;
                 }
-                require($fld_types_file); // Load template file
-
             }
+            require($fld_types_file); // Load template file
 
        }
 

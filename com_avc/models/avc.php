@@ -12,34 +12,31 @@ jimport('joomla.application.component.modellist');
  */
 class AvcModelAvc extends JModelList {
 
-    private $db_view = "#__avc_view";
-    private $db_field = "#__avc_field";
-    private $db_view_fields = "#__avc_view_fields";
+    private $db_editor = "#__avc_editor";
     private $dbObject; // Container for DB class
-    private $curr_view_id; // Current view id
-    private $views; // Array of DB rows of all views (needed for menu)
-    private $curr_view_row; // Current DB row
-    private $viewFields; // Object of DB rows of fields are connected to current view    
+    private $curr_view_id; // Current view id   
     private $curr_row_id; // Current row id, used for editing
+    public $views;
+
 
     function __construct() {
 
         parent::__construct();
 
         $this->dbObject = JFactory::getDBO();
-        $this->curr_view_id = JRequest::getVar('curr_view_id', 0);
-        $this->views = $this->views();
-        $this->curr_view_row = $this->currViewRow();
-        $this->viewFields = $this->viewFields();
+        $this->curr_view_id = JRequest::getVar('curr_view_id', 0); 
 
         $cids = JRequest::getVar('cid', array(), 'post', 'array');
         if (!empty($cids)) {
-            $this->curr_row_id = $cids[0];
+            $this->curr_row_id = (int)$cids[0];
         } else {
             $this->curr_row_id = 0;
         }
 
+        $this->views = $this->getListViews();
+
     }
+
 
     // This is actually getItems in JModelList
     // Pagination works with this by itself
@@ -49,14 +46,7 @@ class AvcModelAvc extends JModelList {
           
         $query = $this->dbObject->getQuery(true);
 
-        $query->select( $this->dbObject->nameQuote($this->curr_view_row["key_field_name"]) );
-
-        foreach ($this->viewFields as $viewField) {
-            if($viewField["name"]!=$this->curr_view_row["key_field_name"]){
-                $query->select( $this->dbObject->nameQuote($viewField["name"]) );
-            }
-        }
-
+        $query->select( array($this->views[$this->curr_view_id]["query"]["select"]) );
 
         // Filter Search
         $search_column = $this->getState('filter_search_column');
@@ -71,12 +61,18 @@ class AvcModelAvc extends JModelList {
             $query->order($this->dbObject->getEscaped($order . ' ' . $this->getState('filter_order_Dir', 'DESC')));
         }
 
-        $query->from($this->dbObject->nameQuote($this->curr_view_row["name"]));
+        // GET ONLY SELECTED ROW FOR ROW LAYOUT
+        if (($this->curr_row_id > 0) && (JRequest::getVar('layout', 'default') == "row")) {
+            $query->where($this->dbObject->nameQuote("id") . " = " . $this->curr_row_id);
+        }
+
+        $query->from( $this->views[$this->curr_view_id]["query"]["from"] );
 
         return $query;
+
     }
 
-    function populateState($ordering = null, $direction = null) {
+    public function populateState($ordering = null, $direction = null) {
 
         // Filter Search
         $search_column = JRequest::getCmd('filter_search_column');
@@ -87,94 +83,78 @@ class AvcModelAvc extends JModelList {
         // Filter Order
         $filter_order = JRequest::getCmd('filter_order');
         $filter_order_Dir = JRequest::getCmd('filter_order_Dir');
-        // if (empty($filter_order)) {
-        //     $filter_order = 'ordering';
-        //     $filter_order_Dir = 'asc';
-        // }
         $this->setState('filter_order', $filter_order);
         $this->setState('filter_order_Dir', $filter_order_Dir);
 
         parent::populateState();
     }
 
+    public function getListViews()
+    {
 
-    function currViewRow() {
-        foreach ($this->views as $view) {
-            if($view["id"]==$this->curr_view_id){                
-                return $view;
-            }
-        }
-    }
-
-    function views() {
         $query = $this->dbObject->getQuery(true);
-        $query->select('*');
+        $query->select("*");
+        $query->from($this->dbObject->nameQuote($this->db_editor));
+
+        // FILTER PUBLISHED        
+        $groupsUserIsIn = JAccess::getGroupsByUser(JFactory::getUser()->id);
+        if(in_array(7,$groupsUserIsIn) || in_array(8,$groupsUserIsIn))
+        {
+            // is admin
+        }else{
+            // not admin
+            $query->where( $this->dbObject->nameQuote("published") . " = 1" );
+            $query->where( $this->dbObject->nameQuote("admin_only") . " = 0" );
+        }
+
         $query->order($this->dbObject->getEscaped('ordering ASC'));
-        $query->from($this->dbObject->nameQuote($this->db_view));
-        $this->dbObject->setQuery($query);
-        $rows = $this->dbObject->loadAssocList();
-        return $rows;
-    }
 
-    function viewFields() {
-        $query = $this->dbObject->getQuery(true);
-        $query->select( $this->db_field.'.*' );
-        $query->from( $this->dbObject->nameQuote($this->db_view_fields) );
-        $query->where( "view_id=".$this->curr_view_id );
-        $query->join( "INNER" , $this->dbObject->nameQuote($this->db_field).' ON '.$this->db_view_fields.'.field_id='.$this->db_field.'.id' );
-        $query->order($this->dbObject->getEscaped($this->db_field.'.ordering ASC'));
         $this->dbObject->setQuery($query);
-        $rows = $this->dbObject->loadAssocList();
-        return $rows;
-    }
+        $myViewList = $this->dbObject->loadAssocList();
 
-    function getItemsRow() {
-        $query = $this->dbObject->getQuery(true);
-        foreach ($this->viewFields as $viewField) {
-            if($viewField["name"]!=$this->curr_view_row["key_field_name"]){
-                $query->select( $this->dbObject->nameQuote($viewField["name"]) );
-            }
+        $this->views = array();
+        foreach ($myViewList as $key => $value) {
+            $viewID = $value["id"];
+            $this->views[$viewID] = array();
+            $this->views[$viewID]["name"] = $value["name"];
+            $this->views[$viewID]["icon_path"] = $value["icon_path"];
+            $this->views[$viewID]["query"] = json_decode($value["query"], true);
+            $this->views[$viewID]["fields_config"] = json_decode($value["fields_config"], true);
+            $this->views[$viewID]["group_alias"] = $value["group_alias"];
+            $this->views[$viewID]["published"] = $value["published"];
         }
-        $query->from( $this->dbObject->nameQuote($this->curr_view_row["name"]) );
-        $query->where( $this->curr_view_row["key_field_name"]."=".$this->curr_row_id );
-        $this->dbObject->setQuery($query);
-        $output = $this->dbObject->loadAssocList();
-        $rows = $output[0];
-        return $rows;
+
+        return $this->views;
+
     }
 
-    function getCurrViewId(){
+    public function getViews() {
+        return $this->views;
+    }
+
+    public function getCurrViewId() {
         return $this->curr_view_id;
     }
 
-    function getCurrRowId(){
+    public function getCurrRowId() {
         return $this->curr_row_id;
     }
 
-    function getView() {
-        return $this->curr_view_row;
-    }
-
-    function getViews() {
-            return $this->views;
-    }
-
-    function getViewFields() {
-            return $this->viewFields;
-    }
-
     function store() {
+
         switch ($this->curr_row_id) {
             case 0: // ADD NEW
                     $query = $this->dbObject->getQuery(true);
-                    $query->insert( $this->dbObject->nameQuote($this->curr_view_row["name"]) );
-                    foreach ($this->viewFields as $viewField) {
-                        if($viewField["name"]!=$this->curr_view_row["key_field_name"]){ // DON'T TOUCH PRIMARY KEY
-                            $value = JRequest::getVar( $viewField["name"], null, 'post', 'STRING', JREQUEST_ALLOWRAW );
-                            if(!is_numeric($value)){$value = $this->dbObject->Quote($value);}
-                            $query->set( $this->dbObject->nameQuote($viewField["name"])."=".$value );
-                            //JFactory::getApplication()->enqueueMessage($this->dbObject->nameQuote($viewField["name"])."=".$value, 'message');
+                    $query->insert( $this->dbObject->nameQuote($this->views[$this->curr_view_id]["query"]["from"]) );
+                    $FIELDS_str = str_replace(" ", "", $this->views[$this->curr_view_id]["query"]["select"]);
+                    $FIELDS  = explode(",",$FIELDS_str);
+                    foreach ($FIELDS as $FIELD_ALIAS){
+                        $FIELD_VALUE = JRequest::getVar( $FIELD_ALIAS, null, 'post', 'STRING', JREQUEST_ALLOWRAW );
+                        if($FIELD_ALIAS != "id" && $FIELD_VALUE!=null){
+                            if(!is_numeric($FIELD_VALUE)){$FIELD_VALUE = $this->dbObject->Quote($FIELD_VALUE);}
+                            $query->set( $this->dbObject->nameQuote($FIELD_ALIAS)."=".$FIELD_VALUE );
                         }
+                            
                     }
                     $this->dbObject->setQuery($query);
                     if ($this->dbObject->query()) {
@@ -186,17 +166,17 @@ class AvcModelAvc extends JModelList {
             
             default: // REPLACE
                     $query = $this->dbObject->getQuery(true);
-                    $query->update( $this->dbObject->nameQuote($this->curr_view_row["name"]) );
-                    $query->where( $this->curr_view_row["key_field_name"]."=".$this->curr_row_id );
-                    foreach ($this->viewFields as $viewField) {
-                        if(isset($_POST[$viewField["name"]])){ // REPLACE ONLY NEW VALUES
-                            if($viewField["name"]!=$this->curr_view_row["key_field_name"]){ // DON'T TOUCH PRIMARY KEY
-                                $value = JRequest::getVar( $viewField["name"], null, 'post', 'STRING', JREQUEST_ALLOWRAW );
-                                //$this->dbObject->isQuoted Proveriti da li moze ovo da se koristi
-                                if(!is_numeric($value)){$value = $this->dbObject->Quote($value);}
-                                $query->set( $this->dbObject->nameQuote($viewField["name"])."=".$value );
-                            }
+                    $query->update( $this->dbObject->nameQuote($this->views[$this->curr_view_id]["query"]["from"]) );
+                    $query->where( "id =".$this->curr_row_id );
+                    $FIELDS_str = str_replace(" ", "", $this->views[$this->curr_view_id]["query"]["select"]);
+                    $FIELDS  = explode(",",$FIELDS_str);
+                    foreach ($FIELDS as $FIELD_ALIAS){
+                        $FIELD_VALUE = JRequest::getVar( $FIELD_ALIAS, null, 'post', 'STRING', JREQUEST_ALLOWRAW );
+                        if($FIELD_ALIAS != "id" && $FIELD_VALUE!=null){
+                            if(!is_numeric($FIELD_VALUE)){$FIELD_VALUE = $this->dbObject->Quote($FIELD_VALUE);}
+                            $query->set( $this->dbObject->nameQuote($FIELD_ALIAS)."=".$FIELD_VALUE );
                         }
+                            
                     }
                     $this->dbObject->setQuery($query);
                     if ($this->dbObject->query()) {
@@ -213,8 +193,8 @@ class AvcModelAvc extends JModelList {
         foreach ($cids as $cid) {
             $query = $this->dbObject->getQuery(true);
             $query->delete();
-            $query->from( $this->dbObject->nameQuote($this->curr_view_row["name"]) );
-            $query->where( $this->curr_view_row["key_field_name"]."=".(int) $cid );
+            $query->from( $this->dbObject->nameQuote($this->views[$this->curr_view_id]["query"]["from"]) );
+            $query->where( "id =".(int) $cid );
             $this->dbObject->setQuery($query);
             if ($this->dbObject->query()) {
                 JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_OK_DELETE') . ": " . $cid, 'message');
@@ -231,15 +211,15 @@ class AvcModelAvc extends JModelList {
         $ordering_targetId = JRequest::getVar('ordering_targetId');
 
         $query = $this->dbObject->getQuery(true);
-        $query->select( $this->dbObject->nameQuote($this->curr_view_row["key_field_name"]) );
-        $query->from( $this->dbObject->nameQuote($this->curr_view_row["name"]) );
+        $query->select( $this->dbObject->nameQuote( "id" ) );
+        $query->from( $this->dbObject->nameQuote($this->views[$this->curr_view_id]["query"]["from"]) );
         $query->order( $this->dbObject->getEscaped('ordering ASC') );
         $this->dbObject->setQuery($query);
         $rows = $this->dbObject->loadAssocList();
 
         // REMOVE FROM ARRAY
         foreach ($rows as $key => $row) {
-            if($row[$this->curr_view_row["key_field_name"]]==(int)$ordering_id){
+            if($row[ "id" ]==(int)$ordering_id){
                 $cacheRow = $rows[$key];
                 unset($rows[$key]);
             }
@@ -252,7 +232,7 @@ class AvcModelAvc extends JModelList {
             $newRows = array();
             foreach ($rows as $key => $row) {
                 $newRows[]=$row;
-                if($row[$this->curr_view_row["key_field_name"]]==(int)$ordering_targetId){
+                if($row[ "id" ]==(int)$ordering_targetId){
                     $newRows[]=$cacheRow;
                 }
             }
@@ -262,8 +242,8 @@ class AvcModelAvc extends JModelList {
         // UPDATE ORDERINGS
         foreach ($rows as $key => $row) {
             $query = $this->dbObject->getQuery(true);
-            $query->update( $this->dbObject->nameQuote($this->curr_view_row["name"]) );
-            $query->where( $this->dbObject->nameQuote($this->curr_view_row["key_field_name"]) . "=" . (int)$row[$this->curr_view_row["key_field_name"]] );
+            $query->update( $this->dbObject->nameQuote($this->views[$this->curr_view_id]["query"]["from"]) );
+            $query->where( $this->dbObject->nameQuote( "id" ) . "=" . (int)$row[ "id" ] );
             $query->set( $this->dbObject->nameQuote("ordering") . "=" . (int)($key+1) );
             $this->dbObject->setQuery($query);
             $this->dbObject->query();

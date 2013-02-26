@@ -7,18 +7,17 @@ JHtml::_('behavior.multiselect'); // Select/Deselect all
 jimport('joomla.html.html.grid');
 jimport('joomla.filesystem.file');
 
-$VIEW_PARAMS = json_decode($this->view['params']);
+//$VIEW_PARAMS = json_decode($this->view['params']);
 
 ?>
 
 <div>
-    <h1 class="pageTitle"><?php echo JText::_(strtoupper($this->view["title"])); ?></h1>
+    <h1 class="pageTitle"><?php echo JText::_(strtoupper($this->views[$this->curr_view_id]["name"])); ?></h1>
     <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="adminForm" id="adminForm">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
             <tbody>
                 <tr>
                     <td class="AVC_sidePanel">
-                        <label><?php echo JText::_('COM_AVC_MENU'); ?></label>
                         
                         <!-- MENU -->
                         <?php
@@ -35,113 +34,26 @@ $VIEW_PARAMS = json_decode($this->view['params']);
 
 <fieldset id="filter-bar">
 
-
 <div class="fltlft">      
 
-    <label class="filter-search-lbl" for="filter_search"><?php echo JText::_('COM_AVC_FILTER'); ?>&nbsp;&nbsp;</label>
-
-    <?php
-    echo '<select name="filter_search_column" id="filter_search_column">';
-    foreach ($this->view_fields as $view_field) {
-        $selected = '';
-        if ($this->escape($this->state->get('filter_search_column')) == $view_field["name"]) {
-            $selected = ' SELECTED';
+     <?php
+        echo '<select name="filter_search_column" id="filter_search_column">';
+        foreach ($this->items[0] as $FIELD_ALIAS => $FIELD_VALUE) {// Loop through Show Fields
+            $selected = '';
+            if ($this->escape($this->state->get('filter_search_column')) == $FIELD_ALIAS) {
+                $selected = ' SELECTED';
+            }
+            echo '<option value="' . $FIELD_ALIAS . '"' . $selected . '>' . JText::_(strtoupper($FIELD_ALIAS)) . '</option>';
         }
-        echo '<option value="' . $view_field["name"] . '"' . $selected . '>' . JText::_(strtoupper($view_field["title"])) . '</option>';
-    }
-    echo '</select>';
+        echo '</select>';
     ?>  
 
     <input type="text" name="filter_search_value" id="filter_search_value" value="<?php echo $this->escape($this->state->get('filter_search_value')); ?>" title="<?php echo JText::_('COM_CONTACT_SEARCH_IN_NAME'); ?>" />
     <button type="submit"><?php echo JText::_('COM_AVC_SEARCH'); ?></button>
     <button type="button" onclick="document.id('filter_search_value').value='';this.form.submit();"><?php echo JText::_('COM_AVC_CLEAR'); ?></button>
+
 </div>
 <div class="fltrt">
-<?php
-
-
-$FILTER_TYPES = explode(",", $VIEW_PARAMS->filters);
-if(!empty($FILTER_TYPES[0])){
-foreach ($FILTER_TYPES as $SELECT_FIELD) {
-
-    // Get field title
-    foreach ($this->view_fields as $view_field) {
-        if($view_field["name"]==$SELECT_FIELD)
-        {
-            $SELECT_FIELD_CONF = $view_field;
-        }
-    }
-
-    // Get current entries
-    $dbObject = JFactory::getDBO();
-    $query = $dbObject->getQuery(true);
-    $query->select( $dbObject->nameQuote( $SELECT_FIELD ) );
-    $query->from( $dbObject->nameQuote( $this->view["name"] ) );
-    $dbObject->setQuery($query);
-    $AssocList = $dbObject->loadAssocList();
-
-    // Populate options
-    $OPTION = array();
-    foreach($AssocList as $AssocList_value)
-    {
-        if($AssocList_value[$SELECT_FIELD]!=""){
-            $OPTION[]=$AssocList_value[$SELECT_FIELD];
-        }
-    }
-    $OPTION = array_unique($OPTION);
-    $SELECT_FIELD_OPTIONS = array(); 
-    foreach($OPTION as $value){
-
-    $FIELD_VALUE = $value;
-
-    if($SELECT_FIELD_CONF["type"]=="rel"){
-        
-        $FIELD_TYPE = $SELECT_FIELD_CONF["type"];
-        $FIELD_PARAMS = json_decode($SELECT_FIELD_CONF['params']);
-        $FIELD_REL = json_decode($SELECT_FIELD_CONF['relationship']);
-
-        $dbObject = JFactory::getDBO();
-        $query = $dbObject->getQuery(true);
-        $query->select('*');
-        $query->order($dbObject->getEscaped($FIELD_REL->key.' ASC'));
-        $query->from($dbObject->nameQuote($FIELD_REL->table));
-        $query->where($dbObject->nameQuote($FIELD_REL->key)."=".$dbObject->Quote($FIELD_VALUE));
-        $dbObject->setQuery($query);
-        $ROW = $dbObject->loadAssocList();
-
-        if($FIELD_VALUE!=""){   
-            $FIELD_VALUE = $ROW[0][$FIELD_PARAMS->label] . " (" . $FIELD_VALUE . ")";
-        }
-
-    }
-
-
-
-
-        if($this->escape($this->state->get('filter_search_column')) == $SELECT_FIELD && $this->escape($this->state->get('filter_search_value')) == $value)
-        {            
-            $SELECT_FIELD_OPTIONS[] = JHTML::_('select.option', $value, $FIELD_VALUE, true);
-        }else{
-            $SELECT_FIELD_OPTIONS[] = JHTML::_('select.option', $value, $FIELD_VALUE);
-        }
-    }
-
-    // Create select
-    echo
-    '
-    <div style="float:left !important">
-    <label style="">' . JText::_( strtoupper( $SELECT_FIELD_CONF["title"] ) ) . '</label>
-    <select onchange="document.id(\'filter_search_column\').value=\'' . $SELECT_FIELD . '\'; document.id(\'filter_search_value\').value=this.value; this.form.submit();">
-        <option value="">' . JText::_('COM_AVC_SELECT') . '</option>
-        ' . JHtml::_('select.options', $SELECT_FIELD_OPTIONS) . '
-    </select>
-    </div>
-    ';
-
-}
-}
-
-?>
 
 </div>
 
@@ -150,56 +62,44 @@ foreach ($FILTER_TYPES as $SELECT_FIELD) {
 
 <div class="AVC_table_wrap">
     <table id="adminlist" class="adminlist" cellspacing="0" cellpadding="0" border="0" width="100%">
-
-        <?php
+    <?php
 
         // FORMAT HEADER  
-        echo '<thead>';
-        echo '<tr>';
+        echo '<thead>'."\n";
+        echo '<tr>'."\n";
 
-        echo '<th>';
-        echo JHtml::_('grid.sort', JText::_(strtoupper($this->view["key_field_name"])), $this->view["key_field_name"], $this->listDirn, $this->listOrder);
-        echo '</th>';
+echo '<th style="display:none;"></th>';
 
-        foreach ($this->view_fields as $view_field) {
+        foreach ($this->items[0] as $key => $value) {
             echo '<th>';
-            echo JHtml::_('grid.sort', JText::_(strtoupper($view_field["title"])), $view_field["name"], $this->listDirn, $this->listOrder);
-            echo '</th>';
+            echo JHtml::_('grid.sort', JText::_(strtoupper($key)), $key, $this->listDirn, $this->listOrder);
+            echo '</th>'."\n";
         }
 
-        echo '</tr>';
-        echo '</thead>';
+        echo '</tr>'."\n";
+        echo '</thead>'."\n";
+
 
         // FORMAT DATA
-        echo '<tbody>';
+        echo '<tbody>'."\n";
 
         $row_counts = 0;
         foreach ($this->items as $item) { 
 
             $ROW_ID = 'row_' . $row_counts;
 
-            echo '<tr id="' . $ROW_ID . '">';
+            echo '<tr id="'.$ROW_ID.'">'."\n";
 
-            foreach ($item as $FIELD_ALIAS => $FIELD_VALUE) {
+            echo '<td style="display:none;">';
+            echo '<input type="checkbox" class="cid" name="cid[]" value="' . $item->id . '" style="display:none" />';
+            echo '</td>'."\n";
 
+            foreach ($item as $FIELD_ALIAS => $FIELD_VALUE) {   
 
-                if($FIELD_ALIAS == $this->view["key_field_name"]){           
-                    echo '<td>';
-                    echo '<input type="checkbox" class="cid" name="cid[]" value="' . $FIELD_VALUE . '" style="display:none" />';
-                    echo $FIELD_VALUE;                    
-                    echo '</td>';
-                }else{                    
-                    echo '<td>';
+                $FIELD_TYPE = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"]; 
+                $FIELD_PARAMS = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"]; 
 
-                    // GET FIELD DETAILS
-                    foreach ($this->view_fields as $view_field) {
-                        if($view_field["name"] == $FIELD_ALIAS){ 
-                            $FIELD_TYPE = $view_field["type"];
-                            $FIELD_PARAMS = json_decode($view_field['params']);
-                            $FIELD_REL = json_decode($view_field['relationship']);
-                        }
-                    }
-
+                echo '<td>';
                     // SET DEFAULT FIELD TEMPLATE
                     $fld_types_file = JPATH_COMPONENT . DS . "views" . DS . "avc" . DS . "tmpl" . DS . "fld_types" . DS . "table" . DS . "default.php";
                     if ($FIELD_TYPE) {
@@ -209,19 +109,18 @@ foreach ($FILTER_TYPES as $SELECT_FIELD) {
                         }
                     }
                     require($fld_types_file); // Load template file
-
-                    echo '</td>';
-                }
-                
+                echo '</td>'."\n";
             }
 
-            echo '</tr>';
+            echo '</tr>'."\n";
             $row_counts++;
         }
         
-        echo '</tbody>';
+        echo '</tbody>'."\n";
+
 
         ?>
+
 
     </table>
 </div>

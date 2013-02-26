@@ -8,7 +8,7 @@ echo '
 	<input
 		tabindex="' . $TABINDEX . '"
 		type="text"
-		name="' . $FIELD_NAME . '"
+		name="' . $FIELD_ALIAS . '"
 		value="' . htmlspecialchars($FIELD_VALUE) . '"
 		class=""
 		title="' . JText::_('COM_AVC_TOOLTIPS_VARCHAR') . '"

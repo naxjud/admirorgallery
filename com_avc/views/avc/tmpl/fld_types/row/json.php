@@ -12,22 +12,22 @@ echo '
 	<input
 		tabindex=""
 		type="hidden"
-		name="' . $FIELD_NAME . '"
-		id="' . $FIELD_NAME . '"
+		name="' . $FIELD_ALIAS . '"
+		id="' . $FIELD_ALIAS . '"
 		value="' . htmlspecialchars($FIELD_VALUE) . '"
 		class=""
 		title=""
 	/>
 	';
 
-echo '<div id="' . $FIELD_NAME . '_clone" style="position:absolute; left:-9999px">';
+echo '<div id="' . $FIELD_ALIAS . '_clone" style="position:absolute; left:-9999px">';
 
 
 
 $FIELD_VALUE = json_decode($FIELD_VALUE);
 
 
-echo '<select onchange="avc_json_update(\'' . $FIELD_NAME . '\');">';
+echo '<select onchange="avc_json_update(\'' . $FIELD_ALIAS . '\');">';
 if(!empty($FIELD_PARAMS)){
 	foreach($FIELD_PARAMS as $OPTION) {
 		echo '<option value="' . $OPTION . '">' . $OPTION . '</option>';
@@ -36,7 +36,7 @@ if(!empty($FIELD_PARAMS)){
 echo '</select>';
 echo '
 <input
-	onkeyup="avc_json_update(\'' . $FIELD_NAME . '\');"
+	onkeyup="avc_json_update(\'' . $FIELD_ALIAS . '\');"
 	tabindex=""
 	type="text"
 	name=""
@@ -44,26 +44,26 @@ echo '
 	class="width_auto"
 	title="' . JText::_('COM_AVC_TOOLTIPS_VARCHAR') . '"
 />
-<a href="#" class="avc_button" onclick="avc_json_remove(this,\'' . $FIELD_NAME . '\');return false;">' . JText::_('COM_AVC_DELETE') . '</a>
+<a href="#" class="avc_button" onclick="avc_json_remove(this,\'' . $FIELD_ALIAS . '\');return false;">' . JText::_('COM_AVC_DELETE') . '</a>
 <br style="clear:both" />
 ';
 
 echo '</div>';
 
-echo '<div class="AVC_frame" id="' . $FIELD_NAME . '_frame">';
+echo '<div class="AVC_frame" id="' . $FIELD_ALIAS . '_frame">';
 
 $count=0;
 if(!empty($FIELD_VALUE)){
 	foreach($FIELD_VALUE as $LABEL => $VALUE) {
 
-		$FIELD_JSONs.= 'FIELD_JSONs[\'' . $FIELD_NAME . '\'][' . $count . '] = new Array();'."\n";
+		$FIELD_JSONs.= 'FIELD_JSONs[\'' . $FIELD_ALIAS . '\'][' . $count . '] = new Array();'."\n";
 
 		echo '<div>'."\n";
 
 		//////////////////////////////////
 		// Create droplist
 		//////////////////////////////////
-		echo '<select onchange="avc_json_update(\'' . $FIELD_NAME . '\');">';
+		echo '<select onchange="avc_json_update(\'' . $FIELD_ALIAS . '\');">';
 		if(!empty($FIELD_PARAMS)){
 			foreach($FIELD_PARAMS as $OPTION) {
 				$select = "";
@@ -77,7 +77,7 @@ if(!empty($FIELD_VALUE)){
 
 		echo '
 		<input
-			onkeyup="avc_json_update(\'' . $FIELD_NAME . '\');"
+			onkeyup="avc_json_update(\'' . $FIELD_ALIAS . '\');"
 			tabindex="' . $TABINDEX . '"
 			type="text"
 			name=""
@@ -85,7 +85,7 @@ if(!empty($FIELD_VALUE)){
 			class="width_auto"
 			title="' . JText::_('COM_AVC_TOOLTIPS_VARCHAR') . '"
 		/>
-		<a href="#" class="avc_button" onclick="avc_json_remove(this, \'' . $FIELD_NAME . '\');return false;">' . JText::_('COM_AVC_DELETE') . '</a>
+		<a href="#" class="avc_button" onclick="avc_json_remove(this, \'' . $FIELD_ALIAS . '\');return false;">' . JText::_('COM_AVC_DELETE') . '</a>
 		<br style="clear:both" />
 		';
 
@@ -99,7 +99,7 @@ if(!empty($FIELD_VALUE)){
 echo '
 </div>
 <p>
-<a class="avc_button" href="#" onclick="avc_json_add(\'' . $FIELD_NAME . '\'); return false;">' . JText::_('COM_AVC_ADD') . '</a>
+<a class="avc_button" href="#" onclick="avc_json_add(\'' . $FIELD_ALIAS . '\'); return false;">' . JText::_('COM_AVC_ADD') . '</a>
 </p>
 ';
 

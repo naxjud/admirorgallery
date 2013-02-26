@@ -14,8 +14,8 @@ $ROWS = $dbObject->loadAssocList();
 
 echo '
 <div style="display:none;">
-<div id="' . $FIELD_NAME . '_wrap">
-<h1>' . JText::_($FIELD_NAME) . '</h1>
+<div id="' . $FIELD_ALIAS . '_wrap">
+<h1>' . JText::_($FIELD_ALIAS) . '</h1>
 <ul>
 ';
 
@@ -25,10 +25,10 @@ $JS_FIELD_REL_VALUES='
 // FIELD REL DECLARE DOM READY
 //////////////////////////////
 window.addEvent("domready", function(){
-AVC_REL[\'' . $FIELD_NAME . '\'] = new Object();
+AVC_REL[\'' . $FIELD_ALIAS . '\'] = new Object();
 ';
 foreach($ROWS as $ROW){
-	$JS_FIELD_REL_VALUES.='AVC_REL[\'' . $FIELD_NAME . '\'][\'' . $ROW[$FIELD_PARAMS->value] . '\'] = "' . $ROW[$FIELD_PARAMS->label] . '";'."\n";
+	$JS_FIELD_REL_VALUES.='AVC_REL[\'' . $FIELD_ALIAS . '\'][\'' . $ROW[$FIELD_PARAMS->value] . '\'] = "' . $ROW[$FIELD_PARAMS->label] . '";'."\n";
 }
 $JS_FIELD_REL_VALUES.='
 });
@@ -40,7 +40,7 @@ foreach($ROWS as $ROW){
 			<a
 				href="#"
 				onclick="
-					window.parent.jInsertRelSelect(\'' . $FIELD_NAME . '\', \'' . $ROW[$FIELD_PARAMS->value] . '\');
+					window.parent.jInsertRelSelect(\'' . $FIELD_ALIAS . '\', \'' . $ROW[$FIELD_PARAMS->value] . '\');
 					window.parent.SqueezeBox.close();
 					return false;
 				"
@@ -84,17 +84,17 @@ echo
 '
 <div class="AVC_frame">
 <input
-	onkeyup="relOnChange(\'' . $FIELD_NAME . '\', $(this).get(\'value\'));"
+	onkeyup="relOnChange(\'' . $FIELD_ALIAS . '\', $(this).get(\'value\'));"
 	tabindex="' . $TABINDEX . '"
 	type="text"
-	id="' . $FIELD_NAME . '"
-	name="' . $FIELD_NAME . '"
+	id="' . $FIELD_ALIAS . '"
+	name="' . $FIELD_ALIAS . '"
 	value="' . $FIELD_VALUE . '"
 	class="avc_rel width_auto"
 	title="' . JText::_('COM_AVC_TOOLTIPS_VARCHAR') . '"
 	size="4"
 />
-<span id="lbl_' . $FIELD_NAME . '"></span>
+<span id="lbl_' . $FIELD_ALIAS . '"></span>
 </div>
 ';
 
@@ -106,7 +106,7 @@ echo
 '
 <input type="button" class="pointer width_auto" value="'.JText::_('COM_AVC_SELECT').'"
 	onclick="
-		SqueezeBox.fromElement($(\'' . $FIELD_NAME . '_wrap\'), {
+		SqueezeBox.fromElement($(\'' . $FIELD_ALIAS . '_wrap\'), {
 			handler:\'clone\',
 			size: {
 				x: 400,

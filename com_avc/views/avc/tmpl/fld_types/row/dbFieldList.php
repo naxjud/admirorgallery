@@ -4,7 +4,7 @@ echo '<div class="form_items form_items1">';
 
 // Create Form Field Label
 echo '<label id="jform_enabled-lbl" for="jform_enabled">';
-echo JText::_( strtoupper($field_alias));
+echo JText::_( strtoupper($FIELD_ALIAS));
 echo '</label>';
 
 $db       = JFactory::getDBO();
@@ -15,7 +15,7 @@ if(empty($field_params)){
 	
     $query = $db->getQuery(true);
     $tables = $db->getTableList();
-	echo '<select tabindex="'.$tabIndex.'" name="'.$field_alias.'" class="required editlinktip" title="'.JText::_('COM_CCS_TOOLTIPS_DROPLIST').'">';			
+	echo '<select tabindex="'.$TABINDEX.'" name="'.$FIELD_ALIAS.'" class="required editlinktip" title="'.JText::_('COM_CCS_TOOLTIPS_DROPLIST').'">';			
 	echo '<option value="">'.JText::_("COM_CCS_SELECT_NONE").'</option>';
 	foreach($tables as $result)// Add Dropbox item for any param founded
 	{
@@ -39,7 +39,7 @@ if(empty($field_params)){
 	$db->setQuery($query);
 	$results = $db->loadAssocList();
 
-	echo '<select tabindex="'.$tabIndex.'" name="'.$field_alias.'" class="required editlinktip" title="'.JText::_('COM_CCS_TOOLTIPS_DROPLIST').'">';			
+	echo '<select tabindex="'.$TABINDEX.'" name="'.$FIELD_ALIAS.'" class="required editlinktip" title="'.JText::_('COM_CCS_TOOLTIPS_DROPLIST').'">';			
 	echo '<option value="">'.JText::_("COM_CCS_SELECT_NONE").'</option>';
 	foreach($results as $result)// Add Dropbox item for any param founded
 	{

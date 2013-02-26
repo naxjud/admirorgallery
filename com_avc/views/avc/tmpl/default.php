@@ -4,13 +4,12 @@ defined('_JEXEC') or die('Restricted access');
 ?>    
 
 <div>
-    <h1 class="pageTitle"><?php echo JText::_("COM_AVC"); ?></h1>
+    <h1 class="pageTitle"><?php echo JText::_("COM_AVC_HOME"); ?></h1>
     <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="adminForm" id="adminForm" class="<?php echo $this->alias; ?>">
         <table cellpadding="0" cellspacing="0" border="0" width="100%">
             <tbody>
                 <tr>
                     <td class="AVC_sidePanel">
-                        <label><?php echo JText::_('COM_AVC_MENU'); ?></label>
                         
                         <!-- MENU -->
                         <?php
@@ -36,11 +35,11 @@ defined('_JEXEC') or die('Restricted access');
                                     echo '
                                     <div class="quickIcon">
                                     <a href="#" onclick="
-                                    AVC_menu_exec(AVC_menu_items['.($index+1).'][\'id\'],AVC_menu_items['.($index+1).'][\'layout\']);
+                                    AVC_menu_exec(\''.$index.'\',AVC_menu_items[\''.$index.'\'][\'layout\']);
                                     return false;
                                     ">
                                     <img src="' . $view_image . '" alt="">
-                                    <span>' . JText::_($view["title"]) . '</span>
+                                    <span>' . JText::_($view["name"]) . '</span>
                                     </a>
                                     </div>
                                     ';
