@@ -25,8 +25,6 @@
 		<fields name="params">
 			<fieldset name="basic">
 	            <field name="MOD_AVC_LAYOUT_DATABASE_ID" type="text" default="0" size="20" label="MOD_AVC_LAYOUT_DATABASE_ID" description="MOD_AVC_LAYOUT_DATABASE_ID_DESC" />
-	            <field name="MOD_AVC_LAYOUT_TEMPLATE_TABLE" type="filelist" default="" label="MOD_AVC_LAYOUT_TEMPLATE_TABLE" description="MOD_AVC_LAYOUT_TEMPLATE_TABLE_DESC" directory="modules/mod_avc/templates" filter="php" exclude="" stripext="" />
-	            <field name="MOD_AVC_LAYOUT_TEMPLATE_ROW" type="filelist" default="" label="MOD_AVC_LAYOUT_TEMPLATE_ROW" description="MOD_AVC_LAYOUT_TEMPLATE_ROW_DESC" directory="modules/mod_avc/templates" filter="php" exclude="" stripext="" />
 			</fieldset>
 		</fields>
 	</config>

@@ -32,7 +32,7 @@ echo '
 <input tabindex="' . $TABINDEX . '" 
 type="radio" 
 class="width_auto" 
-name="' . $FIELD_NAME . '" 
+name="' . $FIELD_ALIAS . '" 
 title="' . JText::_('COM_AVC_TOOLTIPS_TINYINT') . '" 
 value="1"' . $selected_t . '/>
 <span class="inlineValue">' . JText::_('COM_AVC_TRUE') . '&nbsp;&nbsp;&nbsp;</span>
@@ -45,7 +45,7 @@ echo '
 <input tabindex="' . $TABINDEX . '" 
 type="radio" 
 class="width_auto" 
-name="' . $FIELD_NAME . '" 
+name="' . $FIELD_ALIAS . '" 
 title="' . JText::_('COM_AVC_TOOLTIPS_TINYINT') . '" 
 value="0"' . $selected_f . '/>
 <span class="inlineValue">' . JText::_('COM_AVC_FALSE') . '&nbsp;&nbsp;&nbsp;</span>
