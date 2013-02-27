@@ -13,7 +13,7 @@ $JS_AVC_layout = '
 ///////////////////////////////////////
 
 AVC_LAYOUT_HISTORY["module'.$AVC->module_id.'"]='.json_encode($AVC->state_history["module".$AVC->module_id]).';
-AVC_TEMPLATE["module'.$AVC->module_id.'"]='.json_encode($AVC->state_tmpl["module".$AVC->module_id]).';
+AVC_TEMPLATE["module'.$AVC->module_id.'"]='.json_encode($AVC->state_tmpl).';
 AVC_LAYOUT_SCROLLTO = "'.$AVC->state_scrollTo.'";
 
 window.addEvent("domready", function(){
@@ -33,7 +33,7 @@ echo '<!-- |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 
 echo '<div id="AVC_LAYOUT_'.$AVC->module_id.'">';
 
-require  JPATH_ROOT . DS . 'modules' . DS . 'mod_avc' . DS . 'templates' . DS . $AVC->state_tmpl["module".$AVC->module_id]["name"] . DS . 'index.php';
+require  JPATH_ROOT . DS . 'modules' . DS . 'mod_avc' . DS . 'templates' . DS . $AVC->state_tmpl["name"] . DS . 'index.php';
 
 echo '</div>'."\n";
 echo '<!-- |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->'."\n";

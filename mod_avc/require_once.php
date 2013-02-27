@@ -55,7 +55,7 @@ function AVC_LAYOUT_OPEN(module,options){
 
     var data = JSON.stringify(AVC_TEMPLATE["module"+module]["open"]);
     for (var i = 0; i < options.length; i++) {
-        data = data.replace("$"+i,options[i]);
+        data = data.replace("AVCVAR"+i,options[i]);
     }
     AVC_LAYOUT_HISTORY["module"+module]["step"+(countObjAttr(AVC_LAYOUT_HISTORY["module"+module])+1)]=JSON.parse(data);
     
