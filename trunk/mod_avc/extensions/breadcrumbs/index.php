@@ -3,8 +3,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-
-echo '<span class="AVC_LAYOUT_SPAN">';
+echo '<span class="AVC_LAYOUT_SPAN AVC_LAYOUT_BREADCRUMPS">';
 $AVC_count=1;
 foreach ($AVC->state_history["module".$AVC->module_id] as $step) {
 if($AVC_count==$AVC->state_history_count){

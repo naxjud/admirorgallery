@@ -44,7 +44,6 @@ class AVC {
         // UPDATE STATES VARS FOR CURRENT MODULE FROM HISTORY
         $history = $mainframe->getUserStateFromRequest( "AVC_LAYOUT_STATE_HISTORY", "AVC_LAYOUT_STATE_HISTORY", $mainframe->getCfg("AVC_LAYOUT_STATE_HISTORY") );
 
-        $this->state_history = array(); 
         $this->state_history = json_decode($history, true);
         $history_curr = end($this->state_history["module".$this->module_id]);
         $this->state_view = $history_curr["view"];
@@ -53,9 +52,8 @@ class AVC {
         $this->state_limit = $history_curr["limit"]; 
         $this->state_where = $history_curr["where"];
         $this->state_having = $history_curr["having"];
-
-        $this->state_tmpl = array(); 
-        $this->state_tmpl = json_decode($history_curr["tmpl"], true);
+        $this->state_left_join = $history_curr["left_join"];
+        $this->state_tmpl = $history_curr["tmpl"]; 
 
         // GET VIEW_ID
         if($this->state_view==""){
@@ -65,22 +63,28 @@ class AVC {
         // CREATE OUTPUT
         $this->output = $this->getOutput();
 
-        // IF STATE HISTORY FOR CURRENT MODULE IS EMPTY CREATE STATE RECORD USING DEFAULT STATES VARS
-        if(count($this->state_history["module".$this->module_id])==0){
+        $this->state_history_count = count($this->state_history["module".$this->module_id]);
 
-            $this->state_history["module".$this->module_id]["step1"] = array();
-            $this->state_history["module".$this->module_id]["step1"]["view"] = $this->state_view;
-            $this->state_history["module".$this->module_id]["step1"]["view_name"] = $this->state_view_name;
-            $this->state_history["module".$this->module_id]["step1"]["tmpl"] = $this->state_tmpl;
-            $this->state_history["module".$this->module_id]["step1"]["order_by"] = $this->state_order_by;
-            $this->state_history["module".$this->module_id]["step1"]["limit"] = $this->state_limit;
-            $this->state_history["module".$this->module_id]["step1"]["where"] = $this->state_where;
-            $this->state_history["module".$this->module_id]["step1"]["having"] = $this->state_having;
-
+        if($this->state_history_count==0){
+            $this->state_history_count=1;
         }
 
-        // UPDATE HISTORY COUNT FOR CURRENT MODULE (NUMBER OF STEPS)
-        $this->state_history_count = count($this->state_history["module".$this->module_id]);
+        $this->state_history["module".$this->module_id]["step".$this->state_history_count] = array();
+        $this->state_history["module".$this->module_id]["step".$this->state_history_count]["view"] = $this->state_view;
+        $this->state_history["module".$this->module_id]["step".$this->state_history_count]["view_name"] = $this->state_view_name;
+        $this->state_history["module".$this->module_id]["step".$this->state_history_count]["tmpl"] = $this->state_tmpl;
+        $this->state_history["module".$this->module_id]["step".$this->state_history_count]["order_by"] = $this->state_order_by;
+        $this->state_history["module".$this->module_id]["step".$this->state_history_count]["limit"] = $this->state_limit;
+        $this->state_history["module".$this->module_id]["step".$this->state_history_count]["where"] = $this->state_where;
+        $this->state_history["module".$this->module_id]["step".$this->state_history_count]["having"] = $this->state_having;
+        $this->state_history["module".$this->module_id]["step".$this->state_history_count]["left_join"] = $this->state_left_join;
+    
+
+        if(JDEBUG){
+            echo "HISTORY:<br />";
+            var_export($this->state_history["module".$this->module_id]);
+            echo "<hr />";
+        }
 
     }
 
@@ -106,24 +110,25 @@ class AVC {
         $this->default_query = json_decode($myQueryList[0]["query"], true);
         
         // SET DEFAULTS FOR EMPTY STATES
-        $this->state_having = $this->checkVar($this->state_having, $this->default_query["having"]);
-        $this->state_where = $this->checkVar($this->state_where, $this->default_query["where"]);
+        $this->state_view_name = $this->checkVar($this->state_limit, $myQueryList[0]["name"]);
         $this->state_order_by = $this->checkVar($this->state_order_by, $this->default_query["order_by"]);
         $this->state_limit = $this->checkVar($this->state_limit, $this->default_query["limit"]);
+        $this->state_having = $this->checkVar($this->state_having, $this->default_query["having"] );
+        $this->state_where = $this->checkVar($this->state_where, $this->default_query["where"] );
+        $this->state_left_join = $this->checkVar( $this->state_left_join, $this->default_query["left_join"] );
 
-        // GET VIEW NAME
-        $this->state_view_name = $myQueryList[0]["name"];
 
         // GET TEMPLATE
-        if(count($this->state_tmpl["module".$this->module_id])==0){
+        if(empty($this->state_tmpl)){
             if(!empty($myQueryList[0]["tmpl"])){
-                $this->state_tmpl["module".$this->module_id] = json_decode($myQueryList[0]["tmpl"], true);
+                $this->state_tmpl = json_decode($myQueryList[0]["tmpl"], true);
             }else{
-                $this->state_tmpl["module".$this->module_id]["name"] = "default";
-                $this->state_tmpl["module".$this->module_id]["vars"] = array();
-                $this->state_tmpl["module".$this->module_id]["open"] = array();
+                $this->state_tmpl["name"] = "default";
+                $this->state_tmpl["vars"] = array();
+                $this->state_tmpl["open"] = array();
             }
         }
+
 
         // CREATE QUERY
         $query = $this->dbObject->getQuery(true);
@@ -134,18 +139,24 @@ class AVC {
             $query->from($this->default_query["from"]);
 
             // HAVING
-            if($this->state_having != ""){
-                $query->having($this->state_having);
+            if(!empty($this->state_having)){
+                foreach ($this->state_having as $value) {                    
+                    $query->having($value);
+                }
             } 
 
             // WHERE
-            if($this->state_where != ""){
-                $query->where($this->state_where);
+            if(!empty($this->state_where)){
+                foreach ($this->state_where as $value) { 
+                    $query->where($value);
+                }
             }
 
             // LEFT JOIN
-            if(!empty($this->default_query["left_join"])){
-                $query->leftJoin($this->default_query["left_join"]);
+            if(!empty($this->state_left_join)){
+                foreach ($this->state_left_join as $value) { 
+                    $query->leftJoin($value);
+                }
             }
 
             // ORDER
@@ -169,6 +180,23 @@ class AVC {
 
             if($this->state_limit && $limit_split[1]!="0"){
                 $query.= "\nLIMIT ".$this->state_limit;
+            }
+
+            if(JDEBUG){
+                echo "QUERY:<br />";
+                echo "select: ".$this->default_query["select"]."<br />";
+                echo "from: ".$this->default_query["from"]."<br />";
+                echo "having: <br />";
+                var_export($this->state_having);
+                echo "<br />";
+                echo "where: <br />";
+                var_export($this->state_where);
+                echo "<br />";
+                echo "left join: <br />";
+                var_export($this->state_left_join);
+                echo "<br />";
+                echo "order by: ".$this->state_order_by."<br />";
+                echo "<hr />";
             }
 
             $this->dbObject->setQuery($query);
