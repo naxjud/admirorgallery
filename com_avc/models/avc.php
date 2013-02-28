@@ -37,16 +37,50 @@ class AvcModelAvc extends JModelList {
 
     }
 
+    protected function checkJSON(){
+       switch (json_last_error()) {
+            case JSON_ERROR_NONE:
+            break;
+            case JSON_ERROR_DEPTH:
+                JFactory::getApplication()->enqueueMessage('Maximum stack depth exceeded', 'error');
+            break;
+            case JSON_ERROR_STATE_MISMATCH:
+                JFactory::getApplication()->enqueueMessage('Underflow or the modes mismatch', 'error');
+            break;
+            case JSON_ERROR_CTRL_CHAR:
+                JFactory::getApplication()->enqueueMessage('Unexpected control character found', 'error');
+            break;
+            case JSON_ERROR_SYNTAX:
+                JFactory::getApplication()->enqueueMessage('Syntax error, malformed JSON', 'error');
+            break;
+            case JSON_ERROR_UTF8:
+                JFactory::getApplication()->enqueueMessage('Malformed UTF-8 characters, possibly incorrectly encoded', 'error');
+            break;
+            default:
+                JFactory::getApplication()->enqueueMessage(' Unknown error', 'error');
+            break;
+        }
+    }
+
+    protected function checkVar($check, $default){
+        $value = $check;
+        if(empty($value)){
+            $value = $default;
+        }
+        return $value;
+    }
 
     // This is actually getItems in JModelList
     // Pagination works with this by itself
     // Here goes Fiters
     protected function getListQuery()
     {
-          
+           
         $query = $this->dbObject->getQuery(true);
 
         $query->select( array($this->views[$this->curr_view_id]["query"]["select"]) );
+
+        $query->from( $this->views[$this->curr_view_id]["query"]["from"] );
 
         // Filter Search
         $search_column = $this->getState('filter_search_column');
@@ -56,17 +90,21 @@ class AvcModelAvc extends JModelList {
         }
 
         // Filter Order
-        $order = $this->getState('filter_order');
+        if($this->getState('filter_order')!=""){
+            $order = $this->getState('filter_order') . ' ' . $this->getState('filter_order_Dir');
+        }else{
+            $order = $this->views[$this->curr_view_id]["query"]["order_by"];
+        }
         if (!empty($order)) {
-            $query->order($this->dbObject->getEscaped($order . ' ' . $this->getState('filter_order_Dir', 'DESC')));
+            $query->order($this->dbObject->getEscaped($order));
         }
 
         // GET ONLY SELECTED ROW FOR ROW LAYOUT
-        if (($this->curr_row_id > 0) && (JRequest::getVar('layout', 'default') == "row")) {
-            $query->where($this->dbObject->nameQuote("id") . " = " . $this->curr_row_id);
+        if (JRequest::getVar('layout', 'default') == "row") {
+            if($this->curr_row_id > 0){                
+                $query->where($this->dbObject->nameQuote("id") . " = " . $this->curr_row_id);
+            }
         }
-
-        $query->from( $this->views[$this->curr_view_id]["query"]["from"] );
 
         return $query;
 
@@ -98,11 +136,11 @@ class AvcModelAvc extends JModelList {
 
         // FILTER PUBLISHED        
         $groupsUserIsIn = JAccess::getGroupsByUser(JFactory::getUser()->id);
-        if(in_array(7,$groupsUserIsIn) || in_array(8,$groupsUserIsIn))
+        if(in_array(8,$groupsUserIsIn))
         {
-            // is admin
+            // is superadmin
         }else{
-            // not admin
+            // not superadmin
             $query->where( $this->dbObject->nameQuote("published") . " = 1" );
             $query->where( $this->dbObject->nameQuote("admin_only") . " = 0" );
         }
@@ -119,7 +157,9 @@ class AvcModelAvc extends JModelList {
             $this->views[$viewID]["name"] = $value["name"];
             $this->views[$viewID]["icon_path"] = $value["icon_path"];
             $this->views[$viewID]["query"] = json_decode($value["query"], true);
+            $this->checkJSON();
             $this->views[$viewID]["fields_config"] = json_decode($value["fields_config"], true);
+            $this->checkJSON();
             $this->views[$viewID]["group_alias"] = $value["group_alias"];
             $this->views[$viewID]["published"] = $value["published"];
         }

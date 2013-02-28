@@ -45,6 +45,7 @@ class AVC {
         $history = $mainframe->getUserStateFromRequest( "AVC_LAYOUT_STATE_HISTORY", "AVC_LAYOUT_STATE_HISTORY", $mainframe->getCfg("AVC_LAYOUT_STATE_HISTORY") );
 
         $this->state_history = json_decode($history, true);
+        $this->checkJSON();
         $history_curr = end($this->state_history["module".$this->module_id]);
         $this->state_view = $history_curr["view"];
         $this->state_view_name = $history_curr["view_name"];  
@@ -88,6 +89,31 @@ class AVC {
 
     }
 
+    protected function checkJSON(){
+       switch (json_last_error()) {
+            case JSON_ERROR_NONE:
+            break;
+            case JSON_ERROR_DEPTH:
+                JFactory::getApplication()->enqueueMessage('Maximum stack depth exceeded', 'error');
+            break;
+            case JSON_ERROR_STATE_MISMATCH:
+                JFactory::getApplication()->enqueueMessage('Underflow or the modes mismatch', 'error');
+            break;
+            case JSON_ERROR_CTRL_CHAR:
+                JFactory::getApplication()->enqueueMessage('Unexpected control character found', 'error');
+            break;
+            case JSON_ERROR_SYNTAX:
+                JFactory::getApplication()->enqueueMessage('Syntax error, malformed JSON', 'error');
+            break;
+            case JSON_ERROR_UTF8:
+                JFactory::getApplication()->enqueueMessage('Malformed UTF-8 characters, possibly incorrectly encoded', 'error');
+            break;
+            default:
+                JFactory::getApplication()->enqueueMessage(' Unknown error', 'error');
+            break;
+        }
+    }
+
     protected function checkVar($check, $default){
         $value = $check;
         if(empty($value)){
@@ -108,6 +134,7 @@ class AVC {
         $myQueryList = $this->dbObject->loadAssocList();
 
         $this->default_query = json_decode($myQueryList[0]["query"], true);
+        $this->checkJSON();
         
         // SET DEFAULTS FOR EMPTY STATES
         $this->state_view_name = $this->checkVar($this->state_limit, $myQueryList[0]["name"]);
@@ -122,6 +149,7 @@ class AVC {
         if(empty($this->state_tmpl)){
             if(!empty($myQueryList[0]["tmpl"])){
                 $this->state_tmpl = json_decode($myQueryList[0]["tmpl"], true);
+                $this->checkJSON();
             }else{
                 $this->state_tmpl["name"] = "default";
                 $this->state_tmpl["vars"] = array();
@@ -160,7 +188,7 @@ class AVC {
             }
 
             // ORDER
-            if($this->state_order_by != ""){
+            if(!empty($this->state_order_by)){
                 $query->order($this->state_order_by);
             }
 

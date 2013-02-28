@@ -124,7 +124,9 @@ function jInsertRelSelect(rel_name,rel_value){
 }
 
 function relOnChange(rel_name,rel_value){
-    $(\'lbl_\'+rel_name).set(\'text\',AVC_REL[rel_name][rel_value]); 
+	if(AVC_REL[rel_name][rel_value]){		
+    	$(\'lbl_\'+rel_name).set(\'text\',AVC_REL[rel_name][rel_value]); 
+	}
 }
 
 //////////////////////////////
