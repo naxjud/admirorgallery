@@ -78,7 +78,7 @@ class AvcViewAvc extends JView {
                 $this->listOrder = $this->state->get('filter_order');
                 $this->items = $this->get('Items');    
                 $this->curr_row_id = $this->get('CurrRowId');  
-
+                
                 // Track outputs in debug mode
                 if(JDEBUG){ 
                     echo "ITEMS:<br />";                   
@@ -125,6 +125,7 @@ class AvcViewAvc extends JView {
                 JToolBarHelper::custom('save', 'AVC_save', 'AVC_save', JText::_('COM_AVC_SAVE_AND_CLOSE'), false, false);
                 JToolBarHelper::custom('saveAndNew', 'AVC_save_and_new', 'AVC_save_and_new', JText::_('COM_AVC_SAVE_AND_NEW'), false, false);
                 JToolBarHelper::custom('cancel', 'AVC_cancel', 'AVC_cancel', JText::_('COM_AVC_CANCEL'), false, false);
+                JToolBarHelper::custom('refresh', 'AVC_refresh', 'AVC_refresh', JText::_('COM_AVC_REFRESH'), false, false);
                 break;
             default:
         }

@@ -1,17 +1,59 @@
 <?php
 
+// No direct access
+defined('_JEXEC') or die('Restricted access');
+
+if($FIELD_VALUE && $FIELD_VALUE!=0){
+
 ///////////////////////////////////////////////
 //	CREATE LISTING
 ///////////////////////////////////////////////
 
 $dbObject = JFactory::getDBO();
 $query = $dbObject->getQuery(true);
-$query->select('*');
-$query->from($dbObject->nameQuote($FIELD_REL->table));
-$query->where($dbObject->nameQuote($FIELD_REL->key)."=".$dbObject->Quote($FIELD_VALUE));
-$dbObject->setQuery($query);
-$ROW = $dbObject->loadAssocList();
-if(!empty($FIELD_VALUE)){	
-	echo $ROW[0][$FIELD_PARAMS->label] . " (" . $FIELD_VALUE . ")";
+$query->select( array( $FIELD_PARAMS["select"] ) );
+$query->from( $FIELD_PARAMS["from"] );
+
+// WHERE
+if(!empty($FIELD_PARAMS["where"])){
+    foreach ($FIELD_PARAMS["where"] as $value) {
+		if(!is_numeric($FIELD_VALUE)){
+     		$value = str_replace("FIELD_VALUE", $dbObject->Quote($FIELD_VALUE), $value);
+		}else{
+     		$value = str_replace("FIELD_VALUE", $FIELD_VALUE, $value);
+		}
+        $query->where($value);
+    }
 }
 
+// HAVING
+if(!empty($FIELD_PARAMS["having"])){
+    foreach ($FIELD_PARAMS["having"] as $value) {    	
+		if(!is_numeric($FIELD_VALUE)){
+     		$value = str_replace("FIELD_VALUE", $dbObject->Quote($FIELD_VALUE), $value);
+		}else{
+     		$value = str_replace("FIELD_VALUE", $FIELD_VALUE, $value);
+		}
+        $query->having($value);
+    }
+}
+
+// LEFT JOIN
+if(!empty($FIELD_PARAMS["left_join"])){
+    foreach ($FIELD_PARAMS["left_join"] as $value) { 
+        $query->leftJoin($value);
+    }
+}
+
+// ORDER
+if(!empty($FIELD_PARAMS["order_by"])){
+    $query->order($FIELD_PARAMS["order_by"]);
+}
+
+$dbObject->setQuery($query);
+$ROW = $dbObject->loadAssocList();
+
+echo $FIELD_VALUE." - ";
+echo "<i>".implode(", ", $ROW[0])."</i>";
+		
+}

@@ -78,8 +78,9 @@ class AvcControllerAvc extends AvcController {
         parent::display();
     }
 
-    function refresh() {        
-        JRequest::setVar('layout', 'table');
+    function refresh() { 
+        $currLayout = JRequest::getVar('layout', 'default');     
+        JRequest::setVar('layout', $currLayout);
         parent::display();
     }
 

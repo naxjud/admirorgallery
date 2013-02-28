@@ -1,5 +1,8 @@
 <?php
 
+// No direct access
+defined('_JEXEC') or die('Restricted access');
+
 echo '
 <div class="form_items form_items1">
 	<label id="jform_enabled-lbl" for="jform_enabled">
