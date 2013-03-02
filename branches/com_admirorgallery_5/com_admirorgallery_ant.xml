@@ -12,7 +12,7 @@
 
 <project name="admirorgallery" default="all" basedir=".">
     <import file="common.xml"/>
-    <target name="all" depends="cbuild,csync,cpackage,pbuild,psync,ppackage,bbuild,bsync,bpackage"/>
+    <target name="all" depends="cbuild,csync,cpackage"/>
     <target name="cpackage">
         <antcall target="_package">
             <param name="NAME" value="com_admirorgallery"/>
@@ -27,38 +27,6 @@
     <target name="csync">
         <antcall target="_sync">
             <param name="NAME" value="com_admirorgallery"/>
-        </antcall>
-    </target>
-    <target name="ppackage">
-        <antcall target="_package">
-            <param name="NAME" value="admirorgallery"/>
-        </antcall>
-    </target>
-    <target name="pbuild">
-        <antcall target="buildplugin">
-            <param name="NAME" value="admirorgallery"/>
-            <param name="PREFIX" value="content"/>
-        </antcall>
-    </target>
-    <target name="psync">
-        <antcall target="_sync">
-            <param name="NAME" value="admirorgallery"/>
-        </antcall>
-    </target>
-    <target name="bpackage">
-        <antcall target="_package">
-            <param name="NAME" value="admirorbutton"/>
-        </antcall>
-    </target>
-    <target name="bbuild">
-        <antcall target="buildsysplugin">
-            <param name="NAME" value="admirorbutton"/>
-            <param name="PREFIX" value="editors-xtd"/>
-        </antcall>
-    </target>
-    <target name="bsync">
-        <antcall target="_sync">
-            <param name="NAME" value="admirorbutton"/>
         </antcall>
     </target>
 </project>
