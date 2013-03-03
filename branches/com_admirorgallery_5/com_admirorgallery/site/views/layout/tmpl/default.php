@@ -38,7 +38,12 @@ $ag_inlineParams.=' paginImagesPerGallery="'.$this->paginImagesPerGallery.'"';
 JPluginHelper::importPlugin( 'content' );
 
 $article = new JObject();
-$article->text = '{AG '.$ag_inlineParams.' }'.$this->galleryName.'{/AG}';
+//Display page heading
+if(JSite::getMenu()->getActive()->params->getValue('show_page_heading'))
+{
+    $article->text = '<h1>'.JSite::getMenu()->getActive()->params->getValue('page_title').'</h1>';
+}
+$article->text .= '{AG '.$ag_inlineParams.' }'.$this->galleryName.'{/AG}';
 $article->id = 0;
 $limitstart = 0;
 $dispatcher = JDispatcher::getInstance();
