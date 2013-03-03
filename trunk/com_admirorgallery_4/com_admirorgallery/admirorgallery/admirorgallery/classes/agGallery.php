@@ -12,8 +12,8 @@
  
 define('PLUGIN_BASE_PATH', '/plugins/content/admirorgallery/admirorgallery/');
 
-require_once (dirname(__FILE__) . DS . 'agHelper.php');
-require_once (dirname(__FILE__) . DS . 'agPopup.php');
+require_once (dirname(__FILE__) . DIRECTORY_SEPARATOR . 'agHelper.php');
+require_once (dirname(__FILE__) . DIRECTORY_SEPARATOR . 'agPopup.php');
 
 class agGallery extends agHelper {
 
@@ -50,7 +50,7 @@ class agGallery extends agHelper {
     private $doc = null;
     private $descArray = array();
     private $match = '';
-    private $DS = '/';
+    private $DS = DIRECTORY_SEPARATOR;
 
     //**************************************************************************
     //Template API functions                                                  //
@@ -60,7 +60,7 @@ class agGallery extends agHelper {
      * @param <string> $imageName
      */
     function getImageInfo($imageName) {
-        $this->imageInfo = agHelper::ag_imageInfo($this->imagesFolderPhysicalPath . DS . $imageName);
+        $this->imageInfo = agHelper::ag_imageInfo($this->imagesFolderPhysicalPath . $this->DS . $imageName);
         $this->imageInfo["size"] = agHelper::ag_fileRoundSize($this->imageInfo["size"]);
     }
 
@@ -195,7 +195,7 @@ class agGallery extends agHelper {
                 if (empty($thumb_file)) {
                     $images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath . $folderName);
                     if (!empty($images)) {
-                        $images = agHelper::array_sorting($images, $this->imagesFolderPhysicalPath . $folderName . DS, $this->params['arrange']);
+                        $images = agHelper::array_sorting($images, $this->imagesFolderPhysicalPath . $folderName . $this->DS, $this->params['arrange']);
                         $thumb_file = $images[0]; // Get First image in folder as thumb 
                     }
                 }
@@ -231,7 +231,7 @@ class agGallery extends agHelper {
                     $html.= '<div class="AG_pagin_wrap">';
                     $paginPrev = ($this->paginInitPages[$this->index] - 1);
                     if ($paginPrev >= 1) {
-                        $html.= '<a href="" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginPrev . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_prev">' . JText::_("PREV") . '</a>';
+                        $html.= '<a href="" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginPrev . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_prev">' . JText::_("AG_PREV") . '</a>';
                     }
                     for ($i = 1; $i <= ceil($this->paginImgTotal / $this->params['paginImagesPerGallery']); $i++) {
                         if ($i == $this->paginInitPages[$this->index]) {
@@ -242,7 +242,7 @@ class agGallery extends agHelper {
                     }
                     $paginNext = ($this->paginInitPages[$this->index] + 1);
                     if ($paginNext <= ceil($this->paginImgTotal / $this->params['paginImagesPerGallery'])) {
-                        $html.= '<a href="" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginNext . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_next">' . JText::_("NEXT") . '</a>';
+                        $html.= '<a href="" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginNext . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_next">' . JText::_("AG_NEXT") . '</a>';
                     }
                     $html.= '<br style="clear:both"></div>';
                 }
@@ -282,7 +282,7 @@ class agGallery extends agHelper {
      */
 
     function initPopup() {
-        require (dirname(dirname(__FILE__)). DS . 'popups' . DS . $this->params['popupEngine'] . DS . 'index.php');
+        require (dirname(dirname(__FILE__)). $this->DS . 'popups' . $this->DS . $this->params['popupEngine'] . $this->DS . 'index.php');
         return $this->popupEngine->initCode;
     }
 
@@ -356,8 +356,8 @@ class agGallery extends agHelper {
 
             $this->doc->addScriptDeclaration('var albumInitFolders_' . $this->articleID . '="' . implode(",", $this->albumInitFolders) . '";');
         }
-        $this->imagesFolderPhysicalPath = $this->sitePhysicalPath . $this->params['rootFolder'] . $this->imagesFolderName . DS;
-        $this->thumbsFolderPhysicalPath = $this->sitePhysicalPath . PLUGIN_BASE_PATH . 'thumbs' . DS . $this->imagesFolderName . DS;
+        $this->imagesFolderPhysicalPath = $this->sitePhysicalPath . $this->params['rootFolder'] . $this->imagesFolderName . $this->DS;
+        $this->thumbsFolderPhysicalPath = $this->sitePhysicalPath . PLUGIN_BASE_PATH . 'thumbs' . $this->DS . $this->imagesFolderName . $this->DS;
         $this->imagesFolderPath = $this->sitePath . $this->params["rootFolder"] . $this->imagesFolderName . '/';
         $this->readDescriptionFiles();
         $this->loadImageFiles();
@@ -414,16 +414,15 @@ class agGallery extends agHelper {
                     }
 
                     if (file_exists($descriptionFileApsolutePath)) {// Check is descriptions file exists
-                        $ag_imgXML_xml = JFactory::getXMLParser('simple');
-                        $ag_imgXML_xml->loadFile($descriptionFileApsolutePath);
-                        $ag_imgXML_captions = $ag_imgXML_xml->document->captions[0];
+                        $ag_imgXML_xml = JFactory::getXML($descriptionFileApsolutePath);
+                        $ag_imgXML_captions = $ag_imgXML_xml->captions;
                         $lang = JFactory::getLanguage();
                         $langTag = strtolower($lang->getTag());
 
                         // GET DEFAULT LABEL
                         if (!empty($ag_imgXML_captions->caption)) {
                             foreach ($ag_imgXML_captions->caption as $ag_imgXML_caption) {
-                                if (strtolower($ag_imgXML_caption->attributes('lang')) == "default") {
+                                if (strtolower($ag_imgXML_caption->attributes()->lang->data()) == "default") {
                                     $this->descArray[$f] = $ag_imgXML_caption->data();
                                 }
                             }
@@ -432,11 +431,12 @@ class agGallery extends agHelper {
                         // GET CURRENT LANG LABEL
                         if (!empty($ag_imgXML_captions->caption)) {
                             foreach ($ag_imgXML_captions->caption as $ag_imgXML_caption) {
-                                if (strtolower($ag_imgXML_caption->attributes('lang')) == strtolower($langTag)) {
+                                if (strtolower($ag_imgXML_caption->attributes()->lang->data()) == strtolower($langTag)) {
                                     $this->descArray[$f] = $ag_imgXML_caption->data();
                                 }
                             }
                         }
+
 
 
                         // RICH TEXT SUPPORT
@@ -498,8 +498,8 @@ class agGallery extends agHelper {
             return;
         }
         //Add's index.html to thumbs folder
-        if (!file_exists($this->thumbsFolderPhysicalPath . DS . 'index.html')) {
-            $this->ag_indexWrite($this->thumbsFolderPhysicalPath . DS . 'index.html');
+        if (!file_exists($this->thumbsFolderPhysicalPath . $this->DS . 'index.html')) {
+            $this->ag_indexWrite($this->thumbsFolderPhysicalPath . $this->DS . 'index.html');
         }
         // Check for Changes
         if (!empty($this->images)) {
@@ -546,8 +546,8 @@ class agGallery extends agHelper {
             $this->adderror(JText::_("AG_CANNOT_CREATE_THUMBNAILS_WIDTH_AND_HEIGHT_MUST_BE_GREATER_THEN_0"));
             return;
         }
-        $imagesFolderPhysicalPath = $this->imagesFolderPhysicalPath . $AG_parent_folder . DS;
-        $thumbsFolderPhysicalPath = $this->thumbsFolderPhysicalPath . $AG_parent_folder . DS;
+        $imagesFolderPhysicalPath = $this->imagesFolderPhysicalPath . $AG_parent_folder . $this->DS;
+        $thumbsFolderPhysicalPath = $this->thumbsFolderPhysicalPath . $AG_parent_folder . $this->DS;
         //Create directory in thumbs for gallery
         if (!file_exists($thumbsFolderPhysicalPath)) {
             JFolder::create($thumbsFolderPhysicalPath, 0755);
@@ -694,7 +694,7 @@ class agGallery extends agHelper {
             $path = substr($path, 0, -1);
         $this->sitePath = $path;
         $this->sitePhysicalPath = $sitePhysicalPath;
-        $this->thumbsFolderPhysicalPath = $sitePhysicalPath . PLUGIN_BASE_PATH . 'thumbs' . DS;
+        $this->thumbsFolderPhysicalPath = $sitePhysicalPath . PLUGIN_BASE_PATH . 'thumbs' . $this->DS;
         $this->imagesFolderPhysicalPath = $sitePhysicalPath . $this->params["rootFolder"];
         $this->cleanThumbsFolder();
         $this->doc = $document;

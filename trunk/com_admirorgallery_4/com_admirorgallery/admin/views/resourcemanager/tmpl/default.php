@@ -129,13 +129,12 @@ foreach ($ag_resourceManager_installed as $ag_resourceManager_Key => $ag_resourc
 		$ag_resourceManager_description = JText::_( "AG_NO_DESCRITION");
 
 		if(JFIle::exists(JPATH_SITE.'/plugins/content/admirorgallery/admirorgallery/'.$AG_resourceType.'/'.$ag_resourceManager_id.'/details.xml')){// N U
-			$ag_resourceManager_xml =JFactory::getXMLParser( 'simple' );
-			$ag_resourceManager_xml->loadFile( JPATH_SITE.'/plugins/content/admirorgallery/admirorgallery/'.$AG_resourceType.'/'.$ag_resourceManager_id.'/details.xml' );// N U
-			$ag_resourceManager_name = $ag_resourceManager_xml->document->name[0]->data();
-			$ag_resourceManager_creationDate = $ag_resourceManager_xml->document->creationDate[0]->data();
-			$ag_resourceManager_author = $ag_resourceManager_xml->document->author[0]->data();
-			$ag_resourceManager_version = $ag_resourceManager_xml->document->version[0]->data();
-			$ag_resourceManager_description = $ag_resourceManager_xml->document->description[0]->data();			
+			$ag_resourceManager_xml =JFactory::getXML( JPATH_SITE.'/plugins/content/admirorgallery/admirorgallery/'.$AG_resourceType.'/'.$ag_resourceManager_id.'/details.xml');
+                        $ag_resourceManager_name = $ag_resourceManager_xml->name;
+			$ag_resourceManager_creationDate = $ag_resourceManager_xml->creationDate;
+			$ag_resourceManager_author = $ag_resourceManager_xml->author;
+			$ag_resourceManager_version = $ag_resourceManager_xml->version;
+			$ag_resourceManager_description = $ag_resourceManager_xml->description;	
 		}
 
 		echo '     

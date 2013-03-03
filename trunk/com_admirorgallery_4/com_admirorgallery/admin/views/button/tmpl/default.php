@@ -10,7 +10,7 @@
 # Version: 4.5.0
 -------------------------------------------------------------------------*/
 defined('_JEXEC') or die('Restricted access');
-
+jimport( 'joomla.filesystem.folder' );
 $AG_template = JRequest::getVar('AG_template'); // Current template for AG Component
 // GET ROOT FOLDER
 $plugin = JPluginHelper::getPlugin('content', 'admirorgallery');
@@ -56,7 +56,7 @@ $ag_init_itemURL = $ag_rootFolder;
             $db->setQuery($query);
             $row = $db->loadAssoc();
 
-            $paramsdefs = JPATH_COMPONENT_ADMINISTRATOR . DS . 'views' . DS . 'button' . DS . 'tmpl' . DS . 'default.xml';
+            $paramsdefs = JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'button' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default.xml';
             $myparams = JForm::getInstance('AG_Settings', $paramsdefs);
 
             $values = array('params' => json_decode($row['params']));

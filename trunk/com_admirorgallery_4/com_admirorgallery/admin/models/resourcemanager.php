@@ -31,29 +31,28 @@ class AdmirorgalleryModelResourcemanager extends JModel
 	       $ext = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 
 	       $src = $file['tmp_name'];
-	       $dest = $tmp_dest.DS.$filename;
+	       $dest = $tmp_dest.DIRECTORY_SEPARATOR.$filename;
 
 	       //First check if the file has the right extension
 	       if ($ext == $file_type) {
 		    if ( JFile::upload($src, $dest) ) {
 
-			      if(JArchive::extract($tmp_dest.DS.$filename, JPATH_SITE.DS.'plugins'.DS.'content'.DS.'admirorgallery'.DS.'admirorgallery'.DS.$AG_resourceType )){
-				   JFile::delete($tmp_dest.DS.$filename);
+			      if(JArchive::extract($tmp_dest.DIRECTORY_SEPARATOR.$filename, JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.$AG_resourceType )){
+				   JFile::delete($tmp_dest.DIRECTORY_SEPARATOR.$filename);
 			      }
 
 			      // TEMPLATE DETAILS PARSING
-			      if(JFIle::exists(JPATH_SITE.DS.'plugins'.DS.'content'.DS.'admirorgallery'.DS.'admirorgallery'.DS.$AG_resourceType.DS.JFile::stripExt($filename).DS.'details.xml')){
-				   $ag_resourceManager_xml = JFactory::getXMLParser( 'simple' );
-				   $ag_resourceManager_xml->loadFile(JPATH_SITE.DS.'plugins'.DS.'content'.DS.'admirorgallery'.DS.'admirorgallery'.DS.$AG_resourceType.DS.JFile::stripExt($filename).DS.'details.xml');
-				   if(isset($ag_resourceManager_xml->document->type[0])){
-					$ag_resourceManager_type = $ag_resourceManager_xml->document->type[0]->data();	
+			      if(JFIle::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.$AG_resourceType.DIRECTORY_SEPARATOR.JFile::stripExt($filename).DIRECTORY_SEPARATOR.'details.xml')){
+				   $ag_resourceManager_xml =& JFactory::getXML( JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.$AG_resourceType.DIRECTORY_SEPARATOR.JFile::stripExt($filename).DIRECTORY_SEPARATOR.'details.xml' );
+				   if(isset($ag_resourceManager_xml->type)){
+					$ag_resourceManager_type = $ag_resourceManager_xml->type;	
 				   }
 			      }
 
 			      if($ag_resourceManager_type == $resourceType){
 				   JFactory::getApplication()->enqueueMessage( JText::_( 'AG_ZIP_PACKAGE_IS_INSTALLED' )."&nbsp;".$filename, 'message' );
 			      }else{
-				   JFolder::delete(JPATH_SITE.DS.'plugins'.DS.'content'.DS.'admirorgallery'.DS.'admirorgallery'.DS.$AG_resourceType.DS.JFile::stripExt($filename));
+				   JFolder::delete(JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.$AG_resourceType.DIRECTORY_SEPARATOR.JFile::stripExt($filename));
 				   JFactory::getApplication()->enqueueMessage( JText::_( 'AG_ZIP_PACKAGE_IS_NOT_VALID_RESOURCE_TYPE' )."&nbsp;".$filename, 'error' );
 			      }
 		    } else {
@@ -69,7 +68,7 @@ class AdmirorgalleryModelResourcemanager extends JModel
 	  $AG_resourceType = JRequest::getVar( 'AG_resourceType' );// Current resource type
 	  foreach($ag_cidArray as $ag_cidArrayKey => $ag_cidArrayValue){
 		    if(!empty($ag_cidArrayValue)){
-			 if(JFolder::delete(JPATH_SITE.DS.'plugins'.DS.'content'.DS.'admirorgallery'.DS.'admirorgallery'.DS.$AG_resourceType.DS.$ag_cidArrayValue)){
+			 if(JFolder::delete(JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.$AG_resourceType.DIRECTORY_SEPARATOR.$ag_cidArrayValue)){
 			      JFactory::getApplication()->enqueueMessage( JText::_( 'AG_PACKAGE_REMOVED' )."&nbsp;".$ag_cidArrayValue, 'message' );
 			 }else{
 			      JFactory::getApplication()->enqueueMessage( JText::_( 'AG_PACKAGE_CANNOT_BE_REMOVED' )."&nbsp;".$ag_cidArrayValue, 'error' );

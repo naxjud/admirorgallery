@@ -39,7 +39,7 @@ class com_admirorgalleryInstallerScript {
         // Install plugins
         foreach ($manifest->plugins->plugin as $plugin) {
             $attributes = $plugin->attributes();
-            $plg = $source . DS . $attributes['folder'] . DS . $attributes['plugin'];
+            $plg = $source . DIRECTORY_SEPARATOR . $attributes['folder'] . DIRECTORY_SEPARATOR . $attributes['plugin'];
             $installer->install($plg);
         }
 
