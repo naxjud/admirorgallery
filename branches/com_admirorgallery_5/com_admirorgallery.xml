@@ -44,7 +44,7 @@
             <folder>slimbox</folder>
             <folder>templates</folder>
             <folder>views</folder>
-            <filename>admirorgallery.php</filename>
+            <filename>admin.admirorgallery.php</filename>
             <filename>controller.php</filename>
             <filename>config.xml</filename>
             <filename>index.html</filename>

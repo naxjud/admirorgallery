@@ -282,7 +282,7 @@ class agGallery extends agHelper {
      */
 
     function initPopup() {
-        require ('plugins' . $this->DS . 'content' . $this->DS . 'admirorgallery' . $this->DS . 'admirorgallery' . $this->DS . 'popups' . $this->DS . $this->params['popupEngine'] . $this->DS . 'index.php');
+        require (dirname(dirname(__FILE__)). $this->DS . 'popups' . $this->DS . $this->params['popupEngine'] . $this->DS . 'index.php');
         return $this->popupEngine->initCode;
     }
 
@@ -414,16 +414,16 @@ class agGallery extends agHelper {
                     }
 
                     if (file_exists($descriptionFileApsolutePath)) {// Check is descriptions file exists
-                        $ag_imgXML_xml = JFactory::getXML('simple');
-                        $ag_imgXML_xml->loadFile($descriptionFileApsolutePath);
-                        $ag_imgXML_captions = $ag_imgXML_xml->document->captions[0];
+                        $ag_imgXML_xml = JFactory::getXML($descriptionFileApsolutePath);
+                        $ag_imgXML_captions = $ag_imgXML_xml->captions;
                         $lang = JFactory::getLanguage();
                         $langTag = strtolower($lang->getTag());
 
                         // GET DEFAULT LABEL
                         if (!empty($ag_imgXML_captions->caption)) {
                             foreach ($ag_imgXML_captions->caption as $ag_imgXML_caption) {
-                                if (strtolower($ag_imgXML_caption->attributes('lang')) == "default") {
+                                print_r($ag_imgXML_caption->attributes()->lang->data());
+                                if (strtolower($ag_imgXML_caption->attributes()->lang->data()) == "default") {
                                     $this->descArray[$f] = $ag_imgXML_caption->data();
                                 }
                             }
@@ -432,11 +432,12 @@ class agGallery extends agHelper {
                         // GET CURRENT LANG LABEL
                         if (!empty($ag_imgXML_captions->caption)) {
                             foreach ($ag_imgXML_captions->caption as $ag_imgXML_caption) {
-                                if (strtolower($ag_imgXML_caption->attributes('lang')) == strtolower($langTag)) {
+                                if (strtolower($ag_imgXML_caption->attributes()->lang->data()) == strtolower($langTag)) {
                                     $this->descArray[$f] = $ag_imgXML_caption->data();
                                 }
                             }
                         }
+
 
 
                         // RICH TEXT SUPPORT

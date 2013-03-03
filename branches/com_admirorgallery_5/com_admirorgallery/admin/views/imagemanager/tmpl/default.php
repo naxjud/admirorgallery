@@ -217,21 +217,17 @@ echo '
 
 $bookmarkPath = JPATH_SITE.'/administrator/components/com_admirorgallery/assets/bookmarks.xml';
 $ag_bookmarks_xml = JFactory::getXML( $bookmarkPath );
-//if($ag_bookmarks_xml)
-//{
-    //$ag_bookmarks_xml->loadFile( $bookmarkPath );
-//}
-if(isset($ag_bookmarks_xml->document->bookmark)){
-    foreach($ag_bookmarks_xml->document->bookmark as $key => $value){
+if(isset($ag_bookmarks_xml->bookmark)){
+    foreach($ag_bookmarks_xml->bookmark as $key => $value){
         echo '
 <table border="0" cellspacing="0" cellpadding="0"><tbody><tr>
 <td><img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/bookmarkRemove.png" style="float:left;" /></td>
-<td><input type="checkbox" value="'.$ag_bookmarks_xml->document->bookmark[$key].'" name="AG_cbox_bookmarkRemove[]"></td>
+<td><input type="checkbox" value="'.$value.'" name="AG_cbox_bookmarkRemove[]"></td>
 <td><span class="AG_border_color AG_border_width AG_separator">&nbsp;</span></td>
 <td>
-<a href="'.$ag_bookmarks_xml->document->bookmark[$key].'"  class="AG_folderLink AG_common_button" title="'.$ag_bookmarks_xml->document->bookmark[$key].'">
+<a href="'.$value.'"  class="AG_folderLink AG_common_button" title="'.$value.'">
 <span><span>
-          '.agHelper::ag_shrinkString(basename($ag_bookmarks_xml->document->bookmark[$key]),20,'...').'
+          '.agHelper::ag_shrinkString(basename($value),20,'...').'
 </span></span>
 </a>
 </td>
@@ -239,6 +235,7 @@ if(isset($ag_bookmarks_xml->document->bookmark)){
         '."\n";
     }
 }
+
 
 echo '
 	              <div style="clear:both" class="AG_margin_bottom"></div>

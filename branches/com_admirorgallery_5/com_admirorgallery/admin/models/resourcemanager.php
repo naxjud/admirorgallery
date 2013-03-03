@@ -19,7 +19,7 @@ class AdmirorgalleryModelResourcemanager extends JModelLegacy
     function _install($file) {
 
 	  $AG_resourceType = JRequest::getVar( 'AG_resourceType' );// Current resource type
-	  $config =& JFactory::getConfig();
+	  $config =JFactory::getConfig();
 	  $tmp_dest = $config->getValue('config.tmp_path');
 	  $resourceType = substr($AG_resourceType,0,strlen($AG_resourceType)-1);	
 
@@ -44,9 +44,8 @@ class AdmirorgalleryModelResourcemanager extends JModelLegacy
 			      // TEMPLATE DETAILS PARSING
 			      if(JFIle::exists(JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.$AG_resourceType.DIRECTORY_SEPARATOR.JFile::stripExt($filename).DIRECTORY_SEPARATOR.'details.xml')){
 				   $ag_resourceManager_xml =& JFactory::getXML( JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.$AG_resourceType.DIRECTORY_SEPARATOR.JFile::stripExt($filename).DIRECTORY_SEPARATOR.'details.xml' );
-				   //$ag_resourceManager_xml->loadFile(JPATH_SITE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.'admirorgallery'.DIRECTORY_SEPARATOR.$AG_resourceType.DIRECTORY_SEPARATOR.JFile::stripExt($filename).DIRECTORY_SEPARATOR.'details.xml');
-				   if(isset($ag_resourceManager_xml->document->type[0])){
-					$ag_resourceManager_type = $ag_resourceManager_xml->document->type;	
+				   if(isset($ag_resourceManager_xml->type)){
+					$ag_resourceManager_type = $ag_resourceManager_xml->type;	
 				   }
 			      }
 
