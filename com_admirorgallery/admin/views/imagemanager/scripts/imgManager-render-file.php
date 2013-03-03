@@ -47,8 +47,7 @@ if(file_exists(JPATH_SITE."/plugins/content/admirorgallery/admirorgallery/thumbs
 if(file_exists($ag_imgXML_path)){
      $ag_hasXML='<img src="'.JURI::root().'administrator/components/com_admirorgallery/templates/'.$AG_templateID.'/images/icon-hasXML.png" class="ag_hasXML" />';
      $ag_imgXML_xml = JFactory::getXML( $ag_imgXML_path );
-     //$ag_imgXML_xml->loadFile($ag_imgXML_path);
-     $ag_imgXML_captions = $ag_imgXML_xml->document->captions;
+     $ag_imgXML_captions = $ag_imgXML_xml->captions;
 }
 
 $ag_preview_content='';
@@ -131,8 +130,8 @@ $ag_matchCheck = Array("default");
 $ag_imgXML_caption_content="";
 if(!empty($ag_imgXML_captions->caption)){
   foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
-      if(strtolower($ag_imgXML_caption->attributes('lang')) == "default"){
-	  $ag_imgXML_caption_content = $ag_imgXML_caption->data();
+      if(strtolower($ag_imgXML_caption->attributes()->lang->data()) == "default"){
+	  $ag_imgXML_caption_content = $ag_imgXML_caption;
       }
   }
 }
@@ -146,8 +145,8 @@ if(!empty($ag_lang_available)){
 	$ag_imgXML_caption_content="";
 	if(!empty($ag_imgXML_captions->caption)){
 	  foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
-	      if(strtolower($ag_imgXML_caption->attributes('lang')) == strtolower($ag_lang["tag"])){
-		  $ag_imgXML_caption_content = $ag_imgXML_caption->data();
+	      if(strtolower($ag_imgXML_caption->attributes()->lang->data()) == strtolower($ag_lang["tag"])){
+		  $ag_imgXML_caption_content = $ag_imgXML_caption;
 		  $ag_matchCheck[]=strtolower($ag_lang["tag"]);
 	      }
 	  }
@@ -158,9 +157,9 @@ if(!empty($ag_lang_available)){
 
 if(!empty($ag_imgXML_captions->caption)){
     foreach($ag_imgXML_captions->caption as $ag_imgXML_caption){
-	$ag_imgXML_caption_attr = $ag_imgXML_caption->attributes('lang');
+	$ag_imgXML_caption_attr = $ag_imgXML_caption->attributes()->lang->data();
 	if(!is_numeric(array_search(strtolower($ag_imgXML_caption_attr),$ag_matchCheck))){
-	      $ag_preview_content.= ag_render_caption($ag_imgXML_caption_attr, $ag_imgXML_caption_attr, $ag_imgXML_caption->data());
+	      $ag_preview_content.= ag_render_caption($ag_imgXML_caption_attr, $ag_imgXML_caption_attr, $ag_imgXML_caption);
 	}
     }
 }

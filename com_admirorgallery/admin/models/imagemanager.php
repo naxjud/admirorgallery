@@ -53,17 +53,16 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
         foreach ($AG_cbox_bookmarkRemove as $key => $AG_bookmark_ID) {
             $ag_bookmarkFile = JPATH_SITE . '/administrator/components/com_admirorgallery/assets/bookmarks.xml';
 
-            $ag_bookmarks_xml = & JFactory::getXML($ag_bookmarkFile);
-            //$ag_bookmarks_xml->loadFile($ag_bookmarkFile);
-            if (isset($ag_bookmarks_xml->document->bookmark)) {
-                $ag_bookmarks_array = $ag_bookmarks_xml->document->bookmark;
+            $ag_bookmarks_xml = JFactory::getXML($ag_bookmarkFile);
+            if (isset($ag_bookmarks_xml->bookmark)) {
+                $ag_bookmarks_array = $ag_bookmarks_xml->bookmark;
             }
 
             // CHECK IF BOOKMARK ALREADY EXISTS
             $bookmarkCheck = false;
             if (!empty($ag_bookmarks_array)) {
                 foreach ($ag_bookmarks_array as $ag_bookmarks_key => $ag_bookmarks_value) {
-                    if ($ag_bookmarks_value->data() == $AG_bookmark_ID) {
+                    if ($ag_bookmarks_value == $AG_bookmark_ID) {
                         $bookmarkCheck = true;
                     }
                 }
@@ -146,9 +145,8 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
 
                 $ag_XML_priority = "";
                 if (file_exists($ag_XML_path)) {
-                    $ag_XML_xml = & JFactory::getXML($ag_XML_path);
-                    //$ag_XML_xml->loadFile($ag_XML_path);
-                    $ag_XML_priority = & $ag_XML_xml->document->priority;
+                    $ag_XML_xml = JFactory::getXML($ag_XML_path);
+                    $ag_XML_priority = $ag_XML_xml->priority;
                 }
 
                 if ($ag_XML_priority != $ag_priority) {
@@ -216,7 +214,7 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
     }
 
     function _fileUpload($AG_itemURL, $file) {
-        $config = & JFactory::getConfig();
+        $config = JFactory::getConfig();
         $tmp_dest = $config->getValue('config.tmp_path');
         $ag_ext_valid = array("jpg", "jpeg", "gif", "png", "zip");
 

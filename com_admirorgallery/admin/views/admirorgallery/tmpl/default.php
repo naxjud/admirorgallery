@@ -15,6 +15,7 @@ if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
     return;
 }
 jimport('joomla.filesystem.file');
+jimport('joomla.form.form');
 
 $AG_templateID = JRequest::getVar('AG_template'); // Current template for AG Component
 ?>
@@ -74,7 +75,7 @@ $AG_templateID = JRequest::getVar('AG_template'); // Current template for AG Com
     $fieldSets = $myparams->getFieldsets();
 
     foreach ($fieldSets as $name => $fieldSet) :
-        $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_PLUGINS_' . $name . '_FIELDIRECTORY_SEPARATORET_LABEL';
+        $label = !empty($fieldSet->label) ? $fieldSet->label : 'COM_PLUGINS_' . $name . '_FIELDSET_LABEL';
         //echo JHtml::_('sliders.panel', JText::_($label), $name.'-options');
         if (isset($fieldSet->description) && trim($fieldSet->description)) :
         //echo '<p class="tip">'.$this->escape(JText::_($fieldSet->description)).'</p>';
