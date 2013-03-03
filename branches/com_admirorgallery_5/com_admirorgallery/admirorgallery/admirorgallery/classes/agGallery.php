@@ -231,7 +231,7 @@ class agGallery extends agHelper {
                     $html.= '<div class="AG_pagin_wrap">';
                     $paginPrev = ($this->paginInitPages[$this->index] - 1);
                     if ($paginPrev >= 1) {
-                        $html.= '<a href="" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginPrev . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_prev">' . JText::_("PREV") . '</a>';
+                        $html.= '<a href="" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginPrev . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_prev">' . JText::_("AG_PREV") . '</a>';
                     }
                     for ($i = 1; $i <= ceil($this->paginImgTotal / $this->params['paginImagesPerGallery']); $i++) {
                         if ($i == $this->paginInitPages[$this->index]) {
@@ -242,7 +242,7 @@ class agGallery extends agHelper {
                     }
                     $paginNext = ($this->paginInitPages[$this->index] + 1);
                     if ($paginNext <= ceil($this->paginImgTotal / $this->params['paginImagesPerGallery'])) {
-                        $html.= '<a href="" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginNext . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_next">' . JText::_("NEXT") . '</a>';
+                        $html.= '<a href="" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginNext . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_next">' . JText::_("AG_NEXT") . '</a>';
                     }
                     $html.= '<br style="clear:both"></div>';
                 }
@@ -422,7 +422,6 @@ class agGallery extends agHelper {
                         // GET DEFAULT LABEL
                         if (!empty($ag_imgXML_captions->caption)) {
                             foreach ($ag_imgXML_captions->caption as $ag_imgXML_caption) {
-                                print_r($ag_imgXML_caption->attributes()->lang->data());
                                 if (strtolower($ag_imgXML_caption->attributes()->lang->data()) == "default") {
                                     $this->descArray[$f] = $ag_imgXML_caption->data();
                                 }
