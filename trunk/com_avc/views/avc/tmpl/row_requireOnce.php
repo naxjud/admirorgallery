@@ -156,7 +156,7 @@ $this->doc->addScriptDeclaration($JS_FIELD_REL);
 
 
 
-$JS_AVC_rowGridder.= '
+$JS_AVC_rowGridder = '
 ///////////////////////////////////////////
 // ROW GRIDER
 ///////////////////////////////////////////

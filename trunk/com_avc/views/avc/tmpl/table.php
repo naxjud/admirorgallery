@@ -70,7 +70,13 @@ jimport('joomla.filesystem.file');
 
 echo '<th style="display:none;"></th>';
 
-        foreach ($this->items[0] as $key => $value) {
+        if(!empty($this->items[0])){
+            $FIELD_LIST = $this->items[0];
+        }else{
+            $FIELD_LIST = $this->fieldsArray;
+        }
+
+        foreach ($FIELD_LIST as $key => $value) {
             echo '<th>';
             echo JHtml::_('grid.sort', JText::_(strtoupper($key)), $key, $this->listDirn, $this->listOrder);
             echo '</th>'."\n";
@@ -83,6 +89,7 @@ echo '<th style="display:none;"></th>';
         // FORMAT DATA
         echo '<tbody>'."\n";
 
+        if(!empty($this->items)){
         $row_counts = 0;
         foreach ($this->items as $item) { 
 
@@ -96,8 +103,17 @@ echo '<th style="display:none;"></th>';
 
             foreach ($item as $FIELD_ALIAS => $FIELD_VALUE) {   
 
-                $FIELD_TYPE = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"]; 
-                $FIELD_PARAMS = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"]; 
+                if(!empty($this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"])){
+                    $FIELD_TYPE = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"];
+                }else{
+                    $FIELD_TYPE = "";
+                }
+                
+                if(!empty($this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"])){
+                    $FIELD_PARAMS = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"]; 
+                }else{
+                    $FIELD_PARAMS = "";
+                }
 
                 echo '<td>';
                     // SET DEFAULT FIELD TEMPLATE
@@ -115,6 +131,7 @@ echo '<th style="display:none;"></th>';
             echo '</tr>'."\n";
             $row_counts++;
         }
+        }//if(!empty($this->items)){
         
         echo '</tbody>'."\n";
 

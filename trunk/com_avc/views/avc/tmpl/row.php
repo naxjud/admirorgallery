@@ -15,16 +15,32 @@ JHTML::_('behavior.modal'); // Modal Libriries (SqueezeBox)
 
         <?php
 
-        $TABINDEX = 0;
+        if(!empty($this->items[0])){
+            $FIELD_LIST = $this->items[0];
+        }else{
+            $FIELD_LIST = $this->fieldsArray;
+        }
 
-        foreach ($this->items[0] as $FIELD_ALIAS => $FIELD_VALUE) {// Loop through Show Fields
+        $TABINDEX = 0;        
 
-            if($this->curr_row_id==0){
-                $FIELD_VALUE = null;
+        foreach ($FIELD_LIST as $FIELD_ALIAS => $FIELD_VALUE) {// Loop through Show Fields
+
+            if($this->curr_row_id==0){// PATHC FOR NEW ITEM
+                $FIELD_VALUE = "";
             }
 
-            $FIELD_TYPE = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"]; 
-            $FIELD_PARAMS = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"]; 
+            if(!empty($this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"])){
+                $FIELD_TYPE = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"];
+            }else{
+                $FIELD_TYPE = "";
+            }
+            
+            if(!empty($this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"])){
+                $FIELD_PARAMS = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"]; 
+            }else{
+                $FIELD_PARAMS = "";
+            }
+
             $FIELD_TITLE = $FIELD_ALIAS; 
 
             if( $FIELD_ALIAS == "id" ){$FIELD_TYPE = "key";}

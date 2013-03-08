@@ -17,7 +17,7 @@ class AvcControllerAvc extends AvcController {
     private $model;
 
     function __construct() {
-
+        
         parent::__construct();
 
         $this->model = $this->getModel();

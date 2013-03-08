@@ -1,6 +1,4 @@
 <?php
-
-
 echo '
 <div class="form_items">
 	<label id="jform_enabled-lbl" for="jform_enabled">
@@ -53,6 +51,7 @@ echo '</div>';
 echo '<div class="AVC_frame" id="' . $FIELD_ALIAS . '_frame">';
 
 $count=0;
+$FIELD_JSONs="";
 if(!empty($FIELD_VALUE)){
 	foreach($FIELD_VALUE as $LABEL => $VALUE) {
 
@@ -64,13 +63,14 @@ if(!empty($FIELD_VALUE)){
 		// Create droplist
 		//////////////////////////////////
 		echo '<select onchange="avc_json_update(\'' . $FIELD_ALIAS . '\');">';
+
 		if(!empty($FIELD_PARAMS)){
 			foreach($FIELD_PARAMS as $OPTION) {
 				$select = "";
 				if($OPTION == $LABEL){
 					$select = "selected";
 				}
-				echo '<option value="' . $OPTION . '" ' . $select . '>' . $OPTION . '</option>';
+				echo '<option value="' . $OPTION . '" ' . $select . '>' . JText::_(strtoupper($OPTION)) . '</option>';
 			}
 		}
 		echo '</select>';

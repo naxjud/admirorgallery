@@ -3,7 +3,7 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-if($FIELD_VALUE && $FIELD_VALUE!=0){
+if(!empty($FIELD_VALUE) || $FIELD_VALUE!=0){
 
 ///////////////////////////////////////////////
 //	CREATE LISTING

@@ -29,6 +29,7 @@ class AvcViewAvc extends JView {
     protected $listDirn;
     protected $listOrder;
     protected $itemsRow;
+    protected $fieldsArray;
 
     function display($tpl = null) {
 
@@ -45,9 +46,9 @@ class AvcViewAvc extends JView {
 
         // Track outputs in debug mode
         if(JDEBUG){
-            echo "VIEWS:<br />";
+            echo "VIEWS:<br /><pre>";
             var_dump($this->views);
-            echo "<hr />";
+            echo "</pre><hr />";
         }
 
         switch ($this->layout) {
@@ -60,12 +61,13 @@ class AvcViewAvc extends JView {
                 $this->listOrder = $this->state->get('filter_order');
                 $this->items = $this->get('Items');
                 $this->pagination = $this->get('Pagination');
+                $this->fieldsArray = $this->get('FieldsArray');
 
                 // Track outputs in debug mode
                 if(JDEBUG){
-                    echo "ITEMS:<br />";
+                    echo "ITEMS:<br /><pre>";
                     var_dump($this->items);
-                    echo "<hr />";
+                    echo "</pre><hr />";
                 }
 
             break;
@@ -77,7 +79,8 @@ class AvcViewAvc extends JView {
                 $this->listDirn = $this->state->get('filter_order_Dir');
                 $this->listOrder = $this->state->get('filter_order');
                 $this->items = $this->get('Items');    
-                $this->curr_row_id = $this->get('CurrRowId');  
+                $this->curr_row_id = $this->get('CurrRowId'); 
+                $this->fieldsArray = $this->get('FieldsArray'); 
                 
                 // Track outputs in debug mode
                 if(JDEBUG){ 

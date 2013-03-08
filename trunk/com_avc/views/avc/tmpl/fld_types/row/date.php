@@ -9,6 +9,14 @@ echo '</label>';
 
 echo '<input tabindex="' . $TABINDEX . '" id="' . $FIELD_ALIAS . '" name="' . $FIELD_ALIAS . '" type="text" class="width_auto" value="' . $FIELD_VALUE . '" />';
 echo '<input type="button" id="' . $FIELD_ALIAS . '_btn" class="pointer width_auto calendar" value="'.JText::_('COM_AVC_SELECT').'" title="'.JText::_('COM_AVC_TOOLTIPS_DATE').'">'; 
+echo '
+<input type="button" class="pointer width_auto" value="'.JText::_('COM_AVC_CLEAR').'"
+	onclick="
+		$(\'' . $FIELD_ALIAS . '\').value = \'0000-00-00\';
+		return false;
+	"
+	>
+	';
 
 echo '
 <script  type="text/javascript">
