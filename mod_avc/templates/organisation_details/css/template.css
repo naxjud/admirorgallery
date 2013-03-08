@@ -1,0 +1,28 @@
+.AVC_SECTION_ADDRESS
+,.AVC_SECTION_PHONE
+,.AVC_SECTION_EMAIL
+,.AVC_SECTION_WEB
+{
+	border-top:1px solid #ddd;
+	padding:15px 0 15px 50px;
+	height:70px;
+	background-repeat: no-repeat;
+	background-position: 0 15px;
+}
+
+.AVC_SECTION_ADDRESS
+{
+	background-image: url("../imgs/icon-address.jpg");
+}
+.AVC_SECTION_PHONE
+{
+	background-image: url("../imgs/icon-phone.jpg");
+}
+.AVC_SECTION_EMAIL
+{
+	background-image: url("../imgs/icon-email.jpg");
+}
+.AVC_SECTION_WEB
+{
+	background-image: url("../imgs/icon-web.jpg");
+}

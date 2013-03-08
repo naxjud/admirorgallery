@@ -54,13 +54,13 @@ if($AVC_pagination_range != 0){
 
 	echo '<span class="AVC_LAYOUT_SEPARATOR">&nbsp;</span>';
 
-	if($AVC_pagination_pages[$AVC_current_page-1]){
+	if(!empty($AVC_pagination_pages[$AVC_current_page-1])){
 		echo '<a href="#" class="AVC_LAYOUT_BUTTON AVC_LAYOUT_HOVER" onclick="AVC_LAYOUT_HISTORY_UPDATE(\''.$AVC->module_id.'\', \'limit\', \''.$AVC_pagination_pages[$AVC_current_page-1].'\');AVC_LAYOUT_SUBMIT(\''.$AVC->module_id.'\');">◄</a>';
 	}
 
 	echo '<span class="AVC_LAYOUT_SPAN">'.$AVC_current_page.'/'.count($AVC_pagination_pages).'</span>';
 
-	if($AVC_pagination_pages[$AVC_current_page+1]){
+	if(!empty($AVC_pagination_pages[$AVC_current_page+1])){
 		echo '<a href="#" class="AVC_LAYOUT_BUTTON AVC_LAYOUT_HOVER" onclick="AVC_LAYOUT_HISTORY_UPDATE(\''.$AVC->module_id.'\', \'limit\', \''.$AVC_pagination_pages[$AVC_current_page+1].'\');AVC_LAYOUT_SUBMIT(\''.$AVC->module_id.'\');">►</a>';
 	}
 

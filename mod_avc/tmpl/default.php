@@ -4,6 +4,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 // var_export($AVC->state_history);
+//var_dump($AVC->state_history_snapshot);
 
 $JS_AVC_layout = '
 ///////////////////////////////////////
@@ -11,7 +12,15 @@ $JS_AVC_layout = '
 // AVC LAYOUT MODULE '.$AVC->module_id.'
 //
 ///////////////////////////////////////
+';
 
+if(!empty($AVC->state_history_snapshot)){
+$JS_AVC_layout.= '
+AVC_LAYOUT_HISTORY_SNAPSHOT='.json_encode($AVC->state_history_snapshot).';
+';
+}
+
+$JS_AVC_layout.= '
 AVC_LAYOUT_HISTORY["module'.$AVC->module_id.'"]='.json_encode($AVC->state_history["module".$AVC->module_id]).';
 AVC_TEMPLATE["module'.$AVC->module_id.'"]='.json_encode($AVC->state_tmpl).';
 AVC_LAYOUT_SCROLLTO = "'.$AVC->state_scrollTo.'";
@@ -23,6 +32,7 @@ window.addEvent("domready", function(){
 });
 
 ';
+
 JFactory::getDocument()->addScriptDeclaration($JS_AVC_layout);
 
 echo "\n"."\n".'<!-- |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||| -->'."\n";

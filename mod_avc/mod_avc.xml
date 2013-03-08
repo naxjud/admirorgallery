@@ -24,7 +24,14 @@
 	<config>
 		<fields name="params">
 			<fieldset name="basic">
+
 	            <field name="MOD_AVC_LAYOUT_DATABASE_ID" type="text" default="0" size="20" label="MOD_AVC_LAYOUT_DATABASE_ID" description="MOD_AVC_LAYOUT_DATABASE_ID_DESC" />
+
+				<field name="MOD_AVC_LAYOUT_IS_MASTER" type="radio" default="0" label="MOD_AVC_LAYOUT_IS_MASTER" description="MOD_AVC_LAYOUT_IS_MASTER_DESC">
+				  <option value="0">False</option>
+				  <option value="1">True</option>
+				</field>
+
 			</fieldset>
 		</fields>
 	</config>

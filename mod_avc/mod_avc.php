@@ -15,6 +15,6 @@ require_once dirname(__FILE__) . DS . 'helper.php';
 // REQUIRE ONCE
 require_once dirname(__FILE__) . DS . 'require_once.php';
 
-$AVC = new AVC($module->id, $params->get('MOD_AVC_LAYOUT_DATABASE_ID'));
+$AVC = new AVC( $module->id, $params->get('MOD_AVC_LAYOUT_DATABASE_ID'), $params->get('MOD_AVC_LAYOUT_IS_MASTER') );
 
 require JModuleHelper::getLayoutPath('mod_avc', $params->get('layout', 'default'));

@@ -2,6 +2,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+if(JDEBUG){
+    ini_set('display_errors', 'On');
+    error_reporting(E_ALL | E_STRICT);
+}
+
 jimport('joomla.application.component.modellist');
 
 /**
@@ -70,6 +75,17 @@ class AvcModelAvc extends JModelList {
         return $value;
     }
 
+    public function getFieldsArray(){
+        $mystring = $this->views[$this->curr_view_id]["query"]["select"];
+        $mystring = str_replace(" ", "", $mystring);
+        $myarray = explode(",", $mystring);
+        $myAssocArray = array();
+        foreach ($myarray as $key => $value) {
+            $myAssocArray[$value]="";
+        }
+        return $myAssocArray;
+    }
+
     // This is actually getItems in JModelList
     // Pagination works with this by itself
     // Here goes Fiters
@@ -93,7 +109,9 @@ class AvcModelAvc extends JModelList {
         if($this->getState('filter_order')!=""){
             $order = $this->getState('filter_order') . ' ' . $this->getState('filter_order_Dir');
         }else{
-            $order = $this->views[$this->curr_view_id]["query"]["order_by"];
+            if (!empty($this->views[$this->curr_view_id]["query"]["order_by"])) {
+                $order = $this->views[$this->curr_view_id]["query"]["order_by"];
+            }
         }
         if (!empty($order)) {
             $query->order($this->dbObject->getEscaped($order));

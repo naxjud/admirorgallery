@@ -59,7 +59,7 @@ a.AVC_LAYOUT_BUTTON
 {
 	padding: 4px;
     color:#333 !important;
-    font-size: 12px !important;
+    font-size: 12px;
 }
 
 .AVC_LAYOUT_SEPARATOR
@@ -85,4 +85,32 @@ a.AVC_LAYOUT_BUTTON
 	-moz-box-shadow: none !important;
 	-webkit-box-shadow: none !important;
 	box-shadow: none !important;
+}
+
+.AVC_LAYOUT_BREADCRUMPS
+{
+}
+
+hr.AVC_SEPARATOR
+{
+	border: 0;
+    width: 100%;
+    color: #dddddd;
+    background-color: #dddddd;
+    height: 1px;   
+    padding:0;
+    margin:0;
+    margin-bottom:5px;
+}
+
+hr.AVC_SEPARATOR_LARGE
+{
+	border: 0;
+    width: 100%;
+    color: #dddddd;
+    background-color: #dddddd;
+    height: 4px;   
+    padding:0;
+    margin:0;
+    margin-bottom:5px;
 }

@@ -1,5 +1,11 @@
 <?php
 
+if(!empty($FIELD_PARAMS["folder"])){
+	$COM_AVC_IMG_FOLDER = $FIELD_PARAMS["folder"];
+}else{
+	$COM_AVC_IMG_FOLDER = "";
+}
+
 $onclick = '
 FIELD_IMG_ID = \'' . $FIELD_ALIAS . '\';
 SqueezeBox.fromElement(this, {
@@ -8,7 +14,7 @@ SqueezeBox.fromElement(this, {
 		x: 800,
 		y: 500,
 	},
-	url:\'index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=com_AVC&amp;author=&amp;fieldid=' . $FIELD_ALIAS . '&amp;folder=' . $FIELD_PARAMS->folder . '\'
+	url:\'index.php?option=com_media&amp;view=images&amp;tmpl=component&amp;asset=com_AVC&amp;author=&amp;fieldid=' . $FIELD_ALIAS . '&amp;folder=' . $COM_AVC_IMG_FOLDER . '\'
 });
 return false;
 ';
