@@ -21,12 +21,15 @@ class AVC {
     private $dbObject;
     private $mainframe;
     private $dbView;
+    private $viewDefaults;
     private $default_query;
     private $refresh_history;
 
     public $module_id;
+    public $group;
     public $output;
     public $rows_total;
+    public $collection;
 
     public $state_view;
     public $state_view_name;
@@ -36,49 +39,79 @@ class AVC {
     public $state_having;
     public $state_history;
     public $state_history_count;    
-    public $state_history_snapshot;
-    public $state_history_snapshot_is_master;
-    public $state_scrollTo;
+    public $state_visuals;
     public $state_where;
     public $state_left_join;
     public $state_fieldNames;
 
-    function __construct($module_id, $view_id, $is_master) {
+    function __construct($module_id, $view_id) {
 
         $this->dbView = "#__avc_view";
         $this->dbObject = JFactory::getDBO();
         $this->module_id = $module_id;  
         $this->mainframe = JFactory::getApplication();
-        $this->state_history_snapshot_is_master = $is_master;
 
         $this->state_view = $view_id;
         $this->state_history_count = 0;
 
+        // LOAD VIEWS DEFAULTS        
+        $this->viewDefaults = $this->getViewData($view_id);
+
         // CLEAR HISTORY
         // if entry view has table field "refresh_history" se to true it will purge history records from memory
-        $this->refreshHistory($view_id);
+        $this->refreshHistory();
 
         // LOAD HISTORY
         $this->loadHistory();
 
         // LOAD DEFAULTS FOR MISSING HISTORY
         // default are loaded after history because history controls which view is used.
-        $this->loadDefaults($this->state_view);
+        $this->loadDefaults();
+
+        // UPDATE COLLECTION
+        $AVC_STATE_COLLECTION = $this->mainframe->getUserStateFromRequest( "AVC_COLLECTION", "AVC_COLLECTION", $this->mainframe->getCfg("AVC_COLLECTION") );
+
+        if(empty($AVC_STATE_COLLECTION)){
+            $AVC_STATE_COLLECTION = '
+            {
+                "customer":{
+                    "name_and_surname":"",
+                    "street":"",
+                    "street_number":"",
+                    "zip":"",
+                    "city":"",
+                    "country":"",
+                    "phone":""
+                },
+                "additional_details":{
+                    "message":""
+                }
+            }
+            ';
+        }
+
+        $this->collection = json_decode($AVC_STATE_COLLECTION, true);
+        
+        $this->checkJSON("TEST_COLLECTION");
 
         // CREATE OUTPUT
         $this->output = $this->getOutput();
 
-        // CREATE CURRENT STEP IN HISTORY RECORDS
-        $this->createStep(); 
-
-        // HISTORY SNAPSHOT
-        // snapshot is used for master breadcrumbs
-        $this->historySnapshot();   
+        // CREATE CURRENT STEP IN HISTORY RECORDS          
+        $this->createStep();  
 
         if(JDEBUG || $this->DEBUG){
             echo "<h1>MODULE HISTORY (".$this->module_id.")</h1>";
             echo "<pre>";
             var_export($this->state_history);
+            echo "</pre><hr />";
+            echo "<h1>OUTPUT (".$this->module_id.")</h1>";
+            echo "<pre>";
+            var_export($this->output);
+            echo "</pre><hr />";
+            echo "<h1>COLLECTION (".$this->module_id.")</h1>";
+            echo "<pre>";
+            var_export($this->collection);
             echo "</pre><hr />";
         }
 
@@ -89,139 +122,66 @@ class AVC {
             $this->state_history_count=1;
         }
 
-        $this->state_history["module".$this->module_id]["step".$this->state_history_count] = array();
-        $this->state_history["module".$this->module_id]["step".$this->state_history_count]["view"] = $this->state_view;
+        $this->state_history[$this->group][$this->state_history_count]["modules"][$this->module_id] = array();
+        $this->state_history[$this->group][$this->state_history_count]["modules"][$this->module_id]["view"] = $this->state_view;
         if(!empty($this->state_view_name)){
-            $this->state_history["module".$this->module_id]["step".$this->state_history_count]["view_name"] = $this->state_view_name;
+            $this->state_history[$this->group][$this->state_history_count]["modules"][$this->module_id]["view_name"] = $this->state_view_name;
         }
         if(!empty($this->state_order_by)){
-            $this->state_history["module".$this->module_id]["step".$this->state_history_count]["order_by"] = $this->state_order_by;
+            $this->state_history[$this->group][$this->state_history_count]["modules"][$this->module_id]["order_by"] = $this->state_order_by;
         }
         if(!empty($this->state_limit)){
-            $this->state_history["module".$this->module_id]["step".$this->state_history_count]["limit"] = $this->state_limit;
+            $this->state_history[$this->group][$this->state_history_count]["modules"][$this->module_id]["limit"] = $this->state_limit;
         }
         if(!empty($this->state_where)){
-            $this->state_history["module".$this->module_id]["step".$this->state_history_count]["where"] = $this->state_where;
+            $this->state_history[$this->group][$this->state_history_count]["modules"][$this->module_id]["where"] = $this->state_where;
         }
         if(!empty($this->state_having)){
-            $this->state_history["module".$this->module_id]["step".$this->state_history_count]["having"] = $this->state_having;
+            $this->state_history[$this->group][$this->state_history_count]["modules"][$this->module_id]["having"] = $this->state_having;
         }
         if(!empty($this->state_left_join)){
-            $this->state_history["module".$this->module_id]["step".$this->state_history_count]["left_join"] = $this->state_left_join;
+            $this->state_history[$this->group][$this->state_history_count]["modules"][$this->module_id]["left_join"] = $this->state_left_join;
         }
 
         $this->mainframe->setUserState("AVC_LAYOUT_STATE_HISTORY", json_encode($this->state_history));
-    }
 
-    protected function historySnapshot(){
-
-        ////////////////////////////////////////////////////
-        //
-        // MAKE A HISTORY SNAPSHOT AND UPDATE MAIN CONTENT BREADCRUMBS
-        //
-        // - hist.snaps. has num. of steps equal to steps of master module
-        // - only single module can be master
-        // - compare steps cound in hist.snaps. with state history count
-        // - if smaller add snapshot, if larger remove snapshot
-        // - after update loop hist.snaps. to create main content breadcrumbs
-        //
-
-        if ($this->state_history_snapshot_is_master) {
-
-            // GET HIST.SNAPS
-            $history_snaps = json_decode( $this->mainframe->getUserState( "AVC_LAYOUT_STATE_HISTORY_SNAPSHOT", null ), true );
-            $this->checkJSON("Get History Snapshots");
-
-            // TEST
-            $emptySnaps = false;
-            if($emptySnaps){
-                $history_snaps = null;
-            }
-
-            // COUNT STEPS
-            $history_snaps_count = count($history_snaps);
-            // COMPARE STEPS, ADD OR REMOVE STEPS
-            if($this->state_history_count!=0){
-                if($history_snaps_count < $this->state_history_count){
-                    $history_snaps[ "snapshot".$this->state_history_count ] = $this->state_history;
-                }else if($history_snaps_count > $this->state_history_count){
-                    while ( count($history_snaps) > $this->state_history_count ) {                    
-                        unset( $history_snaps[ "snapshot".count($history_snaps) ] );
-                    }
-                }else if($history_snaps_count == $this->state_history_count){
-                    $history_snaps[ "snapshot".$history_snaps_count ] = $this->state_history;
-                }
-            }
-
-            $history_snaps_count = count($history_snaps);
-
-            // UPDATE HIST.SNAPS. STATE
-            $this->mainframe->setUserState( "AVC_LAYOUT_STATE_HISTORY_SNAPSHOT", json_encode($history_snaps) );
-            $this->checkJSON("Set History Snapshots");
-
-            if(JDEBUG || $this->DEBUG){
-                echo "<h1>HISTORY SNAPSHOTS (".$this->module_id.")</h1>";
-                echo "<pre>";
-                var_dump($history_snaps);
-                echo "</pre>";
-            }
-
-            // SET STATE VAR
-            $this->state_history_snapshot = $history_snaps;
-
-            // MAKE BREADCRUMPS
-            if(!empty($history_snaps)){
-                $app    = JFactory::getApplication();
-                $items = $app->getPathway();
-                $new_items = (array)$items;
-                $new_items = reset($new_items);
-                $last_item = end($new_items);
-                $last_item->name=$this->state_history["module".$this->module_id]["step1"]["view_name"];
-                $last_item->link='javascript:AVC_LAYOUT_SNAPSHOT(\''.$this->module_id.'\', \'snapshot1\');';
-                array_pop($new_items);
-                $new_items[] = $last_item;
-                for ($i=1; $i < $history_snaps_count; $i++) { 
-                    $new_items[] = (object) array( 'name'=>$this->state_history["module".$this->module_id]["step".($i+1)]["view_name"], 'link'=>'javascript:AVC_LAYOUT_SNAPSHOT(\''.$this->module_id.'\', \'snapshot'.($i+1).'\');' );
-                }
-                $items->setPathWay(null);
-                foreach ($new_items as $item) {
-                    $items->addItem($item->name, $item->link);
-                }
-            }
-
-            if(JDEBUG || $this->DEBUG){
-                echo "<h1>BREADCRUMPS ITEMS (".$this->module_id.")</h1>";
-                echo "<pre>";
-                var_dump($items);
-                echo "</pre>";
-            }
-
-        }
-
-        //
-        // SNAPSHOT
-        //
-        ///////////////////////////////////////////////////////////////
     }
 
     protected function loadHistory(){
+
         // UPDATE SCROLL TO VAR
-        $this->state_scrollTo = $this->mainframe->getUserStateFromRequest( "AVC_LAYOUT_STATE_SCROLLTO", "AVC_LAYOUT_STATE_SCROLLTO", $this->mainframe->getCfg("AVC_LAYOUT_STATE_SCROLLTO") );
+        $this->state_visuals = json_decode($this->mainframe->getUserStateFromRequest( "AVC_LAYOUT_STATE_VISUALS", "AVC_LAYOUT_STATE_VISUALS", $this->mainframe->getCfg("AVC_LAYOUT_STATE_VISUALS") ), true);
+        if( empty($this->state_visuals) ){
+            $this->state_visuals = array();
+            $this->state_visuals["scroll_to"] = array();
+            $this->state_visuals["scroll_to"]["x"] = "0";
+            $this->state_visuals["scroll_to"]["y"] = "0";
+        }
 
         // UPDATE STATES VARS FOR CURRENT MODULE FROM HISTORY
         $history = $this->mainframe->getUserStateFromRequest( "AVC_LAYOUT_STATE_HISTORY", "AVC_LAYOUT_STATE_HISTORY", $this->mainframe->getCfg("AVC_LAYOUT_STATE_HISTORY") );
+
+        $this->group = $this->viewDefaults["group"];
+        if( empty($this->group) ){
+            $this->group = $this->module_id;
+        }
 
         if(!empty($history)){
 
             $this->state_history = json_decode($history, true);
             $this->checkJSON("Get History State");
 
-            if(!empty($this->state_history["module".$this->module_id])){
+            if( !empty( $this->state_history[ $this->group ] ) ){
 
-                $this->state_history_count = count($this->state_history["module".$this->module_id]);
+                $this->state_history_count = count($this->state_history[ $this->group ]);
 
-                $history_curr = end($this->state_history["module".$this->module_id]);
-                $this->state_view = $this->checkVar($history_curr["view"], $this->state_view);
+                $last_step = end( $this->state_history[ $this->group ] );
+
+                $history_curr = $last_step["modules"][ $this->module_id ];
+
+                if(!empty($history_curr["view"])){
+                    $this->state_view = $this->checkVar($history_curr["view"], $this->state_view);
+                }
 
                 if(!empty($history_curr["view_name"])){
                     $this->state_view_name = $history_curr["view_name"];
@@ -246,21 +206,23 @@ class AVC {
                 }
 
             }
+
         }
 
     }
 
-    protected function loadDefaults($view_id){
+    protected function loadDefaults(){
 
         // GET DEFAULTS FOR CURRENT VIEW
-        $myQueryList = $this->getViewData($view_id);
+        // must be loaded agaim, maybe view is changed in history state
+        $this->viewDefaults = $this->getViewData($this->state_view);
 
-        $this->default_query = json_decode($myQueryList["query"], true);
+        $this->default_query = json_decode($this->viewDefaults["query"], true);
         $this->checkJSON("Parse View Query");
         
         // SET DEFAULTS FOR EMPTY STATES
-        if(!empty($myQueryList["name"])){
-            $this->state_view_name = $this->checkVar( $this->state_view_name, $myQueryList["name"] );
+        if(!empty($this->viewDefaults["name"])){
+            $this->state_view_name = $this->checkVar( $this->state_view_name, $this->viewDefaults["name"] );
         }
         if(!empty($this->default_query["order_by"])){
             $this->state_order_by = $this->checkVar( $this->state_order_by, $this->default_query["order_by"] );
@@ -280,26 +242,20 @@ class AVC {
 
         // GET DEFAULT TEMPLATE
         if(empty($this->state_tmpl)){
-            if(!empty($myQueryList["tmpl"])){
-                $this->state_tmpl = json_decode($myQueryList["tmpl"], true);
+            if(!empty($this->viewDefaults["tmpl"])){
+                $this->state_tmpl = json_decode($this->viewDefaults["tmpl"], true);
                 $this->checkJSON("Parse View Template");
             }
         }
         if(empty( $this->state_tmpl["name"] )){
             $this->state_tmpl["name"] = "default";
         }
-        if(empty( $this->state_tmpl["vars"] )){
-            $this->state_tmpl["vars"] = array();
-        }
-        if(empty( $this->state_tmpl["open"] )){
-            $this->state_tmpl["open"] = array();
-        }
 
     }
 
-    protected function refreshHistory($view_id){
-        $viewDefaults = $this->getViewData($view_id);
-        $this->refresh_history = $viewDefaults["refresh_history"];
+    protected function refreshHistory(){
+
+        $this->refresh_history = $this->viewDefaults["refresh_history"];
 
         if($this->refresh_history==1){// IF DEFAULTS ARE CHANGED
 
@@ -317,6 +273,7 @@ class AVC {
             $this->dbObject->setQuery($query);
             $this->dbObject->query();
         }
+
     }
 
     function makeSafe($str, $replace=array(), $delimiter='_') {
@@ -331,27 +288,32 @@ class AVC {
     }
 
     function checkJSON($itemName=null){
-       switch (json_last_error()) {
-            case JSON_ERROR_NONE:
-            break;
-            case JSON_ERROR_DEPTH:
-                JFactory::getApplication()->enqueueMessage('Maximum stack depth exceeded: '.$itemName.' ( Module: '.$this->module_id.' )', 'error');
-            break;
-            case JSON_ERROR_STATE_MISMATCH:
-                JFactory::getApplication()->enqueueMessage('Underflow or the modes mismatch: '.$itemName.' ( Module: '.$this->module_id.' )', 'error');
-            break;
-            case JSON_ERROR_CTRL_CHAR:
-                JFactory::getApplication()->enqueueMessage('Unexpected control character found: '.$itemName.' ( Module: '.$this->module_id.' )', 'error');
-            break;
-            case JSON_ERROR_SYNTAX:
-                JFactory::getApplication()->enqueueMessage('Syntax error, malformed JSON: '.$itemName.' ( Module: '.$this->module_id.' )', 'error');
-            break;
-            case JSON_ERROR_UTF8:
-                JFactory::getApplication()->enqueueMessage('Malformed UTF-8 characters, possibly incorrectly encoded: '.$itemName.' ( Module: '.$this->module_id.' )', 'error');
-            break;
-            default:
-                JFactory::getApplication()->enqueueMessage(' Unknown error: '.$itemName.' ( Module: '.$this->module_id.' )', 'error');
-            break;
+        if(version_compare(PHP_VERSION, '5.3.0') >= 0) { 
+            if(!empty($this->module_id)){            
+                $itemName.=' ( Module: '.$this->module_id.' )';
+            }
+            switch (json_last_error()) {
+                case JSON_ERROR_NONE:
+                break;
+                case JSON_ERROR_DEPTH:
+                    JFactory::getApplication()->enqueueMessage('Maximum stack depth exceeded: '.$itemName, 'error');
+                break;
+                case JSON_ERROR_STATE_MISMATCH:
+                    JFactory::getApplication()->enqueueMessage('Underflow or the modes mismatch: '.$itemName, 'error');
+                break;
+                case JSON_ERROR_CTRL_CHAR:
+                    JFactory::getApplication()->enqueueMessage('Unexpected control character found: '.$itemName, 'error');
+                break;
+                case JSON_ERROR_SYNTAX:
+                    JFactory::getApplication()->enqueueMessage('Syntax error, malformed JSON: '.$itemName, 'error');
+                break;
+                case JSON_ERROR_UTF8:
+                    JFactory::getApplication()->enqueueMessage('Malformed UTF-8 characters, possibly incorrectly encoded: '.$itemName, 'error');
+                break;
+                default:
+                    JFactory::getApplication()->enqueueMessage(' Unknown error: '.$itemName, 'error');
+                break;
+            }
         }
     }
 

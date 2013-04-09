@@ -95,7 +95,7 @@ echo
 			handler:\'clone\',
 			size: {
 				x: 400,
-				y: 600,
+				y: 400,
 			}
 		});
 		return false;

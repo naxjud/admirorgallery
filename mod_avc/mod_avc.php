@@ -12,9 +12,12 @@ defined('_JEXEC') or die;
 // Include the syndicate functions only once
 require_once dirname(__FILE__) . DS . 'helper.php';
 
-// REQUIRE ONCE
-require_once dirname(__FILE__) . DS . 'require_once.php';
+// REQUIRE ONCE BEFORE
+require_once dirname(__FILE__) . DS . 'require_once_before.php';
 
-$AVC = new AVC( $module->id, $params->get('MOD_AVC_LAYOUT_DATABASE_ID'), $params->get('MOD_AVC_LAYOUT_IS_MASTER') );
+$AVC = new AVC( $module->id, $params->get('MOD_AVC_LAYOUT_DATABASE_ID') );
+
+// REQUIRE ONCE AFTER
+require_once dirname(__FILE__) . DS . 'require_once_after.php';
 
 require JModuleHelper::getLayoutPath('mod_avc', $params->get('layout', 'default'));

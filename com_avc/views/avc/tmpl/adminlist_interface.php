@@ -21,11 +21,40 @@ foreach ($this->items[0] as $key => $value) {
 }
 
 
+        // echo '<select name="filter_search_column" id="filter_search_column">';
+        // foreach ($this->fieldsArray as $FIELD_ALIAS => $FIELD_VALUE) {// Loop through Show Fields
+        //     echo '<option value="' . $FIELD_ALIAS . '">' . JText::_(strtoupper($FIELD_ALIAS)) . '</option>';
+        // }
+        // echo '</select>';
+//value=""
+
+$AVC_search_options = array();
+foreach ($this->fieldsArray as $FIELD_ALIAS => $FIELD_VALUE) {
+	$AVC_search_options[] = '"'.$FIELD_ALIAS.'"';
+}
+$AVC_search_options_string = implode(",", $AVC_search_options);
 
 $adminlist_interface.= '
 //////////////////////////////
 // ADMIMLIST DECLARE FUNCTIONS
 //////////////////////////////
+
+var AVC_FIELDLIST = ['.$AVC_search_options_string.']; 
+
+function AVC_SEARCH_UPDATE(searchValue){
+
+    var having = "";
+
+    if(searchValue){
+        var havingArray = [];
+        for (var i=0; i < AVC_FIELDLIST.length; i++) { 
+            havingArray.push(AVC_FIELDLIST[i]+\' LIKE \\\'%\'+searchValue+\'%\\\'\');
+        }
+        having = havingArray.join(\' OR \');
+    }    
+    document.id(\'filter_search_value\').value = having;
+
+}
 
 function adminlist_select(rowID){
 	$(rowID).addClass("active");

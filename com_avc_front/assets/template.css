@@ -1,0 +1,26 @@
+.avc_table_customer .avc_table_right
+, .avc_table_order .avc_table_right
+, .avc_table_additional_detail .avc_table_right
+{
+    text-align:right;
+}
+
+.avc_table_customer td
+, .avc_table_additional_detail td
+{
+    vertical-align:middle;   
+}
+
+.avc_table_order th
+{
+    background-color:#ddd;   
+}
+
+.avc_table_order th
+, .avc_table_order td
+, .avc_table_customer td
+, .avc_table_additional_detail td
+{
+	padding: 7px;
+	border-bottom:1px solid #ddd;
+}
