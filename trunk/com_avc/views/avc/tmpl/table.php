@@ -36,21 +36,21 @@ jimport('joomla.filesystem.file');
 
 <div class="fltlft">      
 
-     <?php
-        echo '<select name="filter_search_column" id="filter_search_column">';
-        foreach ($this->items[0] as $FIELD_ALIAS => $FIELD_VALUE) {// Loop through Show Fields
-            $selected = '';
-            if ($this->escape($this->state->get('filter_search_column')) == $FIELD_ALIAS) {
-                $selected = ' SELECTED';
-            }
-            echo '<option value="' . $FIELD_ALIAS . '"' . $selected . '>' . JText::_(strtoupper($FIELD_ALIAS)) . '</option>';
-        }
-        echo '</select>';
-    ?>  
+    <?
 
-    <input type="text" name="filter_search_value" id="filter_search_value" value="<?php echo $this->escape($this->state->get('filter_search_value')); ?>" title="<?php echo JText::_('COM_CONTACT_SEARCH_IN_NAME'); ?>" />
-    <button type="submit"><?php echo JText::_('COM_AVC_SEARCH'); ?></button>
-    <button type="button" onclick="document.id('filter_search_value').value='';this.form.submit();"><?php echo JText::_('COM_AVC_CLEAR'); ?></button>
+    $AVC_having_value = "";
+    $AVC_having_search = JRequest::getVar('filter_search_value');
+    if( !empty( $AVC_having_search ) ){
+        $AVC_having_split = explode("%", $AVC_having_search );
+        $AVC_having_value = $AVC_having_split[1];
+    }
+
+    ?>
+
+    <input type="text" onkeyup="AVC_SEARCH_UPDATE(document.id('filter_search_value_input').value);" name="filter_search_value_input" id="filter_search_value_input" value="<?php echo $AVC_having_value;?>" title="<?php echo JText::_('COM_CONTACT_SEARCH_IN_NAME'); ?>" />
+    <button type="button" onclick="AVC_SEARCH_UPDATE(document.id('filter_search_value_input').value);document.adminForm.submit();"><?php echo JText::_('COM_AVC_SEARCH'); ?></button>
+    <button type="button" onclick="AVC_SEARCH_UPDATE('');document.adminForm.submit();"><?php echo JText::_('COM_AVC_CLEAR'); ?></button>
+    <input type="hidden" name="filter_search_value" id="filter_search_value" value="<?php echo $AVC_having_search;?>" />
 
 </div>
 <div class="fltrt">

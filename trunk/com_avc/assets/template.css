@@ -92,7 +92,7 @@ table, table td
     margin:0 0 5px !important;
     padding:0 !important;
     display: block;
-    font-family: 'Homenaje', sans-serif !important;
+    font-family: 'Oswald', sans-serif !important;
     font-size: 18px !important;
     font-weight: normal !important;
 }
@@ -264,7 +264,7 @@ div.pagetitle h2 {
     color: gray !important;
     margin: 0 0 0 10px !important;
     padding: 0;
-    font-family: 'Homenaje', sans-serif !important;
+    font-family: 'Oswald', sans-serif !important;
 }
 
 #toolbar-box {
@@ -300,7 +300,7 @@ div#element-box h1.pageTitle
    margin:0px;
    padding:0 0 3px;
    text-transform:uppercase;
-   font-family: 'Homenaje', sans-serif !important;
+   font-family: 'Oswald', sans-serif !important;
    font-size: 24px !important;
    text-shadow: 0px 1px 3px #000;
 }
@@ -444,7 +444,7 @@ li.AVC_menu_group_wrap h1
     
     text-align:center;
     text-transform:uppercase;    
-    font-family: 'Homenaje', sans-serif !important;
+    font-family: 'Oswald', sans-serif !important;
     font-size: 16px !important;
     text-shadow: 0px 1px 3px #000;
 }

@@ -30,7 +30,7 @@ echo '<span class="AVC_LAYOUT_EXT">';
 
 echo '<span class="AVC_LAYOUT_SPAN">'.JText::_("Show").':</span>';
 
-echo '<select class="AVC_LAYOUT_SELECT" onchange="AVC_LAYOUT_HISTORY_UPDATE(\''.$AVC->module_id.'\', \'limit\', \''.$AVC_current_page.','.'\'+this.value);AVC_LAYOUT_SUBMIT(\''.$AVC->module_id.'\');">';
+echo '<select class="AVC_LAYOUT_SELECT" onchange="AVC_LAYOUT_HISTORY_UPDATE(\''.$AVC->group.'\', \''.$AVC->module_id.'\', \'limit\', \''.$AVC_current_page.','.'\'+this.value);AVC_LAYOUT_SUBMIT(\''.$AVC->module_id.'\');">';
 
 if(array_search($AVC_pagination_range, $AVC_pagination_options)===false){
 	$AVC_pagination_options[] = $AVC_pagination_range;
@@ -55,20 +55,24 @@ if($AVC_pagination_range != 0){
 	echo '<span class="AVC_LAYOUT_SEPARATOR">&nbsp;</span>';
 
 	if(!empty($AVC_pagination_pages[$AVC_current_page-1])){
-		echo '<a href="#" class="AVC_LAYOUT_BUTTON AVC_LAYOUT_HOVER" onclick="AVC_LAYOUT_HISTORY_UPDATE(\''.$AVC->module_id.'\', \'limit\', \''.$AVC_pagination_pages[$AVC_current_page-1].'\');AVC_LAYOUT_SUBMIT(\''.$AVC->module_id.'\');">◄</a>';
+		echo '<a href="#" class="AVC_LAYOUT_BUTTON AVC_LAYOUT_HOVER" onclick="AVC_LAYOUT_HISTORY_UPDATE(\''.$AVC->group.'\', \''.$AVC->module_id.'\', \'limit\', \''.$AVC_pagination_pages[$AVC_current_page-1].'\');AVC_LAYOUT_SUBMIT(\''.$AVC->module_id.'\');">◄</a>';
 	}
 
 	echo '<span class="AVC_LAYOUT_SPAN">'.$AVC_current_page.'/'.count($AVC_pagination_pages).'</span>';
 
 	if(!empty($AVC_pagination_pages[$AVC_current_page+1])){
-		echo '<a href="#" class="AVC_LAYOUT_BUTTON AVC_LAYOUT_HOVER" onclick="AVC_LAYOUT_HISTORY_UPDATE(\''.$AVC->module_id.'\', \'limit\', \''.$AVC_pagination_pages[$AVC_current_page+1].'\');AVC_LAYOUT_SUBMIT(\''.$AVC->module_id.'\');">►</a>';
+		echo '<a href="#" class="AVC_LAYOUT_BUTTON AVC_LAYOUT_HOVER" onclick="AVC_LAYOUT_HISTORY_UPDATE(\''.$AVC->group.'\', \''.$AVC->module_id.'\', \'limit\', \''.$AVC_pagination_pages[$AVC_current_page+1].'\');AVC_LAYOUT_SUBMIT(\''.$AVC->module_id.'\');">►</a>';
 	}
 
 	echo '<span class="AVC_LAYOUT_SEPARATOR">&nbsp;</span>';
 
 	if(!empty($AVC_pagination_pages)){
 		foreach ($AVC_pagination_pages as $key => $value) {
-			echo '<a href="#" class="AVC_LAYOUT_BUTTON AVC_LAYOUT_HOVER" onclick="AVC_LAYOUT_HISTORY_UPDATE(\''.$AVC->module_id.'\', \'limit\', \''.$value.'\');AVC_LAYOUT_SUBMIT(\''.$AVC->module_id.'\');">'.$key.'</a>';
+			$mark = "";
+			if($key == $AVC_current_page){
+				$mark = "AVC_LAYOUT_HOVER_ACTIVE";
+			};
+			echo '<a href="#" class="AVC_LAYOUT_BUTTON AVC_LAYOUT_HOVER '.$mark.'" onclick="AVC_LAYOUT_HISTORY_UPDATE(\''.$AVC->group.'\', \''.$AVC->module_id.'\', \'limit\', \''.$value.'\');AVC_LAYOUT_SUBMIT(\''.$AVC->module_id.'\');">'.$key.'</a>';
 		}
 	}
 

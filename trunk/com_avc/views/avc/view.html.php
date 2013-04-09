@@ -103,7 +103,7 @@ class AvcViewAvc extends JView {
 
         // Add after default head scirpt & styles loaded
         $this->doc->addStyleSheet( JURI::root() . 'administrator/components/com_avc/assets/template.css' ); 
-        $this->doc->addStyleSheet( 'http://fonts.googleapis.com/css?family=Unica+One|Homenaje&subset=latin,latin-ext' );
+        $this->doc->addStyleSheet( 'http://fonts.googleapis.com/css?family=Oswald:400,300,700&subset=latin,latin-ext' );
         $this->doc->addStyleSheet( 'http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin,latin-ext,cyrillic' );
 
     }

@@ -22,6 +22,7 @@ class AvcModelAvc extends JModelList {
     private $curr_view_id; // Current view id   
     private $curr_row_id; // Current row id, used for editing
     public $views;
+    private $mainframe;
 
 
     function __construct() {
@@ -40,30 +41,34 @@ class AvcModelAvc extends JModelList {
 
         $this->views = $this->getListViews();
 
+        $this->mainframe = JFactory::getApplication();
+
     }
 
     protected function checkJSON(){
-       switch (json_last_error()) {
-            case JSON_ERROR_NONE:
-            break;
-            case JSON_ERROR_DEPTH:
-                JFactory::getApplication()->enqueueMessage('Maximum stack depth exceeded', 'error');
-            break;
-            case JSON_ERROR_STATE_MISMATCH:
-                JFactory::getApplication()->enqueueMessage('Underflow or the modes mismatch', 'error');
-            break;
-            case JSON_ERROR_CTRL_CHAR:
-                JFactory::getApplication()->enqueueMessage('Unexpected control character found', 'error');
-            break;
-            case JSON_ERROR_SYNTAX:
-                JFactory::getApplication()->enqueueMessage('Syntax error, malformed JSON', 'error');
-            break;
-            case JSON_ERROR_UTF8:
-                JFactory::getApplication()->enqueueMessage('Malformed UTF-8 characters, possibly incorrectly encoded', 'error');
-            break;
-            default:
-                JFactory::getApplication()->enqueueMessage(' Unknown error', 'error');
-            break;
+        if(version_compare(PHP_VERSION, '5.3.0') >= 0) { 
+            switch (json_last_error()) {
+                case JSON_ERROR_NONE:
+                break;
+                case JSON_ERROR_DEPTH:
+                    JFactory::getApplication()->enqueueMessage('Maximum stack depth exceeded', 'error');
+                break;
+                case JSON_ERROR_STATE_MISMATCH:
+                    JFactory::getApplication()->enqueueMessage('Underflow or the modes mismatch', 'error');
+                break;
+                case JSON_ERROR_CTRL_CHAR:
+                    JFactory::getApplication()->enqueueMessage('Unexpected control character found', 'error');
+                break;
+                case JSON_ERROR_SYNTAX:
+                    JFactory::getApplication()->enqueueMessage('Syntax error, malformed JSON', 'error');
+                break;
+                case JSON_ERROR_UTF8:
+                    JFactory::getApplication()->enqueueMessage('Malformed UTF-8 characters, possibly incorrectly encoded', 'error');
+                break;
+                default:
+                    JFactory::getApplication()->enqueueMessage(' Unknown error', 'error');
+                break;
+            }
         }
     }
 
@@ -98,11 +103,10 @@ class AvcModelAvc extends JModelList {
 
         $query->from( $this->views[$this->curr_view_id]["query"]["from"] );
 
-        // Filter Search
-        $search_column = $this->getState('filter_search_column');
-        $search_value = $this->getState('filter_search_value');    
-        if (!empty($search_value)) {
-            $query->where($this->dbObject->nameQuote($search_column) . " LIKE " . $this->dbObject->Quote('%' . $search_value . '%'));
+        // Filter Search      
+        $search_value = $this->mainframe->getUserStateFromRequest( 'filter_search_value', 'filter_search_value', $this->mainframe->getCfg('filter_search_value') );  
+        if ( !empty($search_value) ) {
+            $query->having( $search_value );
         }
 
         // Filter Order
@@ -129,12 +133,6 @@ class AvcModelAvc extends JModelList {
     }
 
     public function populateState($ordering = null, $direction = null) {
-
-        // Filter Search
-        $search_column = JRequest::getCmd('filter_search_column');
-        $this->setState('filter_search_column', $search_column);
-        $search_value = JRequest::getCmd('filter_search_value');
-        $this->setState('filter_search_value', $search_value);
 
         // Filter Order
         $filter_order = JRequest::getCmd('filter_order');
@@ -208,7 +206,7 @@ class AvcModelAvc extends JModelList {
                     $FIELDS  = explode(",",$FIELDS_str);
                     foreach ($FIELDS as $FIELD_ALIAS){
                         $FIELD_VALUE = JRequest::getVar( $FIELD_ALIAS, null, 'post', 'STRING', JREQUEST_ALLOWRAW );
-                        if($FIELD_ALIAS != "id" && $FIELD_VALUE!=null){
+                        if($FIELD_ALIAS != "id"){
                             if(!is_numeric($FIELD_VALUE)){$FIELD_VALUE = $this->dbObject->Quote($FIELD_VALUE);}
                             $query->set( $this->dbObject->nameQuote($FIELD_ALIAS)."=".$FIELD_VALUE );
                         }
@@ -229,8 +227,8 @@ class AvcModelAvc extends JModelList {
                     $FIELDS_str = str_replace(" ", "", $this->views[$this->curr_view_id]["query"]["select"]);
                     $FIELDS  = explode(",",$FIELDS_str);
                     foreach ($FIELDS as $FIELD_ALIAS){
-                        $FIELD_VALUE = JRequest::getVar( $FIELD_ALIAS, null, 'post', 'STRING', JREQUEST_ALLOWRAW );
-                        if($FIELD_ALIAS != "id" && $FIELD_VALUE!=null){
+                        $FIELD_VALUE = JRequest::getVar( $FIELD_ALIAS, "nemanihtnull", 'post', 'STRING', JREQUEST_ALLOWRAW );
+                        if($FIELD_ALIAS != "id" && $FIELD_VALUE!="nemanihtnull"){
                             if(!is_numeric($FIELD_VALUE)){$FIELD_VALUE = $this->dbObject->Quote($FIELD_VALUE);}
                             $query->set( $this->dbObject->nameQuote($FIELD_ALIAS)."=".$FIELD_VALUE );
                         }

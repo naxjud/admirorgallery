@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_AVC_COLLECTION">
+        <message>
+			<![CDATA[COM_AVC_COLLECTION_DESC]]>
+        </message>
+    </layout>
+    <fields name="params" >
+
+		<!-- Basic options. -->
+        <fieldset name="basic" >
+
+        </fieldset>
+
+    </fields>
+</metadata>

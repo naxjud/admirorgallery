@@ -84,8 +84,7 @@ JHTML::_('behavior.modal'); // Modal Libriries (SqueezeBox)
         <input type="hidden" name="curr_view_id" id="curr_view_id" value="<?php echo $this->curr_view_id;?>" />
         <input type="hidden" name="filter_order" id="filter_order" value="<?php echo $this->listOrder; ?>" />
         <input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="<?php echo $this->listDirn; ?>" />
-        <input type="hidden" name="filter_search_column" id="filter_search_column" value="<?php echo $this->escape($this->state->get('filter_search_column')); ?>" />
-        <input type="hidden" name="filter_search_value" id="filter_search_value" value="<?php echo $this->escape($this->state->get('filter_search_value')); ?>" />
+        <input type="hidden" name="filter_search_value" id="filter_search_value" value="<?php echo JRequest::getVar('filter_search_value'); ?>" />
 
 
     </form>
