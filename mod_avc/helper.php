@@ -161,7 +161,7 @@ class AVC {
         // UPDATE STATES VARS FOR CURRENT MODULE FROM HISTORY
         $history = $this->mainframe->getUserStateFromRequest( "AVC_LAYOUT_STATE_HISTORY", "AVC_LAYOUT_STATE_HISTORY", $this->mainframe->getCfg("AVC_LAYOUT_STATE_HISTORY") );
 
-        $this->group = $this->viewDefaults["group"];
+        $this->group = $this->viewDefaults["view_group"];
         if( empty($this->group) ){
             $this->group = $this->module_id;
         }
@@ -242,8 +242,8 @@ class AVC {
 
         // GET DEFAULT TEMPLATE
         if(empty($this->state_tmpl)){
-            if(!empty($this->viewDefaults["tmpl"])){
-                $this->state_tmpl = json_decode($this->viewDefaults["tmpl"], true);
+            if(!empty($this->viewDefaults["view_tmpl"])){
+                $this->state_tmpl = json_decode($this->viewDefaults["view_tmpl"], true);
                 $this->checkJSON("Parse View Template");
             }
         }
