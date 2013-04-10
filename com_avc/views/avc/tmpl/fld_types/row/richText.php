@@ -3,7 +3,7 @@
 echo '<div class="form_items">';    
 
 // Create Form Field Label
-echo '<label id="jform_enabled-lbl" for="jform_enabled">';
+echo '<label id="AVC_frame jform_enabled-lbl" for="jform_enabled">';
 echo JText::_( strtoupper($FIELD_ALIAS));
 echo '</label>';
 $editor =& JFactory::getEditor();

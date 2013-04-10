@@ -130,27 +130,6 @@ echo '
 <ul>
 ';
 
-$JS_FIELD_REL_VALUES='
-
-//////////////////////////////
-// FIELD REL DECLARE DOM READY
-//////////////////////////////
-window.addEvent("domready", function(){
-AVC_REL[\'' . $FIELD_ALIAS . '\'] = new Object();
-';
-if(!empty($ROWS)){
-
-foreach($ROWS as $ROW){
-	$JS_FIELD_REL_VALUES.='AVC_REL[\'' . $FIELD_ALIAS . '\'][\'' . $ROW[ $FIELD_PARAMS["key"] ] . '\'] = "' . htmlspecialchars(implode(", ", $ROW)) . '";'."\n";
-}
-
-$JS_FIELD_REL_VALUES.='
-
-
-
-});
-';
-
 foreach($ROWS as $ROW){
 	echo '
 	<li>
@@ -163,10 +142,33 @@ foreach($ROWS as $ROW){
 			"
 		>
 		' . implode(", ", $ROW) . '
+		</a>
 	</li>
 	';
 }
 
+echo '
+</ul>
+</div>
+</div>
+';
+
+$JS_FIELD_REL_VALUES='
+//////////////////////////////
+// FIELD REL DECLARE DOM READY
+//////////////////////////////
+window.addEvent("domready", function(){
+AVC_REL[\'' . $FIELD_ALIAS . '\'] = new Object();
+';
+
+if(!empty($ROWS)){
+	foreach($ROWS as $ROW){
+		$JS_FIELD_REL_VALUES.='AVC_REL[\'' . $FIELD_ALIAS . '\'][\'' . $ROW[ $FIELD_PARAMS["key"] ] . '\'] = "' . htmlspecialchars(implode(", ", $ROW)) . '";'."\n";
+	}
 }
+
+$JS_FIELD_REL_VALUES.='
+});
+';
 
 $this->doc->addScriptDeclaration($JS_FIELD_REL_VALUES);
