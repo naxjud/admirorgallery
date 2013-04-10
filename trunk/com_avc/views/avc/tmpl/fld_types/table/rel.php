@@ -57,3 +57,16 @@ echo $FIELD_VALUE." - ";
 echo "<i>".implode(", ", $ROW[0])."</i>";
 		
 }
+
+if(empty($AVC_RELS)){
+    $AVC_RELS = array();
+}
+if(empty($AVC_RELS[ $ROW_ID ])){
+    $AVC_RELS[ $ROW_ID ] = array();
+}
+if(empty($AVC_RELS[ $ROW_ID ][ $FIELD_ALIAS ])){
+    $AVC_RELS[ $ROW_ID ][ $FIELD_ALIAS ] = array();
+}
+$AVC_RELS[ $ROW_ID ][ $FIELD_ALIAS ]["key"] = $FIELD_VALUE;
+$AVC_RELS[ $ROW_ID ][ $FIELD_ALIAS ]["value"] = implode(", ", $ROW[0]);
+

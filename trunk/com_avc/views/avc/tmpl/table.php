@@ -9,6 +9,9 @@ jimport('joomla.filesystem.file');
 
 //$VIEW_PARAMS = json_decode($this->view['params']);
 
+
+require_once("table_requireBefore.php");
+
 ?>
 
 <div>
@@ -126,6 +129,7 @@ echo '<th style="display:none;"></th>';
                     }
                     require($fld_types_file); // Load template file
                 echo '</td>'."\n";
+
             }
 
             echo '</tr>'."\n";
@@ -175,5 +179,5 @@ echo '<th style="display:none;"></th>';
 
 <?php
     require_once("forcedStyles.php");
-    require_once("adminlist_interface.php");
+    require_once("table_requireAfter.php");
 ?>
