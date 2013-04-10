@@ -666,43 +666,56 @@ table#tmp_tb hr, hr
     margin:0;
 }
 
-fieldset div.form_items
-{
-    padding: 10px !important;
-    margin:0 auto !important;
-    width: 410px !important;
+#masonry{
+    padding: 5px;
 }
 
-fieldset div.form_items1
+#masonry .form_items
+{
+    display: block;
+    float: left;
+    width: 420px;
+    padding: 10px;
+    margin: 5px;
+    
+    
+    border:2px solid #3a3a3a;
+    
+    moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+}
+
+#masonry .form_items1
 {
     height:53px;
 }
 
-fieldset div.form_items2
+#masonry .form_items2
 {
     height:100px;
 }
 
-fieldset div.form_items3
+#masonry .form_items3
 {
     height:250px;
 }
 
-fieldset div.form_items input
-,fieldset div.form_items textarea
+#masonry .form_items input
+,#masonry .form_items textarea
 ,.imgFld_img_wrapp
 {
     width:400px !important;
 }
 
-fieldset div.form_items .width_auto
+#masonry .form_items .width_auto
 {
     width:auto !important;
 }
 
-fieldset div.form_items textarea
+#masonry .form_items textarea
 {
-    height:100px !important;
+    resize: none;
 }
 
 /* AVC ADMIN LIST */

@@ -20,7 +20,7 @@ return false;
 ';
 
 echo '
-<div class="form_items form_items3">
+<div class=form_items form_items3">
 ';
 
 

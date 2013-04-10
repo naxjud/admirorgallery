@@ -153,85 +153,26 @@ $this->doc->addScriptDeclaration($JS_FIELD_REL);
 
 
 
+$JS_FIELD_MASONRY= '
 
-
-
-$JS_AVC_rowGridder = '
 ///////////////////////////////////////////
-// ROW GRIDER
+// FIELD_MASONRY
 ///////////////////////////////////////////
 
-var newTABLE,newTR,newTD,newHR;
+//////////////////////////////
+// DECLARE DOM READY
+//////////////////////////////
 
-// Form Template
-var tmp_els,tmp_item,tmp_item_height;
-var tmp_num_of_cols = 0;
-var tmp_curr_col = -1;
-var tmp_col_heigths = new Array();
+window.addEvent("domready", function(){
 
-function tmp_select_col(ii){
-	if(tmp_curr_col==tmp_num_of_cols){
-		tmp_curr_col=0;
-	}
-	if(tmp_curr_col>0){// BACKWARD CORRECTION
-		if(tmp_col_heigths[tmp_curr_col]+tmp_item_height>tmp_col_heigths[tmp_curr_col-1]){
-			tmp_curr_col--;
-			tmp_select_col(ii);
-		}
-	}
-	if(tmp_curr_col<(tmp_num_of_cols-1)){// FORWARD CORRECTION
-		if(tmp_col_heigths[tmp_curr_col]>tmp_col_heigths[tmp_curr_col+1]+tmp_item_height){
-			tmp_curr_col++;
-			tmp_select_col(ii);
-		}
-	}
-}
+$("masonry").masonry({
+		singleMode: true,
+		itemSelector: ".form_items"
+	});
 
-function tmp_init(){
-	tmp_els = document.getElements(".form_items");	
-	var el_dimensions = tmp_els[0].getSize();
-	var dimensions = document.id("element-box").getSize();
-	tmp_num_of_cols = Math.floor(dimensions.x/el_dimensions.x);
-
-	newTABLE = document.createElement("table");
-	newTR = document.createElement("tr");
-	document.getElement(".adminform").appendChild(newTABLE)
-									 .set("width","100%")
-									 .set("cellpadding","0")
-									 .set("cellmargin","0")
-									 .set("border","0")
-									 .set("id","tmp_tb")
-									 .appendChild(newTR);
-
-	for(var i=0; i<tmp_num_of_cols; i++){
-		tmp_col_heigths[i]=0;		
-		newTD = document.createElement("td");
-		document.getElement("#tmp_tb tr").appendChild(newTD)
-										 .set("class","tmp_col")
-										 .set("id","tmp_col_"+i);
-	}
-
-	for(var ii=0; ii<tmp_els.length; ii++){
-		tmp_item = tmp_els[ii];
-		dimensions = tmp_item.getSize();
-		tmp_item_height = dimensions.y;
-	
-		tmp_curr_col++;
-		tmp_select_col(ii);
-
-		
-		newHR = document.createElement("hr");
-		document.id("tmp_col_"+tmp_curr_col).appendChild(newHR);
-
-		tmp_col_heigths[tmp_curr_col]+=tmp_item_height;
-		tmp_item.clone(true,true).inject(document.id("tmp_col_"+tmp_curr_col));
-
-		tmp_item.destroy();
-	}
-}
-window.addEvent("domready", function(){ 
-	tmp_init();
 });
-'. "\n";
 
-$this->doc->addScriptDeclaration($JS_AVC_rowGridder);
+
+';
+
+$this->doc->addScriptDeclaration($JS_FIELD_MASONRY);

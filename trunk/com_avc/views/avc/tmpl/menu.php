@@ -148,6 +148,6 @@ window.addEvent("domready", function(){
 
 $this->doc->addScriptDeclaration($JS_AVC_menu);
 
-$this->doc->addScript(JURI::root() . 'administrator/components/com_avc/assets/js/Observer.js');
-$this->doc->addScript(JURI::root() . 'administrator/components/com_avc/assets/js/Autocompleter.js');
-$this->doc->addScript(JURI::root() . 'administrator/components/com_avc/assets/js/Autocompleter.Local.js');
+// $this->doc->addScript(JURI::root() . 'administrator/components/com_avc/assets/js/Observer.js');
+// $this->doc->addScript(JURI::root() . 'administrator/components/com_avc/assets/js/Autocompleter.js');
+// $this->doc->addScript(JURI::root() . 'administrator/components/com_avc/assets/js/Autocompleter.Local.js');
