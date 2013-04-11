@@ -9,14 +9,11 @@ $AVC_REQUIRE_BEFORE = '
 // ADMIMLIST DECLARE FUNCTIONS
 //////////////////////////////
 
-function unique(a){
-	var arr = [];
-	for (var i=0;i<a.length;i++){
-		if ( arr.indexOf(a[i]) == -1){
-		    arr.push(a[i]);
-		}
-	}
-	return arr;
+function unique(arr){
+	var o = {}, i, l = arr.length, r = [];
+    for(i=0; i<l;i+=1) o[arr[i]] = arr[i];
+    for(i in o) r.push(o[i]);
+    return r;
 }
 
 var AVC_RELS = {};
@@ -47,15 +44,16 @@ function AVC_SEARCH_UPDATE(searchValue){
 
 	    Object.each(AVC_RELS_filtered, function(ROW_VALUE, ROW_KEY){
 	    	Object.each(ROW_VALUE, function(ROW_FIELD_VALUE, ROW_FIELD_KEY){
-	    		havingArray.push(ROW_FIELD_KEY+\' LIKE \\\'%\'+ROW_FIELD_VALUE+\'%\\\'\');
+	    		havingArray.push(ROW_FIELD_KEY+\' LIKE \'+ROW_FIELD_VALUE);
 	    	});
 	    });
+
 
 		havingArray = unique(havingArray);
 
 	    having = havingArray.join(\' OR \');
 
-    }    
+    }   
 
     document.id(\'filter_search_value\').value = having;
 
