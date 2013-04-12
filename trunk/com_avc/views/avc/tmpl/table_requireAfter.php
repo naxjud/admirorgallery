@@ -11,29 +11,20 @@ var keystroke,cb_lastClicked,myEvent,myDrag,ordering;
 ordering = false;
 ';
 
-foreach ($this->items[0] as $key => $value) {
-	if($key == "ordering"){
+foreach ($this->fieldsArray as $key => $value) {
+	if($value == "ordering"){
 		$adminlist_interface.= '
 			ordering = true;
 		';
 	}
 }
 
-
-$AVC_search_options = array();
-foreach ($this->fieldsArray as $FIELD_ALIAS => $FIELD_VALUE) {
-	$AVC_search_options[] = '"'.$FIELD_ALIAS.'"';
-}
-$AVC_search_options_string = implode(",", $AVC_search_options);
-
 $adminlist_interface.= '
 //////////////////////////////
 // ADMIMLIST DECLARE FUNCTIONS
 //////////////////////////////
 
-var AVC_FIELDLIST = ['.$AVC_search_options_string.'];
-
-AVC_RELS = '.json_encode($AVC_RELS).'; 
+var AVC_FIELDLIST = new Array('.'"'.implode('","', $this->fieldsArray).'"'.');
 
 function adminlist_select(rowID){
 	$(rowID).addClass("active");
@@ -240,6 +231,7 @@ window.addEvent("domready", function(){
 	});
 
 });
+
 ';
 
 $this->doc->addScriptDeclaration($adminlist_interface);
