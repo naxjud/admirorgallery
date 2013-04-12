@@ -71,18 +71,14 @@ require_once("table_requireBefore.php");
         echo '<thead>'."\n";
         echo '<tr>'."\n";
 
-echo '<th style="display:none;"></th>';
+        echo '<th style="display:none;"></th>';
 
-        if(!empty($this->items[0])){
-            $FIELD_LIST = $this->items[0];
-        }else{
-            $FIELD_LIST = $this->fieldsArray;
-        }
-
-        foreach ($FIELD_LIST as $key => $value) {
-            echo '<th>';
-            echo JHtml::_('grid.sort', JText::_(strtoupper($key)), $key, $this->listDirn, $this->listOrder);
-            echo '</th>'."\n";
+        if ( !empty($this->fieldsArray) ) {
+            foreach ($this->fieldsArray as $fields_key => $fields_value) {
+                echo '<th>';
+                echo JHtml::_('grid.sort', JText::_(strtoupper($fields_value)), $fields_value, $this->listDirn, $this->listOrder);
+                echo '</th>'."\n";
+            }
         }
 
         echo '</tr>'."\n";
@@ -92,7 +88,7 @@ echo '<th style="display:none;"></th>';
         // FORMAT DATA
         echo '<tbody>'."\n";
 
-        if(!empty($this->items)){
+        if( !empty($this->items) && !empty($this->fieldsArray) ){
         $row_counts = 0;
         foreach ($this->items as $item) { 
 
@@ -104,31 +100,33 @@ echo '<th style="display:none;"></th>';
             echo '<input type="checkbox" class="cid" name="cid[]" value="' . $item->id . '" style="display:none" />';
             echo '</td>'."\n";
 
-            foreach ($item as $FIELD_ALIAS => $FIELD_VALUE) {   
+            foreach ($this->fieldsArray as $FIELD_ALIAS) {
 
-                if(!empty($this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"])){
-                    $FIELD_TYPE = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"];
-                }else{
-                    $FIELD_TYPE = "";
-                }
-                
-                if(!empty($this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"])){
-                    $FIELD_PARAMS = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"]; 
-                }else{
-                    $FIELD_PARAMS = "";
-                }
+                    $FIELD_VALUE = $item->$FIELD_ALIAS;
 
-                echo '<td>';
-                    // SET DEFAULT FIELD TEMPLATE
-                    $fld_types_file = JPATH_COMPONENT . DS . "views" . DS . "avc" . DS . "tmpl" . DS . "fld_types" . DS . "table" . DS . "default.php";
-                    if ($FIELD_TYPE) {
-                        $fld_types_file_test = JPATH_COMPONENT . DS . "views" . DS . "avc" . DS . "tmpl" . DS . "fld_types" . DS . "table" . DS . $FIELD_TYPE . ".php";
-                        if (file_exists($fld_types_file_test)) {
-                            $fld_types_file = $fld_types_file_test;
-                        }
+                    if(!empty($this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"])){
+                        $FIELD_TYPE = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["type"];
+                    }else{
+                        $FIELD_TYPE = "";
                     }
-                    require($fld_types_file); // Load template file
-                echo '</td>'."\n";
+                    
+                    if(!empty($this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"])){
+                        $FIELD_PARAMS = $this->views[$this->curr_view_id]["fields_config"][$FIELD_ALIAS]["params"]; 
+                    }else{
+                        $FIELD_PARAMS = "";
+                    }
+
+                    echo '<td>';
+                        // SET DEFAULT FIELD TEMPLATE
+                        $fld_types_file = JPATH_COMPONENT . DS . "views" . DS . "avc" . DS . "tmpl" . DS . "fld_types" . DS . "table" . DS . "default.php";
+                        if ($FIELD_TYPE) {
+                            $fld_types_file_test = JPATH_COMPONENT . DS . "views" . DS . "avc" . DS . "tmpl" . DS . "fld_types" . DS . "table" . DS . $FIELD_TYPE . ".php";
+                            if (file_exists($fld_types_file_test)) {
+                                $fld_types_file = $fld_types_file_test;
+                            }
+                        }
+                        require($fld_types_file); // Load template file
+                    echo '</td>'."\n";
 
             }
 

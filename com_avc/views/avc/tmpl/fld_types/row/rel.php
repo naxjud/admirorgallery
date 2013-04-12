@@ -11,15 +11,6 @@ $query = $dbObject->getQuery(true);
 $query->select( array( $FIELD_PARAMS["select"] ) );
 $query->from( $FIELD_PARAMS["from"] );
 
-// WHERE
-// commented because it need all to be listed
-// if(!empty($FIELD_PARAMS["where"])){
-//     foreach ($FIELD_PARAMS["where"] as $value) {
-//      	$value = str_replace("FIELD_VALUE", $FIELD_VALUE, $value);
-//         $query->where($value);
-//     }
-// }
-
 // HAVING
 if(!empty($FIELD_PARAMS["having"])){
     foreach ($FIELD_PARAMS["having"] as $value) {    	
@@ -66,6 +57,9 @@ echo '
 ///////////////////////////////////////////////
 //	ADD INPUT
 ///////////////////////////////////////////////
+
+$FIELD_VALUE_SPLIT = explode(" - ", $FIELD_VALUE);
+
 echo
 '
 <div class="AVC_frame">
@@ -75,7 +69,7 @@ echo
 	type="text"
 	id="' . $FIELD_ALIAS . '"
 	name="' . $FIELD_ALIAS . '"
-	value="' . $FIELD_VALUE . '"
+	value="' . $FIELD_VALUE_SPLIT[0] . '"
 	class="avc_rel width_auto"
 	title="' . JText::_('COM_AVC_TOOLTIPS_VARCHAR') . '"
 	size="4"

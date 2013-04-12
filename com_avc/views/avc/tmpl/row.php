@@ -23,7 +23,11 @@ JHTML::_('behavior.modal'); // Modal Libriries (SqueezeBox)
 
         $TABINDEX = 0;        
 
-        foreach ($FIELD_LIST as $FIELD_ALIAS => $FIELD_VALUE) {// Loop through Show Fields
+        foreach ($this->fieldsArray as $FIELD_ALIAS) {// Loop through Show Fields
+
+            if(!empty($this->items[0])){
+                $FIELD_VALUE = $this->items[0]->$FIELD_ALIAS;
+            }
 
             if($this->curr_row_id==0){// PATHC FOR NEW ITEM
                 $FIELD_VALUE = "";

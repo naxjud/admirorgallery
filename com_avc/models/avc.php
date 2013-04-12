@@ -23,6 +23,7 @@ class AvcModelAvc extends JModelList {
     private $curr_row_id; // Current row id, used for editing
     public $views;
     private $mainframe;
+    private $fieldsArray;
 
 
     function __construct() {
@@ -81,14 +82,12 @@ class AvcModelAvc extends JModelList {
     }
 
     public function getFieldsArray(){
-        $mystring = $this->views[$this->curr_view_id]["query"]["select"];
-        $mystring = str_replace(" ", "", $mystring);
-        $myarray = explode(",", $mystring);
-        $myAssocArray = array();
-        foreach ($myarray as $key => $value) {
-            $myAssocArray[$value]="";
-        }
-        return $myAssocArray;
+        if( !empty($this->views[$this->curr_view_id]["fields_config"]) ){
+            foreach ($this->views[$this->curr_view_id]["fields_config"] as $fld_key => $fld_value) {
+                $this->fieldsArray[] = $fld_key;
+            }
+        }            
+        return $this->fieldsArray;
     }
 
     // This is actually getItems in JModelList
@@ -96,6 +95,8 @@ class AvcModelAvc extends JModelList {
     // Here goes Fiters
     protected function getListQuery()
     {
+
+
            
         $query = $this->dbObject->getQuery(true);
 
@@ -107,6 +108,27 @@ class AvcModelAvc extends JModelList {
         $search_value = $this->mainframe->getUserStateFromRequest( 'filter_search_value', 'filter_search_value', $this->mainframe->getCfg('filter_search_value') );  
         if ( !empty($search_value) ) {
             $query->having( $search_value );
+        }
+
+        // LEFT JOIN
+        if(!empty($this->views[$this->curr_view_id]["query"]["left_join"])){
+            foreach ($this->views[$this->curr_view_id]["query"]["left_join"] as $value) { 
+                $query->leftJoin($value);
+            }
+        }
+
+        // RIGHT JOIN
+        if(!empty($this->views[$this->curr_view_id]["query"]["right_join"])){
+            foreach ($this->views[$this->curr_view_id]["query"]["right_join"] as $value) { 
+                $query->rightJoin($value);
+            }
+        }
+
+        // INNER JOIN
+        if(!empty($this->views[$this->curr_view_id]["query"]["inner_join"])){
+            foreach ($this->views[$this->curr_view_id]["query"]["inner_join"] as $value) { 
+                $query->innerJoin($value);
+            }
         }
 
         // Filter Order
@@ -124,7 +146,7 @@ class AvcModelAvc extends JModelList {
         // GET ONLY SELECTED ROW FOR ROW LAYOUT
         if (JRequest::getVar('layout', 'default') == "row") {
             if($this->curr_row_id > 0){                
-                $query->where($this->dbObject->nameQuote("id") . " = " . $this->curr_row_id);
+                $query->having($this->dbObject->nameQuote("id") . " = " . $this->curr_row_id);
             }
         }
 
