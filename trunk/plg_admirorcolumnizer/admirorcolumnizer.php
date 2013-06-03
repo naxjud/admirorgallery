@@ -64,9 +64,9 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 			if($AC->params['hyphenator']){
 				$version = new JVersion();
 				if($version->RELEASE=="1.5"){
-					$doc->addScript( JURI::root().'plugins'.DS .'content'.DS .'admirorcolumnizer'.DS.'scripts'.DS.'Hyphenator.js' );
+					$doc->addScript( JURI::root().'plugins/content/admirorcolumnizer/scripts/Hyphenator.js' );
 				}else{
-					$doc->addScript( JURI::root().'plugins'.DS .'content'.DS .'admirorcolumnizer'.DS .'admirorcolumnizer'.DS.'scripts'.DS.'Hyphenator.js' );
+					$doc->addScript( JURI::root().'plugins/content/admirorcolumnizer/admirorcolumnizer/scripts/Hyphenator.js' );
 				}				
 				$text.= '
 				<!-- AdmirorColumnizer 3 -->
