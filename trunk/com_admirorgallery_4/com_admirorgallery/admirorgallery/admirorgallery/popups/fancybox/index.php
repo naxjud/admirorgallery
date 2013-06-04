@@ -31,6 +31,7 @@ $this->popupEngine->endCode = '
 		 \'transitionOut\' : \'elastic\',
 		 \'easingIn\' : \'easeOutBack\',
 		 \'easingOut\' : \'easeInBack\'
+                 //,titleShow : false
         });
 </script>
 ';

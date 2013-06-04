@@ -17,6 +17,7 @@ $AG->loadCSS($AG->currTemplateRoot.'galleryview.css');
 $AG->loadCSS($AG->currTemplateRoot.'albums/albums.css');
 $AG->loadCSS($AG->currTemplateRoot.'pagination/pagination.css');
 
+$AG->insertJSCode(' var full_loader_path = "'.$AG->pluginPath . $AG->currTemplateRoot.'";');
 $AG->loadJS($AG->currTemplateRoot.'jquery.timers-1.2.js');
 $AG->loadJS($AG->currTemplateRoot.'jquery.easing.1.3.js');
 $AG->loadJS($AG->currTemplateRoot.'jquery.galleryview-2.1.1.js');
