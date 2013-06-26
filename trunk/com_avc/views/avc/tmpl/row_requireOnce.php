@@ -5,6 +5,30 @@ defined('_JEXEC') or die('Restricted access');
 
 JHTML::_('behavior.calendar'); // Callendar Libraries
 
+
+
+
+$JS_FIELD_FILELIST = '
+
+///////////////////////////////////////////
+// FIELD FILELIST
+///////////////////////////////////////////
+
+function avc_filelist_update(FIELD_NAME, FIELD_VALUE_PREFIX, FIELD_VALUE){
+
+	if(FIELD_VALUE){	
+		$(FIELD_NAME).set("value", FIELD_VALUE_PREFIX+FIELD_VALUE);
+	}else{
+		$(FIELD_NAME).set("value", "");
+	}
+
+}
+
+';
+$this->doc->addScriptDeclaration($JS_FIELD_FILELIST);
+
+
+
 $JS_FIELD_JSON = '
 
 ///////////////////////////////////////////
