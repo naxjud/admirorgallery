@@ -39,7 +39,7 @@ echo '
 	type="text"
 	name=""
 	value=""
-	class="width_auto"
+	class=""
 	title="' . JText::_('COM_AVC_TOOLTIPS_VARCHAR') . '"
 />
 <a href="#" class="avc_button" onclick="avc_json_remove(this,\'' . $FIELD_ALIAS . '\');return false;">' . JText::_('COM_AVC_DELETE') . '</a>
