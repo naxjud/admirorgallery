@@ -201,12 +201,18 @@ class agGallery extends agHelper {
                 }
                 if (!empty($thumb_file)) {
                     $this->Album_generateThumb($folderName, $thumb_file);
-                } else {
-                    continue; // SKIP IF NO THUMB IMAGES
                 }
+                
                 $html.='<a href="#" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',1,\'' . $this->imagesFolderName . '/' . $folderName . '\'); return false;" class="AG_album_thumb">';
                 $html.='<span class="AG_album_thumb_img">';
-                $html.='<img src="' . $this->sitePath . PLUGIN_BASE_PATH . 'thumbs/' . $this->imagesFolderName . '/' . $folderName . '/' . basename($thumb_file) . '" />' . "\n";
+                if(!empty($thumb_file))
+                {
+                    $html.='<img src="' . $this->sitePath . PLUGIN_BASE_PATH . 'thumbs/' . $this->imagesFolderName . '/' . $folderName . '/' . basename($thumb_file) . '" />' . "\n";
+                }
+                else
+                {
+                    $html.='<img src="' . $this->sitePath . PLUGIN_BASE_PATH .'defaultAlbum.png" />' . "\n";
+                }
                 $html.='</span>';
                 $html.='<span class="AG_album_thumb_label">';
                 $html.=$this->descArray[$folderName];
