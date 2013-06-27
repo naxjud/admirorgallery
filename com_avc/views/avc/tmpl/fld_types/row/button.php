@@ -8,6 +8,6 @@ echo JText::_(strtoupper($FIELD_ALIAS));
 echo '</label>';
 
 $javascript__label = explode("|", $FIELD_PARAMS);
-echo '<input type="button" class="pointer width_auto" onclick="' . $javascript__label[0] . '" value="' . JText::_($javascript__label[1]) . '" />';
+echo '<input type="button" class="pointer width_auto" onclick="' . $FIELD_PARAMS["onclick"] . '" value="' . JText::_( $FIELD_PARAMS["label"] ) . '" />';
 
 echo '</div>';

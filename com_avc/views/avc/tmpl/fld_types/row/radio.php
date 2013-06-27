@@ -7,26 +7,19 @@ echo '<label id="jform_enabled-lbl" for="jform_enabled">';
 echo JText::_( strtoupper($FIELD_ALIAS));
 echo '</label>';
 
-$checked_item=0;
-$params_array = explode("\n",$FIELD_PARAMS);	
-foreach($params_array as $i => $params)// Add Dropbox item for any param founded
+
+foreach($FIELD_PARAMS as $VALUE => $LABEL)// Add Dropbox item for any param founded
 {						
-	$value__label = explode(",",$params);
-	if($value__label[0]==$field_value)// Add Selected Value
-	{
-		$checked_item=$i;
-	}
-}
-foreach($params_array as $i => $params)// Add Dropbox item for any param founded
-{		
-	$value__label = explode(",",$params);
+		
 	$checked="";
-	if($checked_item==$i)// Add Selected Value
+	if($VALUE==$FIELD_VALUE)// Add Selected Value
 	{
 		$checked='  checked="checked"';
 	}
-	echo '<input type="radio" class="width_auto" name="'.$FIELD_ALIAS.'" value="'.$value__label[0].'"'.$checked.'/><span class="inlineValue">'.JText::_($value__label[1]).'&nbsp;&nbsp;&nbsp;</span><br />';
+	echo '<input type="radio" class="width_auto" name="'.$FIELD_ALIAS.'" value="'.$VALUE.'"'.$checked.'/><span class="inlineValue">'.JText::_($LABEL).'&nbsp;&nbsp;&nbsp;</span><br />';
+
 }
+
 echo '<br style="clear:both;" />';
 
 echo '</div>';
