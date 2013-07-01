@@ -63,8 +63,7 @@ class plgContentAdmirorGallery extends JPlugin {
                 error_reporting('E_NOTICE');
             //Joomla specific variables is passed as parametars for agGallery independce from specific CMS
             $AG->loadJS('AG_jQuery.js');
-            //$AG->articleID = $row->id;
-            $AG->articleID = 1;
+            $AG->articleID = $row->id;
             //generate gallery html
             foreach ($matches[0] as $match) {
                 $AG->index++;
