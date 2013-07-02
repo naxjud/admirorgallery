@@ -190,7 +190,7 @@ $JS_FIELD_MASONRY= '
 window.addEvent("domready", function(){
 
 $("masonry").masonry({
-		singleMode: true,
+		singleMode: false,
 		itemSelector: ".form_items"
 	});
 
@@ -200,3 +200,23 @@ $("masonry").masonry({
 ';
 
 $this->doc->addScriptDeclaration($JS_FIELD_MASONRY);
+
+
+$JS_FIELD_CBX = '
+
+///////////////////////////////////////////
+// JS_FIELD_CBX
+///////////////////////////////////////////
+
+
+function JS_FIELD_CBX(FIELD_ALIAS){
+	var VALUE = $$(\'input#cxb_\'+FIELD_ALIAS+\':checked\').get(\'value\');
+	console.log(typeof VALUE);
+	if(VALUE.length == 0){
+		VALUE = "";		
+	}	
+	$(FIELD_ALIAS).set( \'value\', VALUE );
+}
+
+';
+$this->doc->addScriptDeclaration($JS_FIELD_CBX);

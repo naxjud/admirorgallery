@@ -8,7 +8,18 @@ JHTML::_('behavior.modal'); // Modal Libriries (SqueezeBox)
 ?>
 
 <div>
-    <h1 class="pageTitle"><?php echo JText::_(strtoupper($this->views[$this->curr_view_id]["name"])) . " | " . JText::_(strtoupper("COM_AVC_" . $this->task)); ?></h1>
+    
+    <h1 class="pageTitle"><?php
+
+    if(!empty($this->views[$this->curr_view_id]["icon_path"])){
+        echo '<img src="'. JURI::root() . $this->views[$this->curr_view_id]["icon_path"] .'" />'."\n";
+    }
+
+    echo JText::_(strtoupper($this->views[$this->curr_view_id]["name"])) . " | " . JText::_(strtoupper("COM_AVC_" . $this->task));
+
+    ?></h1>
+
+    
     <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="adminForm" id="adminForm">
 
         <div id="masonry">

@@ -15,20 +15,20 @@ require_once("table_requireBefore.php");
 ?>
 
 <div>
-    <h1 class="pageTitle"><?php echo JText::_(strtoupper($this->views[$this->curr_view_id]["name"])); ?></h1>
-    <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="adminForm" id="adminForm">
-        <table cellpadding="0" cellspacing="0" border="0" width="100%">
-            <tbody>
-                <tr>
-                    <td class="AVC_sidePanel">
-                        
-                        <!-- MENU -->
-                        <?php
-                            require_once("menu.php");
-                        ?>
+    <h1 class="pageTitle"><?php
 
-                    </td>
-                    <td class="AVC_tableView">
+
+        if(!empty($this->views[$this->curr_view_id]["icon_path"])){
+            echo '<img src="'. JURI::root() . $this->views[$this->curr_view_id]["icon_path"] .'" />'."\n";
+        }
+
+        echo JText::_(strtoupper($this->views[$this->curr_view_id]["name"]));
+
+
+    ?></h1>
+    <form action="<?php echo JRoute::_('index.php'); ?>" method="post" name="adminForm" id="adminForm">
+
+<div class="AVC_tableView">
 
 <!-- =========================================================================== -->
 <!-- TABLE -->
@@ -36,6 +36,13 @@ require_once("table_requireBefore.php");
 
 
 <fieldset id="filter-bar">
+
+
+<div class="fltlft">
+    <?php
+        require_once("menu.php");
+    ?>
+</div>
 
 <div class="fltlft">      
 
@@ -56,8 +63,8 @@ require_once("table_requireBefore.php");
     <input type="hidden" name="filter_search_value" id="filter_search_value" value="<?php echo $AVC_having_search;?>" />
 
 </div>
-<div class="fltrt">
 
+<div class="fltrt">
 </div>
 
 </fieldset>
@@ -155,10 +162,8 @@ require_once("table_requireBefore.php");
                             require_once('personal_notes.php');
                         ?>
 
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+</div>
+
 
         <input type="hidden" name="option" value="com_avc" />
         <input type="hidden" name="controller" value="avc" />

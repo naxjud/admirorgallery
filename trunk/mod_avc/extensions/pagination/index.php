@@ -15,15 +15,17 @@ $AVC_pagination_options = array(5,10,15,20,JText::_("All"));
 $AVC_pagination_pages = array();
 $AVC_pagination_item=0;
 $AVC_pagination_page=0;
-while ($AVC_pagination_item < $AVC_pagination_total) {
-	if(($AVC_pagination_item % $AVC_pagination_range) == 0){
-		$AVC_pagination_page++;
-		$AVC_pagination_pages[$AVC_pagination_page] = $AVC_pagination_item.",".$AVC_pagination_range;
+if($AVC_pagination_range != 0){
+	while ($AVC_pagination_item < $AVC_pagination_total) {
+		if(($AVC_pagination_item % $AVC_pagination_range) == 0){
+			$AVC_pagination_page++;
+			$AVC_pagination_pages[$AVC_pagination_page] = $AVC_pagination_item.",".$AVC_pagination_range;
+		}
+		$AVC_pagination_item++;
 	}
-	$AVC_pagination_item++;
+$AVC_current_page = floor($AVC_pagination_from/$AVC_pagination_range)+1;
 }
 
-$AVC_current_page = floor($AVC_pagination_from/$AVC_pagination_range)+1;
 
 
 echo '<span class="AVC_LAYOUT_EXT">';
@@ -82,4 +84,3 @@ if($AVC_pagination_range != 0){
 echo '</span>';
 
 }//if($AVC->state_limit!=""){
-
