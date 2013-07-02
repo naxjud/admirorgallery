@@ -1,8 +1,17 @@
 <?php
 
 
+$form_items_width = 1;
+if( !empty( $FIELD_PARAMS["width"] ) ){
+	$form_items_width = $FIELD_PARAMS["width"];
+}
+$form_items_height = 0;
+if( !empty( $FIELD_PARAMS["height"] ) ){
+	$form_items_height = $FIELD_PARAMS["height"];
+}
+
 echo '
-<div class="form_items">
+<div class="form_items form_item_width_'. $form_items_width .' form_item_height_'. $form_items_height .'">
 ';
 
 
@@ -46,10 +55,10 @@ $onkeyup = 'varcharLimited_validator(event,\''.$FIELD_ALIAS.'\','.$i.',this.valu
 		id="'.$FIELD_ALIAS.'_'.$i.'"
 		type="text"
 		value="'.substr($FIELD_VALUE, $i, 1).'"
-		class="AVC_VARLIMIT_INPUT"
 		title="'.JText::_('COM_AVC_TOOLTIPS_VARCHAR').'"
 		size="1"
 		maxlength="1"
+		style="width:1em !important"
 	/>
 	';
 	$TABINDEX++;

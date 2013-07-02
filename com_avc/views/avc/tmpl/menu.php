@@ -3,52 +3,70 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-// ADD WRAPPER
-echo '
-<ul id="AVC_menu"></ul>
-';
 
-$JS_AVC_menu = '';
-
-$JS_AVC_menu.= '
-
-
-// ======================================================
-// MENU - DECLARE VARS
-// ======================================================
-
-var newH1,newUL,newLI,newA,newIMG, AVC_menu_groups;
-
-var AVC_menu_items = new Object();
-AVC_menu_items[0] = new Object();
-AVC_menu_items[0]["id"]=0;
-AVC_menu_items[0]["name"]="' . JText::_("COM_AVC_HOME") . '";
-AVC_menu_items[0]["image"]="'. JURI::root() . 'administrator/components/com_avc/assets/images/icon-64-avc.png";
-AVC_menu_items[0]["layout"]="default";
-AVC_menu_items[0]["group_alias"]="";
-';
-
-$counter = 1;
+// CREATE GROUPS
+$view_groups = array();
 foreach ($this->views as $key => $view) {
 
-    // Create JS Array from PHP Menu List Array
-    $JS_AVC_menu.= 'AVC_menu_items['.$counter.'] = new Object();' . "\n";
-    $JS_AVC_menu.= 'AVC_menu_items['.$counter.']["id"]=' . $key . ';' . "\n";
-    $JS_AVC_menu.= 'AVC_menu_items['.$counter.']["name"]="' . JText::_($view["name"]) . '";' . "\n";
-    $JS_AVC_menu.= 'AVC_menu_items['.$counter.']["layout"]="table";' . "\n";
-    $JS_AVC_menu.= 'AVC_menu_items['.$counter.']["group_alias"]="'. JText::_($view["group_alias"]) .'";' . "\n";
-    
-    // Is image exists
-    if (!empty ($view["icon_path"])) {
-        $view_image = JURI::root() . $view["icon_path"];
-    } else {
-        $view_image = JURI::root() . 'administrator/components/com_avc/assets/images/icon-64-avc.png';
-    }
-    $JS_AVC_menu.= 'AVC_menu_items['.$counter.']["image"]="' . $view_image . '";' . "\n";
+	if( empty( $view["group_alias"] ) ){
+		$view["group_alias"] = "COM_AVC_UNCATEGORISED";
+	}
 
-    $counter++;
+	$view_groups[ $view["group_alias"] ][ $key ] = $view;
+}
+
+echo '
+	<button type="button" onclick="AVC_menu_exec(\'0\', \'default\'); return false;">'. JText::_( strtoupper( 'Home' ) ) .'</button>
+    <button type="button" id="AVC_CATS_MENU_OPEN">'. JText::_( strtoupper( 'Views' ) ) .' &#9660;</button>
+';
+
+echo '
+<div id="AVC_CATS_MENU_WRAP">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0"><tbody><tr>
+        <td id="AVC_CATS_MENU">
+';
+
+echo '<ul class="menu">'."\n";
+
+foreach ($view_groups as $group_name => $group_items) {
+
+	echo '<li>'."\n";
+
+	echo '<a href="#">'. JText::_( strtoupper( $group_name )) .'</a>'."\n";
+
+	echo '<ul>'."\n";
+	foreach ($group_items as $key => $view) {
+
+		echo '<li>'."\n";
+
+		echo '<a href="#" onclick="AVC_menu_exec(\''. $key .'\', \'table\'); return false;">'."\n";
+
+		if(!empty($view["icon_path"])){
+			echo '<img src="'. JURI::root() . $view["icon_path"] .'" />'."\n";
+		}
+
+		echo JText::_( strtoupper( $view["name"] )) ."\n";
+
+		echo '</a>'."\n";
+
+		echo '</li>'."\n";
+
+	}
+	echo '</ul>'."\n";
+
+	echo '</li>'."\n";
 
 }
+
+echo '</ul>'."\n";
+
+echo '
+	</td>
+    <td id="AVC_CATS_SUBMENU" style="display: none;"></td>
+</tr></tbody></table>
+</div>
+';
+
 
 $JS_AVC_menu.= '
 
@@ -78,76 +96,45 @@ function AVC_menu_exec(curr_view_id,layout){
 	$(\'adminForm\').submit();
 }
 
-function AVC_menu_render_item(index, parent){
+window.addEvent(\'domready\', function() {
 
-	newLI = document.createElement("li");
-	newA = document.createElement("a");
-	$(parent).appendChild(newLI)
-					   .appendChild(newA)
-					   .set("id","AVC_menu_"+index)
-					   .appendText(AVC_menu_items[index]["name"])
-					   .addEvents({ 
-									"click": function(){ 
-										AVC_menu_exec(AVC_menu_items[index]["id"],AVC_menu_items[index]["layout"]);
-									}
-								 }); 
-					   ;
+	$$(\'#AVC_CATS_MENU_OPEN\').addEvents({
 
-	// MARK CURRENT
-	if(AVC_menu_items[index]["id"]=="'.$this->curr_view_id.'"){
-		newIMG = document.createElement("img");
-		newIMG.inject($("AVC_menu_"+index),"top")
-			  .set("src",AVC_menu_items[index]["image"])
-			  ;
-	  	$("AVC_menu_"+index).addClass("AVC_menu_current");
-	}
+		mouseenter: function(){
 
-}
+			$$(\'#AVC_CATS_MENU_WRAP\').setStyles({\'display\': \'block\'});
 
-';
+	    }
 
-$JS_AVC_menu.= '
-// ======================================================
-// MENU - INIT MENU
-// ======================================================
-AVC_menu_groups = new Array();
-window.addEvent("domready", function(){ 
-	Object.each(AVC_menu_items, function (item, key){
-		// AVC_menu_render_item(key);
-		AVC_menu_groups.push( item["group_alias"] );
 	});
 
-	AVC_menu_groups = AVC_menu_groups.unique();
+	// MENU
+	$$(\'#AVC_CATS_MENU .menu ul\').getParent().getElement(\'a\').addEvents({
+	    mouseenter: function(){
+	        $$(\'#AVC_CATS_MENU_WRAP\').addClass("hover");
+	        $$(\'#AVC_CATS_MENU_WRAP a\').removeClass("hover");
+	        this.addClass("hover");
+	        $$(\'#AVC_CATS_SUBMENU\').set(\'html\', \'\').setStyles({\'display\': \'table-cell\'});
+	        var submenu_header = document.createElement("h2");
+	        var submenu_header_text = this.get(\'text\');
+	        var submenu_image = "";
+	        //submenu_image = this.getParent().getElement(\'img\').get(\'src\');
+	        $("AVC_CATS_SUBMENU").setStyles({\'background-image\':\'url(\'+submenu_image+\')\'})
+	                            .appendChild(submenu_header)
+	                            .set(\'text\',submenu_header_text);
+	        this.getParent().getElement(\'ul\').clone().inject(\'AVC_CATS_SUBMENU\');
+	    }
 
-	Object.each(AVC_menu_groups, function (groupitem, groupkey){
+	});
 
-		newLI = document.createElement("li");
-		newH1 = document.createElement("h1");
-		newUL = document.createElement("ul");
-		var title = groupitem;
-		if(title == ""){title = "' . JText::_("COM_AVC_UNCATEGORISED") . '"};
-		$("AVC_menu").appendChild(newLI)
-					 .set("class","AVC_menu_group_wrap")
-					 .set("id","AVC_menu_group_wrap_"+groupkey)
-					 .appendChild(newH1)
-					 .appendText(title);
-
-		$("AVC_menu_group_wrap_"+groupkey).appendChild(newUL)
-										   .set("id","AVC_menu_group_"+groupkey);
-
-		Object.each(AVC_menu_items, function (menuitem, menukey){
-			if(menuitem["group_alias"] == groupitem){
-				AVC_menu_render_item(menukey,"AVC_menu_group_"+groupkey);
-			}
-		});
-
+	$$(\'#AVC_CATS_MENU_WRAP\').addEvents({
+	    mouseleave: function(){
+	        this.setStyles({\'display\': \'none\'});
+	    }
 	});
 
 });
-'. "\n";
+
+';
 
 $this->doc->addScriptDeclaration($JS_AVC_menu);
-
-// $this->doc->addScript(JURI::root() . 'administrator/components/com_avc/assets/js/Observer.js');
-// $this->doc->addScript(JURI::root() . 'administrator/components/com_avc/assets/js/Autocompleter.js');
-// $this->doc->addScript(JURI::root() . 'administrator/components/com_avc/assets/js/Autocompleter.Local.js');
