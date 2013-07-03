@@ -2,11 +2,11 @@
 <install version="1.5" type="plugin" group="content" method="upgrade">
     <name>Content - Admiror Columnizer</name>
     <author>Igor Kekeljevic and Nikola Vasiljevski</author>
-    <creationDate>16/02/2012</creationDate>	
+    <creationDate>03/07/2013</creationDate>	
     <copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
     <authorEmail></authorEmail>
     <authorUrl>http://www.admiror-design-studio.com</authorUrl>
-    <version>3.3</version>
+    <version>3.5</version>
     <description>PLG_CONTENT_ADMIRORCOLUMNIZER_XML_DESCRIPTION</description>
 	
 	<params>  
