@@ -24,7 +24,7 @@ class plgContentAdmirorcolumnizer extends JPlugin {
         // jimport needed by Joomla 1.6 and >
 		jimport('joomla.html.parameter');
         $this->plugin = JPluginHelper::getPlugin('content', 'admirorcolumnizer');
-        $this->params = new JParameter($this->plugin->params);
+        $this->params = new JRegistry($this->plugin->params);
 		// load current language
         $this->loadLanguage();
     }
@@ -54,7 +54,7 @@ class plgContentAdmirorcolumnizer extends JPlugin {
 		{
 			require_once (dirname(__FILE__).'/admirorcolumnizer/scripts/AC_helper.php');
 			$AC = new AC_helper($this->params);  
-			$doc = &JFactory::getDocument();
+			$doc = JFactory::getDocument();
 			$html="";
 			foreach($matches[0] as $matchKey => $matchValue)
 			{	
