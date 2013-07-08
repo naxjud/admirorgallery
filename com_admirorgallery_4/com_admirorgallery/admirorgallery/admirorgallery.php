@@ -24,6 +24,10 @@ class plgContentAdmirorGallery extends JPlugin {
         // load current language
         $this->loadLanguage();
     }
+    
+    function onContentBeforeDisplay($context, &$row, &$params, $limitstart) {
+        $this->onContentPrepare($context, $row, $params, $limitstart);
+    }
 
     function onContentPrepare($context, &$row, &$params, $limitstart) {
         $gd_exists = true;
