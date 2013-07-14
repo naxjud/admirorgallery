@@ -25,11 +25,11 @@ class plgContentAdmirorGallery extends JPlugin {
         $this->loadLanguage();
     }
     
-    function onContentBeforeDisplay($context, &$row, &$params, $limitstart) {
+    function onContentBeforeDisplay($context, &$row, &$params, $limitstart = 0) {
         $this->onContentPrepare($context, $row, $params, $limitstart);
     }
 
-    function onContentPrepare($context, &$row, &$params, $limitstart) {
+    function onContentPrepare($context, &$row, &$params, $limitstart = 0) {
         $gd_exists = true;
         if (!preg_match("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}|{AG[^}]*}(.*?){/AG}#s", $row->text)) {
             return;
