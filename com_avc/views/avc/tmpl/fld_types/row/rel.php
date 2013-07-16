@@ -3,42 +3,6 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-///////////////////////////////////////////////
-//	CREATE LISTING
-///////////////////////////////////////////////
-$dbObject = JFactory::getDBO();
-$query = $dbObject->getQuery(true);
-$query->select( array( $FIELD_PARAMS["select"] ) );
-$query->from( $FIELD_PARAMS["from"] );
-
-// HAVING
-if(!empty($FIELD_PARAMS["having"])){
-    foreach ($FIELD_PARAMS["having"] as $value) {    	
-		if(!is_numeric($FIELD_VALUE)){
-     		$value = str_replace("FIELD_VALUE", $dbObject->Quote($FIELD_VALUE), $value);
-		}else{
-     		$value = str_replace("FIELD_VALUE", $FIELD_VALUE, $value);
-		}
-        $query->where($value);
-    }
-}
-
-// LEFT JOIN
-if(!empty($FIELD_PARAMS["left_join"])){
-    foreach ($FIELD_PARAMS["left_join"] as $value) { 
-        $query->leftJoin($value);
-    }
-}
-
-// ORDER
-if(!empty($FIELD_PARAMS["order_by"])){
-    $query->order($FIELD_PARAMS["order_by"]);
-}
-
-$dbObject->setQuery($query);
-$ROWS = $dbObject->loadAssocList();
-
-
 $form_items_width = 1;
 if( !empty( $FIELD_PARAMS["width"] ) ){
 	$form_items_width = $FIELD_PARAMS["width"];
@@ -66,8 +30,6 @@ echo '
 //	ADD INPUT
 ///////////////////////////////////////////////
 
-$FIELD_VALUE_SPLIT = explode(" - ", $FIELD_VALUE);
-
 echo
 '
 <div class="AVC_frame">
@@ -77,32 +39,43 @@ echo
 	type="text"
 	id="' . $FIELD_ALIAS . '"
 	name="' . $FIELD_ALIAS . '"
-	value="' . $FIELD_VALUE_SPLIT[0] . '"
+	value="' . $FIELD_VALUE . '"
 	class="avc_rel width_auto"
 	title="' . JText::_('COM_AVC_TOOLTIPS_VARCHAR') . '"
 	size="4"
 />
-<span id="lbl_' . $FIELD_ALIAS . '"></span>
+
+<span
+	id="lbl_' . $FIELD_ALIAS . '"
+	style="text-overflow:ellipsis; overflow: hidden;display: block; white-space: nowrap;"
+></span>
+
 </div>
 ';
-
-///////////////////////////////////////////////
-//	ADD BUTTON
-///////////////////////////////////////////////
-echo
-'
-<input type="button" class="pointer width_auto" value="'.JText::_('COM_AVC_SELECT').'"
+?>
+<input
+	type="button"
+	class="pointer width_auto"
+	value="<?php echo JText::_('COM_AVC_SELECT');?>"
 	onclick="
-		SqueezeBox.fromElement($(\'' . $FIELD_ALIAS . '_wrap\'), {
-			handler:\'clone\',
+		SqueezeBox.open(
+			'index.php?option=com_avc&view=avc&layout=table&tmpl=component&HIDE_NOTES=true&target_field=<?php echo  $FIELD_ALIAS; ?>&curr_view_id=<?php echo $FIELD_PARAMS["queryId"]; ?>',
+			{
+			handler:'iframe',
 			size: {
-				x: 400,
-				y: 400,
-			}
+				x: 1000,
+				y: 600,
+			},
+			onClose: function() {
+		    }
 		});
 		return false;
 	"
 	>
+
+<?php
+echo
+'	
 <input type="button" class="pointer width_auto" value="'.JText::_('COM_AVC_CLEAR').'"
 	onclick="
 		jInsertRelSelect(\'' . $FIELD_ALIAS . '\',\'\');
@@ -119,41 +92,14 @@ echo '
 </div>
 ';
 
+$REL_QUERY = $this->views[$FIELD_PARAMS["queryId"]]["query"];
 
-
-//////////////////////////////////////////////
-// CREATE POPUP WINDOW
-//////////////////////////////////////////////
-echo '
-<div style="display:none;">
-<div id="' . $FIELD_ALIAS . '_wrap">
-<h1>' . JText::_( strtoupper($FIELD_TITLE)) . '</h1>
-
-<ul>
-';
-
-foreach($ROWS as $ROW){
-	echo '
-	<li>
-		<a
-			href="#"
-			onclick="
-				window.parent.jInsertRelSelect(\'' . $FIELD_ALIAS . '\', \'' . $ROW[ $FIELD_PARAMS["key"] ] . '\');
-				window.parent.SqueezeBox.close();
-				return false;
-			"
-		>
-		' . implode(", ", $ROW) . '
-		</a>
-	</li>
-	';
+$ROW_KEY = "id";
+if($REL_QUERY["key"]){
+    $ROW_KEY = $REL_QUERY["key"];
 }
 
-echo '
-</ul>
-</div>
-</div>
-';
+$ROWS = AvcModelAvc::execQuery($REL_QUERY);
 
 $JS_FIELD_REL_VALUES='
 //////////////////////////////
@@ -165,7 +111,7 @@ AVC_REL[\'' . $FIELD_ALIAS . '\'] = new Object();
 
 if(!empty($ROWS)){
 	foreach($ROWS as $ROW){
-		$JS_FIELD_REL_VALUES.='AVC_REL[\'' . $FIELD_ALIAS . '\'][\'' . $ROW[ $FIELD_PARAMS["key"] ] . '\'] = "' . htmlspecialchars(implode(", ", $ROW)) . '";'."\n";
+		$JS_FIELD_REL_VALUES.='AVC_REL[\'' . $FIELD_ALIAS . '\'][\'' . $ROW[ $ROW_KEY ] . '\'] = "' . htmlspecialchars(implode(", ", $ROW)) . '";'."\n";
 	}
 }
 

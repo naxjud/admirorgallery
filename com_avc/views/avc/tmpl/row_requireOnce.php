@@ -220,3 +220,27 @@ function JS_FIELD_CBX(FIELD_ALIAS){
 
 ';
 $this->doc->addScriptDeclaration($JS_FIELD_CBX);
+
+
+$JS_FILTER_UPDATE = '
+function AVC_FILTER_UPDATE(){
+
+	var filtersArray = new Array();
+	var having = "";
+
+	$$(".AVC_FILTERS").each(function(el,i){
+		if(el.value != ""){
+			filtersArray.push(el.value);
+		}
+	});
+
+	filtersArray = unique(filtersArray);
+	having = filtersArray.join(\' AND \');
+
+	return having;
+
+}
+
+';
+
+$this->doc->addScriptDeclaration($JS_FILTER_UPDATE);

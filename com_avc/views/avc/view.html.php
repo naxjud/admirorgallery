@@ -44,6 +44,55 @@ class AvcViewAvc extends JView {
         $this->views = $this->get('Views');
         $this->curr_view_id = $this->get('CurrViewId');
 
+        function execQuery($FIELD_PARAMS){
+        ///////////////////////////////////////////////
+        //  CREATE LISTING
+        ///////////////////////////////////////////////
+        $dbObject = JFactory::getDBO();
+        $query = $dbObject->getQuery(true);
+        $query->select( array( $FIELD_PARAMS["select"] ) );
+        $query->from( $FIELD_PARAMS["from"] );
+
+        // WHERE
+        if(!empty($FIELD_PARAMS["where"])){
+            foreach ($FIELD_PARAMS["where"] as $value) {
+                if(!is_numeric($FIELD_VALUE)){
+                    $value = str_replace("FIELD_VALUE", $dbObject->Quote($FIELD_VALUE), $value);
+                }else{
+                    $value = str_replace("FIELD_VALUE", $FIELD_VALUE, $value);
+                }
+                $query->where($value);
+            }
+        }
+
+        // HAVING
+        if(!empty($FIELD_PARAMS["having"])){
+            foreach ($FIELD_PARAMS["having"] as $value) {       
+                if(!is_numeric($FIELD_VALUE)){
+                    $value = str_replace("FIELD_VALUE", $dbObject->Quote($FIELD_VALUE), $value);
+                }else{
+                    $value = str_replace("FIELD_VALUE", $FIELD_VALUE, $value);
+                }
+                $query->where($value);
+            }
+        }
+
+        // LEFT JOIN
+        if(!empty($FIELD_PARAMS["left_join"])){
+            foreach ($FIELD_PARAMS["left_join"] as $value) { 
+                $query->leftJoin($value);
+            }
+        }
+
+        // ORDER
+        if(!empty($FIELD_PARAMS["order_by"])){
+            $query->order($FIELD_PARAMS["order_by"]);
+        }
+
+        $dbObject->setQuery($query);
+        return $dbObject->loadAssocList();
+    }
+
         // Track outputs in debug mode
         if(JDEBUG){
             echo "VIEWS:<br /><pre>";

@@ -119,7 +119,7 @@ function adminlist_drag_init(){
 			 	"left": myEvent.page.x+7+"px"
 			})
 		 .inject(document.body);
-	$(cb_lastClicked).clone().inject($("adminlist_clone"));
+	$(cb_lastClicked).clone().set("id","myVideo").inject($("adminlist_clone"));
 	myDrag = new Drag("adminlist_clone", {
 	});
 	myDrag.start(myEvent);
@@ -128,7 +128,9 @@ function adminlist_drag_init(){
 function adminlist_drag_end(){
 
 	// REMOVE MOUSELEAVE LISTENER
-	$(cb_lastClicked).removeEvent("mouseleave",adminlist_mouseleave);
+	if($(cb_lastClicked)){
+		$(cb_lastClicked).removeEvent("mouseleave",adminlist_mouseleave);
+	}
 
 	if(myDrag){
 		myDrag.stop();
@@ -158,77 +160,108 @@ function adminlist_drag_end(){
 
 window.addEvent("domready", function(){
 
-	$$("#adminlist img").set("draggable","false");
-	$$("#adminlist a").set("draggable","false");
+	var JTooltips = new Tips($$(\'.hasTip\'),{
+		maxTitleChars: 50,
+		fixed: false
+	}); 
 
-    $$("#adminlist tbody tr").setStyles({
-	    "cursor": "pointer"
-    });
-
-	// KEYSTROKE LISTENER
-	document.addEvents({
-		"keydown": function(event){
-			keystroke=event.key;
-		},
-		"keyup": function(event){		
-			keystroke="";
-		},
-		"mouseup": function(event){	
-			adminlist_drag_end();
-		}
+	// Trancate long text
+	$$(".avc_fld_types_table_default").each(function(el, i){
+		el.set( "text", el.get("text").truncate(200, "...", " ") );
 	});
 
-	// ADD EVENTS FOR TR
-	$("adminlist").getElement("tbody").getElements("tr").addEvents({
-		"mousedown": function(e){
+	$$("#adminlist tbody tr").setStyles({
+			    "cursor": "pointer"
+	});
 
-			e.preventDefault();
+	// STANDARD ROW EVENTS	
+	if($("tmpl")){
 
-			switch(keystroke){
-				case "shift":	
-					if(cb_lastClicked){						
-						var from = parseInt(cb_lastClicked.substring(4, cb_lastClicked.length));
-						var to = parseInt(this.id.substring(4, this.id.length));
-						while (from!=to) {
-							adminlist_select("row_"+from);
-							if(from>to){
-								from--;
-							}else{
-								from++;
-							}
-						}	
-						adminlist_select("row_"+from);					
-					}
-				break;
-				case "control":
-					if($(this).getElement(".cid").get("checked")){
-						adminlist_deselect(this.id);
-					}else{
-						adminlist_select(this.id);
-					}
-				break;
-				default:
-					adminlist_deselect_all();
-					adminlist_select(this.id);	
-					myEvent = e;
-					$(this).addEvent("mouseleave",adminlist_mouseleave);				
+		$("adminlist").getElement("tbody").getElements("tr").addEvents({
+			"mousedown": function(e){
+				e.preventDefault();  
+				window.parent.jInsertRelSelect($("target_field").value, this.getElement(".cid").value);
+				window.parent.SqueezeBox.close();
+	    	},
+			mouseover: function(){
+			    $(this).addClass("hover");
+			},
+			mouseleave: function(){
+			    $(this).removeClass("hover");
 			}
-			
-		},
-		"dblclick": function(){  
-			$("task").value = "edit";
-			document.adminForm.submit();
-    	},
-    	"contextmenu": function(e){
-			e.stop();
-		},
-		mouseover: function(){
-		    $(this).addClass("hover");
-		},
-		mouseleave: function(){
-		    $(this).removeClass("hover");
-		}
-	});
+		});
+
+	}else{
+
+		$$("#adminlist img").set("draggable","false");
+		$$("#adminlist a").set("draggable","false");
+	    
+
+		// KEYSTROKE LISTENER
+		document.addEvents({
+			"keydown": function(event){
+				keystroke=event.key;
+			},
+			"keyup": function(event){		
+				keystroke="";
+			},
+			"mouseup": function(event){	
+				adminlist_drag_end();
+			}
+		});
+
+		// ADD EVENTS FOR TR
+		$("adminlist").getElement("tbody").getElements("tr").addEvents({
+			"mousedown": function(e){
+
+				e.preventDefault();
+
+				switch(keystroke){
+					case "shift":	
+						if(cb_lastClicked){						
+							var from = parseInt(cb_lastClicked.substring(4, cb_lastClicked.length));
+							var to = parseInt(this.id.substring(4, this.id.length));
+							while (from!=to) {
+								adminlist_select("row_"+from);
+								if(from>to){
+									from--;
+								}else{
+									from++;
+								}
+							}	
+							adminlist_select("row_"+from);					
+						}
+					break;
+					case "control":
+						if($(this).getElement(".cid").get("checked")){
+							adminlist_deselect(this.id);
+						}else{
+							adminlist_select(this.id);
+						}
+					break;
+					default:
+						adminlist_deselect_all();
+						adminlist_select(this.id);	
+						myEvent = e;
+						$(this).addEvent("mouseleave",adminlist_mouseleave);				
+				}
+				
+			},
+			"dblclick": function(){  
+				$("task").value = "edit";
+				document.adminForm.submit();
+	    	},
+	    	"contextmenu": function(e){
+				e.stop();
+			},
+			mouseover: function(){
+			    $(this).addClass("hover");
+			},
+			mouseleave: function(){
+			    $(this).removeClass("hover");
+			}
+		});
+	}
 
 });
 

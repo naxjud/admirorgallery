@@ -4,7 +4,7 @@ $form_items_width = 1;
 if( !empty( $FIELD_PARAMS["width"] ) ){
 	$form_items_width = $FIELD_PARAMS["width"];
 }
-$form_items_height = 0;
+$form_items_height = 2;
 if( !empty( $FIELD_PARAMS["height"] ) ){
 	$form_items_height = $FIELD_PARAMS["height"];
 }

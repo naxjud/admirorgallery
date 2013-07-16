@@ -36,22 +36,22 @@ echo '
   
   <div class="content">
   	<a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{}' ).'\') ); return false;">EMPTY</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"boolean"\n}' ).'\') ); return false;">boolean</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"button",\n\t"params":{\n\t\t"label":"buttonName",\n\t\t"onclick":"javascript"\n\t\}\n}' ).'\') ); return false;">button</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"checkbox",\n\t"params":{\n\t\t"value1":"label1",\n\t\t"value2":"label2"\n\t\}\n}' ).'\') ); return false;">checkbox</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"configFields"\n}' ).'\') ); return false;">configFields</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"configSQL"\n}' ).'\') ); return false;">configSQL</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"date"\n}' ).'\') ); return false;">date</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"droplist",\n\t"params":{\n\t\t"value1":"label1",\n\t\t"value2":"label2"\n\t\}\n}' ).'\') ); return false;">droplist</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"fileList",\n\t"params":{\n\t\t"folder":"folderName"\n\t\}\n}' ).'\') ); return false;">fileList</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"img",\n\t"params":{\n\t\t"folder":"folderName"\n\t\}\n}' ).'\') ); return false;">img</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"json",\n\t"params":{\n\t\t"0":"option",\n\t\t"1":"other"\n\t\}\n}' ).'\') ); return false;">json</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"key"\n}' ).'\') ); return false;">key</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"plainText"\n}' ).'\') ); return false;">plainText</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"radio",\n\t"params":{\n\t\t"value1":"label1",\n\t\t"value2":"label2"\n\t\}\n}' ).'\') ); return false;">radio</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"rel",\n\t"key":"tblid",\n\t"select":"column1, tbl.id as tblid",\n\t"from":"table as tbl",\n\t"where":{"w1":"tbl.id = FIELD_VALUE"},\n\t"order_by":"column2 ASC"\n}' ).'\') ); return false;">rel</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"richText"\n}' ).'\') ); return false;">richText</a>
-    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '"column":{\n\t"type":"varlimit",\n\t"params":{\n\t\t"length":"number"\n\t}\n}' ).'\') ); return false;">varlimit</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"boolean"\n\t' ).'\') ); return false;">boolean</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"button",\n\t\t"params":{\n\t\t\t"label":"buttonName",\n\t\t\t"onclick":"javascript"\n\t\t}\n\t' ).'\') ); return false;">button</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"checkbox",\n\t\t"params":{\n\t\t\t"value1":"label1",\n\t\t\t"value2":"label2"\n\t\t}\n\t' ).'\') ); return false;">checkbox</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"configFields"\n\t' ).'\') ); return false;">configFields</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"configSQL"\n\t' ).'\') ); return false;">configSQL</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"date"\n\t' ).'\') ); return false;">date</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"droplist",\n\t\t"params":{\n\t\t\t"value1":"label1",\n\t\t\t"value2":"label2"\n\t\t}\n\t' ).'\') ); return false;">droplist</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"fileList",\n\t\t"params":{\n\t\t\t"folder":"folderName"\n\t\t}\n\t' ).'\') ); return false;">fileList</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"img",\n\t\t"params":{\n\t\t\t"folder":"folderName"\n\t\t}\n\t' ).'\') ); return false;">img</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"json",\n\t\t"params":{\n\t\t\t"0":"option",\n\t\t\t"1":"other"\n\t\t}\n\t' ).'\') ); return false;">json</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"key"\n\t' ).'\') ); return false;">key</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"plainText"\n\t' ).'\') ); return false;">plainText</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"radio",\n\t\t"params":{\n\t\t\t"value1":"label1",\n\t\t\t"value2":"label2"\n\t\t}\n\t' ).'\') ); return false;">radio</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"rel",\n\t\t"params":{\n\t\t\t"queryId":"number"\n\t\t}\n\t' ).'\') ); return false;">rel</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"richText"\n\t' ).'\') ); return false;">richText</a>
+    <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities( '\n\t\t"type":"varlimit",\n\t\t"params":{\n\t\t\t"length":"number"\n\t\t}\n\t' ).'\') ); return false;">varlimit</a>
 
   </div>
 
@@ -63,6 +63,48 @@ echo '
     <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities('"":""').'\') ); return false;">"":""</a>
     <a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( (\''.htmlentities('"":\n{\n\t"":""\n}').'\') ); return false;">"":{"":""}</a>
 	</div>
+';
+
+
+echo '<h2>'. JText::_( strtoupper( 'TABLES' )) .'</h2>';
+
+// LIST DATABASES
+$db = JFactory::getDBO();
+$query = $db->getQuery(true);
+$query = "show tables";
+$db->setQuery($query);
+ $db->setQuery($query);
+$tables = $db->loadResultArray(); 
+
+
+echo '<div class="content">';
+
+if(!empty( $tables )){
+    foreach ($tables as $table) {
+        
+            echo '<a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( this.get(\'text\') ); return false;" style="display:block; "><b>'. str_replace( $db->getPrefix(), '#__', $table ).'</b></a>';
+
+            $query = $db->getQuery(true);
+            $query = "show columns from ".$table;
+            $db->setQuery($query);
+            $db->setQuery($query);
+            $columns = $db->loadResultArray();
+
+
+            if(!empty( $columns )){
+                foreach ($columns as $column) {
+                    echo '<a href="#" onclick="$(\''.$FIELD_ALIAS.'\').insertAtCursor( this.get(\'text\') ); return false;">'.$column.'</a>';
+                }
+            }
+
+            echo '<hr />';
+    }
+}
+
+echo '</div>';
+
+
+echo '
 
   <h2>'. JText::_( strtoupper( 'COMMANDS' )) .'</h2>
   

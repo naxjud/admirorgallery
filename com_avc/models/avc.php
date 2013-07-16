@@ -46,6 +46,66 @@ class AvcModelAvc extends JModelList {
 
     }
 
+    public static function execQuery($QUERY, $RETURN_QUERY = false){
+
+        ///////////////////////////////////////////////
+        //  CREATE LISTING
+        ///////////////////////////////////////////////
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
+        $query->select( array( $QUERY["select"] ) );
+        $query->from( $QUERY["from"] );
+
+        // WHERE
+        if(!empty($QUERY["where"])){
+            foreach ($QUERY["where"] as $value) {
+                $query->where($value);
+            }
+        }
+
+        // HAVING
+        if(!empty($QUERY["having"])){
+            foreach ($QUERY["having"] as $value) {
+                $query->having($value);
+            }
+        }
+
+        // LEFT JOIN
+        if(!empty($QUERY["left_join"])){
+            foreach ($QUERY["left_join"] as $value) { 
+                $query->leftJoin($value);
+            }
+        }
+
+        // RIGHT JOIN
+        if(!empty($QUERY["right_join"])){
+            foreach ($QUERY["right_join"] as $value) { 
+                $query->rightJoin($value);
+            }
+        }
+
+        // INNER JOIN
+        if(!empty($QUERY["inner_join"])){
+            foreach ($QUERY["inner_join"] as $value) { 
+                $query->innerJoin($value);
+            }
+        }
+
+        // ORDER
+        if(!empty($QUERY["order_by"])){
+            $query->order($QUERY["order_by"]);
+        }
+
+        $db->setQuery($query);
+
+        if($RETURN_QUERY){// MANDATORY FOR GET LIST
+            return $query;
+        }
+
+        return $db->loadAssocList();
+
+    }
+
     protected function checkJSON(){
         if(version_compare(PHP_VERSION, '5.3.0') >= 0) { 
             switch (json_last_error()) {
@@ -96,39 +156,18 @@ class AvcModelAvc extends JModelList {
     protected function getListQuery()
     {
 
-
-           
-        $query = $this->dbObject->getQuery(true);
-
-        $query->select( array($this->views[$this->curr_view_id]["query"]["select"]) );
-
-        $query->from( $this->views[$this->curr_view_id]["query"]["from"] );
+        $QUERY = $this->views[$this->curr_view_id]["query"];
 
         // Filter Search      
         $search_value = $this->mainframe->getUserStateFromRequest( 'filter_search_value', 'filter_search_value', $this->mainframe->getCfg('filter_search_value') );  
         if ( !empty($search_value) ) {
-            $query->having( $search_value );
+            $QUERY["having"]["search"] = $search_value;
         }
 
-        // LEFT JOIN
-        if(!empty($this->views[$this->curr_view_id]["query"]["left_join"])){
-            foreach ($this->views[$this->curr_view_id]["query"]["left_join"] as $value) { 
-                $query->leftJoin($value);
-            }
-        }
-
-        // RIGHT JOIN
-        if(!empty($this->views[$this->curr_view_id]["query"]["right_join"])){
-            foreach ($this->views[$this->curr_view_id]["query"]["right_join"] as $value) { 
-                $query->rightJoin($value);
-            }
-        }
-
-        // INNER JOIN
-        if(!empty($this->views[$this->curr_view_id]["query"]["inner_join"])){
-            foreach ($this->views[$this->curr_view_id]["query"]["inner_join"] as $value) { 
-                $query->innerJoin($value);
-            }
+        // Filter Filters      
+        $filter_value = $this->mainframe->getUserStateFromRequest( 'filter_filter_value', 'filter_filter_value', $this->mainframe->getCfg('filter_filter_value') );  
+        if ( !empty($filter_value) ) {
+            $QUERY["having"]["filter"] = $filter_value;
         }
 
         // Filter Order
@@ -140,17 +179,17 @@ class AvcModelAvc extends JModelList {
             }
         }
         if (!empty($order)) {
-            $query->order($this->dbObject->getEscaped($order));
+            $QUERY["order_by"] = $this->dbObject->getEscaped($order);
         }
 
         // GET ONLY SELECTED ROW FOR ROW LAYOUT
         if (JRequest::getVar('layout', 'default') == "row") {
-            if($this->curr_row_id > 0){                
-                $query->having($this->dbObject->nameQuote("id") . " = " . $this->curr_row_id);
+            if($this->curr_row_id > 0){     
+                $QUERY["having"]["row_layout"] = $this->dbObject->nameQuote("id") . " = " . $this->curr_row_id;
             }
         }
 
-        return $query;
+        return $this->execQuery($QUERY, true);
 
     }
 
@@ -193,10 +232,13 @@ class AvcModelAvc extends JModelList {
             $viewID = $value["id"];
             $this->views[$viewID] = array();
             $this->views[$viewID]["name"] = $value["name"];
+            $this->views[$viewID]["description"] = $value["description"];
             $this->views[$viewID]["icon_path"] = $value["icon_path"];
             $this->views[$viewID]["query"] = json_decode($value["query"], true);
             $this->checkJSON();
             $this->views[$viewID]["fields_config"] = json_decode($value["fields_config"], true);
+            $this->checkJSON();
+            $this->views[$viewID]["filters_config"] = json_decode($value["filters_config"], true);
             $this->checkJSON();
             $this->views[$viewID]["group_alias"] = $value["group_alias"];
             $this->views[$viewID]["published"] = $value["published"];
