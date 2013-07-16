@@ -37,6 +37,25 @@ function AVC_SEARCH_UPDATE(searchValue){
     document.id(\'filter_search_value\').value = having;
 
 }
+
+function AVC_FILTER_UPDATE(){
+
+	var filtersArray = new Array();
+	var having = "";
+
+	$$(".AVC_FILTERS").each(function(el,i){
+		if(el.value != ""){
+			filtersArray.push(el.value);
+		}
+	});
+
+	filtersArray = unique(filtersArray);
+	having = filtersArray.join(\' AND \');
+
+	document.id(\'filter_filter_value\').value = having;
+
+}
+
 ';
 
 $this->doc->addScriptDeclaration($AVC_REQUIRE_BEFORE);

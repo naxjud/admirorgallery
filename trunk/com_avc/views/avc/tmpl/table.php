@@ -4,8 +4,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.multiselect'); // Select/Deselect all
+
 jimport('joomla.html.html.grid');
 jimport('joomla.filesystem.file');
+
 
 //$VIEW_PARAMS = json_decode($this->view['params']);
 
@@ -14,7 +16,7 @@ require_once("table_requireBefore.php");
 
 ?>
 
-<div>
+<div class="avc_table_wrap">
     <h1 class="pageTitle"><?php
 
 
@@ -46,7 +48,7 @@ require_once("table_requireBefore.php");
 
 <div class="fltlft">      
 
-    <?
+    <?php
 
     $AVC_having_value = "";
     $AVC_having_search = JRequest::getVar('filter_search_value');
@@ -65,6 +67,46 @@ require_once("table_requireBefore.php");
 </div>
 
 <div class="fltrt">
+
+    <input type="hidden" name="filter_filter_value" id="filter_filter_value" value="<?php echo JRequest::getVar('filter_filter_value'); ?>" />
+
+<?php
+
+$FILTER_VALUES = explode(" AND ", JRequest::getVar('filter_filter_value'));
+
+if(!empty($this->views[$this->curr_view_id]["filters_config"])){
+foreach ($this->views[$this->curr_view_id]["filters_config"] as $FILTER_KEY => $FILTER_PARAMS) {
+    
+    if(!empty($FILTER_PARAMS["query"])){
+        $ROWS = AvcModelAvc::execQuery($FILTER_PARAMS["query"]);
+    }
+
+    if(!empty($FILTER_PARAMS["custom"])){
+        $ROWS = $FILTER_PARAMS["custom"];
+    }
+
+    if(!empty($ROWS)){
+
+        echo '<select onchange="AVC_FILTER_UPDATE();document.adminForm.submit();" class="AVC_FILTERS">';
+        echo '<option value="">'.JText::_($FILTER_PARAMS["label"]).'</option>';
+        foreach($ROWS as $ROW)// Add Dropbox item for any param founded
+        {
+            $selected=NULL;                 
+            if( in_array($FILTER_KEY .' = '.$ROW["value"], $FILTER_VALUES) )// Add Selected Value
+            {
+                $selected=' selected="selected"';
+            }
+            echo '<option value="'. $FILTER_KEY .' = '.$ROW["value"].'"'.$selected.'>'.JText::_( $ROW["label"] ).'</option>';
+        }
+        echo '</select>';
+
+    }
+
+}
+}
+
+?>
+
 </div>
 
 </fieldset>
@@ -100,11 +142,15 @@ require_once("table_requireBefore.php");
         foreach ($this->items as $item) { 
 
             $ROW_ID = 'row_' . $row_counts;
-
+            $ROW_KEY = "id";
+            if(!empty( $this->views[$this->curr_view_id]["query"]["key"] )){
+                $ROW_KEY = $this->views[$this->curr_view_id]["query"]["key"];
+            }
+            
             echo '<tr id="'.$ROW_ID.'">'."\n";
 
             echo '<td style="display:none;">';
-            echo '<input type="checkbox" class="cid" name="cid[]" value="' . $item->id . '" style="display:none" />';
+            echo '<input type="checkbox" class="cid" name="cid[]" value="' . $item->$ROW_KEY . '" style="display:none" />';
             echo '</td>'."\n";
 
             foreach ($this->fieldsArray as $FIELD_ALIAS) {
@@ -156,12 +202,6 @@ require_once("table_requireBefore.php");
 <br style="clear:both;" />
 
 
-
-                        <!-- PERSONAL NOTES -->
-                        <?php
-                            require_once('personal_notes.php');
-                        ?>
-
 </div>
 
 
@@ -177,10 +217,28 @@ require_once("table_requireBefore.php");
         <input type="hidden" name="ordering_targetId" id="ordering_targetId" value="" />
 
 
+        <?php
+        if(JRequest::getVar('tmpl')){
+            echo '<input type="hidden" name="tmpl" id="tmpl" value="'.JRequest::getVar('tmpl').'" />';
+        }
+        if(JRequest::getVar('target_field')){
+            echo '<input type="hidden" name="target_field" id="target_field" value="'.JRequest::getVar('target_field').'" />';
+        }
+        ?>
+
     </form>
 </div>
+
+<!-- PERSONAL NOTES -->
+<?php
+$hide_notes = JRequest::getVar('HIDE_NOTES');
+if( empty($hide_notes) ){
+    require_once('personal_notes.php');
+}
+?>
 
 <?php
     require_once("forcedStyles.php");
     require_once("table_requireAfter.php");
 ?>
+

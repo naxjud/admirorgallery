@@ -26,30 +26,56 @@ defined('_JEXEC') or die('Restricted access');
 
             <!-- QUICK ICONS -->
             <?php
-            if (!empty($this->views)) {
-                foreach ($this->views as $index => $view) {
-                    if ($view["published"]) {
-                        // Is image exists
-                        if (!empty ($view["icon_path"])) {
-                            $view_image = JURI::root() . $view["icon_path"];
-                        } else {
-                            $view_image = JURI::root() . 'administrator/components/com_avc/assets/images/icon-64-avc.png';
-                        }
 
-                        echo '
-                        <div class="quickIcon">
-                        <a href="#" onclick="
-                        AVC_menu_exec('.$index.',\'table\');
-                        return false;
-                        ">
-                        <img src="' . $view_image . '" alt="">
-                        <span>' . JText::_($view["name"]) . '</span>
-                        </a>
-                        </div>
-                        ';
-                    }
+if (!empty($this->views)) {
+
+    $view_groups = array();
+    foreach ($this->views as $key => $view) {
+        $view_groups[ $view["group_alias"] ][ $key ] = $view;
+    }
+
+    foreach ($view_groups as $group_name => $group_items) {
+
+        echo '<hr />';
+        echo '<h2>'. JText::_( strtoupper( $group_name )) .'</h2>';
+        foreach ($group_items as $key => $view) {
+            if ($view["published"]) {
+                // Is image exists
+                if (!empty ($view["icon_path"])) {
+                    $view_image = JURI::root() . $view["icon_path"];
+                } else {
+                    $view_image = JURI::root() . 'administrator/components/com_avc/assets/images/icon-64-avc.png';
                 }
+
+                $tooltip = '';
+                if(!empty($view["description"])){
+                    $tooltip = 'title="'. htmlentities($view["description"]) .'"';
+                }
+
+                echo '
+                <div class="quickIcon">
+                <a
+                href="#"
+                onclick="
+                AVC_menu_exec('.$key.',\'table\');
+                return false;
+                "
+                '. $tooltip .'
+                >
+                <img src="' . $view_image . '" alt="">
+                <span>' . JText::_($view["name"]) . '</span>
+                </a>
+                </div>
+                ';
             }
+        }
+
+        echo '<p> </p>';
+
+    }
+
+}
+            
             ?>
 
             <!-- PERSONAL NOTES -->

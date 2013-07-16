@@ -49,6 +49,7 @@ class AvcControllerAvc extends AvcController {
     }
 
     function add() {
+        $this->reseter();
         JRequest::setVar('layout', 'row');
         JRequest::setVar('hidemainmenu', 1);
         parent::display();
@@ -85,6 +86,7 @@ class AvcControllerAvc extends AvcController {
     }
 
     function save() {
+        $this->reseter();
         $this->model->store();
         JRequest::setVar('layout', 'table');
         parent::display();
@@ -104,6 +106,7 @@ class AvcControllerAvc extends AvcController {
     }
     
     function cancel() {
+        $this->reseter();
         JRequest::setVar('layout', 'table');
         JRequest::setVar('task', 'default');
         parent::display();
@@ -113,6 +116,13 @@ class AvcControllerAvc extends AvcController {
         $this->model->ordering();
         JRequest::setVar('layout', 'table');
         parent::display();
+    }
+
+    function reseter(){
+        JRequest::setVar('filter_order', '');
+        JRequest::setVar('filter_order_Dir', '');
+        JRequest::setVar('filter_search_value', '');
+        JRequest::setVar('filter_filter_value', '');
     }
 
 }

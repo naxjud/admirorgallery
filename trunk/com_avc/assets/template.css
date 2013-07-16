@@ -65,6 +65,7 @@ table, table td
 }
 
 #element-box .m
+, .avc_table_wrap
 {
     -webkit-border-radius: 3px !important;
     -moz-border-radius: 3px !important;
@@ -82,6 +83,7 @@ table, table td
 ,#element-box .m h1,#element-box .m h2,#element-box .m h3
 ,#element-box .m label
 ,#element-box .m button
+,h1.pageTitle
 {
     font-family: sans-serif;
     font-weight: normal;
@@ -299,7 +301,7 @@ div.pagetitle h2 {
     user-select: none;
 }
 
-div#element-box h1.pageTitle
+h1.pageTitle
 {
    display:block;
    text-align:center; 
@@ -439,7 +441,7 @@ div.AVC_pagination_wrap div
 {
     display: none;
     position: absolute;
-    z-index: 9999;
+    z-index: 99;
     border:1px solid #fff;
     background-color: #ddd;
 
@@ -601,7 +603,7 @@ ul.adminformlist .inlineValue
 
 table#adminlist
 {
-    empty-cells:show;
+    empty-cells: show;
 }
 
 table#adminlist tbody tr td.adminlist_dropTarget
@@ -759,12 +761,17 @@ table#tmp_tb hr, hr
 
 .form_item_height_2
 {
-    height:100px;
+    height:140px;
 }
 
 .form_item_height_3
 {
-    height:250px;
+    height:227px;
+}
+
+.form_item_height_4
+{
+    height:407px;
 }
 
 #masonry .form_items input
@@ -911,7 +918,7 @@ div.varcharLimited span input
 
 .imgFld_img_wrapp
 {
-    height:150px;
+    height:130px;
     overflow: hidden;
     display: block;
      padding:2px !important;

@@ -4,7 +4,7 @@ $form_items_width = 1;
 if( !empty( $FIELD_PARAMS["width"] ) ){
 	$form_items_width = $FIELD_PARAMS["width"];
 }
-$form_items_height = 0;
+$form_items_height = 3;
 if( !empty( $FIELD_PARAMS["height"] ) ){
 	$form_items_height = $FIELD_PARAMS["height"];
 }
@@ -52,11 +52,11 @@ echo '
 	type="text"
 	name=""
 	value=""
-	class=""
+	class="width_auto"
 	title="' . JText::_('COM_AVC_TOOLTIPS_VARCHAR') . '"
 />
 <a href="#" class="avc_button" onclick="avc_json_remove(this,\'' . $FIELD_ALIAS . '\');return false;">' . JText::_('COM_AVC_DELETE') . '</a>
-<br style="clear:both" />
+<br style="clear:both;" />
 ';
 
 echo '</div>';
