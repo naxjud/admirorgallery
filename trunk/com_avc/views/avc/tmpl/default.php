@@ -49,7 +49,7 @@ if (!empty($this->views)) {
 
                 $tooltip = '';
                 if(!empty($view["description"])){
-                    $tooltip = 'title="'. htmlentities($view["description"]) .'"';
+                    $tooltip = 'title="'. $view["description"] .'"';
                 }
 
                 echo '
