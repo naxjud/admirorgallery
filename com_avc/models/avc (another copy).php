@@ -50,16 +50,50 @@ class AvcModelAvc extends JModelList {
 
     }
 
-    protected function avcGen_getVar($var, $default){
-        if(empty($var)){
-            $var = $default;
-        }
-        return $var;
+    public function test(){
+
+        // SAVE ARTICLE
+        // JTable::addIncludePath(JPATH_SITE.DS."administrator".DS."components".DS."com_content".DS."tables");
+        // JModel::addIncludePath (JPATH_SITE.DS."administrator".DS."components".DS."com_content".DS."models");
+        // $article_model =& JModel::getInstance('article', 'contentModel');
+
+        // $data = array();
+        // $data['alias'] = "my-test".rand(1, 100);    
+        // $data['title'] = "My Test".rand(1, 100);      
+        // $data['catid'] = 2;         
+        // $data['language'] = "*";     
+        // $data['access'] = 1;   
+        // $data['featured'] = 0;
+        // $data['state'] = 1; 
+        // $data['introtext'] = "Hello from test".rand(1, 100);
+        // $data['fulltext'] = "";
+
+        // $article_model->save($data);
+
+        // echo $article_model->getState($article_model->getName().'.id');// New article id
+
+        // SAVE CATEGORY
+        // JTable::addIncludePath(JPATH_SITE.DS."administrator".DS."components".DS."com_categories".DS."tables");
+        // JModel::addIncludePath (JPATH_SITE.DS."administrator".DS."components".DS."com_categories".DS."models");
+        // $category_model =& JModel::getInstance('category', 'categoriesModel');
+
+        // $data = array();
+        // $data['parent_id'] = 87;
+        // $data['alias'] = "my-test".rand(1, 100);    
+        // $data['title'] = "My Test".rand(1, 100);      
+        // $data['published'] = 1;       
+        // $data['access'] = 1;
+        // $data['extension'] = "com_content";        
+        // $data['language'] = "*";
+        // $data['description'] = "Hello from test".rand(1, 100);
+
+        // $category_model->save($data);
+
+        // echo $category_model->getState($category_model->getName().'.id');// New category id
+
     }
 
     protected function avcGen_exec(){
-
-        $avcGen_test = false;// Disable saving, show outputs
 
         // LIST ALL GENERATOR CONFIGURATIONS
         $query_json["select"] = '*';
@@ -74,213 +108,142 @@ class AvcModelAvc extends JModelList {
 
         // SEARCH REQUEST FOR GENERATE CONTENT
         if(!empty($generator_configs)){
-        foreach ($generator_configs as $config) {
+            foreach ($generator_configs as $config) {
 
                 if( empty($config["query"]) || empty($config["template_path"]) || empty($config["content_type"]) ){
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_ERROR_GEN_MANDATORY_EMPTY').': '.$config["name"], 'error');
+                    JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_ERROR_GEN_MANDATORY_EMPTY').' ('.$config["name"].')', 'error');
                     return;
-                }
-
-                $config["custom_values"] = json_decode($config["custom_values"], true);                
-                $this->checkJSON();
-
-                // UPDATE TAGET VARS
-                switch ($config["content_type"]) {
-                    case 'article':
-                        $targetTBL = "#__content";
-                        $targetPK_alias = "id";
-                        break;
-                    case 'category':
-                        $targetTBL = "#__categories";
-                        $targetPK_alias = "id";
-                        break;
-                    
-                    default:
-                        # code...
-                        break;
                 }
 
                 // DEFINE QUERY
                 $config_query = json_decode($config["query"], true);                
                 $this->checkJSON();
 
-                if( empty($config["primary_key"]) ){
-                    $config["primary_key"] = "id";
+                $sourcePK = "id";
+                if( !empty($config_query["pk"]) ){
+                    $sourcePK = $config_query["pk"];
                 }
 
                 // GET LOGS
                 $log_query = array();
                 $log_query["select"] = "*";
                 $log_query["from"]   = $this->db_generator_log;
+                $log_query["where"]["w1"]  = "gen_id = ". (int)$config["id"];
                 $log_rows = $this->execQuery($log_query);
 
                 // FORMAT LOGS FOR EASY CHECKING OF IDs
-                $LOGs = array();
                 foreach ($log_rows as $log_row) {
-                    if( empty($LOGs[ $log_row["gen_id"] ]) ){
-                        $LOGs[ $log_row["gen_id"] ] = array();
-                    }
-                    $LOGs[ $log_row["gen_id"] ][ $log_row["source_id"] ] = $log_row["target_id"];
-                }
-
-                // DELETE OLD LOGS FOR CURRENT GEN
-                if(!empty($LOGs)){         
-
-                    // CLEAR PREVIOUS LOGS
-                    $query = $this->dbObject->getQuery(true);
-                    $query->delete();
-                    $query->from( $this->db_generator_log );
-                    $query->where( "gen_id = ".$config["id"] );
-                    $this->dbObject->setQuery($query);
-                    if(!$avcGen_test){$this->dbObject->query();}
-
-                } 
-
-                // GET MAX PK VALUE
-                $max_query["select"] = "MAX(".$targetPK_alias.")";
-                $max_query["from"]   = $targetTBL;
-                $output = $this->execQuery($max_query);
-                $targetPK_value_max = (int)$output[0]["MAX(".$targetPK_alias.")"];
-                if(empty($targetPK_value_max)){
-                    $targetPK_value_max = 0;
+                    $logs[ (int)$log_row["source_id"] ] = (int)$log_row["target_id"];
                 }
 
                 // GET ROWS
-                $ROWs = $this->execQuery($config_query);
-
-                // MAKE NEW LOGS
-                foreach ($ROWs as $key => $row) {
-
-                    if( empty($LOGs[$config["id"]][ $row[$config["primary_key"]] ]) ){
-                        $targetPK_value_max++;
-                        $LOGs[$config["id"]][ $row[$config["primary_key"]] ] = $targetPK_value_max;
-                    }
-
-                    // MAKE NEW LOG
-                    $columns = array("gen_id"=>$config["id"], "source_id"=>$row[$config["primary_key"]], "target_id"=>$LOGs[$config["id"]][ $row[$config["primary_key"]] ]);
-                    $query = $this->dbObject->getQuery(true);
-                    $query->insert( $this->db_generator_log );
-                    foreach ($columns as $column_key => $column_value){
-                        if(!is_numeric($column_value)){$column_value = $this->dbObject->Quote($column_value);}
-                        $query->set( $this->dbObject->nameQuote($column_key)."=".$column_value );
-                    }
-                    $this->dbObject->setQuery($query);
-                    $this->dbObject->query();
-
-                }
+                $rows = $this->execQuery($config_query);
 
                 // ROWS AND TMPL MARRIED 
                 require( JPATH_ROOT.DS.$config["template_path"] );
 
-
-                // UPDATE CONTENTS FROM DATA
                 if(!empty($DATAs)){
 
-                    // PREDEFINED
                     switch ($config["content_type"]) {
                         case 'article':
-                            $PREDEFINEDs = array( "asset_id" => 0, "state" => 1, "catid" => 1, "created" => date("Y-m-d H:i:s"), "access" => 1, "featured" => 0, "language" => "*" );
+                            $targetTBL = "#__content";
+                            $targetPK = "id";
                             break;
-                        case 'category':
-                            $PREDEFINEDs = array( "asset_id" => 0, "parent_id" => 1, "extension" => "com_content", "created_time" => date("Y-m-d H:i:s"), "published" => 1, "access" => 1, "asset_id" => 0, "parent_id" => 1, "language" => "*" );                          
+                        
+                        default:
+                            # code...
                             break;
-                    }  
-
-                    // DELETE OLD CONTENT
-                    $query_del_content = $this->dbObject->getQuery(true);
-                    $query_del_content->delete();
-                    $query_del_content->from( $targetTBL );
-
-                    // MAKE NEW CONTENT
-                    $query_make_content = $this->dbObject->getQuery(true);
-                    $query_make_content->insert( $targetTBL );
-                    $query_make_content_columns = array();
-
-                    foreach ($DATAs as $data) {
-
-                        if(!empty($PREDEFINEDs)){
-                        foreach ($PREDEFINEDs as $predefined_key => $predefined_value) {
-                            if( empty($data[$predefined_key]) ){
-                                $data[$predefined_key] = $predefined_value;
-
-                            }
-                        }      
-                        }
-
-                        // DELETE OLD CONTENT
-                        $query_del_content->where( $this->dbObject->quoteName($targetPK_alias)." = ".$data["id"], "OR" );
-
-                        /////////////////////////
-                        // MAKE NEW CONTENT
-                        if( empty($query_make_content_columns) ){
-                            foreach ($data as $column_key => $column_value){  
-                                $query_make_content_columns[] = $column_key;
-                            }
-                        }
-                        $query_make_content_values = array();
-                        foreach ($data as $column_key => $column_value){
-                            if(!is_numeric($column_value)){$column_value = $this->dbObject->Quote($column_value);}
-                            $query_make_content_values[] = $column_value;
-                        }
-                        $query_make_content->values(implode(',', $query_make_content_values));
-                        //
-                        /////////////////////////
-
-                    }//foreach ($DATAs as $sourcePK_value => $data) {
-
-                    // DELETE OLD CONTENT
-                    $this->dbObject->setQuery($query_del_content);
-                    if(!$avcGen_test){
-                        if($this->dbObject->query()){
-
-                            // MAKE NEW CONTENT
-                            $query_make_content->columns( $this->dbObject->quoteName($query_make_content_columns) );
-                            $this->dbObject->setQuery($query_make_content);
-                            if($this->dbObject->query()){
-                                JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_ERROR_GEN_SUCCESS').': '.$config["name"].', '.count($DATAs), 'message');
-                            }
-
-                        }
-                    }else{
-                        echo '<h1>GENERATOR TEST RUN</h1>';
-                        echo '<pre>';
-                        echo '<h2>CONTENT VALUES</h2>';
-                        var_dump($query_make_content->values);
-                        echo '</pre>';   
                     }
 
-                    // POSTGEN
-                    switch ($config["content_type"]) {
+                    if(!empty($logs)){
 
-                        case 'article':
-                            // SAVE ARTICLE
-                            // JTable::addIncludePath(JPATH_SITE.DS."administrator".DS."components".DS."com_content".DS."tables");
-                            // JModel::addIncludePath (JPATH_SITE.DS."administrator".DS."components".DS."com_content".DS."models");
-                            // $article_model = JModel::getInstance('article', 'contentModel');                     
-                            break;
+                        // CLEAR PREVIOUS LOGS
+                        $query = $this->dbObject->getQuery(true);
+                        $query->delete();
+                        $query->from( $this->db_generator_log );
+                        $query->where( "gen_id = ". (int)$config["id"] );
+                        $this->dbObject->setQuery($query);
+                        $this->dbObject->query();
+                        $query = $this->dbObject->getQuery(true);  
 
-                        case 'category':
-                            // MUST BE REBUILTED
-                            JTable::addIncludePath(JPATH_SITE.DS."administrator".DS."components".DS."com_categories".DS."tables");
-                            JModel::addIncludePath (JPATH_SITE.DS."administrator".DS."components".DS."com_categories".DS."models");
-                            $category_model = JModel::getInstance('category', 'categoriesModel');    
-                            $category_model->rebuild();
-                            break;
+                        // CLEAR PREVIOUS CONTENT
+                        $query = $this->dbObject->getQuery(true);
+                        $query->delete();
+                        $query->from( $targetTBL );
+                        foreach ($logs as $log_key => $log_value) {
+                            $query->where( $targetPK." = ". $log_value );
+                        }
+                        $this->dbObject->setQuery($query);
+                        $this->dbObject->query();
+                        $query = $this->dbObject->getQuery(true); 
 
-                    } 
+                    }               
+
+                    foreach ($DATAs as $source_id => $data) {
+
+                        switch ($config["content_type"]) {
+
+                            case 'article':
+
+                                // SAVE ARTICLE
+                                JTable::addIncludePath(JPATH_SITE.DS."administrator".DS."components".DS."com_content".DS."tables");
+                                JModel::addIncludePath (JPATH_SITE.DS."administrator".DS."components".DS."com_content".DS."models");
+                                $article_model = JModel::getInstance('article', 'contentModel');
+                                $article_model->save($data);
+                                $log_data = array();
+                                $log_data["gen_id"] = $config["id"];
+                                $log_data["source_id"] = $source_id;
+                                $log_data["target_id"] = $article_model->getState($article_model->getName().'.id');                        
+
+                                break;
+
+                            case 'category':
+
+                                // SAVE CATEGORY
+                                JTable::addIncludePath(JPATH_SITE.DS."administrator".DS."components".DS."com_categories".DS."tables");
+                                JModel::addIncludePath (JPATH_SITE.DS."administrator".DS."components".DS."com_categories".DS."models");
+                                $category_model = JModel::getInstance('category', 'categoriesModel');
+                                $category_model->save($data);
+
+                                $log_data = array();
+                                $log_data["gen_id"] = $config["id"];
+                                $log_data["source_id"] = $source_id;
+                                $log_data["target_id"] = $category_model->getState($category_model->getName().'.id');
+
+                                break;
+                            
+                            default:
+                                # code...
+                                break;
+
+                        }
+
+                        if(!empty($log_data)){
+                            // GENERATE LOG
+                            $query = $this->dbObject->getQuery(true);
+                            $query->insert( $this->db_generator_log );
+                            foreach ($log_data as $column_key => $column_value){
+                                if(!is_numeric($column_value)){$column_value = $this->dbObject->Quote($column_value);}
+                                $query->set( $this->dbObject->nameQuote($column_key)."=".$column_value );
+                            }
+                            $this->dbObject->setQuery($query);
+                            $this->dbObject->query();  
+                        }     
+
+                    }
+
+                    // TURN OF GENERATE REQUEST
+                    $query = $this->dbObject->getQuery(true);
+                    $query->update( $this->db_generator );
+                    $query->where( "id =". (int)$config["id"] );
+                    $query->set( $this->dbObject->nameQuote("generate")."=0" );
+                    $this->dbObject->setQuery($query);
+                    $this->dbObject->query();
 
                 }//if(!empty($DATAs)){
 
-        }//foreach ($generator_configs as $config) {
 
-        // TURN OF GENERATE REQUEST
-        $query = $this->dbObject->getQuery(true);
-        $query->update( $this->db_generator );
-        $query->where( "id =". (int)$config["id"] );
-        $query->set( $this->dbObject->nameQuote("generate")."=0" );
-        $this->dbObject->setQuery($query);
-        $this->dbObject->query();
-
+            }//foreach ($generator_configs as $config) {
         }//if(!empty($generator_configs)){
 
     }//protected function execGenerator(){
@@ -506,7 +469,9 @@ class AvcModelAvc extends JModelList {
             case 0: // ADD NEW
                     $query = $this->dbObject->getQuery(true);
                     $query->insert( $this->views[$this->curr_view_id]["query"]["from"] );
-                    foreach ($this->views[$this->curr_view_id]["fields_config"] as $FIELD_ALIAS => $FIELD_VALUE){
+                    $FIELDS_str = str_replace(" ", "", $this->views[$this->curr_view_id]["query"]["select"]);
+                    $FIELDS  = explode(",",$FIELDS_str);
+                    foreach ($FIELDS as $FIELD_ALIAS){
                         $FIELD_VALUE = JRequest::getVar( $FIELD_ALIAS, null, 'post', 'STRING', JREQUEST_ALLOWRAW );
                         if($FIELD_ALIAS != "id"){
                             if(!is_numeric($FIELD_VALUE)){$FIELD_VALUE = $this->dbObject->Quote($FIELD_VALUE);}
@@ -526,7 +491,9 @@ class AvcModelAvc extends JModelList {
                     $query = $this->dbObject->getQuery(true);
                     $query->update( $this->views[$this->curr_view_id]["query"]["from"] );
                     $query->where( "id=".(int)$this->curr_row_id );
-                    foreach ($this->views[$this->curr_view_id]["fields_config"] as $FIELD_ALIAS => $FIELD_VALUE){
+                    $FIELDS_str = str_replace(" ", "", $this->views[$this->curr_view_id]["query"]["select"]);
+                    $FIELDS  = explode(",",$FIELDS_str);
+                    foreach ($FIELDS as $FIELD_ALIAS){
                         $FIELD_VALUE = JRequest::getVar( $FIELD_ALIAS, "nemanihtnull", 'post', 'STRING', JREQUEST_ALLOWRAW );
                         if($FIELD_ALIAS != "id" && $FIELD_VALUE!="nemanihtnull"){
                             if(!is_numeric($FIELD_VALUE)){$FIELD_VALUE = $this->dbObject->Quote($FIELD_VALUE);}

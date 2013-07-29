@@ -95,7 +95,7 @@ echo '
 $REL_QUERY = $this->views[$FIELD_PARAMS["queryId"]]["query"];
 
 $ROW_KEY = "id";
-if($REL_QUERY["key"]){
+if(!empty($REL_QUERY["key"])){
     $ROW_KEY = $REL_QUERY["key"];
 }
 

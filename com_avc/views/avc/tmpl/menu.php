@@ -42,7 +42,7 @@ foreach ($view_groups as $group_name => $group_items) {
 
 			$tooltip = '';
 			if(!empty($view["description"])){
-				$tooltip = 'title="'. htmlentities($view["description"]) .'"';
+				$tooltip = 'title="'. $view["description"] .'"';
 			}
 
 			echo '<a href="#" onclick="AVC_menu_exec(\''. $key .'\', \'table\'); return false;" '.$tooltip.'>'."\n";
