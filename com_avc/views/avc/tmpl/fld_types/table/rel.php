@@ -22,6 +22,11 @@ $REL_QUERY["having"]["current_key"] = $value;
 
 $ROWS = AvcModelAvc::execQuery($REL_QUERY);
 
-echo "<i>".implode(", ", $ROWS[0])."</i>";
+$REL_FIELDS_CONFIG = $this->views[$FIELD_PARAMS["queryId"]]["fields_config"];
+$REL_VALUE = array();
+foreach ($REL_FIELDS_CONFIG as $REL_FIELD_KEY => $REL_FIELD_PARAMS) {
+	$REL_VALUE[] = $ROWS[0][$REL_FIELD_KEY];
+}
+echo "<i>".implode(", ", $REL_VALUE)."</i>";
 		
 }

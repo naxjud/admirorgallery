@@ -11,7 +11,6 @@ jimport('joomla.filesystem.file');
 
 //$VIEW_PARAMS = json_decode($this->view['params']);
 
-
 require_once("table_requireBefore.php");
 
 ?>

@@ -179,8 +179,8 @@ window.addEvent("domready", function(){
 
 		$("adminlist").getElement("tbody").getElements("tr").addEvents({
 			"mousedown": function(e){
-				e.preventDefault();  
-				window.parent.jInsertRelSelect($("target_field").value, this.getElement(".cid").value);
+				e.preventDefault();
+				window.parent.jInsertRelSelect($("target_field").value, this.getElement(".cid").value);  
 				window.parent.SqueezeBox.close();
 	    	},
 			mouseover: function(){
