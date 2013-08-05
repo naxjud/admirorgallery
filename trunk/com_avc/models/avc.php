@@ -58,9 +58,7 @@ class AvcModelAvc extends JModelList {
     }
 
     protected function avcGen_exec(){
-
-        $avcGen_test = false;// Disable saving, show outputs
-
+        
         // LIST ALL GENERATOR CONFIGURATIONS
         $query_json["select"] = '*';
         $query_json["from"] = $this->db_generator;
@@ -132,7 +130,7 @@ class AvcModelAvc extends JModelList {
                     $query->from( $this->db_generator_log );
                     $query->where( "gen_id = ".$config["id"] );
                     $this->dbObject->setQuery($query);
-                    if(!$avcGen_test){$this->dbObject->query();}
+                    if(!$config["test"]){$this->dbObject->query();}
 
                 } 
 
@@ -230,7 +228,7 @@ class AvcModelAvc extends JModelList {
 
                     // DELETE OLD CONTENT
                     $this->dbObject->setQuery($query_del_content);
-                    if(!$avcGen_test){
+                    if(!$config["test"]){
                         if($this->dbObject->query()){
 
                             // MAKE NEW CONTENT

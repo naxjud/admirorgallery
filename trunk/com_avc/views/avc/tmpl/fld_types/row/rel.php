@@ -53,13 +53,15 @@ echo
 </div>
 ';
 ?>
+
+		
 <input
 	type="button"
 	class="pointer width_auto"
 	value="<?php echo JText::_('COM_AVC_SELECT');?>"
-	onclick="
-		SqueezeBox.open(
-			'index.php?option=com_avc&view=avc&layout=table&tmpl=component&HIDE_NOTES=true&target_field=<?php echo  $FIELD_ALIAS; ?>&curr_view_id=<?php echo $FIELD_PARAMS["queryId"]; ?>',
+	onclick="	
+			SqueezeBox.open(
+			'index.php?option=com_avc&view=avc&layout=table&tmpl=component&filter_order=&filter_order_Dir=&filter_search_value=&filter_filter_value=&HIDE_NOTES=true&target_field=<?php echo  $FIELD_ALIAS; ?>&curr_view_id=<?php echo $FIELD_PARAMS["queryId"]; ?>',
 			{
 			handler:'iframe',
 			size: {
@@ -77,7 +79,7 @@ echo
 echo
 '	
 <input type="button" class="pointer width_auto" value="'.JText::_('COM_AVC_CLEAR').'"
-	onclick="
+	onclick="	
 		jInsertRelSelect(\'' . $FIELD_ALIAS . '\',\'\');
 		return false;
 	"
@@ -109,9 +111,17 @@ window.addEvent("domready", function(){
 AVC_REL[\'' . $FIELD_ALIAS . '\'] = new Object();
 ';
 
+$REL_FIELDS_CONFIG = $this->views[$FIELD_PARAMS["queryId"]]["fields_config"];
+
 if(!empty($ROWS)){
 	foreach($ROWS as $ROW){
-		$JS_FIELD_REL_VALUES.='AVC_REL[\'' . $FIELD_ALIAS . '\'][\'' . $ROW[ $ROW_KEY ] . '\'] = "' . htmlspecialchars(implode(", ", $ROW)) . '";'."\n";
+
+	$REL_VALUE = array();
+	foreach ($REL_FIELDS_CONFIG as $REL_FIELD_KEY => $REL_FIELD_PARAMS) {
+		$REL_VALUE[] = $ROW[$REL_FIELD_KEY];
+	}
+	$JS_FIELD_REL_VALUES.='AVC_REL[\'' . $FIELD_ALIAS . '\'][\'' . $ROW[ $ROW_KEY ] . '\'] = "' . htmlspecialchars(implode(",", $REL_VALUE)) . '";'."\n";
+		
 	}
 }
 
