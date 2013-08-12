@@ -43,6 +43,7 @@ class AvcViewAvc extends JView {
         $this->layout = JRequest::getVar('layout', 'default');
         $this->views = $this->get('Views');
         $this->curr_view_id = $this->get('CurrViewId');
+        $mainframe = JFactory::getApplication();
 
         switch ($this->layout) {
 
@@ -55,6 +56,8 @@ class AvcViewAvc extends JView {
                 $this->items = $this->get('Items');
                 $this->pagination = $this->get('Pagination');
                 $this->fieldsArray = $this->get('FieldsArray');
+
+                $this->get('GeneratorStates');
 
             break;
 
@@ -71,6 +74,7 @@ class AvcViewAvc extends JView {
             break;
 
             default:
+                $this->get('GeneratorStates');
             break;
 
         }
@@ -84,6 +88,27 @@ class AvcViewAvc extends JView {
         $this->doc->addStyleSheet( JURI::root() . 'administrator/components/com_avc/assets/template.css' ); 
         $this->doc->addStyleSheet( 'http://fonts.googleapis.com/css?family=Oswald:400,300,700&subset=latin,latin-ext' );
         $this->doc->addStyleSheet( 'http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin,latin-ext,cyrillic' );
+
+
+        // Add script for autocast
+        $AVC_BUTTON_AUTOCAST = '
+        var autogenerate = "'.$mainframe->getUserState( "autogenerate", false ).'";
+        var avc_toolbar_autocast_ids = new Array("toolbar-AVC_generate");
+        window.addEvent("domready", function(){
+            Array.each(avc_toolbar_autocast_ids, function(id, i){
+                if(autogenerate){
+                   $(id).addClass("autocast"); 
+                }
+                $(id).addEvents({
+                    contextmenu:function(e){
+                        e.stop();
+                        Joomla.submitbutton("generate_toggle");
+                    }
+                });
+            });
+        });
+        ';
+        $this->doc->addScriptDeclaration($AVC_BUTTON_AUTOCAST);
 
     }
 
@@ -100,7 +125,7 @@ class AvcViewAvc extends JView {
                 JToolBarHelper::custom('edit', 'AVC_edit', 'AVC_edit', JText::_('COM_AVC_EDIT'), false, false);
                 JToolBarHelper::custom('delete', 'AVC_delete', 'AVC_delete', JText::_('COM_AVC_DELETE'), false, false);
                 JToolBarHelper::custom('refresh', 'AVC_refresh', 'AVC_refresh', JText::_('COM_AVC_REFRESH'), false, false);
-
+                JToolBarHelper::custom('generate', 'AVC_generate', 'AVC_generate', JText::_('COM_AVC_GENERATE'), false, false);
                 break;
             case 'row':
                 JToolBarHelper::custom('apply', 'AVC_apply', 'AVC_apply', JText::_('COM_AVC_APPLY'), false, false);
@@ -110,6 +135,7 @@ class AvcViewAvc extends JView {
                 JToolBarHelper::custom('refresh', 'AVC_refresh', 'AVC_refresh', JText::_('COM_AVC_REFRESH'), false, false);
                 break;
             default:
+                JToolBarHelper::custom('generate', 'AVC_generate', 'AVC_generate', JText::_('COM_AVC_GENERATE'), false, false);
         }
     }   
 

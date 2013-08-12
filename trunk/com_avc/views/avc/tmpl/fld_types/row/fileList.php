@@ -37,11 +37,10 @@ echo '
 	/>
 ';
 
-
-
 ///////////////////////////////////////////////
 //	BUTTONS SELECT & CLEAR
 ///////////////////////////////////////////////
+
 echo '
 	<input type="button" class="pointer width_auto" value="'.JText::_('COM_AVC_SELECT').'" onclick="
 		SqueezeBox.fromElement($(\'' . $FIELD_ALIAS . '_wrap\'), {
