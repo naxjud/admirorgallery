@@ -6,8 +6,6 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.calendar'); // Callendar Libraries
 
 
-
-
 $JS_FIELD_FILELIST = '
 
 ///////////////////////////////////////////

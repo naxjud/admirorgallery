@@ -33,6 +33,8 @@ class AvcControllerAvc extends AvcController {
         $this->registerTask('refresh', 'refresh');
         $this->registerTask('cancel', 'cancel');
         $this->registerTask('ordering', 'ordering');
+        $this->registerTask('generate', 'generate');
+        $this->registerTask('generate_toggle', 'generate_toggle');
     }
 
     function edit() {
@@ -76,6 +78,20 @@ class AvcControllerAvc extends AvcController {
             JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_ERROR_NOSELECT'), 'error');
         }
         JRequest::setVar('layout', 'table');
+        parent::display();
+    }
+
+    function generate() {
+        $this->model->generate();
+        $currLayout = JRequest::getVar('layout', 'default');     
+        JRequest::setVar('layout', $currLayout);
+        parent::display();
+    }
+
+    function generate_toggle() {
+        $this->model->generate_toggle();
+        $currLayout = JRequest::getVar('layout', 'default');     
+        JRequest::setVar('layout', $currLayout);
         parent::display();
     }
 
