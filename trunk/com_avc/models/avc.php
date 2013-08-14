@@ -26,12 +26,14 @@ class AvcModelAvc extends JModelList {
     public $views;
     private $mainframe;
     private $fieldsArray;
+    private $user;
 
     function __construct() {
 
         parent::__construct();
 
         $this->dbObject = JFactory::getDBO();
+        $this->user =& JFactory::getUser();
         $this->curr_view_id = JRequest::getVar('curr_view_id', 0); 
 
         $cids = JRequest::getVar('cid', array(), 'post', 'array');
@@ -55,6 +57,10 @@ class AvcModelAvc extends JModelList {
 
 
     public static function execQuery($QUERY, $RETURN_QUERY = false){
+
+        if( empty($QUERY["select"]) || empty($QUERY["from"]) ){
+            return;
+        }
 
         ///////////////////////////////////////////////
         //  CREATE LISTING
@@ -227,7 +233,6 @@ class AvcModelAvc extends JModelList {
         }else{
             // not superadmin
             $query->where( $this->dbObject->nameQuote("published") . " = 1" );
-            $query->where( $this->dbObject->nameQuote("admin_only") . " = 0" );
         }
 
         $query->order($this->dbObject->getEscaped('ordering ASC'));
@@ -249,6 +254,7 @@ class AvcModelAvc extends JModelList {
             $this->views[$viewID]["filters_config"] = json_decode($value["filters_config"], true);
             $this->checkJSON();
             $this->views[$viewID]["group_alias"] = $value["group_alias"];
+            $this->views[$viewID]["admin_only"] = $value["admin_only"];
             $this->views[$viewID]["published"] = $value["published"];
         }
 
@@ -485,10 +491,10 @@ class AvcModelAvc extends JModelList {
                     // PREDEFINED
                     switch ($config["content_type"]) {
                         case 'article':
-                            $PREDEFINEDs = array( "asset_id" => 0, "state" => 1, "catid" => 1, "created" => date("Y-m-d H:i:s"), "access" => 1, "featured" => 0, "language" => "*" );
+                            $PREDEFINEDs = array( "asset_id" => 0, "state" => 1, "catid" => 1, "created" => date("Y-m-d H:i:s"), "access" => 1, "featured" => 0, "language" => "*", "created_by" => $this->user->id );
                             break;
                         case 'category':
-                            $PREDEFINEDs = array( "asset_id" => 0, "parent_id" => 1, "extension" => "com_content", "created_time" => date("Y-m-d H:i:s"), "published" => 1, "access" => 1, "asset_id" => 0, "parent_id" => 1, "language" => "*" );                          
+                            $PREDEFINEDs = array( "asset_id" => 0, "parent_id" => 1, "extension" => "com_content", "created_time" => date("Y-m-d H:i:s"), "published" => 1, "access" => 1, "asset_id" => 0, "parent_id" => 1, "language" => "*", "created_user_id" => $this->user->id );                          
                             break;
                     }  
 

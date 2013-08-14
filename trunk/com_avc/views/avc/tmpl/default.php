@@ -31,7 +31,20 @@ if (!empty($this->views)) {
 
     $view_groups = array();
     foreach ($this->views as $key => $view) {
-        $view_groups[ $view["group_alias"] ][ $key ] = $view;
+
+        // FILTER PUBLISHED        
+        $groupsUserIsIn = JAccess::getGroupsByUser(JFactory::getUser()->id);
+        if(in_array(8,$groupsUserIsIn))
+        {
+            // is superadmin
+            $view_groups[ $view["group_alias"] ][ $key ] = $view;
+        }else{
+            // not superadmin
+            if( (int)$view["admin_only"] == 0 ){
+                $view_groups[ $view["group_alias"] ][ $key ] = $view;
+            }
+        }
+        
     }
 
     foreach ($view_groups as $group_name => $group_items) {
@@ -85,6 +98,10 @@ if (!empty($this->views)) {
 
         </div>
 
+        <input type="hidden" name="filter_order" id="filter_order" value="" />
+        <input type="hidden" name="filter_order_Dir" id="filter_order_Dir" value="" /> 
+        <input type="hidden" name="filter_search_value" id="filter_search_value" value="" />
+        <input type="hidden" name="filter_filter_value" id="filter_filter_value" value="" /> 
         <input type="hidden" name="option" value="com_avc" />
         <input type="hidden" name="controller" value="avc" />
         <input type="hidden" name="layout" id="layout" value="default" />
