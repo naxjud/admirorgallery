@@ -11,7 +11,19 @@ foreach ($this->views as $key => $view) {
 		$view["group_alias"] = "COM_AVC_UNCATEGORISED";
 	}
 
-	$view_groups[ $view["group_alias"] ][ $key ] = $view;
+    // FILTER PUBLISHED        
+    $groupsUserIsIn = JAccess::getGroupsByUser(JFactory::getUser()->id);
+    if(in_array(8,$groupsUserIsIn))
+    {
+        // is superadmin
+        $view_groups[ $view["group_alias"] ][ $key ] = $view;
+    }else{
+        // not superadmin
+        if( (int)$view["admin_only"] == 0 ){
+            $view_groups[ $view["group_alias"] ][ $key ] = $view;
+        }
+    }
+    
 }
 
 echo '

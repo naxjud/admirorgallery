@@ -94,7 +94,7 @@ echo '
 </div>
 ';
 
-$REL_QUERY = $this->views[$FIELD_PARAMS["queryId"]]["query"];
+$REL_QUERY = $this->views[(int)$FIELD_PARAMS["queryId"]]["query"];
 
 $ROW_KEY = "id";
 if(!empty($REL_QUERY["key"])){
@@ -111,7 +111,7 @@ window.addEvent("domready", function(){
 AVC_REL[\'' . $FIELD_ALIAS . '\'] = new Object();
 ';
 
-$REL_FIELDS_CONFIG = $this->views[$FIELD_PARAMS["queryId"]]["fields_config"];
+$REL_FIELDS_CONFIG = $this->views[(int)$FIELD_PARAMS["queryId"]]["fields_config"];
 
 if(!empty($ROWS)){
 	foreach($ROWS as $ROW){
