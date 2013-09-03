@@ -1,4 +1,14 @@
 <?php
+ /*------------------------------------------------------------------------
+# admirorgallery - Admiror Gallery Plugin
+# ------------------------------------------------------------------------
+# author   Igor Kekeljevic & Nikola Vasiljevski
+# copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
+# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+# Websites: http://www.admiror-design-studio.com/joomla-extensions
+# Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
+# Version: 4.5.0
+-------------------------------------------------------------------------*/
 
 // Joomla security code
 defined('_JEXEC') or die('Restricted access');
@@ -19,7 +29,7 @@ $this->popupEngine->endCode = '
     (function(window, PhotoSwipe){		
         document.addEventListener(\'DOMContentLoaded\', function(){
             var options = { enableMouseWheel: false , enableKeyboard: false },
-            instance = PhotoSwipe.attach( window.document.querySelectorAll(\'#AG_01 a\'), options );
+            instance = PhotoSwipe.attach( window.document.querySelectorAll(\'#AG_' . $this->getGalleryID() . ' a\'), options );
         }, false);
     }
     (window, window.Code.PhotoSwipe));
