@@ -49,9 +49,9 @@ class plgContentAdmirorframes extends JPlugin
 		
 		$version = new JVersion();
 		if($version->RELEASE=="1.5"){
-			$AF = new AF_helper($this->params,JPATH_BASE.DS.'plugins'.DS.'content'.DS.'admirorframes'.DS.'templates'.DS,JURI::root().'plugins/content/admirorframes/templates/',$version->RELEASE);
+			$AF = new AF_helper($this->params,JPATH_BASE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'admirorframes'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR,JURI::root().'plugins/content/admirorframes/templates/',$version->RELEASE);
 		}else{
-			$AF = new AF_helper($this->params,JPATH_BASE.DS.'plugins'.DS.'content'.DS.'admirorframes'.DS.'admirorframes'.DS.'templates'.DS,JURI::root().'plugins/content/admirorframes/admirorframes/templates/',$version->RELEASE);
+			$AF = new AF_helper($this->params,JPATH_BASE.DIRECTORY_SEPARATOR.'plugins'.DIRECTORY_SEPARATOR.'content'.DIRECTORY_SEPARATOR.'admirorframes'.DIRECTORY_SEPARATOR.'admirorframes'.DIRECTORY_SEPARATOR.'templates'.DIRECTORY_SEPARATOR,JURI::root().'plugins/content/admirorframes/admirorframes/templates/',$version->RELEASE);
 		}
 		
 		if (preg_match_all("#{AF[^}]*}(.*?){/AF}|{af[^}]*}(.*?){/af}#s", $row, $matches, PREG_PATTERN_ORDER)>0)

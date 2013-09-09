@@ -31,10 +31,10 @@ class AF_helper {
 
     protected function AF_createImg($ID) {
 		if($this->jversion=="1.5"){
-			$url=JURI::root()."plugins/content/admirorframes/scripts/AF_gd_stream.php?src_file=".urlencode($this->params['templates_BASE'].$this->params['template'].DS.$ID.".png")."&bgcolor=".$this->params['bgcolor']."&colorize=".$this->params['colorize']."&ratio=".$this->params['ratio'];
+			$url=JURI::root()."plugins/content/admirorframes/scripts/AF_gd_stream.php?src_file=".urlencode($this->params['templates_BASE'].$this->params['template'].DIRECTORY_SEPARATOR.$ID.".png")."&bgcolor=".$this->params['bgcolor']."&colorize=".$this->params['colorize']."&ratio=".$this->params['ratio'];
 		}
 		else{
-			$url=JURI::root()."plugins/content/admirorframes/admirorframes/scripts/AF_gd_stream.php?src_file=".urlencode($this->params['templates_BASE'].$this->params['template'].DS.$ID.".png")."&bgcolor=".$this->params['bgcolor']."&colorize=".$this->params['colorize']."&ratio=".$this->params['ratio'];
+			$url=JURI::root()."plugins/content/admirorframes/admirorframes/scripts/AF_gd_stream.php?src_file=".urlencode($this->params['templates_BASE'].$this->params['template'].DIRECTORY_SEPARATOR.$ID.".png")."&bgcolor=".$this->params['bgcolor']."&colorize=".$this->params['colorize']."&ratio=".$this->params['ratio'];
 		}
         return (string)$url;
     }
@@ -80,8 +80,8 @@ class AF_helper {
         
         
         // ----------------------------------------------------------------- CSS
-        list($TL_width, $TL_height, $TL_type, $TL_attr) = getimagesize($this->params['templates_BASE'].$this->params['template'].DS.'TL.png');
-        list($BR_width, $BR_height, $BR_type, $BR_attr) = getimagesize($this->params['templates_BASE'].$this->params['template'].DS.'BR.png');
+        list($TL_width, $TL_height, $TL_type, $TL_attr) = getimagesize($this->params['templates_BASE'].$this->params['template'].DIRECTORY_SEPARATOR.'TL.png');
+        list($BR_width, $BR_height, $BR_type, $BR_attr) = getimagesize($this->params['templates_BASE'].$this->params['template'].DIRECTORY_SEPARATOR.'BR.png');
         $TL_width = round($TL_width * $this->params['ratio']);
         $TL_height = round($TL_height * $this->params['ratio']);
         if($TL_width<4)$TL_width=4;
