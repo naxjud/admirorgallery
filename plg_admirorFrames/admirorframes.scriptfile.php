@@ -1,14 +1,15 @@
 <?php
-/*------------------------------------------------------------------------
-# plg_admirorframes - Admiror Frames Plugin
-# ------------------------------------------------------------------------
-# author    Vasiljevski & Kekeljevic
-# copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Websites: http://www.admiror-design-studio.com/joomla-extensions
-# Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
-# Version: 2.0
--------------------------------------------------------------------------*/
+
+/* ------------------------------------------------------------------------
+  # plg_admirorframes - Admiror Frames Plugin
+  # ------------------------------------------------------------------------
+  # author    Vasiljevski & Kekeljevic
+  # copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
+  # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+  # Websites: http://www.admiror-design-studio.com/joomla-extensions
+  # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
+  # Version: 2.1
+  ------------------------------------------------------------------------- */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
@@ -17,13 +18,14 @@ defined('_JEXEC') or die('Restricted access');
  * Script file of Admiror Gallery component
  */
 class plgcontentadmirorframesInstallerScript {
+
     /**
      * method to install the component
      *
      * @return void
      */
     function install($parent) {
-
+        
     }
 
     /**
@@ -32,7 +34,7 @@ class plgcontentadmirorframesInstallerScript {
      * @return void
      */
     function uninstall($parent) {
-
+        
     }
 
     /**
@@ -62,9 +64,8 @@ class plgcontentadmirorframesInstallerScript {
     function postflight($type, $parent) {
         // $parent is the class calling this method
         // $type is the type of change (install, update or discover_install)
-        if(!JFile::Move($parent->getParent()->getPath('extension_root').DIRECTORY_SEPARATOR."_admirorframes.xml",$parent->getParent()->getPath('extension_root').DIRECTORY_SEPARATOR."admirorframes.xml"))
-        {
-            JError::raiseError( 4711, 'Manifest file could not be renamed. Please go to plugins/content/admirorframes and rename _admirorframes.xml to admirorframes.xml' );
+        if (!JFile::Move($parent->getParent()->getPath('extension_root') . DIRECTORY_SEPARATOR . "_admirorframes.xml", $parent->getParent()->getPath('extension_root') . DIRECTORY_SEPARATOR . "admirorframes.xml")) {
+            JError::raiseError(4711, 'Manifest file could not be renamed. Please go to plugins/content/admirorframes and rename _admirorframes.xml to admirorframes.xml');
         }
     }
 
