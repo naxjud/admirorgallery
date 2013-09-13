@@ -40,7 +40,7 @@ function avc_json_update(FIELD_NAME){
 	var output = new Array();
 
 	field_labels.each(function(el,i){
-		output.push(\'"\'+field_labels[i].get("value")+\'":"\'+field_values[i].get("value")+\'"\');
+		output.push(\'"\'+i+\'":{"\'+field_labels[i].get("value")+\'":"\'+field_values[i].get("value")+\'"}\');
 	});
 
 

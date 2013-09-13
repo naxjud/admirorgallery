@@ -46,19 +46,27 @@ foreach ($ROWs as $key => $row) {
 		$PHONE = json_decode($row["orgphone"], true);
 		if(!empty($PHONE)){
 			$DATAs[$key]["description"].= '<div class="AVC_SECTION_PHONE">';
-			foreach ($PHONE as $key => $value) {
-				$DATAs[$key]["description"].= '<p>'.JText::_(strtoupper($key)).': '.$value.'</p>';
+			foreach ($PHONE as $index => $entry) {
+			foreach ($entry as $label => $value) {
+				$DATAs[$key]["description"].= '<p>'.$label.': '.$value.'</p>';
+			}
 			}
 			$DATAs[$key]["description"].= '</div>';
 		}
 	}
 
 	if(!empty($row["orge_mail"])){
-	$DATAs[$key]["description"].= '
-	<div class="AVC_SECTION_EMAIL">
-	<p><a href="mailto:'.$row["orge_mail"].'">'.$row["orge_mail"].'</a></p>
-	</div>
-	';
+		// Parse JSON
+		$MAIL = json_decode($row["orge_mail"], true);
+		if(!empty($MAIL)){
+			$DATAs[$key]["description"].= '<div class="AVC_SECTION_EMAIL">';
+			foreach ($MAIL as $index => $entry) {
+			foreach ($entry as $label => $value) {
+				$DATAs[$key]["description"].= '<p>'.$label.': <a href="mailto:'.$value.'">'.$value.'</a></p>';
+			}
+			}		
+			$DATAs[$key]["description"].= '</div>';
+		}
 	}
 
 	if(!empty($row["orgweb"])){

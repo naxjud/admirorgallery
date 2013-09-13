@@ -89,26 +89,43 @@ class AvcViewAvc extends JView {
         $this->doc->addStyleSheet( 'http://fonts.googleapis.com/css?family=Oswald:400,300,700&subset=latin,latin-ext' );
         $this->doc->addStyleSheet( 'http://fonts.googleapis.com/css?family=Reenie+Beanie&subset=latin,latin-ext,cyrillic' );
 
-
         // Add script for autocast
-        $AVC_BUTTON_AUTOCAST = '
-        var autogenerate = "'.$mainframe->getUserState( "autogenerate", false ).'";
-        var avc_toolbar_autocast_ids = new Array("toolbar-AVC_generate");
-        window.addEvent("domready", function(){
-            Array.each(avc_toolbar_autocast_ids, function(id, i){
-                if(autogenerate){
-                   $(id).addClass("autocast"); 
-                }
-                $(id).addEvents({
-                    contextmenu:function(e){
-                        e.stop();
-                        Joomla.submitbutton("generate_toggle");
+        if($this->layout != 'row'){
+
+            // Get autogenerate from component params
+            $dbObject = JFactory::getDBO();
+            $query = $dbObject->getQuery(true);
+            $query->select("params");
+            $query->from("#__extensions");
+            $query->where( "name='com_avc'" );
+            $dbObject->setQuery($query);
+            $output = $dbObject->loadAssocList();
+            $params = json_decode($output[0]["params"], true);
+            if($params["autogenerate"] == "false"){
+                $autogenerate = false;
+            }else{
+                $autogenerate = true;
+            }
+
+            $AVC_BUTTON_AUTOCAST = '
+            var autogenerate = "'.$autogenerate.'";
+            var avc_toolbar_autocast_ids = new Array("toolbar-AVC_generate");
+            window.addEvent("domready", function(){
+                Array.each(avc_toolbar_autocast_ids, function(id, i){
+                    if(autogenerate){
+                       $(id).addClass("autocast"); 
                     }
+                    $(id).addEvents({
+                        contextmenu:function(e){
+                            e.stop();
+                            Joomla.submitbutton("generate_toggle");
+                        }
+                    });
                 });
             });
-        });
-        ';
-        $this->doc->addScriptDeclaration($AVC_BUTTON_AUTOCAST);
+            ';
+            $this->doc->addScriptDeclaration($AVC_BUTTON_AUTOCAST);
+        }
 
     }
 

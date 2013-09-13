@@ -90,7 +90,7 @@ class AvcControllerAvc extends AvcController {
 
     function generate_toggle() {
         $this->model->generate_toggle();
-        $currLayout = JRequest::getVar('layout', 'default');     
+        $currLayout = JRequest::getVar('layout', 'default');
         JRequest::setVar('layout', $currLayout);
         parent::display();
     }
@@ -102,7 +102,6 @@ class AvcControllerAvc extends AvcController {
     }
 
     function save() {
-        $this->reseter();
         $this->model->store();
         JRequest::setVar('layout', 'table');
         parent::display();
@@ -122,7 +121,6 @@ class AvcControllerAvc extends AvcController {
     }
     
     function cancel() {
-        $this->reseter();
         JRequest::setVar('layout', 'table');
         JRequest::setVar('task', 'default');
         parent::display();
