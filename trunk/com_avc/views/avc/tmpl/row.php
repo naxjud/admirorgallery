@@ -32,7 +32,7 @@ JHTML::_('behavior.modal'); // Modal Libriries (SqueezeBox)
             $FIELD_LIST = $this->fieldsArray;
         }
 
-        $TABINDEX = 0;        
+        $TABINDEX = 0;   
 
         foreach ($this->fieldsArray as $FIELD_ALIAS) {// Loop through Show Fields
 

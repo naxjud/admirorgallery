@@ -33,7 +33,7 @@ class AvcModelAvc extends JModelList {
         parent::__construct();
 
         $this->dbObject = JFactory::getDBO();
-        $this->user =& JFactory::getUser();
+        $this->user = JFactory::getUser();
         $this->curr_view_id = JRequest::getVar('curr_view_id', 0); 
 
         $cids = JRequest::getVar('cid', array(), 'post', 'array');
@@ -48,8 +48,15 @@ class AvcModelAvc extends JModelList {
         $this->mainframe = JFactory::getApplication();
 
         // Run autogenerate
-        $autogenerate = $this->mainframe->getUserState( "autogenerate", false );
-        if($autogenerate){
+        // Get autogenerate from component params
+        $query = $this->dbObject->getQuery(true);
+        $query->select("params");
+        $query->from("#__extensions");
+        $query->where( "name='com_avc'" );
+        $this->dbObject->setQuery($query);
+        $output = $this->dbObject->loadAssocList();
+        $params = json_decode($output[0]["params"], true);
+        if($params["autogenerate"]=="true"){
             $this->generate();
         }
 
@@ -172,35 +179,37 @@ class AvcModelAvc extends JModelList {
 
         $QUERY = $this->views[$this->curr_view_id]["query"];
 
-        // Filter Search      
-        $search_value = $this->mainframe->getUserStateFromRequest( 'filter_search_value', 'filter_search_value', $this->mainframe->getCfg('filter_search_value') );  
-        if ( !empty($search_value) ) {
-            $QUERY["having"]["search"] = $search_value;
-        }
-
-        // Filter Filters      
-        $filter_value = $this->mainframe->getUserStateFromRequest( 'filter_filter_value', 'filter_filter_value', $this->mainframe->getCfg('filter_filter_value') );  
-        if ( !empty($filter_value) ) {
-            $QUERY["having"]["filter"] = $filter_value;
-        }
-
-        // Filter Order
-        if($this->getState('filter_order')!=""){
-            $order = $this->getState('filter_order') . ' ' . $this->getState('filter_order_Dir');
-        }else{
-            if (!empty($this->views[$this->curr_view_id]["query"]["order_by"])) {
-                $order = $this->views[$this->curr_view_id]["query"]["order_by"];
-            }
-        }
-        if (!empty($order)) {
-            $QUERY["order_by"] = $this->dbObject->getEscaped($order);
-        }
-
-        // GET ONLY SELECTED ROW FOR ROW LAYOUT
+        // FOR ROW LAYOUT
         if (JRequest::getVar('layout', 'default') == "row") {
             if($this->curr_row_id > 0){     
                 $QUERY["having"]["row_layout"] = $this->dbObject->nameQuote("id") . " = " . $this->curr_row_id;
             }
+        }else{ // FOR TABLE LAYOUT
+
+            // Filter Search      
+            $search_value = $this->mainframe->getUserStateFromRequest( 'filter_search_value', 'filter_search_value', $this->mainframe->getCfg('filter_search_value') );  
+            if ( !empty($search_value) ) {
+                $QUERY["having"]["search"] = $search_value;
+            }
+
+            // Filter Filters      
+            $filter_value = $this->mainframe->getUserStateFromRequest( 'filter_filter_value', 'filter_filter_value', $this->mainframe->getCfg('filter_filter_value') );  
+            if ( !empty($filter_value) ) {
+                $QUERY["having"]["filter"] = $filter_value;
+            }
+
+            // Filter Order
+            if($this->getState('filter_order')!=""){
+                $order = $this->getState('filter_order') . ' ' . $this->getState('filter_order_Dir');
+            }else{
+                if (!empty($this->views[$this->curr_view_id]["query"]["order_by"])) {
+                    $order = $this->views[$this->curr_view_id]["query"]["order_by"];
+                }
+            }
+            if (!empty($order)) {
+                $QUERY["order_by"] = $this->dbObject->getEscaped($order);
+            }
+
         }
 
         return $this->execQuery($QUERY, true);
@@ -322,9 +331,30 @@ class AvcModelAvc extends JModelList {
     }
 
     function generate_toggle(){
-        $autogenerate = $this->mainframe->getUserState( "autogenerate", false );
-        $autogenerate = $this->mainframe->setUserState("autogenerate", !$autogenerate);
-        if($autogenerate){
+
+        // Get autogenerate from component params
+        $query = $this->dbObject->getQuery(true);
+        $query->select("params");
+        $query->from("#__extensions");
+        $query->where( "name='com_avc'" );
+        $this->dbObject->setQuery($query);
+        $output = $this->dbObject->loadAssocList();
+        $params = json_decode($output[0]["params"], true);
+        if($params["autogenerate"] == "false"){
+            $params["autogenerate"]="true";
+        }else{
+            $params["autogenerate"]="false";
+        }
+
+        // Set new params
+        $query = $this->dbObject->getQuery(true);
+        $query->update( "#__extensions" );
+        $query->where( "name=".$this->dbObject->Quote('com_avc') );
+        $query->set( $this->dbObject->nameQuote('params')."=".$this->dbObject->Quote(json_encode($params)) );
+        $this->dbObject->setQuery($query);
+        $this->dbObject->query();
+
+        if($params["autogenerate"] == "true"){
             JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_GENERATOR_TOGGLE_TRUE'), 'message');
         }else{
             JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_GENERATOR_TOGGLE_FALSE'), 'message');  

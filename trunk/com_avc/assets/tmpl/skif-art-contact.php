@@ -50,8 +50,10 @@ if(!empty($ROWs)){
 					$phone = json_decode($person["phone"]);
 					if(!empty($phone)){
 						$DATAs[1]["introtext"].= '<div class="AVC_SECTION_PHONE">';
-						foreach ($phone as $key => $value) {					
+						foreach ($phone as $index => $entry) {
+						foreach ($entry as $key => $value) {					
 							$DATAs[1]["introtext"].= '<li>'.$key.': '.$value.'</li>';
+						}
 						}	
 						$DATAs[1]["introtext"].= '</ul><p>&nbsp;</p>';
 						$DATAs[1]["introtext"].= '</div>';
@@ -62,9 +64,11 @@ if(!empty($ROWs)){
 					if(!empty($phone)){
 						$DATAs[1]["introtext"].= '<div class="AVC_SECTION_EMAIL">';
 						$mejl = json_decode($person["e_mail"]);
-						foreach ($mejl as $key => $value) {					
+						foreach ($mejl as $index => $entry) {
+						foreach ($entry as $key => $value) {				
 							$DATAs[1]["introtext"].= '<li>'.$key.': '.$value.'</li>';
 						}	
+						}
 						$DATAs[1]["introtext"].= '</ul><p>&nbsp;</p>';
 						$DATAs[1]["introtext"].= '</div>';
 					}
