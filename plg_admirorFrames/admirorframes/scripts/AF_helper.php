@@ -119,7 +119,7 @@ class AF_helper {
         $content.='
         <style type="text/css">
         ';
-        $content.= '.' . $this->params['tableID'] . '{ direction :ltr;}';
+        $content.= '.' . $this->params['tableID'] . '{ direction :ltr; border: none !important;}';
         $content.= 'table.' . $this->params['tableID'] . '{
             empty-cells:show;
         ' . "\n";
