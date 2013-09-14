@@ -8,7 +8,7 @@
   # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
   # Websites: http://www.admiror-design-studio.com/joomla-extensions
   # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
-  # Version: 2.1
+  # Version: 2.2
   ------------------------------------------------------------------------- */
 
 class AF_helper {
@@ -16,6 +16,7 @@ class AF_helper {
     var $params = array();
     var $staticParams = array();
     var $jversion = '';
+    var $key = "0e312724b4f02c5cd87ae159e4bb8209";
 
     function __construct($globalParams, $templatePath, $templateRoot, $version) {
         // Default parameters
@@ -38,11 +39,23 @@ class AF_helper {
     }
 
     protected function AF_createImg($ID) {
-        if ($this->jversion == "1.5") {
-            $url = JURI::root() . "plugins/content/admirorframes/scripts/AF_gd_stream.php?src_file=" . urlencode($this->params['templates_BASE'] . $this->params['template'] . DIRECTORY_SEPARATOR . $ID . ".png") . "&bgcolor=" . $this->params['bgcolor'] . "&colorize=" . $this->params['colorize'] . "&ratio=" . $this->params['ratio'];
-        } else {
-            $url = JURI::root() . "plugins/content/admirorframes/admirorframes/scripts/AF_gd_stream.php?src_file=" . urlencode($this->params['templates_BASE'] . $this->params['template'] . DIRECTORY_SEPARATOR . $ID . ".png") . "&bgcolor=" . $this->params['bgcolor'] . "&colorize=" . $this->params['colorize'] . "&ratio=" . $this->params['ratio'];
+        $version_addition = "";
+        if ($this->jversion != "1.5") {
+            $version_addition = "/admirorframes";
         }
+        $script_path = JURI::root() . "plugins/content/admirorframes" . $version_addition . "/scripts/AF_gd_stream.php?src_file=";
+        $params = rawurlencode($this->params['templates_BASE'] . $this->params['template'] . DIRECTORY_SEPARATOR . $ID . ".png") . "&bgcolor=" . $this->params['bgcolor'] . "&colorize=" . $this->params['colorize'] . "&ratio=" . $this->params['ratio'];
+        //
+        $iv_size = mcrypt_get_iv_size(MCRYPT_BLOWFISH, MCRYPT_MODE_ECB);
+        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+
+        $enc = mcrypt_encrypt(MCRYPT_BLOWFISH, $this->key, $params, MCRYPT_MODE_ECB, $iv);
+
+        $enc = $iv_size . $iv . $enc;
+
+        $enc = base64_encode($enc);
+        $enc = rawurlencode($enc);
+        $url = $script_path . $enc;
         return (string) $url;
     }
 
