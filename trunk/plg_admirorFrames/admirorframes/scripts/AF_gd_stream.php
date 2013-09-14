@@ -8,19 +8,35 @@
   # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
   # Websites: http://www.admiror-design-studio.com/joomla-extensions
   # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
-  # Version: 2.1
+  # Version: 2.2
   ------------------------------------------------------------------------- */
 if ($_GET['src_file'] == "")
     exit;
+$key = "0e312724b4f02c5cd87ae159e4bb8209";
 
-$src_file = urldecode($_GET['src_file']);
-$bgcolor = $_GET['bgcolor'];
-$colorize = $_GET['colorize'];
-$ratio = $_GET['ratio'];
+$crypttext = base64_decode($_GET["src_file"]);
+$enc = substr($crypttext, 1 + $crypttext[0]);
+$iv = substr($crypttext, 1, 8);
+
+$decryptedtext = mcrypt_decrypt(MCRYPT_BLOWFISH, $key, $enc, MCRYPT_MODE_ECB, $iv);
+
+if (!$decryptedtext) {
+    exit;
+}
+
+$decryptedtext = "src_file=" . $decryptedtext;
+$params = explode("&", $decryptedtext);
+foreach ($params as $key => $value) {
+    $params[$key] = explode("=", $value);
+}
+$src_file = rawurldecode($params[0][1]);
+$bgcolor = rawurldecode($params[1][1]);
+$colorize = rawurldecode($params[2][1]);
+$ratio = rawurldecode($params[3][1]);
 
 // Create src_img
 if (preg_match("/png/i", $src_file)) {
-    @$src_img = imagecreatefrompng($src_file);
+    $src_img = imagecreatefrompng($src_file);
 }
 
 $src_w = imageSX($src_img); //$src_width
@@ -65,7 +81,7 @@ if ($colorize != "disable") {
 }
 
 
-@$dst_img = imagecreatetruecolor($dst_w, $dst_h);
+$dst_img = imagecreatetruecolor($dst_w, $dst_h);
 
 $AF_bgcolor_RGB = array(
     base_convert(substr($bgcolor, 0, 2), 16, 10),
@@ -73,14 +89,16 @@ $AF_bgcolor_RGB = array(
     base_convert(substr($bgcolor, 4, 2), 16, 10)
 );
 
-$AF_BGCOLOR = imagecolorallocate($dst_img, $AF_bgcolor_RGB[0], $AF_bgcolor_RGB[1], $AF_bgcolor_RGB[2]);
+$AF_BGCOLOR = imagecolorallocatealpha($dst_img, $AF_bgcolor_RGB[0], $AF_bgcolor_RGB[1], $AF_bgcolor_RGB[2], 127);
 
 imagefill($dst_img, 0, 0, $AF_BGCOLOR);
 
-@imagecopyresampled($dst_img, $src_img, 0, 0, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
+imagecopyresampled($dst_img, $src_img, 0, 0, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h);
+header('Content-type: image/png');
 
-@imagejpeg($dst_img, NULL, 96);
+imagesavealpha($dst_img, true);
+imagepng($dst_img, NULL, 0);
 
-@imagedestroy($dst_img);
-@imagedestroy($src_img);
+imagedestroy($dst_img);
+imagedestroy($src_img);
 ?>
