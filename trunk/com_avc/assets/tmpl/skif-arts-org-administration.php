@@ -27,7 +27,11 @@ foreach ($ROWs as $key => $row) {
 		$committees[$orguniquename]["commettee"][$row["committee_name"]][$row["function_name"]] = array();
 	}	
 	// People
-	$committees[$orguniquename]["commettee"][$row["committee_name"]][$row["function_name"]][] = $row["last_name"].", ".$row["first_name"];
+	$img="";
+	if(!empty($row["img_url"])){
+		$img='<td><img src="'.$row["img_url"].'" class="AVC_SECTION_THUMB" /></td>';
+	}
+	$committees[$orguniquename]["commettee"][$row["committee_name"]][$row["function_name"]][] = "<table><tbody><tr>".$img."<td style='vertical-align:middle'>".$row["last_name"].", ".$row["first_name"]."</td></tbody></table>";
 }
 }
 
@@ -36,10 +40,10 @@ if(!empty($committees)){
 foreach ($committees as $key => $committee) {
 
 	$DATAs[$key] = array();
-	$DATAs[$key]["id"] = $LOGs[$config["id"]][ $committee["row"]["orgid"] ];
+	$DATAs[$key]["id"] = $committee["row"]["orgid"];
 	$DATAs[$key]["ordering"] = 2;
 	$DATAs[$key]["title"] = "Administration";
-	$DATAs[$key]["alias"] = "administration-".JFile::makeSafe( strtolower( str_replace(" ", "-", $committee["row"]["orgtitle"].", ".$committee["row"]["nastown"].", ".$committee["row"]["zemcountry"]) ) );
+	$DATAs[$key]["alias"] = "administration-".JFile::makeSafe( strtolower( str_replace(" ", "-", $committee["row"]["orgtitle"]." ".$committee["row"]["nastown"].", ".$committee["row"]["zemcountry"]) ) );
 
 	// SET CAT ID
 	if( !empty($LOGs[ $gen_id_for_catid ][ $committee["row"]["catid"] ]) || ( $committee["row"]["catid"] != 0 ) ){
@@ -56,17 +60,17 @@ foreach ($committees as $key => $committee) {
 	if(!empty($committee["commettee"])){
 	foreach ($committee["commettee"] as $committeeName => $committeeData) {
 
-		$DATAs[$key]["introtext"].= '<h2>'.$committeeName.'</h2>';
+		$DATAs[$key]["introtext"].= '<h1>'.$committeeName.'</h1>';
 
 		if(!empty($committeeData)){
 		foreach ($committeeData as $function_name => $persons) {
-			$DATAs[$key]["introtext"].= '<h3>'.$function_name.'</h3>';
+			$DATAs[$key]["introtext"].= '<div class="AVC_SECTION_BLOCK"><h2>'.$function_name.'</h2>';
 			if(!empty($persons)){
 			foreach ($persons as $person) {
 				$DATAs[$key]["introtext"].= '<p>'.$person.'</p>';
 			}
 			}
-			$DATAs[$key]["introtext"].= '<p style="clear:both">&nbsp;</p>';
+			$DATAs[$key]["introtext"].= '</div>';
 		}
 		}
 

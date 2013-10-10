@@ -403,217 +403,317 @@ class AvcModelAvc extends JModelList {
 
     function generate() {
 
-        // LIST ALL GENERATOR CONFIGURATIONS
+        // COLLECT ALL GENERATOR CONFIGURATIONS
         $query_json["select"] = '*';
         $query_json["from"] = $this->db_generator;
         $query_json["where"]["w1"] = "generate = 1";
         $generator_configs = $this->execQuery($query_json); 
 
-/*        echo '<h2>generator_configs</h2>';
-        echo '<pre>';
-        var_dump($generator_configs);
-        echo '</pre>'; */
-
-        // SEARCH REQUEST FOR GENERATE CONTENT
+        // LOOP THROUGH GENERATOR CONFIGS
         if(!empty($generator_configs)){
         foreach ($generator_configs as $config) {
 
-                if( empty($config["query"]) || empty($config["template_path"]) || empty($config["content_type"]) ){
-                    JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_ERROR_GEN_MANDATORY_EMPTY').': '.$config["name"], 'error');
-                    return;
+            // EXIT IF MANDATORY DATA MISSING
+            if( empty($config["query"]) || empty($config["template_path"]) || empty($config["content_type"]) ){
+                JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_ERROR_GEN_MANDATORY_EMPTY').': '.$config["name"], 'error');
+                return;
+            }
+
+            if($config["test"]){
+                    echo '<h2>GENERATOR TEST RUN ('.$config["name"].')</h2>';
+            }//if($config["test"]){
+
+            ////////////////////////////////////////////////////////////////////////////////
+            //
+            //  SET VARS AND PREPARATION
+            //
+
+            // UPDATE TAGET VARS DEPENDING ON CONTENT TYPE (ARTICLE, CATEGORY...)
+            switch ($config["content_type"]) {
+                case 'article':
+                    $target_table = "#__content";
+                    $target_target_primary_key = "id";
+                    break;
+                case 'category':
+                    $target_table = "#__categories";
+                    $target_target_primary_key = "id";
+                    break;
+                
+                default:
+                    # code...
+                    break;
+            }
+
+            // JSON DECODE FOR CUSTOM VALUES
+            $config["custom_values"] = json_decode($config["custom_values"], true);                
+            $this->checkJSON();
+
+            // JSON DECODE FOR QUERY
+            $config["query"] = json_decode($config["query"], true);                
+            $this->checkJSON();
+
+            // SET DEFAULT FOR PRIMARY KEY
+            if( empty($config["primary_key"]) ){
+                $config["primary_key"] = "id";
+            }
+
+            // COLLECT ALL GENERATOR LOGS DATA
+            $log_query = array();
+            $log_query["select"] = "*";
+            $log_query["from"]   = $this->db_generator_log;
+            $log_rows = $this->execQuery($log_query);
+
+            // FORMAT LOGS FOR EASY CHECKING OF IDs
+            foreach ($log_rows as $log_row) {
+                if( empty($LOGs[ $log_row["gen_id"] ]) ){
+                    $LOGs[ $log_row["gen_id"] ] = array();
+                }
+                $LOGs[ $log_row["gen_id"] ][ $log_row["source_id"] ] = $log_row["target_id"];
+            }
+
+            // GET NEXT INCREMENT FOR PRIMARY KEY
+            $max_query["select"] = "MAX(".$target_target_primary_key.")";
+            $max_query["from"]   = $target_table;
+            $output = $this->execQuery($max_query);
+            $target_primary_key_max = (int)$output[0]["MAX(".$target_target_primary_key.")"];
+            if(empty($target_primary_key_max)){
+                $target_primary_key_max = 0;
+            }
+
+            // COLLECT ROWS
+            $ROWs = $this->execQuery($config["query"]);
+
+            //
+            // SET VARS AND PREPARATION
+            //
+            //////////////////////////////////////////////////////////////////////
+
+
+            //////////////////////////////////////////////////////////////////////
+            //
+            // REMOVE OLD CONTENT AND LOGS
+            //
+
+            // INIT REMOVE LOGS QUERY
+            $query_del_logs = $this->dbObject->getQuery(true);
+            $query_del_logs->delete();
+            $query_del_logs->from( $this->db_generator_log );
+            $query_del_logs->where( "gen_id = ".$config["id"] );
+
+            // INIT REMOVE CONTENT QUERY
+            $query_del_content = $this->dbObject->getQuery(true);
+            $query_del_content->delete();
+            $query_del_content->from( $target_table );
+            if(!empty($LOGs[ $config["id"] ])){
+                foreach ($LOGs[ $config["id"] ] as $data_id) {
+                    $query_del_content->where( $this->dbObject->quoteName($target_target_primary_key)." = ".$data_id, "OR" );
+                }
+            }
+
+            if(!$config["test"]){
+
+                // REMOVE LOGS
+                $this->dbObject->setQuery($query_del_logs);
+                if(!$this->dbObject->query()){
+                    JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_ERROR_REMOVE_LOG_ERROR').': '.$config["name"], 'error');
                 }
 
-                $config["custom_values"] = json_decode($config["custom_values"], true);                
-                $this->checkJSON();
+                // REMOVE CONTENTS
+                if( $query_del_content->where != NULL ){ // IF QUERY->WHERE EMPTY AVOID REMOVE CONTENT (It sometimes removes all content from table, maybe because I missed this shit)
+                    $this->dbObject->setQuery($query_del_content);
+                    if(!$this->dbObject->query()){
+                        JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_ERROR_REMOVE_CONTENT_ERROR').': '.$config["name"], 'error');
+                    }
+                }
 
-                // UPDATE TAGET VARS
+            }else{//if(!$config["test"]){
+
+                echo '<b>DELETE LOGS</b>';
+                echo '<pre>';
+                var_dump($query_del_logs->where);
+                echo '</pre>'; 
+                echo '<b>DELETE CONTENTS</b>';
+                echo '<pre>';
+                var_dump($query_del_content->where);
+                echo '</pre>';     
+
+            }//if(!$config["test"]){
+
+            //
+            // REMOVE OLD CONTENT AND LOGS
+            //
+            //////////////////////////////////////////////////////////////////////
+
+
+            //////////////////////////////////////////////////////////////////////
+            //
+            // ROWS AND TMPL MARRIED 
+            //
+
+            require( JPATH_ROOT.DS.$config["template_path"] );
+
+            //
+            // ROWS AND TMPL MARRIED 
+            //
+            //////////////////////////////////////////////////////////////////////
+
+
+            //////////////////////////////////////////////////////////////////////
+            //
+            // POLISHING OF DATA, ADD NEW LOGS, ADD NEW CONTENT
+            //
+
+            if(!empty($DATAs)){// Data is created in template file. It's an array object, each element is a new content.
+
+                // DECLARE PREDEFINED VALUES FOR CONTENT TYPES
                 switch ($config["content_type"]) {
                     case 'article':
-                        $targetTBL = "#__content";
-                        $targetPK_alias = "id";
+                        $PREDEFINEDs = array( "id" => 1, "asset_id" => 0, "state" => 1, "catid" => 1, "created" => date("Y-m-d H:i:s"), "access" => 1, "featured" => 0, "language" => "*", "created_by" => $this->user->id );
                         break;
                     case 'category':
-                        $targetTBL = "#__categories";
-                        $targetPK_alias = "id";
+                        $PREDEFINEDs = array( "id" => 1, "asset_id" => 0, "parent_id" => 1, "extension" => "com_content", "created_time" => date("Y-m-d H:i:s"), "published" => 1, "access" => 1, "asset_id" => 0, "parent_id" => 1, "language" => "*", "created_user_id" => $this->user->id );                          
                         break;
-                    
-                    default:
-                        # code...
-                        break;
-                }
+                }  
 
-                // DEFINE QUERY
-                $config_query = json_decode($config["query"], true);                
-                $this->checkJSON();
+                // INIT LOGS QUERY
+                $query_make_logs = $this->dbObject->getQuery(true);
+                $query_make_logs->insert( $this->db_generator_log );                    
+                $query_make_logs_columns = array("gen_id", "source_id", "target_id");
+               
+                // INIT NEW CONTENT QUERY
+                $query_make_content = $this->dbObject->getQuery(true);
+                $query_make_content->insert( $target_table );
+                $query_make_content_columns = array();
 
-                if( empty($config["primary_key"]) ){
-                    $config["primary_key"] = "id";
-                }
+                ////////////////////////////
+                //
+                // LOOP THROUGH DATA AND PREPARE LOGS AND CONTENT FOR WRITTING
+                //
 
-                // GET LOGS
-                $log_query = array();
-                $log_query["select"] = "*";
-                $log_query["from"]   = $this->db_generator_log;
-                $log_rows = $this->execQuery($log_query);
+                foreach ($DATAs as $key => $data) {
 
-                // FORMAT LOGS FOR EASY CHECKING OF IDs
-                $LOGs = array();
-                foreach ($log_rows as $log_row) {
-                    if( empty($LOGs[ $log_row["gen_id"] ]) ){
-                        $LOGs[ $log_row["gen_id"] ] = array();
+
+                    // USE PREDEFINED VALUES FOR EMPTY DATA VALUES
+                    if(!empty($PREDEFINEDs)){
+                    foreach ($PREDEFINEDs as $predefined_key => $predefined_value) {
+                        if( empty($data[$predefined_key]) ){
+                            $data[$predefined_key] = $predefined_value;
+
+                        }
+                    }      
                     }
-                    $LOGs[ $log_row["gen_id"] ][ $log_row["source_id"] ] = $log_row["target_id"];
-                }
 
-                // DELETE OLD LOGS FOR CURRENT GEN
-                if(!empty($LOGs)){         
-
-                    // CLEAR PREVIOUS LOGS
-                    $query = $this->dbObject->getQuery(true);
-                    $query->delete();
-                    $query->from( $this->db_generator_log );
-                    $query->where( "gen_id = ".$config["id"] );
-                    $this->dbObject->setQuery($query);
-                    if(!$config["test"]){$this->dbObject->query();}
-
-                } 
-
-                // GET MAX PK VALUE
-                $max_query["select"] = "MAX(".$targetPK_alias.")";
-                $max_query["from"]   = $targetTBL;
-                $output = $this->execQuery($max_query);
-                $targetPK_value_max = (int)$output[0]["MAX(".$targetPK_alias.")"];
-                if(empty($targetPK_value_max)){
-                    $targetPK_value_max = 0;
-                }
-
-                // GET ROWS
-                $ROWs = $this->execQuery($config_query);
-
-                // MAKE NEW LOGS
-                foreach ($ROWs as $key => $row) {
-
-                    if( empty($LOGs[$config["id"]][ $row[$config["primary_key"]] ]) ){
-                        $targetPK_value_max++;
-                        $LOGs[$config["id"]][ $row[$config["primary_key"]] ] = $targetPK_value_max;
+                    // PREPARE NEW LOGS VALUES & SET NEW DATA ID
+                    if( empty($LOGs[ $config["id"] ][ $data["id"] ]) ){// Set primary key max increment value if content with the ID doesn't exists in Log
+                        $target_primary_key_max++;
+                        $LOGs[ $config["id"] ][ $data["id"] ] = $target_primary_key_max;
                     }
+                    $ORIG_data_id = $data["id"];
+                    $data["id"] = $LOGs[ $config["id"] ][ $data["id"] ];// Update for data id must be in front of make new content
+                    $query_make_logs->values($config["id"].','.$ORIG_data_id.','.$data["id"]);
+
+                    // PREPARE MAKE NEW CONTENT VALUES
+                    if( empty($query_make_content_columns) ){
+                        foreach ($data as $column_key => $column_value){  
+                            $query_make_content_columns[] = $column_key;
+                        }
+                    }
+                    $query_make_content_values = array();
+                    foreach ($data as $column_key => $column_value){
+                        if(!is_numeric($column_value)){$column_value = $this->dbObject->Quote($column_value);}
+                        $query_make_content_values[] = $column_value;
+                    }
+                    $query_make_content->values(implode(',', $query_make_content_values));
+
+                }//foreach ($DATAs as $key => $data) {
+
+                //
+                // LOOP THROUGH DATA AND PREPARE LOGS AND CONTENT FOR WRITTING
+                //
+                ////////////////////////////
+
+                ////////////////////////////
+                //
+                // WRITE NEW LOGS AND CONTENT TO DB
+                //
+                
+                if(!$config["test"]){
 
                     // MAKE NEW LOG
-                    $columns = array("gen_id"=>$config["id"], "source_id"=>$row[$config["primary_key"]], "target_id"=>$LOGs[$config["id"]][ $row[$config["primary_key"]] ]);
-                    $query = $this->dbObject->getQuery(true);
-                    $query->insert( $this->db_generator_log );
-                    foreach ($columns as $column_key => $column_value){
-                        if(!is_numeric($column_value)){$column_value = $this->dbObject->Quote($column_value);}
-                        $query->set( $this->dbObject->nameQuote($column_key)."=".$column_value );
-                    }
-                    $this->dbObject->setQuery($query);
-                    $this->dbObject->query();
-
-                }
-
-                // ROWS AND TMPL MARRIED 
-                require( JPATH_ROOT.DS.$config["template_path"] );
-
-
-                // UPDATE CONTENTS FROM DATA
-                if(!empty($DATAs)){
-
-                    // PREDEFINED
-                    switch ($config["content_type"]) {
-                        case 'article':
-                            $PREDEFINEDs = array( "asset_id" => 0, "state" => 1, "catid" => 1, "created" => date("Y-m-d H:i:s"), "access" => 1, "featured" => 0, "language" => "*", "created_by" => $this->user->id );
-                            break;
-                        case 'category':
-                            $PREDEFINEDs = array( "asset_id" => 0, "parent_id" => 1, "extension" => "com_content", "created_time" => date("Y-m-d H:i:s"), "published" => 1, "access" => 1, "asset_id" => 0, "parent_id" => 1, "language" => "*", "created_user_id" => $this->user->id );                          
-                            break;
-                    }  
-
-                    // DELETE OLD CONTENT
-                    $query_del_content = $this->dbObject->getQuery(true);
-                    $query_del_content->delete();
-                    $query_del_content->from( $targetTBL );
-
-                    // MAKE NEW CONTENT
-                    $query_make_content = $this->dbObject->getQuery(true);
-                    $query_make_content->insert( $targetTBL );
-                    $query_make_content_columns = array();
-
-                    foreach ($DATAs as $data) {
-
-                        if(!empty($PREDEFINEDs)){
-                        foreach ($PREDEFINEDs as $predefined_key => $predefined_value) {
-                            if( empty($data[$predefined_key]) ){
-                                $data[$predefined_key] = $predefined_value;
-
-                            }
-                        }      
-                        }
-
-                        // DELETE OLD CONTENT
-                        $query_del_content->where( $this->dbObject->quoteName($targetPK_alias)." = ".$data["id"], "OR" );
-
-                        /////////////////////////
-                        // MAKE NEW CONTENT
-                        if( empty($query_make_content_columns) ){
-                            foreach ($data as $column_key => $column_value){  
-                                $query_make_content_columns[] = $column_key;
-                            }
-                        }
-                        $query_make_content_values = array();
-                        foreach ($data as $column_key => $column_value){
-                            if(!is_numeric($column_value)){$column_value = $this->dbObject->Quote($column_value);}
-                            $query_make_content_values[] = $column_value;
-                        }
-                        $query_make_content->values(implode(',', $query_make_content_values));
-                        //
-                        /////////////////////////
-
-                    }//foreach ($DATAs as $sourcePK_value => $data) {
-
-                    // DELETE OLD CONTENT
-                    $this->dbObject->setQuery($query_del_content);
-                    if(!$config["test"]){
-                        if($this->dbObject->query()){
-
-                            // MAKE NEW CONTENT
-                            $query_make_content->columns( $this->dbObject->quoteName($query_make_content_columns) );
-                            $this->dbObject->setQuery($query_make_content);
-                            if($this->dbObject->query()){
-                                JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_ERROR_GEN_SUCCESS').': '.$config["name"].', '.count($DATAs), 'message');
-                            }
-
-                        }
-                    }else{
-                        echo '<h1>GENERATOR TEST RUN</h1>';
-                        echo '<pre>';
-                        echo '<h2>CONTENT VALUES</h2>';
-                        var_dump($query_make_content->values);
-                        echo '</pre>';   
+                    $query_make_logs->columns( $this->dbObject->quoteName($query_make_logs_columns) );
+                    $this->dbObject->setQuery($query_make_logs);
+                    if(!$this->dbObject->query()){
+                        JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_ERROR_MAKE_LOG_ERROR').': '.$config["name"], 'error');
                     }
 
-                    // POSTGEN
-                    switch ($config["content_type"]) {
+                    // MAKE NEW CONTENT IN DATABASE
+                    $query_make_content->columns( $this->dbObject->quoteName($query_make_content_columns) );
+                    $this->dbObject->setQuery($query_make_content);
+                    if($this->dbObject->query()){
+                        JFactory::getApplication()->enqueueMessage(JText::_('COM_AVC_ERROR_GEN_SUCCESS').': '.$config["name"].', '.count($DATAs).' rows created', 'message');
+                    }
 
-                        case 'article':
-                            // SAVE ARTICLE
-                            // JTable::addIncludePath(JPATH_SITE.DS."administrator".DS."components".DS."com_content".DS."tables");
-                            // JModel::addIncludePath (JPATH_SITE.DS."administrator".DS."components".DS."com_content".DS."models");
-                            // $article_model = JModel::getInstance('article', 'contentModel');                     
-                            break;
+                }else{//if(!$config["test"]){
 
-                        case 'category':
-                            // MUST BE REBUILTED
-                            JTable::addIncludePath(JPATH_SITE.DS."administrator".DS."components".DS."com_categories".DS."tables");
-                            JModel::addIncludePath (JPATH_SITE.DS."administrator".DS."components".DS."com_categories".DS."models");
-                            $category_model = JModel::getInstance('category', 'categoriesModel');    
-                            $category_model->rebuild();
-                            break;
+                    echo '<b>CONTENT VALUES</b>';
+                    echo '<pre>';
+                    var_dump($query_make_content->values);
+                    echo '</pre>'; 
 
-                    } 
+                    echo '<b>LOGS VALUES</b>';
+                    echo '<pre>';
+                    var_dump($query_make_logs->values);
+                    echo '</pre>';   
 
-                }//if(!empty($DATAs)){
+                }//if(!$config["test"]){
 
+                //
+                // WRITE NEW LOGS AND CONTENT TO DB
+                //
+                ////////////////////////////
+
+                ////////////////////////////
+                //
+                // POSTGENERATE PROCESSES (Required for fixing category's structure)
+                //
+
+                switch ($config["content_type"]) {
+
+                    case 'article':
+                        // SAVE ARTICLE
+                        // JTable::addIncludePath(JPATH_SITE.DS."administrator".DS."components".DS."com_content".DS."tables");
+                        // JModel::addIncludePath (JPATH_SITE.DS."administrator".DS."components".DS."com_content".DS."models");
+                        // $article_model = JModel::getInstance('article', 'contentModel');                     
+                        break;
+
+                    case 'category':
+                        // MUST BE REBUILTED
+                        JTable::addIncludePath(JPATH_SITE.DS."administrator".DS."components".DS."com_categories".DS."tables");
+                        JModel::addIncludePath (JPATH_SITE.DS."administrator".DS."components".DS."com_categories".DS."models");
+                        $category_model = JModel::getInstance('category', 'categoriesModel');    
+                        $category_model->rebuild();
+                        break;
+
+                }//switch ($config["content_type"]) {
+
+                //
+                // POSTGENERATE PROCESSES (Required for fixing category's structure)
+                //
+                ////////////////////////////
+
+            }//if(!empty($DATAs)){
+
+            //
+            // POLISHING OF DATA, ADD NEW LOGS, ADD NEW CONTENT
+            //
+            //////////////////////////////////////////////////////////////////////
+
+
+            //////////////////////////////////////////////////////////////////////
+            //
             // TURN OF GENERATE REQUEST
+            //
+
             $query = $this->dbObject->getQuery(true);
             $query->update( $this->db_generator );
             $query->where( "id =". (int)$config["id"] );
@@ -621,8 +721,12 @@ class AvcModelAvc extends JModelList {
             $this->dbObject->setQuery($query);
             $this->dbObject->query();
 
-            }//foreach ($generator_configs as $config) {
+            //
+            // TURN OF GENERATE REQUEST
+            //
+            //////////////////////////////////////////////////////////////////////
 
+        }//foreach ($generator_configs as $config) {
         }//if(!empty($generator_configs)){
     }
 

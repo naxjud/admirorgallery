@@ -29,7 +29,7 @@ foreach ($hotels as $hotel_alias => $hotel_data) {
 	$row = $hotel_data[0];
 
 	$DATAs[$key] = array();
-	$DATAs[$key]["id"] = $LOGs[$config["id"]][ $row["hid"] ];
+	$DATAs[$key]["id"] = $row["hid"];
 	$DATAs[$key]["title"] = $row["htitle"];
 	$DATAs[$key]["alias"] = $row["halias"];
 	$DATAs[$key]["catid"] = $config["custom_values"]["catid"];
