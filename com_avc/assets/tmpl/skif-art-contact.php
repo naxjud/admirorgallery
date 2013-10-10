@@ -4,7 +4,7 @@ if(!empty($ROWs)){
 
 	$DATAs = array();
 	$DATAs[1] = array();
-	$DATAs[1]["id"] = $LOGs[$config["id"]][ $row["istid"] ];
+	$DATAs[1]["id"] = 1;
 	$DATAs[1]["title"] = "Contact";
 	$DATAs[1]["alias"] = "contant";
 

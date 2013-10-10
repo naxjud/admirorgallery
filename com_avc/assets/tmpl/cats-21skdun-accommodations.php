@@ -14,7 +14,7 @@ if(!empty($ROWs)){
 
 	$key = 0;
 	$DATAs[ $key ] = array();
-	$DATAs[ $key ]["id"] = $LOGs[$config["id"]][ 1 ];	
+	$DATAs[ $key ]["id"] = 1;	
 	$DATAs[ $key ]["title"] = "Accommodation";
 	$DATAs[ $key ]["alias"] = "accommodation";
 	$DATAs[ $key ]["parent_id"] = $config["custom_values"]["parent_id"];

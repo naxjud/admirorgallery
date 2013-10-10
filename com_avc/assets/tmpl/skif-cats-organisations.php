@@ -12,7 +12,7 @@ if(!empty($ROWs)){
 foreach ($ROWs as $key => $row) {
 
 	$DATAs[ $key ] = array();
-	$DATAs[ $key ]["id"] = $LOGs[$config["id"]][ $row["childid"] ];	
+	$DATAs[ $key ]["id"] = $row["childid"];	
 	$DATAs[ $key ]["title"] = $row["orgtitle"];
 	$DATAs[ $key ]["alias"] = JFile::makeSafe( strtolower( str_replace(" ", "-", $row["orgtitle"]) ) );
 
