@@ -6,6 +6,36 @@ defined('_JEXEC') or die('Restricted access');
 JHTML::_('behavior.calendar'); // Callendar Libraries
 
 
+$JS_DOMREADY = '
+
+///////////////////////////////////////////
+// FIELD FILELIST
+///////////////////////////////////////////
+window.addEvent("domready", function(){
+
+	// KEYSTROKE LISTENER
+	document.addEvents({
+		"keydown": function(event){
+			if (event.key == \'backspace\' && event.control){
+				Joomla.submitbutton(\'cancel\');
+			}	
+			if (event.key == \'s\' && event.control && event.alt && event.shift){
+				Joomla.submitbutton(\'save\');
+			}else{				
+				if (event.key == \'s\' && event.control && event.alt){
+					Joomla.submitbutton(\'apply\');
+				}
+			}
+		}
+	});
+
+});
+
+';
+
+$this->doc->addScriptDeclaration($JS_DOMREADY);
+
+
 $JS_FIELD_FILELIST = '
 
 ///////////////////////////////////////////

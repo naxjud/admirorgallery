@@ -201,6 +201,9 @@ window.addEvent("domready", function(){
 		document.addEvents({
 			"keydown": function(event){
 				keystroke=event.key;
+				if (event.key == \'n\' && event.control && event.alt){
+					Joomla.submitbutton(\'add\');
+				}
 			},
 			"keyup": function(event){		
 				keystroke="";
