@@ -31,6 +31,7 @@ function adminlist_select(rowID){
 	$(rowID).removeClass("hover");
 	$(rowID).getElement(".cid").checked = true;
 	cb_lastClicked=rowID;
+	console.log(cb_lastClicked);
 }
 
 function adminlist_deselect(rowID){
@@ -40,11 +41,14 @@ function adminlist_deselect(rowID){
 }
 
 function adminlist_deselect_all(){
- $("adminlist").getElements("tbody").getElements("tr").each(function(el, i)
+
+	var list=$("adminlist");
+    list.getElements(".cid").each(function(el, i)
     {
-		el.getElement(".cid").checked = false;
-        el.removeClass("active");
-    });
+		el.checked = false;
+	});
+	list.getElements("tr").removeClass("active");
+
 }
 
 
@@ -204,6 +208,12 @@ window.addEvent("domready", function(){
 				if (event.key == \'n\' && event.control && event.alt){
 					Joomla.submitbutton(\'add\');
 				}
+				if (event.key == \'d\' && event.control && event.alt){
+					Joomla.submitbutton(\'duplicate\');
+				}
+				if (event.key == \'r\' && event.control && event.alt){
+					Joomla.submitbutton(\'refresh\');
+				}
 			},
 			"keyup": function(event){		
 				keystroke="";
@@ -213,7 +223,8 @@ window.addEvent("domready", function(){
 			}
 		});
 
-		// ADD EVENTS FOR TR
+		////////////////////////////////////////////////////////////////////////////////////////////////////// ADD EVENTS FOR TR
+		//
 		$("adminlist").getElement("tbody").getElements("tr").addEvents({
 			"mousedown": function(e){
 
