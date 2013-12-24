@@ -43,7 +43,7 @@ if(!empty($AG_itemURL)){
 
 ?>
 
-<form action="<?php echo JURI::getInstance()->toString();?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
+<form action="<?php echo JRoute::_('index.php?option=com_admirorgallery&view=imagemanager');?>" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 
 <input type="hidden" name="option" value="com_admirorgallery" />
 <input type="hidden" name="task" value="" />
