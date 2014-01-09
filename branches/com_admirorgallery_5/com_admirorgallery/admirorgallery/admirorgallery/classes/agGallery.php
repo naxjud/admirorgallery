@@ -3,11 +3,11 @@
 # admirorgallery - Admiror Gallery Plugin
 # ------------------------------------------------------------------------
 # author   Igor Kekeljevic & Nikola Vasiljevski
-# copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
+# copyright Copyright (C) 2014 admiror-design-studio.com. All Rights Reserved.
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Websites: http://www.admiror-design-studio.com/joomla-extensions
 # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
-# Version: 4.5.0
+# Version: 5.0.0
 -------------------------------------------------------------------------*/
  
 define('PLUGIN_BASE_PATH', '/plugins/content/admirorgallery/admirorgallery/');
@@ -201,12 +201,18 @@ class agGallery extends agHelper {
                 }
                 if (!empty($thumb_file)) {
                     $this->Album_generateThumb($folderName, $thumb_file);
-                } else {
-                    continue; // SKIP IF NO THUMB IMAGES
                 }
+                
                 $html.='<a href="#" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',1,\'' . $this->imagesFolderName . '/' . $folderName . '\'); return false;" class="AG_album_thumb">';
                 $html.='<span class="AG_album_thumb_img">';
-                $html.='<img src="' . $this->sitePath . PLUGIN_BASE_PATH . 'thumbs/' . $this->imagesFolderName . '/' . $folderName . '/' . basename($thumb_file) . '" />' . "\n";
+                if(!empty($thumb_file))
+                {
+                    $html.='<img src="' . $this->sitePath . PLUGIN_BASE_PATH . 'thumbs/' . $this->imagesFolderName . '/' . $folderName . '/' . basename($thumb_file) . '" />' . "\n";
+                }
+                else
+                {
+                    $html.='<img src="' . $this->sitePath . PLUGIN_BASE_PATH .'defaultAlbum.png" />' . "\n";
+                }
                 $html.='</span>';
                 $html.='<span class="AG_album_thumb_label">';
                 $html.=$this->descArray[$folderName];

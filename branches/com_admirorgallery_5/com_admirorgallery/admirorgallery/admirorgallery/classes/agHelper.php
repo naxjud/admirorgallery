@@ -3,11 +3,11 @@
 # admirorgallery - Admiror Gallery Plugin
 # ------------------------------------------------------------------------
 # author   Igor Kekeljevic & Nikola Vasiljevski
-# copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
+# copyright Copyright (C) 2014 admiror-design-studio.com. All Rights Reserved.
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Websites: http://www.admiror-design-studio.com/joomla-extensions
 # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
-# Version: 4.5.0
+# Version: 5.0.0
 -------------------------------------------------------------------------*/
 
 class agHelper {
@@ -436,7 +436,7 @@ class agHelper {
             'Macintosh' => '(Mac_PowerPC)|(Macintosh)',
             'QNX' => 'QNX',
             'BeOS' => 'BeOS',
-            'OS/2' => 'OS\/2',
+            'OS\/2' => 'OS\/2',
             'Search Bot' => '(nuhk)|(Googlebot)|(Yammybot)|(Openbot)|(Slurp\/cat)|(msnbot)|(ia_archiver)'
         );
         foreach ($oses as $os => $pattern) {

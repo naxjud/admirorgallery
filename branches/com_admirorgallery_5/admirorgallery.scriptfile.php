@@ -44,11 +44,11 @@ class com_admirorgalleryInstallerScript {
         }
 
         $db = JFactory::getDbo();
-        $tableExtensions = $db->quoteName("#__extensions");
-        $columnElement = $db->quoteName("element");
-        $columnType = $db->quoteName("type");
-        $columnFolder = $db->quoteName("folder");
-        $columnEnabled = $db->quoteName("enabled");
+        $tableExtensions = $db->nameQuote("#__extensions");
+        $columnElement = $db->nameQuote("element");
+        $columnType = $db->nameQuote("type");
+        $columnFolder = $db->nameQuote("folder");
+        $columnEnabled = $db->nameQuote("enabled");
 
         // Enable plugins
         $db->setQuery(
@@ -92,10 +92,10 @@ class com_admirorgalleryInstallerScript {
         $installer = new JInstaller();
 
         $db = JFactory::getDbo();
-        $tableExtensions = $db->quoteName("#__extensions");
-        $columnElement = $db->quoteName("element");
-        $columnType = $db->quoteName("type");
-        $columnFolder = $db->quoteName("folder");
+        $tableExtensions = $db->nameQuote("#__extensions");
+        $columnElement = $db->nameQuote("element");
+        $columnType = $db->nameQuote("type");
+        $columnFolder = $db->nameQuote("folder");
 
         // Find AdmirorGallery plugin ID
         $db->setQuery(
