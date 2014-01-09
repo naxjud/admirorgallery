@@ -1,16 +1,17 @@
 <?php
-/*------------------------------------------------------------------------
-# com_admirorgallery - Admiror Gallery Component
-# ------------------------------------------------------------------------
-# author   Igor Kekeljevic & Nikola Vasiljevski
-# copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
-# @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
-# Websites: http://www.admiror-design-studio.com/joomla-extensions
-# Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
-# Version: 4.5.0
--------------------------------------------------------------------------*/
+
+/* ------------------------------------------------------------------------
+  # com_admirorgallery - Admiror Gallery Component
+  # ------------------------------------------------------------------------
+  # author   Igor Kekeljevic & Nikola Vasiljevski
+  # copyright Copyright (C) 2014 admiror-design-studio.com. All Rights Reserved.
+  # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
+  # Websites: http://www.admiror-design-studio.com/joomla-extensions
+  # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
+  # Version: 5.0.0
+  ------------------------------------------------------------------------- */
 // Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 jimport('joomla.html.parameter');
@@ -22,11 +23,21 @@ class AdmirorgalleryController extends JControllerLegacy {
         if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
             JError::raiseWarning('2', JText::_('COM_PLUGIN_NOT_INSTALLED'));
         }
-        AdmirorGalleryHelper::addSubmenu(JRequest::getCmd('view', 'control_panel'),JRequest::getCmd('AG_resourceType', ''));
-
-        JToolBarHelper :: custom('AG_apply', 'AG_apply', 'AG_apply', 'COM_ADMIRORGALLERY_APPLY_DESC', false, false);
-        JToolBarHelper :: custom('AG_reset', 'AG_reset', 'AG_reset', 'COM_ADMIRORGALLERY_RESET_DESC', false, false);
+        AdmirorGalleryHelper::addSubmenu(JRequest::getCmd('view', 'control_panel'), JRequest::getCmd('AG_resourceType', ''));
+        //JToolBarHelper :: custom('AG_apply', 'AG_apply', 'AG_apply', 'COM_ADMIRORGALLERY_APPLY_DESC', false, false);
+        //JToolBarHelper :: custom('AG_reset', 'AG_reset', 'AG_reset', 'COM_ADMIRORGALLERY_RESET_DESC', false, false);
+        if (JFactory::getUser()->authorise('core.admin', 'com_admirorgallery')) {
+            JToolBarHelper::preferences('com_admirorgallery');
+        }
+        JToolBarHelper::help("", false, "http://www.admiror-design-studio.com/admiror-joomla-extensions/admiror-gallery/user-manuals");
         $doc = JFactory::getDocument();
+        $viewType = $doc->getType();
+        $viewName = $this->input->get('view', $this->default_view);
+        $viewLayout = $this->input->get('layout', 'default', 'string');
+
+        $view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
+        
+        $view->sidebar = JHtmlSidebar::render();
         $doc->addScriptDeclaration('
 	       AG_jQuery(function(){
 
@@ -38,4 +49,5 @@ class AdmirorgalleryController extends JControllerLegacy {
 	  ');
         parent::display();
     }
+
 }

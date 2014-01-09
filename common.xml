@@ -2,7 +2,7 @@
 
 <!--
     Document   : common.xml
-    Created on : January 2, 2012, 1:25 AM
+    Created on : January 7, 2014, 1:25 AM
     Author     : Anakin
     Description:
         Purpose of the document follows.
@@ -10,7 +10,7 @@
 
 <project>
     <property environment="env"/>
-    <property name="source" value="D:\wamp\www\joomla303"/>
+    <property name="source" value="D:\wamp\www\joomla321"/>
     <property name="release" value="D:\webdev\php\projects"/>
     <property name="builddir" value="C:\TEMP\com_admirorgallery"/>
     <property name="verbose" value="false"/>

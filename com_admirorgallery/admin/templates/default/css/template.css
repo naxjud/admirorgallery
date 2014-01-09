@@ -129,7 +129,16 @@
 {
      padding-left:20px;
 }
+input[type="file"]
+{
+    background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid #C0C0C0;
+    font-size: 0.909em;
+}
 
+.icon-ag_install:before {
+    content: "";
+}
 /* ================================================== IMAGE DESCRIPTION */
 
 /* RESET PADDING & MARGIN */

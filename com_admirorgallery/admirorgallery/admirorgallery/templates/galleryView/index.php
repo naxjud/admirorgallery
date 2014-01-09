@@ -3,11 +3,11 @@
 # admirorgallery - Admiror Gallery Plugin
 # ------------------------------------------------------------------------
 # author   Igor Kekeljevic & Nikola Vasiljevski
-# copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
+# copyright Copyright (C) 2014 admiror-design-studio.com. All Rights Reserved.
 # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
 # Websites: http://www.admiror-design-studio.com/joomla-extensions
 # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
-# Version: 4.5.0
+# Version: 5.0.0
 -------------------------------------------------------------------------*/
 // Joomla security code
 defined('_JEXEC') or die('Restricted access');
@@ -17,6 +17,7 @@ $AG->loadCSS($AG->currTemplateRoot.'galleryview.css');
 $AG->loadCSS($AG->currTemplateRoot.'albums/albums.css');
 $AG->loadCSS($AG->currTemplateRoot.'pagination/pagination.css');
 
+$AG->insertJSCode(' var full_loader_path = "'.$AG->pluginPath . $AG->currTemplateRoot.'";');
 $AG->loadJS($AG->currTemplateRoot.'jquery.timers-1.2.js');
 $AG->loadJS($AG->currTemplateRoot.'jquery.easing.1.3.js');
 $AG->loadJS($AG->currTemplateRoot.'jquery.galleryview-2.1.1.js');

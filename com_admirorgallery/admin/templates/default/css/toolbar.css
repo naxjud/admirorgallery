@@ -1,35 +1,18 @@
 /* ===================================== TOOLBAR */
-
-.icon-48-controlpanel{
-        background-image: url(../images/toolbar/icon-48-controlpanel.png);  
-	background-position: left top;
+.icon-controlpanel:before{
+     content: "";
 }
 
-.icon-48-templates{
-        background-image: url(../images/toolbar/icon-48-templates.png);  
+.icon-templates:before{
+    content: "<";
 }
 
-.icon-48-popups{
-        background-image: url(../images/toolbar/icon-48-popups.png);  
+.icon-popups:before{
+        content: "h"; 
 }
 
-.icon-48-imagemanager{
-        background-image: url(../images/toolbar/icon-48-imagemanager.png); 
-}
-.icon-32-AG_apply    { 
-        background-image: url(../images/toolbar/icon-32-AG_apply.png); 
-        display:block;  
-        height:32px;
-        width:32px;
-    
-}
-
-.icon-32-AG_reset    { 
-        background-image: url(../images/toolbar/icon-32-AG_reset.png);    
-        display:block;  
-        height:32px;
-        width:32px;        
-
+.icon-imagemanager:before{
+  content: "0"; 
 }
 
 .toolbar-list  {

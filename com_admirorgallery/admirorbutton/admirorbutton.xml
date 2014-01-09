@@ -2,11 +2,11 @@
 <extension version="2.5" type="plugin" group="editors-xtd" method="upgrade">
     <name>plg_editors-xtd_admirorbutton</name>
     <author>Igor Kekeljevic and Nikola Vasiljevski</author>
-    <creationDate>05/05/2012</creationDate>	
+    <creationDate>07/01/2014</creationDate>	
     <copyright>This extension in released under the GNU/GPL License - http://www.gnu.org/copyleft/gpl.html</copyright>
     <authorEmail></authorEmail>
     <authorUrl>http://www.admiror-design-studio.com</authorUrl>
-    <version>4.5.0</version>
+    <version>5.0.0</version>
     <description></description>
     <files>
         <filename plugin="admirorbutton">admirorbutton.php</filename>

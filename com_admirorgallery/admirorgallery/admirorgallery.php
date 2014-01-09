@@ -3,18 +3,18 @@
   # admirorgallery - Admiror Gallery Plugin
   # ------------------------------------------------------------------------
   # author   Igor Kekeljevic & Nikola Vasiljevski
-  # copyright Copyright (C) 2011 admiror-design-studio.com. All Rights Reserved.
+  # copyright Copyright (C) 2014 admiror-design-studio.com. All Rights Reserved.
   # @license - http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
   # Websites: http://www.admiror-design-studio.com/joomla-extensions
   # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
-  # Version: 4.5.0
+  # Version: 5.0.0
   ------------------------------------------------------------------------- */
 defined('_JEXEC') or die('Restricted access');
 // Import library dependencies
 jimport('joomla.event.plugin');
 jimport('joomla.plugin.plugin');
 jimport( 'joomla.filesystem.folder' );
-define('AG_VERSION', '4.5.0');
+define('AG_VERSION', '5.0.0');
 
 class plgContentAdmirorGallery extends JPlugin {
 
@@ -24,10 +24,14 @@ class plgContentAdmirorGallery extends JPlugin {
         // load current language
         $this->loadLanguage();
     }
+    
+    function onContentBeforeDisplay($context, &$row, &$params, $limitstart = 0) {
+        $this->onContentPrepare($context, $row, $params, $limitstart);
+    }
 
-    function onContentPrepare($context, &$row, &$params, $limitstart) {
+    function onContentPrepare($context, &$row, &$params, $limitstart = 0) {
         $gd_exists = true;
-        if (!preg_match("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}|{AG[^}]*}(.*?){/AG}#s", $row->text)) {
+        if (!preg_match("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}|{AG[^}]*}(.*?){/AG}|{ag[^}]*}(.*?){/ag}#s", $row->text)) {
             return;
         }
         $doc = JFactory::getDocument();
@@ -63,8 +67,7 @@ class plgContentAdmirorGallery extends JPlugin {
                 error_reporting('E_NOTICE');
             //Joomla specific variables is passed as parametars for agGallery independce from specific CMS
             $AG->loadJS('AG_jQuery.js');
-            //$AG->articleID = $row->id;
-            $AG->articleID = 1;
+            $AG->articleID = $row->id;
             //generate gallery html
             foreach ($matches[0] as $match) {
                 $AG->index++;
@@ -139,7 +142,7 @@ class plgContentAdmirorGallery extends JPlugin {
             } else {
                 $row->text .= '<div style="display:block; font-size:10px; overflow:hidden; height:1px; padding-top:1px;">';
             }
-            $row->text .= '<br /><a href="http://www.admiror-design-studio.com" target="_blank">AdmirorGallery ' . AG_VERSION . '</a>, ' . JText::_("author/s") . ' <a href="http://www.vasiljevski.com/" target="_blank">Vasiljevski</a> & <a href="http://www.admiror-design-studio.com" target="_blank">Kekeljevic</a>.<br /></div>';
+            $row->text .= '<br /><a href="http://www.admiror-design-studio.com" target="_blank">AdmirorGallery ' . AG_VERSION . '</a>, ' . JText::_("AG_AUTHORS") . ' <a href="http://www.vasiljevski.com/" target="_blank">Vasiljevski</a> & <a href="http://www.admiror-design-studio.com" target="_blank">Kekeljevic</a>.<br /></div>';
         }//if (preg_match_all("#{AdmirorGallery}(.*?){/AdmirorGallery}#s", $row->text, $matches, PREG_PATTERN_ORDER)>0)
     }
 
