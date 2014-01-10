@@ -11,7 +11,7 @@
 -------------------------------------------------------------------------*/
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-JRequest::setVar( 'AG_frontEnd', 'true' );
+JRequest::setVar( '$this->ag_front_end', 'true' );
 
 require_once (JPATH_COMPONENT_ADMINISTRATOR.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.'imagemanager'.DIRECTORY_SEPARATOR.'tmpl'.DIRECTORY_SEPARATOR.'default.php');
 

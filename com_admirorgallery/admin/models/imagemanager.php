@@ -24,7 +24,7 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
         parent::__construct($config);
     }
 
-    private function saveXML($simple_xml_object,$value) {
+    function _saveXML($simple_xml_object,$value) {
         if ($simple_xml_object->asXML($this->ag_bookmark_path)) {
             JFactory::getApplication()->enqueueMessage(JText::_("AG_BOOKMARK_CHANGES_SAVED") . "&nbsp;" . $value, 'message');
         } else {
@@ -32,7 +32,7 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
         }
     }
 
-    private function bookmark_rename($AG_originalPath, $AG_newPath) {
+    function _bookmarkRename($AG_originalPath, $AG_newPath) {
         $ag_old_bookmark = $AG_originalPath . '/';
         $ag_new_bookmark = $AG_newPath . '/';
         $ag_bookmarks_xml = JFactory::getXML($this->ag_bookmark_path);
@@ -42,14 +42,16 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
             foreach ((array)$ag_bookmarks_xml->bookmark as $ag_bookmarks_key => $ag_bookmarks_value) {
                 if ($ag_bookmarks_value == $ag_old_bookmark) {
                     $ag_bookmarks_value = $ag_new_bookmark;
-                    $this->saveXML($ag_bookmarks_xml,$ag_new_bookmark);
+                    $this->_saveXML($ag_bookmarks_xml,$ag_new_bookmark);
                     break;
                 }
             }
         }
     }
 
-    private function bookmark_remove($AG_cbox_bookmarkRemove) {
+    function _bookmarkRemove($AG_cbox_bookmarkRemove) {
+        $ag_bookmarks_array = NULL;
+        $ag_bookmarks_value = NULL;
         foreach ($AG_cbox_bookmarkRemove as $key => $AG_bookmark_ID) {
             $ag_bookmarkFile = JPATH_SITE . '/administrator/components/com_admirorgallery/assets/bookmarks.xml';
 
@@ -60,7 +62,7 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
 
             // CHECK IF BOOKMARK ALREADY EXISTS
             $bookmarkCheck = false;
-            if (!empty($ag_bookmarks_array)) {
+            if (!isset($ag_bookmarks_array)) {
                 foreach ($ag_bookmarks_array as $ag_bookmarks_key => $ag_bookmarks_value) {
                     if ($ag_bookmarks_value == $AG_bookmark_ID) {
                         $bookmarkCheck = true;
@@ -72,9 +74,9 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
                 // WRITE NEW BOOKMARK XML
                 $ag_content = "";
                 $ag_content.="<bookmarks>" . "\n";
-                if (!empty($ag_bookmarks_array)) {
+                if (!isset($ag_bookmarks_array)) {
                     foreach ($ag_bookmarks_array as $ag_bookmarks_key => $ag_bookmarks_value) {
-                        if ((!empty($ag_bookmarks_value)) && ($ag_bookmarks_value->data() != $AG_bookmark_ID)) {
+                        if ((!isset($ag_bookmarks_value)) && ($ag_bookmarks_value->data() != $AG_bookmark_ID)) {
                             $ag_content.='  <bookmark>' . $ag_bookmarks_value->data() . '</bookmark>' . "\n";
                         }
                     }
@@ -82,7 +84,7 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
 
                 $ag_content.="</bookmarks>" . "\n";
 
-                if (!empty($ag_content)) {
+                if (!isset($ag_content)) {
                     $handle = fopen($ag_bookmarkFile, "w") or die(JText::_("AG_CANNOT_WRITE_GALLERY_LISTING"));
                     if (fwrite($handle, $ag_content)) {
                         JFactory::getApplication()->enqueueMessage(JText::_("AG_GALLERY_REMOVED_FROM_LISTING") . "&nbsp;" . $AG_bookmark_ID, 'message');
@@ -95,7 +97,7 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
         }
     }
 
-    private function bookmark_add($AG_cbox_bookmarkAdd) {
+    function _bookmarkAdd($AG_cbox_bookmarkAdd) {
         foreach ($AG_cbox_bookmarkAdd as $key => $value) {
             if (is_dir(JPATH_SITE . $value)) {
                 $ag_bookmarks_xml = simplexml_load_file($this->ag_bookmark_path);
@@ -121,7 +123,7 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
                 JFactory::getApplication()->enqueueMessage(JText::_("AG_GALLERY_NOT_A_FOLDER") . "&nbsp;" . $value, 'error');
             }
         }
-        $this->saveXML($ag_bookmarks_xml,'');
+        $this->_saveXML($ag_bookmarks_xml,'');
     }
 
     function _cbox_priority($ag_preview_checked_array) {
@@ -166,7 +168,7 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
                     $this->_saveXML($ag_itemURL, $ag_XML_path, $ag_XML_content);
                 }
             } else {
-                if (!empty($ag_priority)) {
+                if (!isset($ag_priority)) {
                     JFactory::getApplication()->enqueueMessage(JText::_("AG_PRIORITY_MUST_BE_NUMERIC_VALUE_FOR_IMAGE") . "&nbsp;" . basename($ag_itemURL), 'error');
                 }
             }
@@ -251,10 +253,10 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
 
     function _addFolders($AG_itemURL, $AG_addFolders) {
         foreach ($AG_addFolders as $key => $value) {
-            if (!empty($value)) {
+            if (!isset($value)) {
                 $newFolderName = $value;
                 // CREATE WEBSAFE TITLES
-                if (!empty($this->webSafe)) {
+                if (!isset($this->webSafe)) {
                     foreach ($this->webSafe as $webSafekey => $webSafevalue) {
                         $newFolderName = str_replace($webSafevalue, "-", $newFolderName);
                     }
@@ -269,7 +271,7 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
                 } else {
                     JFactory::getApplication()->enqueueMessage(JText::_("AG_FOLDER_ALREADY_EXISTS") . "&nbsp;" . $newFolderName, 'error');
                 }
-            }//if(!empty($value))
+            }//if(!isset($value))
         }
     }
 
@@ -376,7 +378,7 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
         $AG_originalName = basename($AG_originalPath);
         $AG_folderName = dirname($AG_originalPath);
         // CREATE WEBSAFE TITLES
-        if (!empty($this->webSafe)) {
+        if (!isset($this->webSafe)) {
             foreach ($this->webSafe as $webSafekey => $webSafevalue) {
                 $AG_newName = str_replace($webSafevalue, "-", $AG_newName);
             }
@@ -436,9 +438,9 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
         // Set new Captions tag
         $ag_captions_new = "";
         $ag_captions_new.="<captions>" . "\n";
-        if (!empty($AG_desc_content)) {
+        if (!isset($AG_desc_content)) {
             foreach ($AG_desc_content as $key => $value) {
-                if (!empty($value)) {
+                if (!isset($value)) {
                     $ag_captions_new .= "\t" . '<caption lang="' . strtolower($AG_desc_tags[$key]) . '">' . htmlspecialchars($value, ENT_QUOTES, "UTF-8") . '</caption>' . "\n";
                 }
             }
@@ -486,9 +488,9 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
         $ag_captions_new = "";
 
         $ag_captions_new.="<captions>" . "\n";
-        if (!empty($AG_desc_content)) {
+        if (!isset($AG_desc_content)) {
             foreach ($AG_desc_content as $key => $value) {
-                if (!empty($value)) {
+                if (!isset($value)) {
                     $ag_captions_new .= "\t" . '<caption lang="' . strtolower($AG_desc_tags[$key]) . '">' . htmlspecialchars($value, ENT_QUOTES, "UTF-8") . '</caption>' . "\n";
                 }
             }

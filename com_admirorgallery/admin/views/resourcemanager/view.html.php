@@ -17,6 +17,11 @@ jimport('joomla.application.component.view');
 
 class AdmirorgalleryViewResourcemanager extends JViewLegacy {
 
+    var $ag_resourceManager_installed=null;
+    var $limitstart=0;
+    var $limit=0;
+    var $ag_resource_type='templates';
+    
     function display($tpl = null) {
         
         // Preloading joomla tools
@@ -29,26 +34,21 @@ class AdmirorgalleryViewResourcemanager extends JViewLegacy {
         
         $mainframe = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $AG_resourceType = JRequest::getVar('AG_resourceType'); // Current resource type
+        $this->ag_resource_type = JRequest::getVar('AG_resourceType'); // Current resource type
         
-        JToolBarHelper::title(JText::_('COM_ADMIRORGALLERY_' . strtoupper($AG_resourceType)), $AG_resourceType);
+        JToolBarHelper::title(JText::_('COM_ADMIRORGALLERY_' . strtoupper($this->ag_resource_type)), $this->ag_resource_type);
         if (JFactory::getUser()->authorise('core.admin', 'com_admirorgallery')) {
             JToolbarHelper::custom('ag_install', 'ag_install', 'ag_install', 'JTOOLBAR_INSTALL', false, false);
             JToolbarHelper::deleteList('COM_ADMIRORGALLERY_ARE_YOU_SURE', 'ag_uninstall', 'JTOOLBAR_UNINSTALL');
         }
         
         // Loading JPagination vars
-        $limitstart = $mainframe->getUserStateFromRequest($option . '.limitstart', 'limitstart', 0, 'int');
-        $limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+        $this->limitstart = $mainframe->getUserStateFromRequest($option . '.limitstart', 'limitstart', 0, 'int');
+        $this->limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
 
         // Read folder depending on $AG_resourceType
-        $ag_resourceManager_installed = JFolder::folders(JPATH_SITE . '/plugins/content/admirorgallery/admirorgallery/' . $AG_resourceType); // N U
-        sort($ag_resourceManager_installed);
-        
-        $this->assignRef('ag_resourceManager_installed',$ag_resourceManager_installed);
-        $this->assignRef('limitstart',$limitstart);
-        $this->assignRef('limit',$limit);
-        $this->assignRef('AG_resourceType',$AG_resourceType);
+        $this->ag_resourceManager_installed = JFolder::folders(JPATH_SITE . '/plugins/content/admirorgallery/admirorgallery/' . $this->ag_resource_type); // N U
+        sort($this->ag_resourceManager_installed);
         
         parent::display($tpl);
     }
