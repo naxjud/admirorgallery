@@ -186,6 +186,7 @@ input[type="file"]
     padding:0;
     margin:1px 0;
     border:1px solid silver;
+    display: block !important;
 }
 
 .AG_bookmarks_wrapper, .AG_details_wrapper

@@ -18,13 +18,13 @@ if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
 <div class="row-fluid">
     <div class="span2">
         <div class="well well-small">
-            <div class="module-title nav-header"> Links </div>
+            <div class="module-title nav-header"><?php echo JText::_('COM_ADMIRORGALLERY_MENU'); ?></div>
             <?php echo $this->sidebar; ?>
         </div>
     </div>
     <div class="span10">
         <div class="well well-small">
-            <form action="<?php echo JRoute::_('index.php?option=com_admirorgallery&task=' . $this->AG_resourceType); ?>" 
+            <form action="<?php echo JRoute::_('index.php?option=com_admirorgallery&task=' . $this->ag_resource_type); ?>" 
                   method="post" 
                   name="adminForm" 
                   id="adminForm" 
@@ -35,7 +35,7 @@ if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
                 <input type="hidden" name="boxchecked" value="0" />
                 <input type="hidden" name="view" value="resourcemanager" />
                 <input type="hidden" name="controller" value="resourcemanager" />
-                <input type="hidden" name="AG_resourceType" value="<?php echo $this->AG_resourceType; ?>" />
+                <input type="hidden" name="AG_resourceType" value="<?php echo $this->ag_resource_type; ?>" />
                 <?php echo JHTML::_('form.token'); ?>
 
                 <script type="text/javascript">
@@ -98,8 +98,8 @@ if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
                                     $ag_resourceManager_version = JText::_("AG_UNKNOWN_VERSION");
                                     $ag_resourceManager_description = JText::_("AG_NO_DESCRITION");
 
-                                    if (JFIle::exists(JPATH_SITE . '/plugins/content/admirorgallery/admirorgallery/' . $this->AG_resourceType . '/' . $ag_resourceManager_id . '/details.xml')) {// N U
-                                        $ag_resourceManager_xml = JFactory::getXML(JPATH_SITE . '/plugins/content/admirorgallery/admirorgallery/' . $this->AG_resourceType . '/' . $ag_resourceManager_id . '/details.xml');
+                                    if (JFIle::exists(JPATH_SITE . '/plugins/content/admirorgallery/admirorgallery/' . $this->ag_resource_type . '/' . $ag_resourceManager_id . '/details.xml')) {// N U
+                                        $ag_resourceManager_xml = JFactory::getXML(JPATH_SITE . '/plugins/content/admirorgallery/admirorgallery/' . $this->ag_resource_type . '/' . $ag_resourceManager_id . '/details.xml');
                                         $ag_resourceManager_name = $ag_resourceManager_xml->name;
                                         $ag_resourceManager_creationDate = $ag_resourceManager_xml->creationDate;
                                         $ag_resourceManager_author = $ag_resourceManager_xml->author;
@@ -117,7 +117,7 @@ if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
                                         <td class="nowrap">
 
                                             <span class="editlinktip hasTip" 
-                                                  title="<?php echo $ag_resourceManager_name . '::<img border=&quot;1&quot; src=&quot;' . JURI::root() . 'plugins/content/admirorgallery/admirorgallery/' . $this->AG_resourceType . '/' . $ag_resourceManager_id . '/preview.jpg' . '&quot; name=&quot;imagelib&quot; alt=&quot;&quot; width=&quot;206&quot; height=&quot;145&quot; />' ?>">
+                                                  title="<?php echo $ag_resourceManager_name . '::<img border=&quot;1&quot; src=&quot;' . JURI::root() . 'plugins/content/admirorgallery/admirorgallery/' . $this->ag_resource_type . '/' . $ag_resourceManager_id . '/preview.jpg' . '&quot; name=&quot;imagelib&quot; alt=&quot;&quot; width=&quot;206&quot; height=&quot;145&quot; />' ?>">
                                                 <a href="#" class="ag_title_link">
                                                     <?php echo $ag_resourceManager_name; ?>
                                                 </a>

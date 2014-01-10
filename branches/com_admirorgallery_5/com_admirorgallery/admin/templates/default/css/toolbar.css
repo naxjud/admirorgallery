@@ -10,6 +10,9 @@
 .icon-popups:before{
         content: "h"; 
 }
+.icon-ag_upload:before{
+    content:""; 
+}
 
 .icon-imagemanager:before{
   content: "0"; 

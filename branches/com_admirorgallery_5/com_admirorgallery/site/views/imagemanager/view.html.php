@@ -44,7 +44,7 @@ class AdmirorgalleryViewImagemanager extends JViewLegacy {
         parent::display($tpl);
     }
 
-    function _renderBreadcrumb($AG_itemURL, $ag_rootFolder, $ag_folderName, $ag_fileName) {
+    function ag_render_breadcrumb($AG_itemURL, $ag_rootFolder, $ag_folderName, $ag_fileName) {
         $ag_breadcrumb = '';
         $ag_breadcrumb_link = '';
         if ($ag_rootFolder != $AG_itemURL && !empty($AG_itemURL)) {
