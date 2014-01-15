@@ -32,12 +32,12 @@ class AdmirorgalleryViewImagemanager extends JViewLegacy {
         $this->ag_template_id = JRequest::getString('AG_template', 'default'); // Current template for AG Component
 
         $ag_item_url = JRequest::getVar('AG_itemURL');
-        $$this->ag_front_end = JRequest::getVar('AG_frontEnd'); // Current template for AG Component
+        $this->ag_front_end = JRequest::getVar('ag_front_end'); // Current template for AG Component
         // GET ROOT FOLDER
         $plugin = JPluginHelper::getPlugin('content', 'admirorgallery');
         $pluginParams = new JRegistry($plugin->params);
         $this->ag_rootFolder = $pluginParams->get('rootFolder', '/images/sampledata/');
-        if ($$this->ag_front_end == 'true') {
+        if ($this->ag_front_end == 'true') {
             $this->ag_starting_folder = $pluginParams->get('rootFolder', '/images/sampledata/') . $this->galleryName . '/';
         } else {
             $this->ag_starting_folder = $this->ag_rootFolder;
@@ -46,7 +46,7 @@ class AdmirorgalleryViewImagemanager extends JViewLegacy {
         if (!empty($ag_item_url)) {
             $this->ag_init_itemURL = $ag_item_url;
         } else {
-            if ($$this->ag_front_end == 'true') {
+            if ($this->ag_front_end == 'true') {
                 $this->ag_init_itemURL = $pluginParams->get('rootFolder', '/images/sampledata/') . $this->galleryName . '/';
             } else {
                 $this->ag_init_itemURL = $this->ag_rootFolder;
@@ -54,8 +54,8 @@ class AdmirorgalleryViewImagemanager extends JViewLegacy {
         }
         JToolBarHelper::title(JText::_('COM_ADMIRORGALLERY_IMAGE_MANAGER'), 'imagemanager');
         if (JFactory::getUser()->authorise('core.admin', 'com_admirorgallery')) {
-            JToolbarHelper::custom('AG_apply', 'publish', 'ag_upload', 'JTOOLBAR_APPLY', false, false);
-            JToolbarHelper::custom('AG_reset', 'unpublish', 'ag_copy_to', 'JTOOLBAR_CANCEL', false, false);
+            JToolbarHelper::custom('AG_apply', 'publish', 'publish', 'COM_ADMIRORGALLERY_APPLY_DESC', false, false);
+            JToolbarHelper::custom('AG_reset', 'unpublish', 'unpublish', 'COM_ADMIRORGALLERY_RESET_DESC', false, false);
         }
         parent::display($tpl);
     }
@@ -82,7 +82,7 @@ class AdmirorgalleryViewImagemanager extends JViewLegacy {
     }
     
     function ag_render_image_info($ag_itemURL, $AG_imgInfo, $ag_hasXML, $ag_hasThumb) {
-        return '<div class="AG_margin_bottom AG_thumbAndInfo_wrapper">
+        $return_value = '<div class="AG_margin_bottom AG_thumbAndInfo_wrapper">
                 <table cellspacing="0" cellpadding="0" border="0">
                     <tbody>
                         <tr>
@@ -103,6 +103,7 @@ class AdmirorgalleryViewImagemanager extends JViewLegacy {
                 </table>   
                 </div>
                 ';
+        return $return_value;
     }
 
     function ag_render_caption($ag_lang_name, $ag_lang_tag, $ag_lang_content) {
@@ -122,7 +123,7 @@ class AdmirorgalleryViewImagemanager extends JViewLegacy {
         $ag_imgXML_caption_content = "";
         if (!empty($ag_imgXML_captions->caption)) {
             foreach ($ag_imgXML_captions->caption as $ag_imgXML_caption) {
-                if (strtolower($ag_imgXML_caption->attributes()->lang->data()) == "default") {
+                if (strtolower($ag_imgXML_caption->attributes()->lang) == "default") {
                     $ag_imgXML_caption_content = $ag_imgXML_caption;
                 }
             }
@@ -135,7 +136,7 @@ class AdmirorgalleryViewImagemanager extends JViewLegacy {
                 $ag_imgXML_caption_content = "";
                 if (!empty($ag_imgXML_captions->caption)) {
                     foreach ($ag_imgXML_captions->caption as $ag_imgXML_caption) {
-                        if (strtolower($ag_imgXML_caption->attributes()->lang->data()) == strtolower($ag_lang["tag"])) {
+                        if (strtolower($ag_imgXML_caption->attributes()->lang) == strtolower($ag_lang["tag"])) {
                             $ag_imgXML_caption_content = $ag_imgXML_caption;
                             $ag_matchCheck[] = strtolower($ag_lang["tag"]);
                         }
@@ -147,7 +148,7 @@ class AdmirorgalleryViewImagemanager extends JViewLegacy {
 
         if (!empty($ag_imgXML_captions->caption)) {
             foreach ($ag_imgXML_captions->caption as $ag_imgXML_caption) {
-                $ag_imgXML_caption_attr = $ag_imgXML_caption->attributes()->lang->data();
+                $ag_imgXML_caption_attr = $ag_imgXML_caption->attributes()->lang;
                 if (!is_numeric(array_search(strtolower($ag_imgXML_caption_attr), $ag_matchCheck))) {
                     $ag_site_languages.= $this->ag_render_caption($ag_imgXML_caption_attr, $ag_imgXML_caption_attr, $ag_imgXML_caption);
                 }
@@ -173,6 +174,11 @@ class AdmirorgalleryViewImagemanager extends JViewLegacy {
         </tbody></table>
         <div>
         ';
+    }
+    
+    function ag_get_bookmark_path()
+    {
+        return $this->getModel('imagemanager')->ag_bookmark_path;
     }
 
 }

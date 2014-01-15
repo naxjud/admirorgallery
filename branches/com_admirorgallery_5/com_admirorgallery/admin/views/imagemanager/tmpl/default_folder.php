@@ -351,9 +351,35 @@ $AG_folderDroplist.="<option value='" . $this->ag_rootFolder . "' >" . JText::_(
 if (!empty($AG_folders)) {
     foreach ($AG_folders as $AG_folders_key => $AG_folders_value) {
         $AG_folderName = substr($AG_folders_value['relname'], $AG_rootFolder_strlen);
-        $AG_folderDroplist.="<option value='" . $this->ag_rootFolder . $AG_folderName . "' >" . $AG_folderName . "</option>";
+        str_replace('\\\\', DIRECTORY_SEPARATOR , $AG_folderName);
+        $AG_folderDroplist.="<option value='" . $this->ag_rootFolder . addslashes($AG_folderName) . "' >" . addslashes($AG_folderName) . "</option>";
     }
 }
 $AG_folderDroplist.="</select>";
+
+$ag_preview_content.='
+
+<script type="text/javascript">
+AG_jQuery("#AG_operations").change(function() {
+        switch(AG_jQuery(this).val())
+        {
+        case "delete":
+          AG_jQuery("#AG_targetFolder").html("<img src=\'' . JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $this->ag_template_id . '/images/alert.png\'  style=\'float:left;\' />&nbsp;' . JText::_('AG_SELECTED_ITEMS_WILL_BE_DELETED') . '");
+          break;
+        case "move":
+          AG_jQuery("#AG_targetFolder").html("' . $AG_folderDroplist . '");
+          break;
+        case "copy":
+          AG_jQuery("#AG_targetFolder").html("' . $AG_folderDroplist . '");
+          break;
+        default:
+          AG_jQuery("#AG_targetFolder").html("");
+        }
+});
+
+
+</script>
+
+';
 
 ?>

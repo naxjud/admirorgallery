@@ -22,8 +22,7 @@ defined('_JEXEC') or die();
                         <img src="<?php echo JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $this->ag_template_id . '/images/bookmark.png'; ?>" style="float:left;" />&nbsp;<?php echo JText::_('AG_GALLERIES'); ?> 
                     </h1>
                     <?php
-                    $bookmarkPath = JPATH_SITE . '/administrator/components/com_admirorgallery/assets/bookmarks.xml';
-                    $ag_bookmarks_xml = JFactory::getXML($bookmarkPath);
+                    $ag_bookmarks_xml = simplexml_load_file($this->ag_get_bookmark_path());
                     if (isset($ag_bookmarks_xml->bookmark)) {
                         foreach ($ag_bookmarks_xml->bookmark as $key => $value) {
                             ?>
