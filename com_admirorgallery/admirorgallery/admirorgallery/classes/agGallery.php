@@ -428,8 +428,8 @@ class agGallery extends agHelper {
                         // GET DEFAULT LABEL
                         if (!empty($ag_imgXML_captions->caption)) {
                             foreach ($ag_imgXML_captions->caption as $ag_imgXML_caption) {
-                                if (strtolower($ag_imgXML_caption->attributes()->lang->data()) == "default") {
-                                    $this->descArray[$f] = $ag_imgXML_caption->data();
+                                if (strtolower($ag_imgXML_caption->attributes()->lang) == "default") {
+                                    $this->descArray[$f] = $ag_imgXML_caption;
                                 }
                             }
                         }
@@ -437,8 +437,8 @@ class agGallery extends agHelper {
                         // GET CURRENT LANG LABEL
                         if (!empty($ag_imgXML_captions->caption)) {
                             foreach ($ag_imgXML_captions->caption as $ag_imgXML_caption) {
-                                if (strtolower($ag_imgXML_caption->attributes()->lang->data()) == strtolower($langTag)) {
-                                    $this->descArray[$f] = $ag_imgXML_caption->data();
+                                if (strtolower($ag_imgXML_caption->attributes()->lang) == strtolower($langTag)) {
+                                    $this->descArray[$f] = $ag_imgXML_caption;
                                 }
                             }
                         }

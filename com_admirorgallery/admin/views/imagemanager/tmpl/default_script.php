@@ -20,7 +20,7 @@ defined('_JEXEC') or die();
         Joomla.submitbutton = function(pressbutton) {
             AG_jQuery('input[name="task"]').val(pressbutton);
             AG_jQuery('form[id="adminForm"]').submit();
-        }
+        };
 <?php } ?>
     function basename(path) {
         return path.replace(/\\/g,"/").replace( /.*\//, "" );
@@ -50,8 +50,8 @@ defined('_JEXEC') or die();
             AG_jQuery("#AG_folder_add").prepend("<input type=\'text\' class=\'AG_input\' name=\'AG_addFolders[]\'/>");
             if(!AG_jQuery("#ag_create_new_folder").length)
             {
-                AG_jQuery("#AG_folder_add").append('<a href="#" id="ag_create_new_folder" class="AG_common_button"><span><span><?php echo JText::_('JTOOLBAR_APPLY'); ?></span></span></a>');
-                AG_jQuery("#AG_folder_add").append('<a href="#" id="ag_cancel_new_folder" class="AG_common_button"><span><span><?php echo JText::_('JTOOLBAR_CANCEL'); ?></span></span></a>');
+                AG_jQuery("#AG_folder_add").append('<a href="#" id="ag_create_new_folder" class="AG_common_button"><span><span><?php echo JText::_('COM_ADMIRORGALLERY_TOOLBAR_APPLY'); ?></span></span></a>');
+                AG_jQuery("#AG_folder_add").append('<a href="#" id="ag_cancel_new_folder" class="AG_common_button"><span><span><?php echo JText::_('COM_ADMIRORGALLERY_TOOLBAR_CANCEL'); ?></span></span></a>');
                 // Binding event to Create New Folder
                 AG_jQuery("#ag_create_new_folder").click(function(e) {
                    e.preventDefault();

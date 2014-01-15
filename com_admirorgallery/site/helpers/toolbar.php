@@ -20,8 +20,8 @@ class AdmirorgalleryHelperToolbar extends JObject
 
 	      $bar = new JToolBar( 'toolbar' );
 
-	      $bar->appendButton( 'Standard','AG_apply','COM_ADMIRORGALLERY_APPLY_DESC','AG_apply', false);
-	      $bar->appendButton( 'Standard','AG_reset','COM_ADMIRORGALLERY_RESET_DESC','AG_reset', false);
+	      $bar->appendButton( 'Standard','unpublish','COM_ADMIRORGALLERY_RESET_DESC','AG_reset', false);
+              $bar->appendButton( 'Standard','publish','COM_ADMIRORGALLERY_APPLY_DESC','AG_apply', false);
 
 	      return $bar->render();
 

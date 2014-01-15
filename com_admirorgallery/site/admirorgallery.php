@@ -18,7 +18,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $AG_template = "default";// Set template to default
 JRequest::setVar( 'AG_template', $AG_template );
-
+JRequest::setVar( 'ag_front_end', 'true' );
 // Shared scripts for all views
 $doc = JFactory::getDocument();
 $doc->addScript(JURI::root().'plugins/content/admirorgallery/admirorgallery/AG_jQuery.js');

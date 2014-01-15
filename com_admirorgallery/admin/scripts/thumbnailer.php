@@ -9,6 +9,9 @@
 # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
 # Version: 5.0.0
 -------------------------------------------------------------------------*/
+/** ensure this file is being included by a parent file */
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
 if($_GET['img'] == "")
 exit;
 
