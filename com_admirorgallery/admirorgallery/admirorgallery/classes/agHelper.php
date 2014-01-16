@@ -9,7 +9,7 @@
 # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
 # Version: 5.0.0
 -------------------------------------------------------------------------*/
-
+defined('_JEXEC') or die();
 class agHelper {
     /**
      * http://www.php.net/manual/en/function.natsort.php#45346

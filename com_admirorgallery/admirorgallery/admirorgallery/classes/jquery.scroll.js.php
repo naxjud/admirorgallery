@@ -9,6 +9,7 @@
 # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
 # Version: 5.0.0
 -------------------------------------------------------------------------*/
+defined('_JEXEC') or die();
 if(!empty($_GET['AG_form_scrollTop'])){
 
 $doc->addScriptDeclaration('
