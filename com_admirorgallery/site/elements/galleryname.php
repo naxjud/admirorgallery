@@ -36,7 +36,7 @@ class JFormFieldGalleryName extends JFormField {
         $link = JRoute::_('index.php?option=com_admirorgallery&amp;view=galleryname&amp;tmpl=component&amp;e_name=' . $this->name);
         $content.= '
 	  <a href="' . $link . '" rel="{handler: \'iframe\', size: {x: 500, y: 400}}" class="modal" style="text-decoration:none;">
-		<button type="button" style="cursor:pointer; cursor:hand">' . JText::_('AG_SELECT_GALLERY') . '</button>
+		<button type="button" class="btn">' . JText::_('AG_SELECT_GALLERY') . '</button>
 	  </a>
       ';
 

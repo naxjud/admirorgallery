@@ -24,8 +24,7 @@ class AdmirorgalleryController extends JControllerLegacy {
             JError::raiseWarning('2', JText::_('COM_PLUGIN_NOT_INSTALLED'));
         }
         AdmirorGalleryHelper::addSubmenu(JRequest::getCmd('view', 'control_panel'), JRequest::getCmd('AG_resourceType', ''));
-        //JToolBarHelper :: custom('AG_apply', 'AG_apply', 'AG_apply', 'COM_ADMIRORGALLERY_APPLY_DESC', false, false);
-        //JToolBarHelper :: custom('AG_reset', 'AG_reset', 'AG_reset', 'COM_ADMIRORGALLERY_RESET_DESC', false, false);
+
         if (JFactory::getUser()->authorise('core.admin', 'com_admirorgallery')) {
             JToolBarHelper::preferences('com_admirorgallery');
         }

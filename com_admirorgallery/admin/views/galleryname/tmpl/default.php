@@ -23,8 +23,8 @@ $ag_init_itemURL = $ag_rootFolder;
 
 <form action="index.php" id="AG_form" method="post" enctype="multipart/form-data">
     <div style="float: right">
-        <button type="button" onclick="AG_getGalleryName();window.parent.SqueezeBox.close();"><?php echo JText::_('Insert') ?></button>
-        <button type="button" onclick="window.parent.SqueezeBox.close();"><?php echo JText::_('Cancel') ?></button>
+        <button class="btn" type="button" onclick="AG_getGalleryName();window.parent.SqueezeBox.close();"><?php echo JText::_('Insert') ?></button>
+        <button class="btn" type="button" onclick="window.parent.SqueezeBox.close();"><?php echo JText::_('Cancel') ?></button>
     </div>
     <br style="clear:both;"/>
     <hr />
