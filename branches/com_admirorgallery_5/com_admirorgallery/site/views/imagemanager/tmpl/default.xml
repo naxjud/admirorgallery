@@ -8,10 +8,10 @@
 
     <fields name="params" addfieldpath="/components/com_admirorgallery/elements" >
 
-		<!-- Basic options. -->
+        <!-- Basic options. -->
         <fieldset name="basic" >
 
-            <field name="galleryName" type="galleryName" default="" label="AG_ENTER_GALLERY_NAME" description="AG_ENTER_GALLERY_NAME_DESC" size="20" />
+            <field name="galleryName" type="galleryName" default="" required="1" label="AG_ENTER_GALLERY_NAME" description="AG_ENTER_GALLERY_NAME_DESC" size="20" />
         </fieldset>
     </fields>
 </metadata>
