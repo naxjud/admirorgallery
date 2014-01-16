@@ -21,12 +21,12 @@ $ag_init_itemURL = $ag_rootFolder;
 <script type="text/javascript" src="<?php echo JURI::root() . 'plugins/content/admirorgallery/admirorgallery/AG_jQuery.js'; ?>"></script>
 <link rel="stylesheet" href="<?php echo JURI::root() . 'administrator/components/com_admirorgallery/templates/' . $AG_template . '/css/add-trigger.css'; ?>" type="text/css" />
 
-<div style="display:block" class="AG_margin_medium">
+<div style="display:block">
     <form action="index.php" id="AG_form" method="post" enctype="multipart/form-data">
 
         <div style="float: right">
-            <button type="button" onclick="AG_createTriggerCode();window.parent.SqueezeBox.close();"><?php echo JText::_('Insert') ?></button>
-            <button type="button" onclick="window.parent.SqueezeBox.close();"><?php echo JText::_('Cancel') ?></button>
+            <button class="btn" type="button" onclick="AG_createTriggerCode();window.parent.SqueezeBox.close();"><?php echo JText::_('Insert') ?></button>
+            <button class="btn" type="button" onclick="window.parent.SqueezeBox.close();"><?php echo JText::_('Cancel') ?></button>
         </div>
         <br style="clear:both;"/>
         <hr />
@@ -73,7 +73,7 @@ $ag_init_itemURL = $ag_rootFolder;
                 ?>
                 <fieldset class="panelform">
                     <?php $hidden_fields = ''; ?>
-                    <ul class="adminformlist">
+                    <ul class="adminformlist" style="list-style: none;">
                         <?php foreach ($myparams->getFieldset($name) as $field) : ?>
                             <?php if (!$field->hidden) : ?>
                                 <li class="paramlist_value">
