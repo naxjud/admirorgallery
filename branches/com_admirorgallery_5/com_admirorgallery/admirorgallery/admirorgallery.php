@@ -9,7 +9,7 @@
   # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
   # Version: 5.0.0
   ------------------------------------------------------------------------- */
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 // Import library dependencies
 jimport('joomla.event.plugin');
 jimport('joomla.plugin.plugin');

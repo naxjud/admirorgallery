@@ -9,7 +9,8 @@
 # Technical Support:  Forum - http://www.vasiljevski.com/forum/index.php
 # Version: 5.0.0
 -------------------------------------------------------------------------*/
- 
+defined('_JEXEC') or die();
+
 define('PLUGIN_BASE_PATH', '/plugins/content/admirorgallery/admirorgallery/');
 
 require_once (dirname(__FILE__) . DIRECTORY_SEPARATOR . 'agHelper.php');
