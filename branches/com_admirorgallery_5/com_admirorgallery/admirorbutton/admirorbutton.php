@@ -14,8 +14,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Editor Image buton
  *
@@ -23,7 +21,7 @@ jimport('joomla.plugin.plugin');
  * @since 1.5
  */
 class plgButtonAdmirorbutton extends JPlugin {
-
+    protected $autoloadLanguage = true;
     /**
      * Constructor
      *
@@ -38,6 +36,7 @@ class plgButtonAdmirorbutton extends JPlugin {
     public function __construct(& $subject, $config) {
         parent::__construct($subject, $config);
         $this->loadLanguage('com_admirorgallery');
+        $this->loadLanguage('plg_editors-xtd_admirorbutton');   
     }
 
     /**
@@ -59,6 +58,7 @@ class plgButtonAdmirorbutton extends JPlugin {
         JHTML::_('behavior.modal');
 
         $button = new JObject();
+        $button->set('class','btn');
         $button->set('modal', true); // modal dialog
         $button->set('link', $link); //link to open on click
         $button->set('text', JText::_('COM_ADMIRORGALLERY')); //button text

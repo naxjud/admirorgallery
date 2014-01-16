@@ -10,7 +10,7 @@
 # Version: 5.0.0
 -------------------------------------------------------------------------*/
 // Joomla security code
-defined('_JEXEC') or die('Restricted access');
+defined('_JEXEC') or die();
 
 // Load CSS from current template folder
 $AG->loadCSS($AG->currTemplateRoot . 'template.css');
