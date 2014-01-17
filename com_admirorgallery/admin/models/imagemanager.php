@@ -212,8 +212,24 @@ class AdmirorgalleryModelImagemanager extends JModelLegacy {
         if (is_numeric($ag_ext_check)) {
             if (JFile::upload($src, $dest)) {
                 if ($ag_file_ext == "zip") {
-                    if (JArchive::extract($tmp_dest . DIRECTORY_SEPARATOR . $filename, JPATH_SITE . $AG_itemURL)) {
+                    //
+                    if (JArchive::extract($tmp_dest . DIRECTORY_SEPARATOR . $filename, $tmp_dest . DIRECTORY_SEPARATOR . 'AdmirorImageUpload' . DIRECTORY_SEPARATOR . JFile::stripExt($filename))) {
+                        $folders = JFolder::listFolderTree($tmp_dest . DIRECTORY_SEPARATOR . 'AdmirorImageUpload' . DIRECTORY_SEPARATOR . JFile::stripExt($filename), '.');
+                        foreach ($folders as $folder) {
+                            $images = agHelper::ag_imageArrayFromFolder(JPATH_SITE . $folder['relname']);
+                            foreach ($images as $image) {
+
+                                if (!is_dir(JPATH_SITE . $AG_itemURL . JFile::stripExt($filename))) {
+                                    JFolder::create(JPATH_SITE . $AG_itemURL . JFile::stripExt($filename));
+                                }
+                                if (!is_dir(JPATH_SITE . $AG_itemURL . JFile::stripExt($filename) . DIRECTORY_SEPARATOR . $folder['name'])) {
+                                    JFolder::create(JPATH_SITE . $AG_itemURL . JFile::stripExt($filename) . DIRECTORY_SEPARATOR . $folder['name']);
+                                }
+                                JFile::copy(JPATH_SITE . $folder['relname'] . DIRECTORY_SEPARATOR . $image, JPATH_SITE . $AG_itemURL . JFile::stripExt($filename) . DIRECTORY_SEPARATOR . $folder['name'] . DIRECTORY_SEPARATOR . $image);
+                            }
+                        }
                         JFile::delete($tmp_dest . DIRECTORY_SEPARATOR . $filename);
+                        JFolder::delete($tmp_dest . DIRECTORY_SEPARATOR . 'AdmirorImageUpload' . DIRECTORY_SEPARATOR . JFile::stripExt($filename));
                         JFactory::getApplication()->enqueueMessage(JText::_('AG_ZIP_PACKAGE_IS_UPLOADED_AND_EXTRACTED') . "&nbsp;" . $filename, 'message');
                     }
                 } else {
