@@ -125,7 +125,6 @@ class AdmirorgalleryControllerImagemanager extends AdmirorgalleryController {
                 $model->_desc_content($AG_itemURL, $AG_desc_content, $AG_desc_tags);
             }
         }
-
         parent::display();
     }
 

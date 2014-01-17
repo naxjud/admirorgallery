@@ -53,10 +53,6 @@ class AdmirorgalleryViewImagemanager extends JViewLegacy {
             }
         }
         JToolBarHelper::title(JText::_('COM_ADMIRORGALLERY_IMAGE_MANAGER'), 'imagemanager');
-        if (JFactory::getUser()->authorise('core.admin', 'com_admirorgallery')) {
-            JToolbarHelper::custom('AG_apply', 'publish', 'publish', 'COM_ADMIRORGALLERY_APPLY_DESC', false, false);
-            JToolbarHelper::custom('AG_reset', 'unpublish', 'unpublish', 'COM_ADMIRORGALLERY_RESET_DESC', false, false);
-        }
         parent::display($tpl);
     }
 
