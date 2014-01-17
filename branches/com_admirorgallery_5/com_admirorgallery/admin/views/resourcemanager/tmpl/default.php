@@ -21,6 +21,19 @@ if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
             <div class="module-title nav-header"><?php echo JText::_('COM_ADMIRORGALLERY_MENU'); ?></div>
             <?php echo $this->sidebar; ?>
         </div>
+        <div class="well well-small">
+            <div class="module-title nav-header"> <?php echo JText::_('AG_VERSION'); ?> </div>
+            <ul class="unstyled list-striped">
+                <?php
+                $ag_admirorgallery_xml = JFactory::getXML(JPATH_COMPONENT_ADMINISTRATOR . '/com_admirorgallery.xml');
+                if ($ag_admirorgallery_xml) {
+                    echo '<li>' . JText::_('COM_ADMIRORGALLERY_COMPONENT_VERSION') . '&nbsp;' . $ag_admirorgallery_xml->version . "</li>";
+                    echo '<li>' . JText::_('COM_ADMIRORGALLERY_PLUGIN_VERSION') . '&nbsp;' . $ag_admirorgallery_xml->plugin_version . "</li>";
+                    echo '<li>' . JText::_('COM_ADMIRORGALLERY_BUTTON_VERSION') . '&nbsp;' . $ag_admirorgallery_xml->button_version . "</li>";
+                }
+                ?>
+            </ul>
+        </div>
     </div>
     <div class="span10">
         <div class="well well-small">
@@ -52,9 +65,9 @@ if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
                 </script>
                 <div >
                     <p><?php echo JText::_('AG_SELECT_TEMPLATE_TO_INSTALL'); ?>
-                    [ <b><?php echo JText::_('AG_MAX'); ?>
-                        <?php echo (JComponentHelper::getParams('com_media')->get('upload_maxsize', 0)) ?> MB</b> ]:
-                    <input type="file" name="AG_fileUpload" /></p>
+                        [ <b><?php echo JText::_('AG_MAX'); ?>
+                            <?php echo (JComponentHelper::getParams('com_media')->get('upload_maxsize', 0)) ?> MB</b> ]:
+                        <input type="file" name="AG_fileUpload" /></p>
                 </div>
                 <table class="table table-striped" id="categoryList" cellspacing="1">
                     <thead>

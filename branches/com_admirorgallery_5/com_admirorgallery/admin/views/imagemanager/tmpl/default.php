@@ -24,15 +24,28 @@ if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
                 <div class="module-title nav-header"><?php echo JText::_('COM_ADMIRORGALLERY_MENU'); ?></div>
                 <?php echo $this->sidebar; ?>
             </div>
+            <div class="well well-small">
+                <div class="module-title nav-header"> <?php echo JText::_('AG_VERSION'); ?> </div>
+                <ul class="unstyled list-striped">
+                    <?php
+                    $ag_admirorgallery_xml = JFactory::getXML(JPATH_COMPONENT_ADMINISTRATOR . '/com_admirorgallery.xml');
+                    if ($ag_admirorgallery_xml) {
+                        echo '<li>' . JText::_('COM_ADMIRORGALLERY_COMPONENT_VERSION') . '&nbsp;' . $ag_admirorgallery_xml->version . "</li>";
+                        echo '<li>' . JText::_('COM_ADMIRORGALLERY_PLUGIN_VERSION') . '&nbsp;' . $ag_admirorgallery_xml->plugin_version . "</li>";
+                        echo '<li>' . JText::_('COM_ADMIRORGALLERY_BUTTON_VERSION') . '&nbsp;' . $ag_admirorgallery_xml->button_version . "</li>";
+                    }
+                    ?>
+                </ul>
+            </div>
         </div>
         <div class="span10">
             <?php
         } else {
             ?>
             <div class="span12">
-            <?php
-        }
-        ?>
+                <?php
+            }
+            ?>
             <div class="well well-small">
                 <form action="<?php echo JRoute::_('index.php?option=com_admirorgallery&view=imagemanager'); ?>" 
                       method="post" 
@@ -47,24 +60,24 @@ if (!is_dir(JPATH_SITE . '/plugins/content/admirorgallery/')) {
                     <input type="hidden" name="controller" value="imagemanager" />
                     <input type="hidden" name="AG_itemURL" value="<?php echo $this->ag_init_itemURL; ?>" id="AG_input_itemURL" />
 
-<?php
-if (file_exists(JPATH_SITE . $this->ag_init_itemURL)) {
-    if (is_dir(JPATH_SITE . $this->ag_init_itemURL)) {
-        $ag_init_itemType = "folder";
-    } else {
-        $ag_init_itemType = "file";
-    }
-    require_once (JPATH_ROOT . DIRECTORY_SEPARATOR . 'administrator' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_admirorgallery' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'imagemanager' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default_' . $ag_init_itemType . '.php');
-} else {
-    $ag_error[] = Array(JText::_('AG_FOLDER_OR_IMAGE_NOT_FOUND'), $this->ag_init_itemURL);
-    JError::raiseWarning('3', JText::_('AG_FOLDER_OR_IMAGE_NOT_FOUND') . '<br>' . $this->ag_init_itemURL);
-    $ag_preview_content = '
+                    <?php
+                    if (file_exists(JPATH_SITE . $this->ag_init_itemURL)) {
+                        if (is_dir(JPATH_SITE . $this->ag_init_itemURL)) {
+                            $ag_init_itemType = "folder";
+                        } else {
+                            $ag_init_itemType = "file";
+                        }
+                        require_once (JPATH_ROOT . DIRECTORY_SEPARATOR . 'administrator' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_admirorgallery' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'imagemanager' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default_' . $ag_init_itemType . '.php');
+                    } else {
+                        $ag_error[] = Array(JText::_('AG_FOLDER_OR_IMAGE_NOT_FOUND'), $this->ag_init_itemURL);
+                        JError::raiseWarning('3', JText::_('AG_FOLDER_OR_IMAGE_NOT_FOUND') . '<br>' . $this->ag_init_itemURL);
+                        $ag_preview_content = '
                                     <div class="ag_screenSection_title">
                                          ' . $this->ag_init_itemURL . '
                                     </div>';
-    return;
-}
-?>
+                        return;
+                    }
+                    ?>
                     <!--Include JavaScript-->
                     <?php require_once (JPATH_ROOT . DIRECTORY_SEPARATOR . 'administrator' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_admirorgallery' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'imagemanager' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default_script.php'); ?>
                     <!--In front end add toolbar-->
@@ -73,9 +86,9 @@ if (file_exists(JPATH_SITE . $this->ag_init_itemURL)) {
                         require_once( JPATH_COMPONENT . DIRECTORY_SEPARATOR . 'helpers' . DIRECTORY_SEPARATOR . 'toolbar.php' );
                         ?>
                         <div class="AG_border_color AG_border_width AG_toolbar">
-                        <?php echo AdmirorgalleryHelperToolbar::getToolbar(); ?>
+                            <?php echo AdmirorgalleryHelperToolbar::getToolbar(); ?>
                         </div>
-                        <?php } ?>
+                    <?php } ?>
                     <!--Include panel HTML-->
                     <?php require_once (JPATH_ROOT . DIRECTORY_SEPARATOR . 'administrator' . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_admirorgallery' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . 'imagemanager' . DIRECTORY_SEPARATOR . 'tmpl' . DIRECTORY_SEPARATOR . 'default_panel.php'); ?>
                 </form>
