@@ -37,10 +37,6 @@ class AdmirorgalleryViewResourcemanager extends JViewLegacy {
         $this->ag_resource_type = JRequest::getVar('AG_resourceType'); // Current resource type
         
         JToolBarHelper::title(JText::_('COM_ADMIRORGALLERY_' . strtoupper($this->ag_resource_type)), $this->ag_resource_type);
-        if (JFactory::getUser()->authorise('core.admin', 'com_admirorgallery')) {
-            JToolbarHelper::custom('ag_install', 'ag_install', 'ag_install', 'JTOOLBAR_INSTALL', false, false);
-            JToolbarHelper::deleteList('COM_ADMIRORGALLERY_ARE_YOU_SURE', 'ag_uninstall', 'JTOOLBAR_UNINSTALL');
-        }
         
         // Loading JPagination vars
         $this->limitstart = $mainframe->getUserStateFromRequest($option . '.limitstart', 'limitstart', 0, 'int');
