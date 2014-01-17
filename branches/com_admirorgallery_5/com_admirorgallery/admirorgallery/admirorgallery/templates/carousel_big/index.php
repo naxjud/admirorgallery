@@ -135,7 +135,4 @@ if (!empty($AG->folders) && $AG->params['albumUse']) {
     $html.= $AG->writeFolderThumb("albums/album.png", $AG->params['thumbHeight']);
 }
 
-$html.='
-</div>
-';
 ?>
