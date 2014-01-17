@@ -25,17 +25,22 @@ class AdmirorgalleryController extends JControllerLegacy {
         }
         AdmirorGalleryHelper::addSubmenu(JRequest::getCmd('view', 'control_panel'), JRequest::getCmd('AG_resourceType', ''));
 
-        if (JFactory::getUser()->authorise('core.admin', 'com_admirorgallery')) {
-            JToolBarHelper::preferences('com_admirorgallery');
-        }
+
         JToolBarHelper::help("", false, "http://www.admiror-design-studio.com/admiror-joomla-extensions/admiror-gallery/user-manuals");
+
+        if (JFactory::getUser()->authorise('core.admin', 'com_admirorgallery')) {
+            JToolbarHelper::preferences('com_admirorgallery');
+            JToolbarHelper::custom('AG_apply', 'publish', 'publish', 'COM_ADMIRORGALLERY_APPLY_DESC', false, false);
+            JToolbarHelper::custom('AG_reset', 'unpublish', 'unpublish', 'COM_ADMIRORGALLERY_RESET_DESC', false, false);
+        }
+
         $doc = JFactory::getDocument();
         $viewType = $doc->getType();
         $viewName = $this->input->get('view', $this->default_view);
         $viewLayout = $this->input->get('layout', 'default', 'string');
 
         $view = $this->getView($viewName, $viewType, '', array('base_path' => $this->basePath, 'layout' => $viewLayout));
-        
+
         $view->sidebar = JHtmlSidebar::render();
         $doc->addScriptDeclaration('
 	       AG_jQuery(function(){
