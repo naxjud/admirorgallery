@@ -30,13 +30,14 @@ $ag_init_itemURL = $ag_rootFolder;
     <hr />
     <h2><?php echo JText::_("AG_FOLDERS"); ?></h2>
 <?php
-$ag_folders = JFolder::listFolderTree(JPATH_SITE . $ag_init_itemURL, "");
+$ag_folders = JFolder::listFolderTree(JPATH_SITE . $ag_init_itemURL, ".");
 
 $ag_init_itemURL_strlen = strlen($ag_init_itemURL);
 
 if (!empty($ag_folders)) {
     foreach ($ag_folders as $ag_folders_key => $ag_folders_value) {
         $ag_folderName = substr($ag_folders_value['relname'], $ag_init_itemURL_strlen);
+        $ag_folderName = str_replace(array('/', '\\'), '/', $ag_folderName);
         echo '<input type="radio" name="AG_form_folderName" value="' . $ag_folderName . '" /> ' . $ag_folderName . '<br />';
     }
 }

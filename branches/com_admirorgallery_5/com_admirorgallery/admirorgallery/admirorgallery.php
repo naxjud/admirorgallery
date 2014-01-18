@@ -47,10 +47,8 @@ class plgContentAdmirorGallery extends JPlugin {
             }
             return;
         }
-
         // Load gallery class php script
         require_once (dirname(__FILE__) . '/admirorgallery/classes/agGallery.php');
-        require_once (dirname(__FILE__) . '/admirorgallery/classes/jquery.scroll.js.php');
         //CreateGallerys
         if (preg_match_all("#{AdmirorGallery[^}]*}(.*?){/AdmirorGallery}|{AG[^}]*}(.*?){/AG}#s", $row->text, $matches, PREG_PATTERN_ORDER) > 0) {
             $AG = new agGallery($this->params, JURI::base(), JPATH_SITE, $doc);
@@ -68,6 +66,25 @@ class plgContentAdmirorGallery extends JPlugin {
             //Joomla specific variables is passed as parametars for agGallery independce from specific CMS
             $AG->loadJS('AG_jQuery.js');
             $AG->articleID = $row->id;
+
+            $queryArray = null;
+            $queryString = strip_tags($_SERVER['QUERY_STRING']);
+            parse_str($queryString, $queryArray);
+            
+            $basepath = $AG->sitePhysicalPath.$AG->staticParams['rootFolder'];
+            $realBase = realpath($basepath);
+
+            $i=0;
+            while(array_key_exists('AG_form_albumInitFolders_'.$i,$queryArray))
+            {
+                $userpath = $basepath . $queryArray['AG_form_albumInitFolders_'.$i];
+                $realUserPath = realpath($userpath);
+
+                if ($realUserPath === false || strpos($realUserPath, $realBase) !== 0) {
+                    header('Location: '.strip_tags($_SERVER['PHP_SELF']));
+                }
+                $i++;
+            }
             //generate gallery html
             foreach ($matches[0] as $match) {
                 $AG->index++;
@@ -87,13 +104,21 @@ class plgContentAdmirorGallery extends JPlugin {
                 $AG->clearOldThumbs();
                 $row->text = $AG->writeErrors() . preg_replace("#{AdmirorGallery[^}]*}" . $AG->imagesFolderNameOriginal . "{/AdmirorGallery}|{AG[^}]*}" . $AG->imagesFolderNameOriginal . "{/AG}#s", "<div style='clear:both'></div>" . $html, $row->text, 1);
             }// foreach($matches[0] as $match)
-            // AG Form
-            $row->text .= '
 
-            <script type="text/javascript">
+            $row->text .= '<script type="text/javascript">';
+            
+            if(strpos($_SERVER['REQUEST_URI'],'AG_form_paginInitPages_') !== false)
+            {
+                $row->text .= '
+                    AG_jQuery(document).ready(function() {
+                        AG_jQuery(document).scrollTop(AG_jQuery("#AG_0'.$AG->articleID.'").offset().top);
+                    });';
+            }
+
+            $row->text .= '  
             function AG_form_submit_' . $AG->articleID . '(galleryIndex,paginPage,albumFolder,linkID) {
 
-            var AG_URL="' . $_SERVER['REQUEST_URI'] . '";
+            var AG_URL="' . strip_tags($_SERVER['REQUEST_URI']) . '";
             var split = AG_URL.split("AG_MK=0");
             if(split.length==3){
                 AG_URL = split[0]+split[2];
@@ -121,9 +146,6 @@ class plgContentAdmirorGallery extends JPlugin {
                 AG_URL+="AG_form_paginInitPages_"+AG_jQuery(this).attr(\'id\')+"="+paginInitPages+"&";
                 AG_URL+="AG_form_albumInitFolders_"+AG_jQuery(this).attr(\'id\')+"="+albumInitFolders+"&";
             });
-
-            AG_URL+="AG_form_scrollTop"+"="+AG_jQuery(window).scrollTop()+"&";
-            AG_URL+="AG_form_scrollLeft"+"="+AG_jQuery(window).scrollLeft()+"&";
 
             AG_URL+="AG_MK=0";
 

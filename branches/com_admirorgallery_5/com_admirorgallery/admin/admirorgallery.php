@@ -16,7 +16,6 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_admirorgallery'))
 {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
-require_once (JPATH_SITE . DIRECTORY_SEPARATOR . 'plugins' . DIRECTORY_SEPARATOR . 'content' . DIRECTORY_SEPARATOR . 'admirorgallery' . DIRECTORY_SEPARATOR . 'admirorgallery' . DIRECTORY_SEPARATOR . 'classes' . DIRECTORY_SEPARATOR . 'agHelper.php');
 // OUTPUT
 // echo "POST: "."<br />"; print_r($_POST); echo "<hr />";
 // echo "GET: "."<br />"; print_r($_GET); echo "<hr />";
