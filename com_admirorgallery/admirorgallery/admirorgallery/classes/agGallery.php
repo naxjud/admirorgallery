@@ -177,43 +177,12 @@ class agGallery extends agHelper {
         // Album Support
         $html = "";
         if ($this->params['albumUse'] && !empty($this->folders)) {
-            $html.= '<div class="AG_album_wrap">' . "\n";
+            $html.='<div class="AG_album_wrap">' . "\n";
             foreach ($this->folders as $folderKey => $folderName) {
-                $thumb_file = "";
-                // Get Thumb URL value                
-                // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
-                $ag_pathWithStripExt = $this->imagesFolderPhysicalPath . $folderName;
-                $ag_XML_path = $ag_pathWithStripExt . ".XML";
-                if (file_exists($ag_pathWithStripExt . ".xml")) {
-                    $ag_XML_path = $ag_pathWithStripExt . ".xml";
-                }
-                if (file_exists($ag_XML_path)) {// Check is descriptions file exists
-                    $ag_XML_xml = simplexml_load_file($ag_XML_path);
-                    if (isset($ag_XML_xml->thumb)) {
-                        $thumb_file = (string) $ag_XML_xml->thumb;
-                    }
-                }
-                if (empty($thumb_file)) {
-                    $images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath . $folderName);
-                    if (!empty($images)) {
-                        $images = agHelper::array_sorting($images, $this->imagesFolderPhysicalPath . $folderName . $this->DS, $this->params['arrange']);
-                        $thumb_file = $images[0]; // Get First image in folder as thumb 
-                    }
-                }
-                if (!empty($thumb_file)) {
-                    $this->Album_generateThumb($folderName, $thumb_file);
-                }
-                
-                $html.='<a href="#" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',1,\'' . $this->imagesFolderName . '/' . $folderName . '\'); return false;" class="AG_album_thumb">';
-                $html.='<span class="AG_album_thumb_img">';
-                if(!empty($thumb_file))
-                {
-                    $html.='<img src="' . $this->sitePath . PLUGIN_BASE_PATH . 'thumbs/' . $this->imagesFolderName . '/' . $folderName . '/' . basename($thumb_file) . '" />' . "\n";
-                }
-                else
-                {
-                    $html.='<img src="' . $this->sitePath . PLUGIN_BASE_PATH .'defaultAlbum.png" />' . "\n";
-                }
+                $thumb_path = $this->ag_get_album_thumb_path($default_folder_img,$folderName);
+                $html.='<a href="javascript:void(0);" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',1,\'' . $this->imagesFolderName . '/' . $folderName . '\'); return false;" class="AG_album_thumb">';    
+                $html.='<span class="AG_album_thumb_img" >';
+                $html.='<img style="height: '.$thumbHeight.'px;" src="'.$thumb_path.'" />' . "\n";
                 $html.='</span>';
                 $html.='<span class="AG_album_thumb_label">';
                 $html.=$this->descArray[$folderName];
@@ -223,6 +192,39 @@ class agGallery extends agHelper {
             $html.= '<br style="clear:both;" /></div>' . "\n";
         }
         return $html;
+    }
+    
+    function ag_get_album_thumb_path($default_folder_img,$folderName)
+    {
+        // Get Thumb URL value                
+        // Set Possible Description File Apsolute Path // Instant patch for upper and lower case...
+        $ag_pathWithStripExt = $this->imagesFolderPhysicalPath . $folderName;
+        $ag_XML_path = $ag_pathWithStripExt . ".XML";
+        if (file_exists($ag_pathWithStripExt . ".xml")) {
+            $ag_XML_path = $ag_pathWithStripExt . ".xml";
+        }
+        if (file_exists($ag_XML_path)) {// Check is descriptions file exists
+            $ag_XML_xml = simplexml_load_file($ag_XML_path);
+            if (isset($ag_XML_xml->thumb)) {
+                $thumb_file = (string) $ag_XML_xml->thumb;
+            }
+        }
+        if (empty($thumb_file)) {
+            $images = agHelper::ag_imageArrayFromFolder($this->imagesFolderPhysicalPath . $folderName);
+            if (!empty($images)) {
+                $images = agHelper::array_sorting($images, $this->imagesFolderPhysicalPath . $folderName . $this->DS, $this->params['arrange']);
+                $thumb_file = $images[0]; // Get First image in folder as thumb 
+            }
+        }
+        if (!empty($thumb_file)) {
+            $this->Album_generateThumb($folderName, $thumb_file);
+            $thumb_file = 'thumbs/' . $this->imagesFolderName . '/' . $folderName . '/' . basename($thumb_file);
+        }
+        else
+        {
+            $thumb_file = $this->currTemplateRoot.$default_folder_img;
+        }
+        return $this->sitePath . PLUGIN_BASE_PATH .$thumb_file;
     }
 
     /**
@@ -238,18 +240,18 @@ class agGallery extends agHelper {
                     $html.= '<div class="AG_pagin_wrap">';
                     $paginPrev = ($this->paginInitPages[$this->index] - 1);
                     if ($paginPrev >= 1) {
-                        $html.= '<a href="" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginPrev . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_prev">' . JText::_("AG_PREV") . '</a>';
+                        $html.= '<a href="javascript:void(0);" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginPrev . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_prev">' . JText::_("AG_PREV") . '</a>';
                     }
                     for ($i = 1; $i <= ceil($this->paginImgTotal / $this->params['paginImagesPerGallery']); $i++) {
                         if ($i == $this->paginInitPages[$this->index]) {
                             $html.= '<span class="AG_pagin_current">' . $i . '</span>';
                         } else {
-                            $html.= '<a href="" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $i . ',\'' . $this->imagesFolderName . '\',this);return false;" class="AG_pagin_link">' . $i . '</a>';
+                            $html.= '<a href="javascript:void(0);" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $i . ',\'' . $this->imagesFolderName . '\',this);return false;" class="AG_pagin_link">' . $i . '</a>';
                         }
                     }
                     $paginNext = ($this->paginInitPages[$this->index] + 1);
                     if ($paginNext <= ceil($this->paginImgTotal / $this->params['paginImagesPerGallery'])) {
-                        $html.= '<a href="" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginNext . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_next">' . JText::_("AG_NEXT") . '</a>';
+                        $html.= '<a href="javascript:void(0);" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',' . $paginNext . ',\'' . $this->imagesFolderName . '\'); return false;" class="AG_pagin_next">' . JText::_("AG_NEXT") . '</a>';
                     }
                     $html.= '<br style="clear:both"></div>';
                 }
@@ -331,24 +333,26 @@ class agGallery extends agHelper {
             $this->paginInitPages[] = 1;
             if (!empty($_GET['AG_form_paginInitPages_' . $this->articleID])) {
                 $AG_form_paginInitPages_array = explode(",", $_GET['AG_form_paginInitPages_' . $this->articleID]);
-                $this->paginInitPages[$this->index] = $AG_form_paginInitPages_array[$this->index];
+                $this->paginInitPages[$this->index] = strip_tags($AG_form_paginInitPages_array[$this->index]);
             }
-            $this->doc->addScriptDeclaration('var paginInitPages_' . $this->articleID . '="' . implode(",", $this->paginInitPages) . '";');
+            $script = 'var paginInitPages_' . $this->articleID . '="' . implode(",", $this->paginInitPages) . '";';
+            
+            $this->doc->addScriptDeclaration(strip_tags($script));
 
             // Album Support
             $this->albumParentLink = '';
             $this->albumInitFolders[] = "";
-            $this->albumInitFolders[$this->index] = $this->imagesFolderName; // Set init folders
+            $this->albumInitFolders[$this->index] = strip_tags($this->imagesFolderName); // Set init folders
             if (!empty($_GET['AG_form_albumInitFolders_' . $this->articleID])) {
                 $AG_form_albumInitFolders_array = explode(",", $_GET['AG_form_albumInitFolders_' . $this->articleID]);
-                $this->albumInitFolders[$this->index] = $AG_form_albumInitFolders_array[$this->index];
-                $this->imagesFolderName = $AG_form_albumInitFolders_array[$this->index];
+                $this->albumInitFolders[$this->index] = strip_tags($AG_form_albumInitFolders_array[$this->index]);
+                $this->imagesFolderName = strip_tags($AG_form_albumInitFolders_array[$this->index]);
                 // Support for Album Parent Link
                 if ($this->imagesFolderName != $this->imagesFolderNameOriginal) {
                     $this->albumParentLink = '
-                        <a href="#" onClick="AG_form_submit_' . $this->articleID . '(' . $this->index . ',1,\'' . dirname($this->imagesFolderName) . '\'); return false;" class="AG_album_parent">
+                        <a href="javascript:void(0);" onClick="AG_form_submit_' . strip_tags($this->articleID) . '(' . strip_tags($this->index) . ',1,\'' . strip_tags(dirname($this->imagesFolderName)) . '\'); return false;" class="AG_album_parent">
                             <span>
-                                ' . basename(dirname($this->imagesFolderName)) . '
+                                ' . strip_tags(basename(dirname($this->imagesFolderName))) . '
                             </span>
                         </a>
                         <br style="clear:both;" />
@@ -361,7 +365,8 @@ class agGallery extends agHelper {
                 $this->writeBreadcrum();
             }
 
-            $this->doc->addScriptDeclaration('var albumInitFolders_' . $this->articleID . '="' . implode(",", $this->albumInitFolders) . '";');
+            $script = 'var albumInitFolders_' . $this->articleID . '="' . implode(",", $this->albumInitFolders) . '";';
+            $this->doc->addScriptDeclaration(strip_tags($script));
         }
         $this->imagesFolderPhysicalPath = $this->sitePhysicalPath . $this->params['rootFolder'] . $this->imagesFolderName . $this->DS;
         $this->thumbsFolderPhysicalPath = $this->sitePhysicalPath . PLUGIN_BASE_PATH . 'thumbs' . $this->DS . $this->imagesFolderName . $this->DS;
