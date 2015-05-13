@@ -1,0 +1,3 @@
+Admiror Gallery is made with aim to be a instant solution for image gallery. Whole process of setting and maintenance of gallery is automatic and simple as much as possible. This is a very simply plugin, but still very flexible and adaptable to your specific needs.
+
+In some cases it's possible to came to error during uninstall. In this case remove by hand folder plugins/content/AdmirorGallery. There is possibility for errors if gallery is used along side with some other plugin which using Mootools.
